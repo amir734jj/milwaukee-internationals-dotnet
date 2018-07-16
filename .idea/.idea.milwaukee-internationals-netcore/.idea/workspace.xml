@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e30a836d-1ab9-4472-ab0a-dfde5d739c08" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="SinginController.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/API/Controllers/SinginController.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="33" column="45" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="45" />
+              <folding>
+                <marker date="1531698988303" expanded="true" signature="6:175" ph="..." />
+                <marker date="1531698988303" expanded="true" signature="202:2049" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="283:2047" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="400:460" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="470:565" ph="/// Login the user ... " />
+                <marker date="1531698988303" expanded="true" signature="738:1201" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="878:1066" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="1211:1306" ph="/// Login the user ... " />
+                <marker date="1531698988303" expanded="true" signature="1425:1724" ph="{...}" />
+                <marker date="1531698988303" expanded="true" signature="1742:1845" ph="/// Not authenticated view ... " />
+                <marker date="1531698988303" expanded="true" signature="1994:2041" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Startup.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/API/Startup.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
+              <folding>
+                <marker date="1531699284882" expanded="false" signature="6:435" ph="..." />
+                <marker date="1531699284882" expanded="true" signature="450:3933" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="477:3931" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="635:1049" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="1060:1275" ph="/* This method gets called by the runtime. Use this method to add services to the container. ... */" />
+                <marker date="1531699284882" expanded="true" signature="1354:3043" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="1447:1728" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="2184:2956" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="2310:2537" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="3231:3925" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="3389:3466" ph="{...}" />
+                <marker date="1531699284882" expanded="true" signature="3559:3676" ph="/* Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), ... */" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HomeController.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/API/Controllers/HomeController.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+              <folding>
+                <marker date="1531697785639" expanded="true" signature="58:203" ph="{...}" />
+                <marker date="1531697785639" expanded="true" signature="105:201" ph="{...}" />
+                <marker date="1531697785639" expanded="true" signature="148:195" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StudentController.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/API/Controllers/StudentController.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <marker date="1531703857053" expanded="false" signature="6:154" ph="..." />
+                <marker date="1531703857053" expanded="true" signature="181:839" ph="{...}" />
+                <marker date="1531703857053" expanded="true" signature="309:837" ph="{...}" />
+                <marker date="1531703857053" expanded="true" signature="379:508" ph="/// Constructor dependency injection ... " />
+                <marker date="1531703857053" expanded="true" signature="569:631" ph="{...}" />
+                <marker date="1531703857053" expanded="true" signature="641:747" ph="/// Returns instance of logic ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StudentDal.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DAL/StudentDal.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="70">
+              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+              <folding>
+                <marker date="1531671683013" expanded="false" signature="6:132" ph="..." />
+                <marker date="1531671683013" expanded="true" signature="147:1210" ph="{...}" />
+                <marker date="1531671683013" expanded="true" signature="222:1208" ph="{...}" />
+                <marker date="1531671683013" expanded="true" signature="342:510" ph="/// Constructor dependency injection ... " />
+                <marker date="1531671683013" expanded="true" signature="579:665" ph="{...}" />
+                <marker date="1531671683013" expanded="true" signature="675:771" ph="/// Returns IMapper ... " />
+                <marker date="1531671683013" expanded="true" signature="845:950" ph="/// Returns database context ... " />
+                <marker date="1531671683013" expanded="true" signature="1024:1128" ph="/// Returns students entity ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntityDbContext.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DAL/Utilities/EntityDbContext.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="95">
+              <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+              <folding>
+                <marker date="1531695018433" expanded="false" signature="6:142" ph="..." />
+                <marker date="1531695018433" expanded="true" signature="167:1328" ph="{...}" />
+                <marker date="1531695018433" expanded="true" signature="220:1326" ph="{...}" />
+                <marker date="1531695018433" expanded="true" signature="427:586" ph="/// Constructor that will be called by startup.cs ... " />
+                <marker date="1531695018433" expanded="true" signature="680:798" ph="{...}" />
+                <marker date="1531695018433" expanded="true" signature="1004:1320" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IPerson.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Models/Interfaces/IPerson.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="95">
+              <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+              <folding>
+                <marker date="1531693792905" expanded="true" signature="73:258" ph="{...}" />
+                <marker date="1531693792905" expanded="true" signature="118:256" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Driver.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Models/Driver.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="13" />
+              <folding>
+                <marker date="1531693818506" expanded="false" signature="6:69" ph="..." />
+                <marker date="1531693818506" expanded="true" signature="87:343" ph="{...}" />
+                <marker date="1531693818506" expanded="true" signature="123:341" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Student.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Models/Student.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="11" column="8" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+              <folding>
+                <marker date="1531704267767" expanded="false" signature="6:69" ph="..." />
+                <marker date="1531704267767" expanded="true" signature="87:614" ph="{...}" />
+                <marker date="1531704267767" expanded="true" signature="124:612" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Index.cshtml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/API/Views/Home/Index.cshtml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="8" selection-end-line="8" />
+              <folding>
+                <marker date="1531697779947" expanded="true" signature="15:72" ph="@..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>services.for</find>
+      <find>req</find>
+      <find>AddMemoryCache</find>
+    </findStrings>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/API/Controllers/StudentController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DB3BF2A7-78AA-4FD9-9C24-0664E52761A4/c7/cdbbaf60/LoggingThreadPool.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/464F15D5-8976-45E0-A883-0A1115E74A46/92/1563d015/AsyncMethodBuilderCore.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/464F15D5-8976-45E0-A883-0A1115E74A46/d8/7fed9f3f/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7D71E9EF-FC46-42D1-A5E6-76163099BF6B/84/a6aaa9ca/RequestServicesContainerMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7736BB4D-96F3-4991-9B65-48724EE1E844/f9/446b4d11/DeveloperExceptionPageMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1A963D6B-DB8D-435E-8DCD-C28935E050AD/73/64807e71/DbSet`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/CAAEC387-1ED9-4CD7-A34E-8AFED49FA62F/39/d283cb6d/ControllerActionInvoker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Utilities/EntityDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Views/Home/Index.cshtml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Extensions/SessionExtension.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Views/Singin/NotAuthenticated.cshtml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Controllers/SinginController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Controllers/UserControllercs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7D71E9EF-FC46-42D1-A5E6-76163099BF6B/a4/67d6007c/ConfigureServicesBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Constants/ApiConstants.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Student.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/UserDal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Interfaces/IUserDal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E267630F-9E16-41B8-8E3D-0F27CFAD0513/7b/30117054/HashAlgorithm.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Interfaces/IStudentLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Utilities/HashingUtility.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Interfaces/IStudentDal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Interfaces/IBasicModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/StudentLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Interfaces/IBasicCrudDal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Interfaces/IUserLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/StudentDal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Interfaces/ISigninLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Abstracts/BasicCrudLogicAbstract.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/SigninLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/User.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/Interfaces/IBasicCrudLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Logic/UserLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Host.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Interfaces/IPerson.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Driver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Abstracts/BasicCrudController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Attributes/AuthorizeActionFilter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Attributes/AuthorizeMiddlewareAttribute.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Controllers/HomeController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Profiles/StudentProfile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/API/Startup.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DAL/Extensions/LinqExtension.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/API/AbstractControllers/BasicCrudController.cs" />
+        <option value="$PROJECT_DIR$/Logic/Interfaces/BasicCrudLogic.cs" />
+        <option value="$PROJECT_DIR$/DAL/EntityDbContext.cs" />
+        <option value="$PROJECT_DIR$/DAL/Interfaces/Interface1.cs" />
+        <option value="$PROJECT_DIR$/Models/Class1.cs" />
+        <option value="$PROJECT_DIR$/DAL/Interfaces/IStudentDal.cs" />
+        <option value="$PROJECT_DIR$/Logic/Interfaces/IStudentLogic.cs" />
+        <option value="$PROJECT_DIR$/Logic/Class1.cs" />
+        <option value="$PROJECT_DIR$/DAL/Interfaces/IBasicCrudDal.cs" />
+        <option value="$PROJECT_DIR$/Logic/Interfaces/IBasicCrudLogic.cs" />
+        <option value="$PROJECT_DIR$/API/Abstracts/BasicCrudController.cs" />
+        <option value="$PROJECT_DIR$/API/Program.cs" />
+        <option value="$PROJECT_DIR$/DAL/Extensions/LinqExtension.cs" />
+        <option value="$PROJECT_DIR$/DAL/Extensions/DbSetExtension.cs" />
+        <option value="$PROJECT_DIR$/DAL/StudentDal.cs" />
+        <option value="$PROJECT_DIR$/Models/Interfaces/IBasicModel.cs" />
+        <option value="$PROJECT_DIR$/Models/Profiles/BasicModelProfile.cs" />
+        <option value="$PROJECT_DIR$/Models/Profiles/StudentProfile.cs" />
+        <option value="$PROJECT_DIR$/API/appsettings.Development.json" />
+        <option value="$PROJECT_DIR$/API/Attributes/CustomAuthorize.cs" />
+        <option value="$PROJECT_DIR$/API/Attributes/ClaimRequirementAttribute.cs" />
+        <option value="$PROJECT_DIR$/API/Attributes/Class1.cs" />
+        <option value="$PROJECT_DIR$/API/Attributes/AuthorizeMiddlewareAttribute.cs" />
+        <option value="$PROJECT_DIR$/Models/Interfaces/IPerson.cs" />
+        <option value="$PROJECT_DIR$/Models/Driver.cs" />
+        <option value="$PROJECT_DIR$/Models/Host.cs" />
+        <option value="$PROJECT_DIR$/Logic/Interfaces/IUserLogic.cs" />
+        <option value="$PROJECT_DIR$/Logic/Utilities/HashingUtility.cs" />
+        <option value="$PROJECT_DIR$/DAL/Interfaces/IUserDal.cs" />
+        <option value="$PROJECT_DIR$/DAL/Utilities/EntityDbContext.cs" />
+        <option value="$PROJECT_DIR$/DAL/UserDal.cs" />
+        <option value="$PROJECT_DIR$/API/appsettings.json" />
+        <option value="$PROJECT_DIR$/API/Controllers/UserControllercs.cs" />
+        <option value="$PROJECT_DIR$/Models/User.cs" />
+        <option value="$PROJECT_DIR$/Logic/Interfaces/ISigninLogic.cs" />
+        <option value="$PROJECT_DIR$/API/Views/Singin/NotAuthenticated.cshtml" />
+        <option value="$PROJECT_DIR$/API/Views/Shared/_Layout.cshtml" />
+        <option value="$PROJECT_DIR$/API/Extensions/ISessionExtension.cs" />
+        <option value="$PROJECT_DIR$/Models/Constants/ApiConstants.cs" />
+        <option value="$PROJECT_DIR$/API/Extensions/SessionExtension.cs" />
+        <option value="$PROJECT_DIR$/API/Attributes/AuthorizeActionFilter.cs" />
+        <option value="$PROJECT_DIR$/API/Controllers/HomeController.cs" />
+        <option value="$PROJECT_DIR$/API/Views/Home/Index.cshtml" />
+        <option value="$PROJECT_DIR$/Logic/Abstracts/BasicCrudLogicAbstract.cs" />
+        <option value="$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs" />
+        <option value="$PROJECT_DIR$/Logic/UserLogic.cs" />
+        <option value="$PROJECT_DIR$/Logic/SigninLogic.cs" />
+        <option value="$PROJECT_DIR$/API/Controllers/SinginController.cs" />
+        <option value="$PROJECT_DIR$/API/Startup.cs" />
+        <option value="$PROJECT_DIR$/API/Controllers/StudentController.cs" />
+        <option value="$PROJECT_DIR$/Models/Student.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="68" />
+    <option name="y" value="24" />
+    <option name="width" value="1440" />
+    <option name="height" value="809" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="API" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="API" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Views" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="API" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Views" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Home" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="DAL" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="DAL" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Utilities" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Models" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="milwaukee-internationals-netcore (4 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Models" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Interfaces" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-file-system" value="false" />
+        <option name="show-all-items" value="false" />
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/workspace/milwaukee-internationals-netcore/API/Startup.cs" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/API/bin/Debug/netcoreapp2.0/API.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/API" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <envs>
+        <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
+        <env name="ASPNETCORE_URLS" value="http://localhost:5000" />
+      </envs>
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/API/API.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.0" />
+      <browser url="http://localhost:5000" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e30a836d-1ab9-4472-ab0a-dfde5d739c08" name="Default" comment="" />
+      <created>1531634292501</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1531634292501</updated>
+      <workItem from="1531634296639" duration="26977000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="26977000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Errors In Solution" />
+      <window_info anchor="bottom" id="Event Log" sideWeight="0.15812592" side_tool="true" visible="true" weight="0.06507937" />
+      <window_info anchor="bottom" id="Unit Tests" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="REST Client" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.84187406" visible="true" weight="0.06507937" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="NuGet" sideWeight="0.6296875" weight="0.38110402" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25988287" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Build" sideWeight="0.49947917" weight="0.32908705" />
+      <window_info anchor="right" id="Database" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.57239586" weight="0.37048832" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs</url>
+          <line>81</line>
+          <properties documentPath="$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs" initialLine="74">
+            <startOffsets>
+              <startOffset value="2355" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="2413" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs</url>
+          <line>85</line>
+          <properties documentPath="$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs" initialLine="85">
+            <startOffsets>
+              <startOffset value="2501" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="2533" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/API/Controllers/SinginController.cs</url>
+          <line>28</line>
+          <properties documentPath="$PROJECT_DIR$/API/Controllers/SinginController.cs" initialLine="26">
+            <startOffsets>
+              <startOffset value="761" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="819" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/API/Attributes/AuthorizeActionFilter.cs</url>
+          <line>26</line>
+          <properties documentPath="$PROJECT_DIR$/API/Attributes/AuthorizeActionFilter.cs" initialLine="26">
+            <startOffsets>
+              <startOffset value="848" />
+            </startOffsets>
+            <endOffsets>
+              <endOffset value="951" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="15" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1A963D6B-DB8D-435E-8DCD-C28935E050AD/73/64807e71/DbSet`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="248" column="40" selection-start-line="248" selection-start-column="40" selection-end-line="248" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7D71E9EF-FC46-42D1-A5E6-76163099BF6B/84/a6aaa9ca/RequestServicesContainerMiddleware.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/464F15D5-8976-45E0-A883-0A1115E74A46/92/1563d015/AsyncMethodBuilderCore.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="149" column="10" selection-start-line="149" selection-start-column="10" selection-end-line="149" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DB3BF2A7-78AA-4FD9-9C24-0664E52761A4/c7/cdbbaf60/LoggingThreadPool.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/464F15D5-8976-45E0-A883-0A1115E74A46/d8/7fed9f3f/ExecutionContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="99" column="6" selection-start-line="99" selection-start-column="6" selection-end-line="99" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Extensions/LinqExtension.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <folding>
+            <marker date="1531671134520" expanded="true" signature="6:47" ph="..." />
+            <marker date="1531671134520" expanded="true" signature="73:518" ph="{...}" />
+            <marker date="1531671134520" expanded="true" signature="113:516" ph="{...}" />
+            <marker date="1531671134520" expanded="true" signature="128:333" ph="/// ForEach for IEnumerable ... " />
+            <marker date="1531671134520" expanded="true" signature="421:510" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Extensions/DbSetExtension.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="11" selection-start-line="11" selection-end-line="21" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/appsettings.Development.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Attributes/ClaimRequirementAttribute.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Attributes/ClaimRequirementFilter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Attributes/Class1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
+          <folding>
+            <marker date="1531669987200" expanded="false" signature="6:255" ph="..." />
+            <marker date="1531669987200" expanded="true" signature="270:724" ph="{...}" />
+            <marker date="1531669987200" expanded="true" signature="297:722" ph="{...}" />
+            <marker date="1531669987200" expanded="true" signature="350:408" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Interfaces/IBasicModel.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" selection-start-line="6" selection-end-line="7" selection-end-column="28" />
+          <folding>
+            <marker date="1531671882019" expanded="true" signature="73:165" ph="{...}" />
+            <marker date="1531671882019" expanded="true" signature="108:163" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Profiles/StudentProfile.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <marker date="1531672819425" expanded="true" signature="44:244" ph="{...}" />
+            <marker date="1531672819425" expanded="true" signature="92:242" ph="{...}" />
+            <marker date="1531672819425" expanded="true" signature="130:236" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Host.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+          <folding>
+            <marker date="1531693852293" expanded="false" signature="6:69" ph="..." />
+            <marker date="1531693852293" expanded="true" signature="87:394" ph="{...}" />
+            <marker date="1531693852293" expanded="true" signature="121:392" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Interfaces/IStudentLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="61" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="61" />
+          <folding>
+            <marker date="1531638512799" expanded="true" signature="41:128" ph="{...}" />
+            <marker date="1531638512799" expanded="true" signature="105:126" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Interfaces/IBasicCrudLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+          <folding>
+            <marker date="1531669563683" expanded="true" signature="61:284" ph="{...}" />
+            <marker date="1531669563683" expanded="true" signature="103:282" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Interfaces/IUserLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="31" />
+          <folding>
+            <marker date="1531694185297" expanded="true" signature="41:122" ph="{...}" />
+            <marker date="1531694185297" expanded="true" signature="99:120" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E267630F-9E16-41B8-8E3D-0F27CFAD0513/7b/30117054/HashAlgorithm.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="35" column="26" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Interfaces/IStudentDal.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="57" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="57" />
+          <folding>
+            <marker date="1531638448158" expanded="true" signature="39:122" ph="{...}" />
+            <marker date="1531638448158" expanded="true" signature="99:120" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Interfaces/IUserDal.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="29" />
+          <folding>
+            <marker date="1531694947738" expanded="true" signature="39:116" ph="{...}" />
+            <marker date="1531694947738" expanded="true" signature="93:114" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/UserDal.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="9" column="64" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="64" />
+          <folding>
+            <marker date="1531695039591" expanded="true" signature="6:132" ph="..." />
+            <marker date="1531695039591" expanded="true" signature="147:1193" ph="{...}" />
+            <marker date="1531695039591" expanded="true" signature="214:1191" ph="{...}" />
+            <marker date="1531695039591" expanded="true" signature="334:502" ph="/// Constructor dependency injection ... " />
+            <marker date="1531695039591" expanded="true" signature="568:654" ph="{...}" />
+            <marker date="1531695039591" expanded="true" signature="664:760" ph="/// Returns IMapper ... " />
+            <marker date="1531695039591" expanded="true" signature="834:939" ph="/// Returns database context ... " />
+            <marker date="1531695039591" expanded="true" signature="1013:1117" ph="/// Returns students entity ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/appsettings.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7736BB4D-96F3-4991-9B65-48724EE1E844/f9/446b4d11/DeveloperExceptionPageMiddleware.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/StudentLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="9" selection-start-line="9" selection-end-line="24" selection-end-column="80" />
+          <folding>
+            <marker date="1531638725453" expanded="false" signature="6:82" ph="..." />
+            <marker date="1531638725453" expanded="true" signature="99:694" ph="{...}" />
+            <marker date="1531638725453" expanded="true" signature="180:692" ph="{...}" />
+            <marker date="1531638725453" expanded="true" signature="246:373" ph="/// Constructor dependency injection ... " />
+            <marker date="1531638725453" expanded="true" signature="425:483" ph="{...}" />
+            <marker date="1531638725453" expanded="true" signature="493:605" ph="/// Returns instance of student DAL ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/User.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+          <folding>
+            <marker date="1531696870177" expanded="false" signature="6:121" ph="..." />
+            <marker date="1531696870177" expanded="true" signature="139:534" ph="{...}" />
+            <marker date="1531696870177" expanded="true" signature="173:532" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Interfaces/ISigninLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="71" selection-start-line="6" selection-start-column="71" selection-end-line="6" selection-end-column="71" />
+          <folding>
+            <marker date="1531697062255" expanded="true" signature="26:298" ph="{...}" />
+            <marker date="1531697062255" expanded="true" signature="62:296" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Views/Singin/NotAuthenticated.cshtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <marker date="1531697172564" expanded="true" signature="15:72" ph="@..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Constants/ApiConstants.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="36" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="36" />
+          <folding>
+            <marker date="1531697514694" expanded="true" signature="26:319" ph="{...}" />
+            <marker date="1531697514694" expanded="true" signature="65:317" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Extensions/SessionExtension.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="75" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="75" />
+          <folding>
+            <marker date="1531697643139" expanded="true" signature="6:56" ph="..." />
+            <marker date="1531697643139" expanded="true" signature="82:525" ph="{...}" />
+            <marker date="1531697643139" expanded="true" signature="125:523" ph="{...}" />
+            <marker date="1531697643139" expanded="true" signature="140:317" ph="/// Extension method to quickly get the username/password ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Views/Shared/_Layout.cshtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="17" />
+          <folding>
+            <marker date="1531697237136" expanded="true" signature="16:561" ph="&lt;html.../&gt;" />
+            <marker date="1531697237136" expanded="true" signature="33:485" ph="&lt;head.../&gt;" />
+            <marker date="1531697237136" expanded="true" signature="486:553" ph="&lt;body.../&gt;" />
+            <marker date="1531697237136" expanded="true" signature="496:544" ph="&lt;div.../&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Abstracts/BasicCrudLogicAbstract.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+          <folding>
+            <marker date="1531698182052" expanded="false" signature="6:79" ph="..." />
+            <marker date="1531698182052" expanded="true" signature="106:1519" ph="{...}" />
+            <marker date="1531698182052" expanded="true" signature="181:1517" ph="{...}" />
+            <marker date="1531698182052" expanded="true" signature="196:306" ph="/// Returns instance of basic DAL ... " />
+            <marker date="1531698182052" expanded="true" signature="376:472" ph="/// Call forwarding ... " />
+            <marker date="1531698182052" expanded="true" signature="560:694" ph="/// Call forwarding ... " />
+            <marker date="1531698182052" expanded="true" signature="771:911" ph="/// Call forwarding ... " />
+            <marker date="1531698182052" expanded="true" signature="1000:1134" ph="/// Call forwarding ... " />
+            <marker date="1531698182052" expanded="true" signature="1217:1402" ph="/// Call forwarding ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Abstracts/BasicCrudDalAbstract.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-697">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding>
+            <marker date="1531698196912" expanded="false" signature="6:154" ph="..." />
+            <marker date="1531698196912" expanded="true" signature="179:2730" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="279:2728" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="294:398" ph="/// Abstract to get IMapper ... " />
+            <marker date="1531698196912" expanded="true" signature="461:574" ph="/// Abstract to get database context ... " />
+            <marker date="1531698196912" expanded="true" signature="642:749" ph="/// Abstract to get entity set ... " />
+            <marker date="1531698196912" expanded="true" signature="812:912" ph="/// Returns all enities ... " />
+            <marker date="1531698196912" expanded="true" signature="993:1142" ph="/// Returns an entity given the id ... " />
+            <marker date="1531698196912" expanded="true" signature="1236:1378" ph="/// Saves an instance ... " />
+            <marker date="1531698196912" expanded="true" signature="1420:1549" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="1559:1706" ph="/// Deletes enitity given the id ... " />
+            <marker date="1531698196912" expanded="true" signature="1746:2050" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="1862:2014" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="2060:2273" ph="/// Updates enity given the id and new instance ... " />
+            <marker date="1531698196912" expanded="true" signature="2332:2714" ph="{...}" />
+            <marker date="1531698196912" expanded="true" signature="2448:2678" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/Utilities/HashingUtility.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="47" />
+          <folding>
+            <marker date="1531694697411" expanded="true" signature="41:550" ph="{...}" />
+            <marker date="1531694697411" expanded="true" signature="75:548" ph="{...}" />
+            <marker date="1531694697411" expanded="true" signature="90:242" ph="/// Secure hashing of passwords ... " />
+            <marker date="1531694697411" expanded="true" signature="307:542" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/UserLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+          <folding>
+            <marker date="1531698260764" expanded="true" signature="6:127" ph="..." />
+            <marker date="1531698260764" expanded="true" signature="144:1086" ph="{...}" />
+            <marker date="1531698260764" expanded="true" signature="217:1084" ph="{...}" />
+            <marker date="1531698260764" expanded="true" signature="277:401" ph="/// Constructor dependency injection ... " />
+            <marker date="1531698260764" expanded="true" signature="444:496" ph="{...}" />
+            <marker date="1531698260764" expanded="true" signature="506:615" ph="/// Returns instance of user DAL ... " />
+            <marker date="1531698260764" expanded="true" signature="700:833" ph="/// Override ... " />
+            <marker date="1531698260764" expanded="true" signature="882:1078" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/CAAEC387-1ED9-4CD7-A34E-8AFED49FA62F/39/d283cb6d/ControllerActionInvoker.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="90" column="10" selection-start-line="90" selection-start-column="10" selection-end-line="90" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Logic/SigninLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-135">
+          <caret line="45" column="28" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+          <folding>
+            <marker date="1531698745035" expanded="true" signature="6:121" ph="..." />
+            <marker date="1531698745035" expanded="true" signature="138:2379" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="184:2377" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="322:448" ph="/// Constructor dependency injection ... " />
+            <marker date="1531698745035" expanded="true" signature="497:621" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="631:830" ph="/// Authenticates a user ... " />
+            <marker date="1531698745035" expanded="true" signature="910:1298" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1073:1211" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1228:1288" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1308:1503" ph="/// Log out the user ... " />
+            <marker date="1531698745035" expanded="true" signature="1584:1948" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1747:1861" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1878:1938" ph="{...}" />
+            <marker date="1531698745035" expanded="true" signature="1958:2170" ph="/// Checks whether user is authenticated or not ... " />
+            <marker date="1531698745035" expanded="true" signature="2240:2371" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Attributes/AuthorizeActionFilter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <marker date="1531697674016" expanded="false" signature="6:273" ph="..." />
+            <marker date="1531697674016" expanded="true" signature="299:1626" ph="{...}" />
+            <marker date="1531697674016" expanded="true" signature="361:1624" ph="{...}" />
+            <marker date="1531697674016" expanded="true" signature="483:543" ph="{...}" />
+            <marker date="1531697674016" expanded="true" signature="657:1618" ph="{...}" />
+            <marker date="1531697674016" expanded="true" signature="1383:1442" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Abstracts/BasicCrudController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="30" selection-start-line="30" selection-end-line="31" selection-end-column="36" />
+          <folding>
+            <marker date="1531669638403" expanded="false" signature="6:122" ph="..." />
+            <marker date="1531669638403" expanded="true" signature="147:1414" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="211:1412" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="469:539" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="669:738" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="897:979" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="1118:1190" ph="{...}" />
+            <marker date="1531669638403" expanded="true" signature="1330:1406" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Attributes/AuthorizeMiddlewareAttribute.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="45" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="45" />
+          <folding>
+            <marker date="1531692843874" expanded="true" signature="39:122" ph="{...}" />
+            <marker date="1531692843874" expanded="true" signature="99:120" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Controllers/UserControllercs.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="12" column="38" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
+          <folding>
+            <marker date="1531696572953" expanded="false" signature="6:154" ph="..." />
+            <marker date="1531696572953" expanded="true" signature="181:775" ph="{...}" />
+            <marker date="1531696572953" expanded="true" signature="275:773" ph="{...}" />
+            <marker date="1531696572953" expanded="true" signature="339:465" ph="/// Constructor dependency injection ... " />
+            <marker date="1531696572953" expanded="true" signature="517:573" ph="{...}" />
+            <marker date="1531696572953" expanded="true" signature="583:689" ph="/// Returns instance of logic ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Controllers/SinginController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="33" column="45" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="45" />
+          <folding>
+            <marker date="1531698988303" expanded="true" signature="6:175" ph="..." />
+            <marker date="1531698988303" expanded="true" signature="202:2049" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="283:2047" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="400:460" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="470:565" ph="/// Login the user ... " />
+            <marker date="1531698988303" expanded="true" signature="738:1201" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="878:1066" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="1211:1306" ph="/// Login the user ... " />
+            <marker date="1531698988303" expanded="true" signature="1425:1724" ph="{...}" />
+            <marker date="1531698988303" expanded="true" signature="1742:1845" ph="/// Not authenticated view ... " />
+            <marker date="1531698988303" expanded="true" signature="1994:2041" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Startup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="49" column="36" selection-start-line="49" selection-start-column="36" selection-end-line="49" selection-end-column="36" />
+          <folding>
+            <marker date="1531699284882" expanded="false" signature="6:435" ph="..." />
+            <marker date="1531699284882" expanded="true" signature="450:3933" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="477:3931" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="635:1049" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="1060:1275" ph="/* This method gets called by the runtime. Use this method to add services to the container. ... */" />
+            <marker date="1531699284882" expanded="true" signature="1354:3043" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="1447:1728" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="2184:2956" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="2310:2537" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="3231:3925" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="3389:3466" ph="{...}" />
+            <marker date="1531699284882" expanded="true" signature="3559:3676" ph="/* Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Controllers/HomeController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <marker date="1531697785639" expanded="true" signature="58:203" ph="{...}" />
+            <marker date="1531697785639" expanded="true" signature="105:201" ph="{...}" />
+            <marker date="1531697785639" expanded="true" signature="148:195" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Controllers/StudentController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <marker date="1531703857053" expanded="false" signature="6:154" ph="..." />
+            <marker date="1531703857053" expanded="true" signature="181:839" ph="{...}" />
+            <marker date="1531703857053" expanded="true" signature="309:837" ph="{...}" />
+            <marker date="1531703857053" expanded="true" signature="379:508" ph="/// Constructor dependency injection ... " />
+            <marker date="1531703857053" expanded="true" signature="569:631" ph="{...}" />
+            <marker date="1531703857053" expanded="true" signature="641:747" ph="/// Returns instance of logic ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/StudentDal.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+          <folding>
+            <marker date="1531671683013" expanded="false" signature="6:132" ph="..." />
+            <marker date="1531671683013" expanded="true" signature="147:1210" ph="{...}" />
+            <marker date="1531671683013" expanded="true" signature="222:1208" ph="{...}" />
+            <marker date="1531671683013" expanded="true" signature="342:510" ph="/// Constructor dependency injection ... " />
+            <marker date="1531671683013" expanded="true" signature="579:665" ph="{...}" />
+            <marker date="1531671683013" expanded="true" signature="675:771" ph="/// Returns IMapper ... " />
+            <marker date="1531671683013" expanded="true" signature="845:950" ph="/// Returns database context ... " />
+            <marker date="1531671683013" expanded="true" signature="1024:1128" ph="/// Returns students entity ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DAL/Utilities/EntityDbContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+          <folding>
+            <marker date="1531695018433" expanded="false" signature="6:142" ph="..." />
+            <marker date="1531695018433" expanded="true" signature="167:1328" ph="{...}" />
+            <marker date="1531695018433" expanded="true" signature="220:1326" ph="{...}" />
+            <marker date="1531695018433" expanded="true" signature="427:586" ph="/// Constructor that will be called by startup.cs ... " />
+            <marker date="1531695018433" expanded="true" signature="680:798" ph="{...}" />
+            <marker date="1531695018433" expanded="true" signature="1004:1320" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Interfaces/IPerson.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+          <folding>
+            <marker date="1531693792905" expanded="true" signature="73:258" ph="{...}" />
+            <marker date="1531693792905" expanded="true" signature="118:256" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Driver.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="13" />
+          <folding>
+            <marker date="1531693818506" expanded="false" signature="6:69" ph="..." />
+            <marker date="1531693818506" expanded="true" signature="87:343" ph="{...}" />
+            <marker date="1531693818506" expanded="true" signature="123:341" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/Student.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="11" column="8" lean-forward="true" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+          <folding>
+            <marker date="1531704267767" expanded="false" signature="6:69" ph="..." />
+            <marker date="1531704267767" expanded="true" signature="87:614" ph="{...}" />
+            <marker date="1531704267767" expanded="true" signature="124:612" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/API/Views/Home/Index.cshtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" selection-end-line="8" />
+          <folding>
+            <marker date="1531697779947" expanded="true" signature="15:72" ph="@..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
