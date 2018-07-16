@@ -23,5 +23,11 @@ namespace Models
         public string Interests { get; set; }
         
         public string DisplayId { get; set; }
+        
+        public bool NeedCarSeat { get; set; }
+        
+        public bool KosherFood { get; set; }
+        
+        public bool IsPressent { get; set; }
     }
 }

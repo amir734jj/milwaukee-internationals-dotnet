@@ -2,6 +2,7 @@
 using System.Net;
 using System.Reflection;
 using API.Attributes;
+using API.Extensions;
 using AutoMapper;
 using DAL.Utilities;
 using Logic;
@@ -74,7 +75,17 @@ namespace API
                 //Populate the container using the service collection
                 config.Populate(services);
 
-                config.For<EntityDbContext>().Use(new EntityDbContext(builder => { builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite")); }));
+                config.For<EntityDbContext>().Use(new EntityDbContext(builder =>
+                {
+                    if (_env.IsLocalhost())
+                    {
+                        builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));    
+                    }
+                    else
+                    {
+                        builder.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new Exception("DATABASE_URL is null"));
+                    }
+                }));
 
                 // It has to be a singleton
                 config.For<ISigninLogic>().Singleton();
@@ -89,7 +100,7 @@ namespace API
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            if (env.IsDevelopment())
+            if (HostingEnvironmentExtensions.IsDevelopment(env))
             {
                 app.UseDeveloperExceptionPage();
             }
