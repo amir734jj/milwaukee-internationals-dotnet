@@ -1,2 +1,13 @@
+API/bin
+API/obj
+
+DAL/bin
+DAL/obj
+
+Logic/bin
+Logic/obj
+
+Models/bin
+Models/obj
 
 \.idea/
