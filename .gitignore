@@ -11,3 +11,5 @@ Models/bin
 Models/obj
 
 \.idea/
+
+API/database\.sqlite
