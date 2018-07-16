@@ -5,7 +5,7 @@ using Models;
 namespace API.Controllers
 {
     [Route("[controller]")]
-    public class RegisterationController : Controller
+    public class RegistrationController : Controller
     {
         private readonly IDriverLogic _driverLogic;
 
