@@ -9,7 +9,7 @@ namespace API.Controllers
     {
         private readonly IDriverLogic _driverLogic;
 
-        public RegisterationController(IDriverLogic driverLogic)
+        public RegistrationController(IDriverLogic driverLogic)
         {
             _driverLogic = driverLogic;
         }
