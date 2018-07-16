@@ -12,6 +12,8 @@ namespace DAL.Utilities
         
         public DbSet<User> Users { get; set; }
         
+        public DbSet<Driver> Drivers { get; set; }
+
         private readonly Action<DbContextOptionsBuilder> _onConfiguring;
 
         /// <summary>

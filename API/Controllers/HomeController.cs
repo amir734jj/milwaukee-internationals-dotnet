@@ -6,7 +6,7 @@ namespace API.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return Redirect("~/Registration/Driver");
         }
     }
 }

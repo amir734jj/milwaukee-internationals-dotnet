@@ -1,0 +1,43 @@
+﻿@using Models
+@model Driver
+
+@{
+    ViewBag.Title = "Driver-Navigator Registration";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <img class="img-responsive" src="~/images/tour-header.jpg" alt="background" />
+</div>
+
+<h3>Driver-Navigator Registeration</h3>
+
+@using (Html.BeginForm("RegisterDriver", "Registeration", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.Fullname)
+        @Html.TextBoxFor(x => x.Fullname, new { @class = "form-control", type = "text" })
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.Email)
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email" })
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.Phone)
+        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", type = "tel" })
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.Capacity)
+        @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control", type = "number", min = "1", max = "7" })
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.RequireNavigator)
+        @Html.CheckBoxFor(x => x.RequireNavigator, new { @class = "form-control" })
+    </div>
+    
+    <input class="btn btn-primary" type="submit" value="Register" />
+}
