@@ -81,7 +81,7 @@ namespace API
                     {
                         builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));    
                     }
-                    else
+                    else 
                     {
                         builder.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new Exception("DATABASE_URL is null"));
                     }
