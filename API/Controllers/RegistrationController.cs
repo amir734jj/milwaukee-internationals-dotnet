@@ -35,8 +35,8 @@ namespace API.Controllers
         {
             // Save the driver
             _driverLogic.Save(driver);
-            
-            return Redirect("~/");
+
+            return View("Thankyou");
         }
 
         [HttpGet]
