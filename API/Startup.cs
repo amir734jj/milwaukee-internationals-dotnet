@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Models.Constants;
 using StructureMap;
 using Swashbuckle.AspNetCore.Swagger;
+using static API.Utilities.ConnectionStringUtility;
 
 namespace API
 {
@@ -81,9 +82,10 @@ namespace API
                     {
                         builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));    
                     }
-                    else 
+                    else
                     {
-                        builder.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new Exception("DATABASE_URL is null"));
+                        builder.UseNpgsql(ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                                          ?? throw new Exception("DATABASE_URL is null"));
                     }
                 }));
 
