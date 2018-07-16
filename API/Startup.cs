@@ -77,7 +77,7 @@ namespace API
                 config.For<EntityDbContext>().Use(new EntityDbContext(builder => { builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite")); }));
 
                 // It has to be a singleton
-                config.For<ISigninLogic>().Use<SigninLogic>().Singleton();
+                config.For<ISigninLogic>().Singleton();
             });
             
             return container.GetInstance<IServiceProvider>();
