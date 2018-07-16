@@ -77,7 +77,7 @@ namespace API
 
                 config.For<EntityDbContext>().Use(new EntityDbContext(builder =>
                 {
-                    if (_env.IsLocalhost())
+                    if (_env.IsLocalhost() && false)
                     {
                         builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));    
                     }
