@@ -16,7 +16,7 @@ namespace API
         {
             var config = new ConfigurationBuilder().AddCommandLine(args).Build();
 
-            var host = new WebHostBuilder()
+            var host = WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
