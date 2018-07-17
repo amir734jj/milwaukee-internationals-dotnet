@@ -7,11 +7,11 @@ namespace API.Controllers
     [Route("[controller]")]
     public class RegistrationController : Controller
     {
-        private readonly IDriverLogic _driverLogic;
+        private readonly IRegistrationLogic _registrationLogic;
 
-        public RegistrationController(IDriverLogic driverLogic)
+        public RegistrationController(IRegistrationLogic registrationLogic)
         {
-            _driverLogic = driverLogic;
+            _registrationLogic = registrationLogic;
         }
 
         /// <summary>
@@ -33,10 +33,13 @@ namespace API.Controllers
         [Route("driver/register")]
         public IActionResult RegisterDriver(Driver driver)
         {
-            // Save the driver
-            _driverLogic.Save(driver);
+            if (_registrationLogic.RegisterDriver(driver))
+            {
+                return View("Thankyou");   
+            }
 
-            return View("Thankyou");
+            // TODO: use a proper 500 error page
+            return Ok("Failed!");
         }
 
         [HttpGet]

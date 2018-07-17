@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Constants;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using StructureMap;
 using Swashbuckle.AspNetCore.Swagger;
 using static API.Utilities.ConnectionStringUtility;
@@ -43,6 +45,28 @@ namespace API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            //Add MailKit
+            services.AddMailKit(optionBuilder =>
+            {
+                var emailSection = _configuration.GetSection("Email");
+                
+                optionBuilder.UseMailKit(new MailKitOptions
+                {
+                    // Get options from sercets.json
+                    Server = emailSection.GetValue<string>("Server"),
+                    Port = emailSection.GetValue<int>("Port"),
+                    SenderName = emailSection.GetValue<string>("SenderName"),
+                    SenderEmail = emailSection.GetValue<string>("SenderEmail"),
+			
+                    // Can be optional with no authentication 
+                    Account = emailSection.GetValue<string>("Account"),
+                    Password = emailSection.GetValue<string>("Password"),
+                    
+                    // Enable ssl or tls
+                    Security = true
+                });
+            });
+            
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddMemoryCache();
