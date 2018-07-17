@@ -1,6 +1,11 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using DAL.Interfaces;
+using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using NETCore.MailKit.Core;
 
 namespace DAL.ServiceApi
@@ -27,9 +32,7 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public Task SendEmailAsync(string emailAddress, string emailSubject, string emailText)
         {
-            _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText);
-            
-            return Task.CompletedTask;
+            return _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText);
         }
     }
 }

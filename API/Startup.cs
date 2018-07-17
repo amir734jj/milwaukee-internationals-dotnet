@@ -7,6 +7,7 @@ using AutoMapper;
 using DAL.Utilities;
 using Logic;
 using Logic.Interfaces;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +50,7 @@ namespace API
             services.AddMailKit(optionBuilder =>
             {
                 var emailSection = _configuration.GetSection("Email");
-                
+
                 optionBuilder.UseMailKit(new MailKitOptions
                 {
                     // Get options from sercets.json
