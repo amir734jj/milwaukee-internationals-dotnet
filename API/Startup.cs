@@ -51,21 +51,23 @@ namespace API
             {
                 var emailSection = _configuration.GetSection("Email");
 
-                optionBuilder.UseMailKit(new MailKitOptions
+                var mailKitOptions = new MailKitOptions
                 {
                     // Get options from sercets.json
                     Server = emailSection.GetValue<string>("Server"),
                     Port = emailSection.GetValue<int>("Port"),
                     SenderName = emailSection.GetValue<string>("SenderName"),
                     SenderEmail = emailSection.GetValue<string>("SenderEmail"),
-			
+
                     // Can be optional with no authentication 
                     Account = emailSection.GetValue<string>("Account"),
                     Password = emailSection.GetValue<string>("Password"),
-                    
+
                     // Enable ssl or tls
                     Security = true
-                });
+                };
+                
+                optionBuilder.UseMailKit(mailKitOptions);
             });
             
             services.AddRouting(options => { options.LowercaseUrls = true; });

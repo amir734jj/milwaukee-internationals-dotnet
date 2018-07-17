@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Models.Enums;
 using Models.Interfaces;
 
 namespace Models
@@ -24,7 +25,10 @@ namespace Models
         [Display(Name="Require Navigator")]
         public bool RequireNavigator { get; set; }
         
-        [Display(Name="Navigator")]
+        [Display(Name="Navigator fullname")]
         public string Navigator { get; set; }
+        
+        [Display(Name="Role")]
+        public RolesEnum Role { get; set; }
     }
 }

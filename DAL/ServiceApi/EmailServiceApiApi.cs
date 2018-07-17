@@ -32,7 +32,7 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public Task SendEmailAsync(string emailAddress, string emailSubject, string emailText)
         {
-            return _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText);
+            return _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true);
         }
     }
 }
