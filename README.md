@@ -1,6 +1,6 @@
 # Milwaukee-internationals-dotnet
 
-[Website url](https://milwaukee-internationals-core.herokuapp.com)
+[Website Url](https://milwaukee-internationals-core.herokuapp.com)
 
 Re-write of back-end using .NET core ^2.1
 
