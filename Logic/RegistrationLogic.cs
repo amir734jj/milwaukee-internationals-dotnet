@@ -38,10 +38,10 @@ namespace Logic
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
-                    <p> Role: {driver.Role}></p>
-                    <p> Phone: {driver.Phone}></p>
-                    <p> Capacity: {driver.Capacity}></p>
-                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, choosen navigator: {driver.Navigator}")}></p>
+                    <p> Role: {driver.Role}</p>
+                    <p> Phone: {driver.Phone}</p>
+                    <p> Capacity: {driver.Capacity}</p>
+                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, choosen navigator: {driver.Navigator}")}</p>
                     <br>                                                                                         
                     <p> 2018 Tour of Milwaukee</p>
                     <p> Date: August 26, 2018</p> 
