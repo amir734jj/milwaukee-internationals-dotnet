@@ -34,20 +34,23 @@ namespace Logic
             // If save was successful
             if (result != null)
             {
-                _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"                                                         
-                    <p> This is an automatically generated email. </p>                                                
-                    <p> ----------------------------------------- </p>                                                
-                    <p> Name: {driver.Fullname}</p>                                                                    
-                    <p> Role: {driver.Role}></p>                                                                                                                                                     
-                    <br>                                                                                                                   
-                    <p> 2018 Tour of Milwaukee</p> 
+                _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
+                    <p> This is an automatically generated email. </p>
+                    <p> ----------------------------------------- </p>
+                    <p> Name: {driver.Fullname}</p>
+                    <p> Role: {driver.Role}></p>
+                    <p> Phone: {driver.Phone}></p>
+                    <p> Capacity: {driver.Capacity}></p>
+                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, choosen navigator: {driver.Navigator}")}></p>
+                    <br>                                                                                         
+                    <p> 2018 Tour of Milwaukee</p>
                     <p> Date: August 26, 2018</p> 
                     <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p> 
                     <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
-                    <p> Location: Union Ballroom</p> 
+                    <p> Location: Union Ballroom</p>
                     <br>                                                                      
-                    <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>     
-                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
+                    <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>
+                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
                     <br>                                                                                                                   
                     <p> Blessings, </p> 
                 ");
