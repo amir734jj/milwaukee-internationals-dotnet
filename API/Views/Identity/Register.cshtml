@@ -11,7 +11,7 @@
         <h3>Please register</h3>
     </div>
     
-    @using (Html.BeginForm("RegisterAction", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit=$"form.$valid && invitation_code === '{ApiConstants.InviteCode}' && submit()" }))
+    @using (Html.BeginForm("RegisterAction", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit=$"form.$valid && invitation_code === '{ApiConstants.InviteCode}' ? submit() : $event.preventDefault()" }))
     {
         @Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
         
