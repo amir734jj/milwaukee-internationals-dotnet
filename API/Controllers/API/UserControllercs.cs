@@ -1,10 +1,12 @@
 ﻿using API.Abstracts;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
 namespace API.Controllers.Api
 {
+    [AuthorizeMiddleware]
     [Route("api/[controller]")]
     public class UserController : BasicCrudController<User>
     {

@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Pages" />
     <Folder Include="Views\Partials" />
   </ItemGroup>
 </Project>
