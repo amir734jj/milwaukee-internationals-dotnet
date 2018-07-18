@@ -41,10 +41,10 @@ namespace Logic
                     <p> Role: {driver.Role}</p>
                     <p> Phone: {driver.Phone}</p>
                     <p> Capacity: {driver.Capacity}</p>
-                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, choosen navigator: {driver.Navigator}")}</p>
+                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, navigator: {driver.Navigator}")}</p>
                     <br>                                                                                         
                     <p> 2018 Tour of Milwaukee</p>
-                    <p> Date: August 26, 2018</p> 
+                    <p> Date: August 25, 2018</p> 
                     <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p> 
                     <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
                     <p> Location: Union Ballroom</p>
