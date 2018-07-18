@@ -6,13 +6,17 @@
     Layout = "_Layout";
 }
 
-<div class="container">
+<div class="container" ng-controller="userRegistrationCtrl" ng-init="error = false; invitation_code_value = '@ApiConstants.InviteCode'">
     <div class="page-header">
         <h3>Please register</h3>
     </div>
     
-    @using (Html.BeginForm("RegisterAction", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit=$"form.$valid && invitation_code === '{ApiConstants.InviteCode}' ? submit() : $event.preventDefault()" }))
-    {
+    <div class="alert alert-danger" ng-if="error">
+        <p>Invalid invitation code!</p>
+    </div>
+    
+    @using (Html.BeginForm("RegisterAction", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit="validateInvitationCode($event)" }))
+    {        
         @Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
         
         <div class="form-group">
