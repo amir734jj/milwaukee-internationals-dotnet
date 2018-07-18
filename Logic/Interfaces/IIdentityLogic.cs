@@ -1,6 +1,6 @@
 ﻿namespace Logic.Interfaces
 {
-    public interface ISigninLogic
+    public interface IIdentityLogic
     {        
         void TryLogin(string username, string password, out bool result);
 

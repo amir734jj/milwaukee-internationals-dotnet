@@ -1,3 +1,5 @@
+@using API.Extensions
+@using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +31,18 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
+            </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+                @if (!Context.Session.IsAuthenticated())
+                {
+                    <li><a href="~/Identity/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="~/Identity/register"><span class="glyphicon glyphicon-edit"></span> Register</a></li>
+                }
+                else
+                {
+                    <li><a href="~/Identity/LogoutAction"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                }
             </ul>
         </div>
     </div>

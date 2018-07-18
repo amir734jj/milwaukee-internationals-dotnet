@@ -1,11 +1,22 @@
-﻿namespace Models.Constants
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Constants
 {
     public static class ApiConstants
     {
-        public static readonly string AuthenticationSessionCookieName = "AuthenticationCookie";
+        public const string AuthenticationSessionCookieName = "AuthenticationCookie";
         
-        public static readonly string Username = "Username";
-            
-        public static readonly string Password = "Password";
+        /// <summary>
+        /// Authenticated token
+        /// </summary>
+        public static readonly KeyValuePair<string, string> Authenticated
+            = new KeyValuePair<string, string>("Authenticated", Guid.NewGuid().ToString());
+        
+        public const string Username = "Username";
+
+        public const string Password = "Password";
+
+        public const string InviteCode = "Tour2018";
     }
 }

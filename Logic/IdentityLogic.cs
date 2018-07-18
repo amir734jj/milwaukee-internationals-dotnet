@@ -5,7 +5,7 @@ using static Logic.Utilities.HashingUtility;
 
 namespace Logic
 {
-    public class SigninLogic : ISigninLogic
+    public class IdentityLogic : IIdentityLogic
     {
         private readonly IUserLogic _userLogic;
 
@@ -15,7 +15,7 @@ namespace Logic
         /// Constructor dependency injection
         /// </summary>
         /// <param name="userLogic"></param>
-        public SigninLogic(IUserLogic userLogic)
+        public IdentityLogic(IUserLogic userLogic)
         {
             _userLogic = userLogic;
             _authenticatedUsers = new Dictionary<string, string>();

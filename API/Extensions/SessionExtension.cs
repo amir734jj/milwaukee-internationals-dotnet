@@ -12,5 +12,12 @@ namespace API.Extensions
         /// <returns></returns>
         public static (string username, string password) GetUseramePassword(this ISession session) =>
             (session.GetString(ApiConstants.Username), session.GetString(ApiConstants.Password));
+
+        /// <summary>
+        /// Extension method to check whether user is logged in or not
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public static bool IsAuthenticated(this ISession session) => session.GetString(ApiConstants.Authenticated.Key) == ApiConstants.Authenticated.Value;
     }
 }

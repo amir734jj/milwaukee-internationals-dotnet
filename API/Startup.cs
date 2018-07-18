@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using API.Attributes;
@@ -10,7 +11,10 @@ using Logic.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Constants;
@@ -26,7 +30,7 @@ namespace API
     {
         private readonly IConfigurationRoot _configuration;
 
-        private IHostingEnvironment _env;
+        private readonly IHostingEnvironment _env;
 
         public Startup(IHostingEnvironment env)
         {
@@ -70,16 +74,20 @@ namespace API
                 optionBuilder.UseMailKit(mailKitOptions);
             });
             
-            services.AddRouting(options => { options.LowercaseUrls = true; });
-
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true; 
+            });
+            
             services.AddMemoryCache();
 
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(50);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Name = ApiConstants.AuthenticationSessionCookieName;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
             
             // All the other service configuration.
@@ -87,7 +95,12 @@ namespace API
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Milwaukee-Internationals-API", Version = "v1"}); });
 
-            services.AddMvc(x => { x.Filters.Add<AuthorizeActionFilter>(); });
+            services.AddMvc(x =>
+            {
+                x.Filters.Add<AuthorizeActionFilter>();
+
+                x.ModelValidatorProviders.Clear();
+            });
 
             var container = new Container();
 
@@ -119,7 +132,7 @@ namespace API
                 }));
 
                 // It has to be a singleton
-                config.For<ISigninLogic>().Singleton();
+                config.For<IIdentityLogic>().Singleton();
             });
             
             return container.GetInstance<IServiceProvider>();
@@ -127,19 +140,22 @@ namespace API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {   
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+        {
+            if (_env.IsLocalhost())
+            {
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
+            }
 
             app.UseDeveloperExceptionPage();
 
             app.UseCookiePolicy();
 
             app.UseSession();
-            
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseMvc(routes =>
             {

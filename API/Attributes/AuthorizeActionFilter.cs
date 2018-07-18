@@ -12,11 +12,11 @@ namespace API.Attributes
 {
     public class AuthorizeActionFilter : IAsyncActionFilter
     {
-        private readonly ISigninLogic _signinLogic;
+        private readonly IIdentityLogic _identityLogic;
 
-        public AuthorizeActionFilter(ISigninLogic signinLogic)
+        public AuthorizeActionFilter(IIdentityLogic identityLogic)
         {
-            _signinLogic = signinLogic;
+            _identityLogic = identityLogic;
         }
         
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -32,13 +32,13 @@ namespace API.Attributes
             // Try to get username/password from session
             var (username, password) = context.HttpContext.Session.GetUseramePassword();
 
-            if (_signinLogic.IsAuthenticated(username, password))
+            if (_identityLogic.IsAuthenticated(username, password))
             {
                 return next();
             }
 
             // Redirect to not-authenticated
-            context.HttpContext.Response.Redirect("~/Singin/NotAuthenticated");
+            context.HttpContext.Response.Redirect("Identity/NotAuthenticated");
 
             return Task.CompletedTask;
         }

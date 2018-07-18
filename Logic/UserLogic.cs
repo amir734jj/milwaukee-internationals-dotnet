@@ -1,6 +1,8 @@
-﻿using DAL.Interfaces;
+﻿using System.Linq;
+using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
+using Microsoft.EntityFrameworkCore.Internal;
 using Models;
 using static Logic.Utilities.HashingUtility;
 
@@ -32,6 +34,12 @@ namespace Logic
         /// <returns></returns>
         public override User Save(User instance)
         {
+            // Make sure username is not duplicate
+            if (GetAll().Any(x => x.Username == instance.Username))
+            {
+                return null;
+            }
+            
             // Do not store the plain-text password
             instance.Password = SecureHashPassword(instance.Password);
             
