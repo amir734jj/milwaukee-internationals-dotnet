@@ -51,7 +51,7 @@
         
         <div class="form-group" ng-if="!requireNavigator">
             @Html.LabelFor(x => x.Navigator)
-            @Html.TextBoxFor(x => x.Navigator, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Navigator, new { @class = "form-control", required = "required" })
         </div>
     </div>
     
