@@ -24,8 +24,10 @@ namespace Models
         
         public string DisplayId { get; set; }
         
+        [Display(Name="Need a car seat")]
         public bool NeedCarSeat { get; set; }
         
+        [Display(Name="Kosher food")]
         public bool KosherFood { get; set; }
         
         public bool IsPressent { get; set; }

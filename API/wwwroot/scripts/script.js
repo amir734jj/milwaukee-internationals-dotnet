@@ -1,4 +1,4 @@
-angular.module('tourApp', ['ui.toggle'])
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     .controller('driverRegistrationCtrl', ['$scope', function() {
         
     }])
@@ -11,4 +11,7 @@ angular.module('tourApp', ['ui.toggle'])
                 $scope.error = false;
             }
         }
+    }])
+    .controller('studentRegistrationCtrl', ['$scope', function () {
+        
     }]);

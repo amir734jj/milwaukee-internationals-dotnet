@@ -14,6 +14,17 @@ namespace API.Controllers
         {
             _registrationLogic = registrationLogic;
         }
+        
+        /// <summary>
+        /// Returns registeration page for drivers
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("")]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         /// <summary>
         /// Returns registeration page for drivers
@@ -48,6 +59,23 @@ namespace API.Controllers
         public IActionResult Student()
         {
             return View(new Student());
+        }
+        
+        /// <summary>
+        /// POST registertaion
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("student/register")]
+        public IActionResult RegisterStudent(Student student)
+        {
+            if (_registrationLogic.RegisterStudent(student))
+            {
+                return View("Thankyou");   
+            }
+
+            // TODO: use a proper 500 error page
+            return Ok("Failed!");
         }
     }
 }

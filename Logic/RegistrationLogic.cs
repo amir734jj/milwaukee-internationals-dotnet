@@ -7,17 +7,21 @@ namespace Logic
 {
     public class RegistrationLogic : IRegistrationLogic
     {
-        private readonly IEmailServiceApi _emailServiceApiApi;
-        
+        private readonly IStudentLogic _studentLogic;
+                
         private readonly IDriverLogic _driverLogic;
+
+        private readonly IEmailServiceApi _emailServiceApiApi;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
+        /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public RegistrationLogic(IDriverLogic driverLogic, IEmailServiceApi emailServiceApiApi)
+        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApiApi)
         {
+            _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _emailServiceApiApi = emailServiceApiApi;
         }
@@ -64,10 +68,33 @@ namespace Logic
         /// </summary>
         /// <param name="student"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public bool RegisterStudent(Student student)
         {
-            throw new NotImplementedException();
+            var result = _studentLogic.Save(student);
+
+            // If save was successful
+            if (result != null)
+            {
+                _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee: Driver registration", $@"
+                    <p>Name: {student.Fullname}</p>       
+                    <p>Email: {student.Email}</p>
+                    <p>University: {student.University}</p>          
+                    <p>Major: {student.Major}</p>          
+                    <p>Phone: {student.Phone}</p>          
+                    <hr>                                
+                    <p>See you at the Tour of Milwaukee</p> 
+                    <br>                                    
+                    <p> 2017 Tour of Milwaukee Registration</p> 
+                    <p> Date: August 26, 2018</p> 
+                    <p> Time: 12:00 noon</p> 
+                    <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
+                    <p> Location: Union Ballroom</p> 
+                    <p> Thank you for registering for this event. Please share this with other new international friends.</p> 
+                    <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Amanda Johnson (414-801-4431) on campus.</p> 
+                ");
+            }
+
+            return true;
         }
     }
 }
