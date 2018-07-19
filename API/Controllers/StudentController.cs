@@ -1,9 +1,12 @@
-﻿using Logic.Interfaces;
+﻿using API.Attributes;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
+    [AuthorizeMiddleware]
+    [Route("[controller]")]
     public class StudentController : Controller
     {
         private readonly IStudentLogic _studentLogic;
