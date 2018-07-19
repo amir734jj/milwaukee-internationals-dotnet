@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Models.Student>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>List of Students</h3>
+    </div>
+    
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Fullname</td>
+                <td>@student.Email</td>
+                <td>@student.Phone</td>
+                <td class="hidden-xs">
+                    <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
