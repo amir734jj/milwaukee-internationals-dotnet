@@ -18,8 +18,11 @@ namespace Models
         
         [Display(Name="Fullname")]
         public string Fullname { get; set; }
-
+        
+        public string DisplayId { get; set; }
+        
         [Display(Name = "Capacity")]
+        
         [Range(1, 7)]
         public int Capacity { get; set; } = 1;
         

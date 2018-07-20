@@ -2,6 +2,7 @@
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models;
+using static Logic.Utilities.DisplayIdUtility;
 
 namespace Logic
 {
@@ -23,5 +24,17 @@ namespace Logic
         /// </summary>
         /// <returns></returns>
         public override IBasicCrudDal<Student> GetBasicCrudDal() => _studentDal;
+        
+        /// <summary>
+        /// Make sure display ID is not null or empty
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public override Student Save(Student instance)
+        {
+            instance.DisplayId = GenerateDisplayId(instance);
+            
+            return base.Save(instance);
+        }
     }
 }
