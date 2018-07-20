@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Models.Interfaces;
 
 namespace Models
@@ -31,5 +32,10 @@ namespace Models
         public bool KosherFood { get; set; }
         
         public bool IsPressent { get; set; }
+        
+        public int DriverRefId { get; set; }
+
+        [ForeignKey("DriverRefId")]
+        public Driver Driver { get; set; }
     }
 }

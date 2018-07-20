@@ -5,6 +5,7 @@ using Models;
 
 namespace API.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     public class RegistrationController : Controller
     {

@@ -18,6 +18,7 @@ namespace API
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
+                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning))
                 .UseStartup<Startup>()
                 .Build();
             

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Logic.Interfaces;
 using static Logic.Utilities.HashingUtility;
@@ -8,17 +9,18 @@ namespace Logic
     public class IdentityLogic : IIdentityLogic
     {
         private readonly IUserLogic _userLogic;
-
-        private readonly Dictionary<string, string> _authenticatedUsers;
+        
+        private readonly ConcurrentDictionary<string, string> _authenticatedUsers;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="userLogic"></param>
-        public IdentityLogic(IUserLogic userLogic)
+        /// <param name="identityDictionary"></param>
+        public IdentityLogic(IUserLogic userLogic, IIdentityDictionary identityDictionary)
         {
             _userLogic = userLogic;
-            _authenticatedUsers = new Dictionary<string, string>();
+            _authenticatedUsers = identityDictionary.AuthenticatedUsers;
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace Logic
             // Authenticate the user
             if (_userLogic.GetAll().Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
             {
-                _authenticatedUsers.Remove(username);
+                _authenticatedUsers.Remove(username, out var _);
 
                 result = true;
             }

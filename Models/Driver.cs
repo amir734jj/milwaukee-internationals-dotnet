@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Models.Enums;
 using Models.Interfaces;
 
@@ -30,5 +31,7 @@ namespace Models
         
         [Display(Name="Role")]
         public RolesEnum Role { get; set; }
+        
+        public ICollection<Student> Students { get; set; }
     }
 }

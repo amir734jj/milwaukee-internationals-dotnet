@@ -17,5 +17,12 @@ namespace API.Extensions
         /// <param name="environment"></param>
         /// <returns></returns>
         public static bool IsDevelopment(this IHostingEnvironment environment) => environment.IsEnvironment("Development");
+
+        /// <summary>
+        /// Test whether environment is stage
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <returns></returns>
+        public static bool IsStage(this IHostingEnvironment environment) => environment.IsEnvironment("Stage");
     }
 }

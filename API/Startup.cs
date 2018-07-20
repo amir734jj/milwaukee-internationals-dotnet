@@ -80,8 +80,8 @@ namespace API
             {
                 options.LowercaseUrls = true; 
             });
-            
-            services.AddMemoryCache();
+
+            services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
             {
@@ -134,13 +134,17 @@ namespace API
                 }));
 
                 // It has to be a singleton
-                config.For<IIdentityLogic>().Singleton();
+                config.For<IIdentityDictionary>().Singleton();
             });
             
             return _container.GetInstance<IServiceProvider>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (_env.IsLocalhost())
@@ -168,6 +172,8 @@ namespace API
 
             // Just to make sure everything is running fine
             _container.GetInstance<EntityDbContext>();
+            
+            Console.WriteLine("Application Started!");
         }
     }
 }

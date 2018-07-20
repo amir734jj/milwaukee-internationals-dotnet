@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [AuthorizeMiddleware]
     [Route("[controller]")]
     public class StudentController : Controller
