@@ -12,7 +12,7 @@ namespace Logic.Utilities
         /// <returns></returns>
         public static string GenerateDisplayId(IPerson person)
         {
-            return person.Fullname.Substring(0, 3).Replace(" ", string.Empty).ToUpper() + Guid.NewGuid().ToString().Substring(0, 3);
+            return person.Fullname.Substring(0, 3).Replace(" ", string.Empty).ToUpper() + "-" + Guid.NewGuid().ToString().Substring(0, 3).ToUpper();
         }
     }
 }
