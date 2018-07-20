@@ -32,12 +32,6 @@ namespace DAL.Utilities
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Model.GetEntityTypes()
-                .SelectMany(t => t.GetForeignKeys())
-                .Where(fk => !fk.IsOwnership)
-                .ToList()
-                .ForEach(x => x.DeleteBehavior = DeleteBehavior.Cascade);
-            
             // Configure 1 to many relationship
             modelBuilder.Entity<Driver>()
                 .HasMany<Student>()
