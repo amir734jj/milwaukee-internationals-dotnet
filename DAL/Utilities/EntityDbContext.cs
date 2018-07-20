@@ -23,7 +23,9 @@ namespace DAL.Utilities
         public EntityDbContext(Action<DbContextOptionsBuilder> dbContextOptionsBuilderAction)
         {
             _onConfiguring = dbContextOptionsBuilderAction;
+            
             Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _onConfiguring(optionsBuilder);

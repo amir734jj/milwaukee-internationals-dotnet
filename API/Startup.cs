@@ -31,6 +31,8 @@ namespace API
         private readonly IConfigurationRoot _configuration;
 
         private readonly IHostingEnvironment _env;
+        
+        private Container _container;
 
         public Startup(IHostingEnvironment env)
         {
@@ -102,9 +104,9 @@ namespace API
                 x.ModelValidatorProviders.Clear();
             });
 
-            var container = new Container();
+            _container = new Container();
 
-            container.Configure(config =>
+            _container.Configure(config =>
             {
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
@@ -135,7 +137,7 @@ namespace API
                 config.For<IIdentityLogic>().Singleton();
             });
             
-            return container.GetInstance<IServiceProvider>();
+            return _container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -163,6 +165,9 @@ namespace API
             });
 
             app.UseStaticFiles();
+
+            // Just to make sure everything is running fine
+            _container.GetInstance<EntityDbContext>();
         }
     }
 }
