@@ -79,7 +79,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     temparray = drivers.slice(i, i + chunk);
 
                     var str = stringTable.create(temparray.map(function(driver) {
-                        return subsetAttr(["displayId", "fullname", "email", "phone", "totalSeats"], driver);
+                        return subsetAttr(["displayId", "fullname", "email", "phone", "capacity"], driver);
                     }));
 
                     if (i === 0) {
