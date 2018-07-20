@@ -12,9 +12,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             }
         }
     }])
-    .controller('studentListCtrl', ['$scope', '$http', function () {
+    .controller('studentListCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.getAllStudentsPDF = function() {
-            $http.get("list/json").then(function(response) {
+            $http.get("api/student").then(function(response) {
                 var students = response.data;
 
                 var doc = new jsPDF({
@@ -52,4 +52,48 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 doc.save("student-list.pdf");
             });
         };
-    }]);
+    }])
+    .controller("driverListCtrl", ['$scope', '$http', function ($scope, $http) {
+        $scope.getAllDriversPDF = function() {
+            $http.get("api/driver").then(function(response) {
+                var drivers = response.data;
+
+                var doc = new jsPDF({
+                    orientation: "l",
+                    lineHeight: 1.5
+                });
+
+                doc.setFont('courier');
+
+                doc.setFontSize(10);
+
+                var subsetAttr = function(attrList, obj) {
+                    return attrList.reduce(function(o, k) {
+                        o[k] = obj[k];
+                        return o;
+                    }, {});
+                };
+
+                var i, j, temparray, chunk = 25;
+                for (i = 0, j = drivers.length; i < j; i += chunk) {
+                    temparray = drivers.slice(i, i + chunk);
+
+                    var str = stringTable.create(temparray.map(function(driver) {
+                        return subsetAttr(["displayId", "fullname", "email", "phone", "totalSeats"], driver);
+                    }));
+
+                    if (i === 0) {
+                        str = "Driver List ( count of drivers: " + drivers.length + " )" + "\n\n" + str;
+                    }
+
+                    doc.text(20, 20, str);
+
+                    if (i + chunk < j) {
+                        doc.addPage();
+                    }
+                }
+
+                doc.save("driver-list.pdf");
+            });
+        };
+    });

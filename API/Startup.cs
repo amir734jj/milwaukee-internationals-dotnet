@@ -131,7 +131,7 @@ namespace API
                         builder.UseNpgsql(ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
                                           ?? throw new Exception("DATABASE_URL is null"));
                     }
-                }));
+                })).Singleton();
 
                 // It has to be a singleton
                 config.For<IIdentityDictionary>().Singleton();
