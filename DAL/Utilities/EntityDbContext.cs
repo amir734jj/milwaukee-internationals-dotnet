@@ -37,6 +37,11 @@ namespace DAL.Utilities
                 .Where(fk => !fk.IsOwnership)
                 .ToList()
                 .ForEach(x => x.DeleteBehavior = DeleteBehavior.Cascade);
+            
+            // Configure 1 to many relationship
+            modelBuilder.Entity<Driver>()
+                .HasMany<Student>()
+                .WithOne();
 
             base.OnModelCreating(modelBuilder);
         }

@@ -35,6 +35,6 @@ namespace Models
         [Display(Name="Role")]
         public RolesEnum Role { get; set; }
         
-        public ICollection<Student> Students { get; set; }
+        public List<Student> Students { get; set; }
     }
 }
