@@ -5,9 +5,11 @@
     Layout = "_Layout";
 }
 
-<div class="container">
+<div class="container" ng-controller="studentListCtrl">
     <div class="page-header">
         <h3>List of Students</h3>
+        
+        <button class="btn btn-default pull-right" ng-click="getAllStudentsPDF">Download PDF</button>
     </div>
     
     <table class="table table-bordered">
