@@ -96,4 +96,4 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 doc.save("driver-list.pdf");
             });
         };
-    });
+    }]);
