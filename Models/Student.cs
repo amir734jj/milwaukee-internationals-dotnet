@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 using Models.Interfaces;
 
 namespace Models
@@ -33,7 +34,10 @@ namespace Models
         
         public bool IsPressent { get; set; }
         
-        public int DriverRefId { get; set; }
+        /// <summary>
+        /// Optional
+        /// </summary>
+        public int? DriverRefId { get; set; }
 
         [ForeignKey("DriverRefId")]
         public Driver Driver { get; set; }

@@ -43,6 +43,12 @@ namespace DAL.Utilities
                 .HasMany<Student>()
                 .WithOne();
 
+            // Configure 1 to many relationship
+            modelBuilder.Entity<Student>()
+                .HasOne(x => x.Driver)
+                .WithMany()
+                .HasForeignKey(x => x.DriverRefId);
+
             base.OnModelCreating(modelBuilder);
         }
     }
