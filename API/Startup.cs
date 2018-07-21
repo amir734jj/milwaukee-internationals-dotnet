@@ -102,6 +102,9 @@ namespace API
                 x.Filters.Add<AuthorizeActionFilter>();
 
                 x.ModelValidatorProviders.Clear();
+
+                // Not need to have https
+                x.RequireHttpsPermanent = false;
             });
 
             _container = new Container();
