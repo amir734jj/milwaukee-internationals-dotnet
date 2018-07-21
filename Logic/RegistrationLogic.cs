@@ -10,7 +10,9 @@ namespace Logic
         private readonly IStudentLogic _studentLogic;
                 
         private readonly IDriverLogic _driverLogic;
-
+        
+        private readonly IHostLogic _hostLogic;
+        
         private readonly IEmailServiceApi _emailServiceApiApi;
 
         /// <summary>
@@ -18,11 +20,13 @@ namespace Logic
         /// </summary>
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
+        /// <param name="hostLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApiApi)
+        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApiApi)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
+            _hostLogic = hostLogic;
             _emailServiceApiApi = emailServiceApiApi;
         }
         
@@ -64,7 +68,7 @@ namespace Logic
         }
 
         /// <summary>
-        /// Registes student
+        /// Registers student
         /// </summary>
         /// <param name="student"></param>
         /// <returns></returns>
@@ -93,6 +97,18 @@ namespace Logic
                     <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Amanda Johnson (414-801-4431) on campus.</p> 
                 ");
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Registers host
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public bool RegisterHost(Host host)
+        {
+            var result = _hostLogic.Save(host);
 
             return true;
         }

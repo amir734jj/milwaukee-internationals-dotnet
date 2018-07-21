@@ -100,6 +100,50 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
+    .controller("hostListCtrl", ["$scope", "$http", function ($scope, $http) {
+        $scope.getAllHostPDF = function() {
+            $http.get("/api/host").then(function(response) {
+                var hosts = response.data;
+
+                var doc = new jsPDF({
+                    orientation: "l",
+                    lineHeight: 1.5
+                });
+
+                doc.setFont('courier');
+
+                doc.setFontSize(10);
+
+                var subsetAttr = function (attrList, obj) {
+                    return attrList.reduce(function (o, k) {
+                        o[k] = obj[k];
+                        return o;
+                    }, {});
+                };
+
+                var i, j, temparray, chunk = 25;
+                for (i = 0, j = hosts.length; i < j; i += chunk) {
+                    temparray = hosts.slice(i, i + chunk);
+
+                    var str = stringTable.create(temparray.map(function (host) {
+                        return subsetAttr(["displayId", "fullname", "email", "phone", "address"], host);
+                    }));
+
+                    if (i === 0) {
+                        str = "Host List ( count of hosts: " + hosts.length + " )" + "\n\n" + str;
+                    }
+
+                    doc.text(20, 20, str);
+
+                    if (i + chunk < j) {
+                        doc.addPage();
+                    }
+                }
+
+                doc.save("host-list.pdf");
+            });
+        };
+    }])
     .controller("studentDriverMappingCtrl", ["$scope", "$http", function ($scope, $http) {
         $scope.getStatus = function() {
             return $http.get("/api/studentDriverMapping/status").then(function(response) {

@@ -1,16 +1,16 @@
-﻿@model IEnumerable<Models.Driver>
+﻿@model IEnumerable<Models.Host>
 
 @{
-    ViewBag.Title = "Drivers";
+    ViewBag.Title = "Hosts";
     Layout = "_Layout";
 }
 
-<div class="container" ng-controller="driverListCtrl">
+<div class="container" ng-controller="hostListCtrl">
     <div class="page-header">
-        <h3>List of Drivers</h3>
+        <h3>List of Hosts</h3>
         
         <div class="clearfix">
-            <button class="btn btn-default pull-right" ng-click="getAllDriversPDF()">Download PDF</button>
+            <button class="btn btn-default pull-right" ng-click="getAllHostPDF()">Download PDF</button>
         </div>
     </div>
     
@@ -20,6 +20,7 @@
             <th>Fullname</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Address</th>
             <th class="hidden-xs">Action</th>
         </tr>
         </thead>
@@ -30,8 +31,9 @@
                 <td>@driver.Fullname</td>
                 <td>@driver.Email</td>
                 <td>@driver.Phone</td>
+                <td>@driver.Address</td>
                 <td class="hidden-xs">
-                    <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                    <a href="~/Host/delete/@driver.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

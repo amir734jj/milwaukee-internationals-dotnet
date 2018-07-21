@@ -1,5 +1,5 @@
 ﻿@using Models
-@model Driver
+@model Host
 
 @{
     ViewBag.Title = "Driver-Navigator Registration";
@@ -17,7 +17,7 @@
     
     <br />
     
-    @using (Html.BeginForm("RegisterDriver", "Registration", FormMethod.Post, new { ng_controller = "driverRegistrationCtrl", ng_init = "requireNavigator = true; role = true;" }))
+    @using (Html.BeginForm("RegisterHost", "Registration", FormMethod.Post, new { ng_controller = "driverRegistrationCtrl", ng_init = "requireNavigator = true; role = true;" }))
     {
         @Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
         
@@ -37,27 +37,8 @@
         </div>
         
         <div class="form-group">
-            @Html.LabelFor(x => x.Role)
-            @Html.TextBoxFor(x => x.Role, new { @class = "form-control hidden", ng_bind = "role ? 'Driver' : 'Navigator'" })
-            <toggle class="pull-right" ng-model="role" on="Driver" off="Navigator" onstyle="btn-success" offstyle="btn-primary"></toggle>
-        </div>
-        
-        <div ng-if="role">
-            <div class="form-group">
-                @Html.LabelFor(x => x.Capacity)
-                @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control", type = "number", min = "1", max = "7", placeholder = "Enter capacity" })
-            </div>
-            
-            <div class="form-group">
-                @Html.LabelFor(x => x.RequireNavigator)
-                @Html.CheckBoxFor(x => x.RequireNavigator, new { @class = "form-control hidden", ng_bind = "requireNavigator" })
-                <toggle class="pull-right" ng-model="requireNavigator" on="Yes" off="No" onstyle="btn-success" offstyle="btn-danger"></toggle>
-            </div>
-            
-            <div class="form-group" ng-if="!requireNavigator">
-                @Html.LabelFor(x => x.Navigator)
-                @Html.TextBoxFor(x => x.Navigator, new { @class = "form-control", required = "required", placeholder = "Enter navigator fullname" })
-            </div>
+            @Html.LabelFor(x => x.Address)
+            @Html.TextBoxFor(x => x.Address, new { @class = "form-control", type = "text", placeholder = "Enter address" })
         </div>
         
         <input class="btn btn-primary" type="submit" value="Register" />

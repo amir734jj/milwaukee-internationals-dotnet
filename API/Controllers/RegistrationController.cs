@@ -32,7 +32,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("driver")]
+        [Route("Driver")]
         public IActionResult Driver()
         {
             return View(new Driver());
@@ -43,7 +43,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("driver/register")]
+        [Route("Driver/Register")]
         public IActionResult RegisterDriver(Driver driver)
         {
             if (_registrationLogic.RegisterDriver(driver))
@@ -56,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("student")]
+        [Route("Student")]
         public IActionResult Student()
         {
             return View(new Student());
@@ -67,10 +67,34 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("student/register")]
+        [Route("Student/Register")]
         public IActionResult RegisterStudent(Student student)
         {
             if (_registrationLogic.RegisterStudent(student))
+            {
+                return View("Thankyou");   
+            }
+
+            // TODO: use a proper 500 error page
+            return Ok("Failed!");
+        }
+        
+        [HttpGet]
+        [Route("Host")]
+        public IActionResult Host()
+        {
+            return View(new Host());
+        }
+        
+        /// <summary>
+        /// POST registertaion
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Host/Register")]
+        public IActionResult RegisterHost(Host host)
+        {
+            if (_registrationLogic.RegisterHost(host))
             {
                 return View("Thankyou");   
             }

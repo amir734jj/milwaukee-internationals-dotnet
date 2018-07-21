@@ -7,5 +7,7 @@ namespace Logic.Interfaces
         bool RegisterDriver(Driver driver);
 
         bool RegisterStudent(Student student);
+        
+        bool RegisterHost(Host host);
     }
 }

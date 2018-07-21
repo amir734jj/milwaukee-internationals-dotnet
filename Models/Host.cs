@@ -17,6 +17,8 @@ namespace Models
         
         public string Address { get; set; }
         
+        public string DisplayId { get; set; }
+        
         public List<Driver> Drivers { get; set; }
     }
 }
