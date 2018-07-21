@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Constants;
+using Newtonsoft.Json;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using StructureMap;
@@ -98,15 +99,18 @@ namespace API
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Milwaukee-Internationals-API", Version = "v1"}); });
 
             services.AddMvc(x =>
-            {
+            {   
                 x.Filters.Add<AuthorizeActionFilter>();
 
                 x.ModelValidatorProviders.Clear();
 
                 // Not need to have https
                 x.RequireHttpsPermanent = false;
+            }).AddJsonOptions(x =>
+            {
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-
+            
             _container = new Container();
 
             _container.Configure(config =>

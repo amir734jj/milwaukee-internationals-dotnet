@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Models.Interfaces;
 
 namespace Models
@@ -15,5 +16,7 @@ namespace Models
         public string Fullname { get; set; }
         
         public string Address { get; set; }
+        
+        public List<Driver> Drivers { get; set; }
     }
 }

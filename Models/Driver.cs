@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Models.Enums;
 using Models.Interfaces;
 
@@ -36,5 +37,13 @@ namespace Models
         public RolesEnum Role { get; set; }
         
         public List<Student> Students { get; set; }
+        
+        /// <summary>
+        /// Optional
+        /// </summary>
+        public int? HostRefId { get; set; }
+
+        [ForeignKey("HostRefId")]
+        public Host Host { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace DAL.Utilities
         public DbSet<User> Users { get; set; }
         
         public DbSet<Driver> Drivers { get; set; }
+        
+        public DbSet<Host> Hosts { get; set; }
 
         private readonly Action<DbContextOptionsBuilder> _onConfiguring;
 
@@ -32,7 +34,7 @@ namespace DAL.Utilities
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure 1 to many relationship
+/*            // Configure 1 to many relationship
             modelBuilder.Entity<Driver>()
                 .HasMany<Student>()
                 .WithOne();
@@ -41,7 +43,7 @@ namespace DAL.Utilities
             modelBuilder.Entity<Student>()
                 .HasOne(x => x.Driver)
                 .WithMany()
-                .HasForeignKey(x => x.DriverRefId);
+                .HasForeignKey(x => x.DriverRefId);*/
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,4 +1,5 @@
 @using API.Extensions
+@using Logic.Extensions
 @using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +35,7 @@
     
     @* PDF engine *@
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
-
+    
     @* customs *@
     <script src="~/scripts/script.js"></script>
     <link rel="stylesheet" href="~/styles/style.css">
@@ -53,12 +54,27 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
+                <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Home") ? "active" : "")">
+                    <a href="#">Home</a>
+                </li>
+                
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li><a href="~/Driver">Drivers</a></li>
-                    <li><a href="~/Student">Students</a></li>
-                    <li><a href="~/Registration">Registrations</a></li>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Driver") ? "active" : "")">
+                        <a href="~/Driver">Drivers</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Student") ? "active" : "")">
+                        <a href="~/Student">Students</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
+                        <a href="~/Registration">Registrations</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                        <a href="~/Mapping">Mapping</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Driver") ? "active" : "")">
+                        <a href="~/Attendance">Attendance</a>
+                    </li>
                 }
             </ul>
             
