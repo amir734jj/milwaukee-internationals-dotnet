@@ -55,7 +55,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Home") ? "active" : "")">
-                    <a href="#">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 
                 @if (Context.Session.IsAuthenticated())
