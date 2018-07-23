@@ -1,68 +1,16 @@
 ﻿@model object
 
 @{
-    ViewBag.Title = "Student Attendance";
+    ViewBag.Title = "Available Attendance forms";
     Layout = "_Layout";
 }
 
-<div class="container">
-    <div class="page-header">
-        <h3>Student Attendance</h3>
-    </div>
-
-    <div ng-controller="attendanceCtrl">
-        <form>
-            <div class="form-group">
-                <label for="fullname">Fullname:</label>
-                <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="text">Country:</label>
-                <select id="country" name="country" ng-change="updateTable()" ng-model="country" class="form-control">
-                    <option value="{{country}}" ng-repeat="country in countries">{{country}}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="text">Filter by attendance:</label>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show All
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent
-                    </label>
-                </div>
-            </div>
-        </form>
-        <hr/>
-        <table ts-wrapper="ts-wrapper" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-                <th ts-criteria="fullname" ts-default="ts-default">Fullname</th>
-                <th ts-criteria="country">Country</th>
-                <th ts-criteria="attendance">Checked-in</th>
-                <th>Driver</th>
-                <th>Host</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="student in students" ts-repeat="ts-repeat">
-                <td>{{student.fullname}}</td>
-                <td>{{student.country}}</td>
-                <td class="col-xs-4 col-sm-2">
-                    <toggle ng-model="student.isPressent" ng-change="changeAttendance(student)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
-                </td>
-                <td>{{sudent.host}}</td>
-                <td>{{student.driver ? student.driver.displayId : ""}}</td>
-            </tr>
-            </tbody>
-        </table>
+<div class="panel panel-default">
+    <div class="panel-heading">Available Attendance forms</div>
+    <div class="panel-body">
+        <div class="list-group">
+            <a href="~/Attendance/Student" class="list-group-item">Student Attendance</a>
+            <a href="~/Attendance/Driver" class="list-group-item">Driver Attendance</a>
+        </div>
     </div>
 </div>

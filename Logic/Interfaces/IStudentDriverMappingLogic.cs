@@ -1,6 +1,6 @@
 ﻿using Models.ViewModels;
 
-namespace Models.Interfaces
+namespace Logic.Interfaces
 {
     public interface IStudentDriverMappingLogic
     {

@@ -1,0 +1,61 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "Student Attendance";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>Student Attendance</h3>
+    </div>
+
+    <div ng-controller="driverAttendanceCtrl">
+        <form>
+            <div class="form-group">
+                <label for="fullname">Fullname:</label>
+                <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="text">Filter by attendance:</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show All
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent
+                    </label>
+                </div>
+            </div>
+        </form>
+        <hr/>
+        <table ts-wrapper="ts-wrapper" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th ts-criteria="fullname" ts-default="ts-default">Fullname</th>
+                <th ts-criteria="capacity">Capacity</th>
+                <th ts-criteria="attendance">Checked-in</th>
+                <th>Host</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="driver in drivers" ts-repeat="ts-repeat">
+                <td>{{driver.fullname}}</td>
+                <td>{{driver.capacity}}</td>
+                <td class="col-xs-4 col-sm-2">
+                    <toggle ng-model="driver.isPressent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                </td>
+                <td>{{driver.host}}</td>
+                <td>{{driver.host ? driver.host.displayId : ""}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -45,5 +45,7 @@ namespace Models
 
         [ForeignKey("HostRefId")]
         public Host Host { get; set; }
+        
+        public bool IsPressent { get; set; }
     }
 }
