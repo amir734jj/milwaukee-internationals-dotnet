@@ -88,7 +88,7 @@ namespace Logic
                     <hr>                                
                     <p>See you at the Tour of Milwaukee</p> 
                     <br>                                    
-                    <p> 2017 Tour of Milwaukee Registration</p> 
+                    <p> 2018 Tour of Milwaukee Registration</p> 
                     <p> Date: August 26, 2018</p> 
                     <p> Time: 12:00 noon</p> 
                     <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
@@ -121,7 +121,7 @@ namespace Logic
                     <hr>                                
                     <p>See you at the Tour of Milwaukee</p> 
                     <br>                                    
-                    <p> 2017 Tour of Milwaukee Registration</p> 
+                    <p> 2018 Tour of Milwaukee Registration</p> 
                     <p> Date: August 26, 2018</p> 
                     <p> Time: 12:00 noon</p> 
                     <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
