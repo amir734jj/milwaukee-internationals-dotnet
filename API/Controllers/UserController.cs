@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns driver view
+        /// Returns user view
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Delete a driver
+        /// Delete a user
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
