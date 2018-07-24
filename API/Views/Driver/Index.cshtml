@@ -16,12 +16,13 @@
     
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th>Fullname</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th class="hidden-xs">Action</th>
-        </tr>
+            <tr>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Is Present</th>
+                <th class="hidden-xs">Action</th>
+            </tr>
         </thead>
         <tbody>
         @foreach (var driver in Model)
@@ -30,6 +31,7 @@
                 <td>@driver.Fullname</td>
                 <td>@driver.Email</td>
                 <td>@driver.Phone</td>
+                <td>@driver.IsPressent</td>
                 <td class="hidden-xs">
                     <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
                 </td>
