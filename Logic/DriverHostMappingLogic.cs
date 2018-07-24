@@ -78,7 +78,7 @@ namespace Logic
             return new DriverHostMappingViewModel
             {
                 AvailableHosts = hosts,
-                AvailableDrivers = drivers.Where(x => x.IsPressent && x.Host == null),
+                AvailableDrivers = drivers.Where(x => x.Host == null),
                 MappedDrivers = drivers.Where(x => x.Host != null),
                 MappedHosts = hosts.Where(x => x.Drivers != null && x.Drivers.Any())
             };

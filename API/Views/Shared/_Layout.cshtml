@@ -81,14 +81,9 @@
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
                         <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
                     </li>
-                   
-                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Attendance">Manage Tour
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/Attendance/Student">Student</a></li>
-                            <li><a href="~/Attendance/Driver">Driver</a></li>
-                        </ul>
+                    
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
+                        <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
                 }
             </ul>
