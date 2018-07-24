@@ -80,8 +80,8 @@ namespace API.Controllers
             return Ok("Failed!");
         }
         
-        [HttpGet]
         [AuthorizeMiddleware]
+        [HttpGet]
         [Route("Host")]
         public IActionResult Host()
         {
@@ -92,8 +92,8 @@ namespace API.Controllers
         /// POST registertaion
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
         [AuthorizeMiddleware]
+        [HttpPost]
         [Route("Host/Register")]
         public IActionResult RegisterHost(Host host)
         {

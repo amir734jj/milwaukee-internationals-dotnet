@@ -55,7 +55,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Home") ? "active" : "")">
-                    <a href="/">Home</a>
+                    <a href="/">Register</a>
                 </li>
                 
                 @if (Context.Session.IsAuthenticated())
@@ -70,24 +70,18 @@
                         <a href="~/Host">Hosts</a>
                     </li>
 
-                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Registration">Registration
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/Registration/Student">Student</a></li>
-                            <li><a href="~/Registration/Driver">Driver</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Mapping">Mapping
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/Mapping/StudentDriverMapping">Student</a></li>
-                            <li><a href="~/Mapping/DriverHostMapping">Driver</a></li>
-                        </ul>
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("D") ? "active" : "")">
+                        <a href="~/Registration/Driver">Register Driver</a>
                     </li>
 
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                        <a href="~/Mapping/StudentDriverMapping">Driver Mapping</a>
+                    </li>
+                    
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                        <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
+                    </li>
+                   
                     <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="~/Attendance">Manage Tour
                             <span class="caret"></span></a>

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using API.Extensions;
 using Logic.Interfaces;
@@ -27,6 +28,8 @@ namespace API.Attributes
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             var actionLevelAuthorize = method.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
 
+            var amir = method.GetType().CustomAttributes.ToList();
+            
             if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
             
             // Try to get username/password from session
