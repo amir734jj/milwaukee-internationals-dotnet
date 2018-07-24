@@ -1,10 +1,12 @@
-﻿using Logic.Interfaces;
+﻿using API.Attributes;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
+    [AuthorizeMiddleware]
     [Route("[controller]")]
     public class HostController : Controller
     {
