@@ -26,7 +26,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using static API.Utilities.ConnectionStringUtility;
 
 namespace API
-{
+{ 
     public class Startup
     {
         private readonly IConfigurationRoot _configuration;
