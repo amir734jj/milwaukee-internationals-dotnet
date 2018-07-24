@@ -69,14 +69,32 @@
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Host") ? "active" : "")">
                         <a href="~/Host">Hosts</a>
                     </li>
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
-                        <a href="~/Registration">Registrations</a>
+
+                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Registration">Registration
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Registration/StudentDriverMapping">Student</a></li>
+                            <li><a href="~/Registration/DriverHostMapping">Driver</a></li>
+                        </ul>
                     </li>
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
-                        <a href="~/Mapping">Mapping</a>
+                    
+                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Mapping">Mapping
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Mapping/StudentDriverMapping">Student</a></li>
+                            <li><a href="~/Mapping/DriverHostMapping">Driver</a></li>
+                        </ul>
                     </li>
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
-                        <a href="~/Attendance">Manage Tour</a>
+
+                    <li class="dropdown @(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="~/Attendance">Manage Tour
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Attendance/Student">Student</a></li>
+                            <li><a href="~/Attendance/Driver">Driver</a></li>
+                        </ul>
                     </li>
                 }
             </ul>
