@@ -113,11 +113,10 @@ namespace Logic
             // If save was successful
             if (result != null)
             {
-                _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Driver registration", $@"
+                _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p>Name: {host.Fullname}</p>       
                     <p>Email: {host.Email}</p>
                     <p>Address: {host.Address}</p>          
-                    <p>DisplayId: {host.DisplayId}</p>          
                     <hr>                                
                     <p>See you at the Tour of Milwaukee</p> 
                     <br>                                    

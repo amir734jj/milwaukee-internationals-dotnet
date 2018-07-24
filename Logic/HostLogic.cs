@@ -24,17 +24,5 @@ namespace Logic
         /// </summary>
         /// <returns></returns>
         public override IBasicCrudDal<Host> GetBasicCrudDal() => _hostDal;
-        
-        /// <summary>
-        /// Make sure display ID is not null or empty
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public override Host Save(Host instance)
-        {
-            instance.DisplayId = GenerateDisplayId(instance);
-            
-            return base.Save(instance);
-        }
     }
 }
