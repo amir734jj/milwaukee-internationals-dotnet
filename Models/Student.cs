@@ -21,15 +21,16 @@ namespace Models
         public string Phone { get; set; }
         
         public string Country { get; set; }
-        
+
+        [Display(Name = "Tell us some of your interests")]
         public string Interests { get; set; }
         
         public string DisplayId { get; set; }
         
-        [Display(Name="Need a car seat")]
+        [Display(Name="Need a car seat?")]
         public bool NeedCarSeat { get; set; }
         
-        [Display(Name="Kosher food")]
+        [Display(Name="Halal or Kosher food")]
         public bool KosherFood { get; set; }
         
         public bool IsPressent { get; set; }

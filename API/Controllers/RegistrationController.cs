@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -80,6 +81,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
+        [AuthorizeMiddleware]
         [Route("Host")]
         public IActionResult Host()
         {
@@ -91,6 +93,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AuthorizeMiddleware]
         [Route("Host/Register")]
         public IActionResult RegisterHost(Host host)
         {

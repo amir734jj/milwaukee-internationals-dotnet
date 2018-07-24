@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
@@ -8,7 +9,19 @@ namespace API.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("~/Registration/Driver".ToLower());
+            return Redirect("~/Registration/Student".ToLower());
+        }
+
+        /// <summary>
+        /// View page to register
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Register")]
+        [SwaggerOperation("Register")]
+        public IActionResult Register()
+        {
+            return Redirect("~/Identity/Register".ToLower());
         }
     }
 }
