@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Models.User>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout";
+}
+
+<div class="container" ng-controller="userListCtrl">
+    <div class="page-header">
+        <h3>List of Users</h3>
+        
+    </div>
+    
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th class="hidden-xs">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Fullname</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@user.Username</td>
+                <td class="hidden-xs">
+                    <a href="~/User/delete/@user.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
