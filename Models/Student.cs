@@ -42,5 +42,11 @@ namespace Models
 
         [ForeignKey("DriverRefId")]
         public Driver Driver { get; set; }
+        
+        [Display(Name = "Registering as a family?")]
+        public bool IsFamily { get; set; }
+        
+        [Display(Name = "Total family members")]
+        public int TotalFamilyMembers { get; set; }
     }
 }
