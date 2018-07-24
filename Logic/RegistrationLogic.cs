@@ -49,7 +49,8 @@ namespace Logic
                     <p> Role: {driver.Role}</p>
                     <p> Phone: {driver.Phone}</p>
                     <p> Capacity: {driver.Capacity}</p>
-                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes" : $"No, navigator: {driver.Navigator}")}</p>
+                    <p> Display Id: {driver.DisplayId}</p>
+                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
                     <br>                                                                                         
                     <p> 2018 Tour of Milwaukee</p>
                     <p> Date: August 25, 2018</p> 

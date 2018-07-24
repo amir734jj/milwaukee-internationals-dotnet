@@ -60,6 +60,10 @@
                 
                 @if (Context.Session.IsAuthenticated())
                 {
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("User") ? "active" : "")">
+                        <a href="~/User">Users</a>
+                    </li>
+                    
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Student") ? "active" : "")">
                         <a href="~/Student">Students</a>
                     </li>
@@ -72,8 +76,12 @@
                         <a href="~/Host">Hosts</a>
                     </li>
 
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("D") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
                         <a href="~/Registration/Driver">Register Driver</a>
+                    </li>
+                    
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
+                        <a href="~/Registration/Host">Register Host</a>
                     </li>
 
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
