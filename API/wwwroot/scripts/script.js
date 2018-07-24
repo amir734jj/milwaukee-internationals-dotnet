@@ -179,7 +179,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         
         $scope.init();
     }])
-    .controller("attendanceCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("studentAttendanceCtrl", ["$scope", "$http", function ($scope, $http) {
         $scope.countries = ["All Countries"];
         $scope.students = [];
         $scope.allStudents = [];
@@ -205,8 +205,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         $scope.changeAttendance = function (student) {
-            return $http.post("/api/attendance/setAttendance", {
-                studentId: student.id,
+            return $http.post("/api/attendance/student/setAttendance", {
+                id: student.id,
                 attendance: student.isPressent
             }).then(function () {
                 $scope.getAllStudents();
@@ -264,6 +264,108 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.init = function () {
             $scope.getAllStudents();
+        };
+
+        $scope.init();
+    }])
+    .controller("driverHostMappingCtrl", ["$scope", "$http", function ($scope, $http) {
+        $scope.getStatus = function() {
+            return $http.get("/api/driverHostMapping/status").then(function(response) {
+                var data = response.data;
+                $scope.availableDrivers = data.availableDrivers;
+                $scope.availableHosts = data.availableHosts;
+                $scope.mappedHosts = data.mappedHosts;
+            });
+        };
+
+        $scope.map = function(driverId, hostId) {
+            $scope.changeMap(driverId, hostId, "map");
+        };
+
+        $scope.unmap = function(driverId, hostId) {
+            $scope.changeMap(driverId, hostId, "unmap");
+        };
+
+        $scope.changeMap = function(driverId, hostId, action) {
+            if (driverId && hostId) {
+                $http.post("/api/driverHostMapping/" + action, {
+                    "driverId": driverId,
+                    "hostId": hostId
+                }).then(function() {
+                    $scope.getStatus();
+                });
+            }
+        };
+
+        $scope.init = function () {
+            $scope.getStatus();
+        };
+
+        $scope.init();
+    }])
+    .controller("driverAttendanceCtrl", ["$scope", "$http", function ($scope, $http) {
+        $scope.drivers = [];
+        $scope.allDrivers = [];
+        
+        $scope.attendanceFilter = "all";
+        $scope.fullname = "";
+
+
+        $scope.getAllDrivers = function () {
+            return $http.get("/api/driver").then(function (response) {
+                $scope.drivers = response.data;
+                $scope.allDrivers = response.data;
+
+                $scope.updateTable();
+            });
+        };
+
+        $scope.changeAttendance = function (driver) {
+            return $http.post("/api/attendance/driver/setAttendance", {
+                id: driver.id,
+                attendance: driver.isPressent
+            }).then(function () {
+                $scope.getAllStudents();
+            });
+        };
+
+        $scope.updateTable = function () {
+            var drivers = $scope.allDrivers;
+
+            var filteredDrivers = {
+                "attendance": [],
+                "fullname": []
+            };
+            
+            if ($scope.attendanceFilter === "all") {
+                filteredDrivers.attendance = drivers;
+            } else {
+                students.forEach(function (driver) {
+                    if ((driver.isPressent && $scope.attendanceFilter === "yes") || (!driver.isPressent && $scope.attendanceFilter === "no")) {
+                        filteredDrivers.attendance.push(driver);
+                    }
+                });
+            }
+
+            drivers = filteredDrivers.attendance;
+
+            if (!$scope.fullname) {
+                filteredDrivers.fullname = drivers;
+            } else {
+                drivers.forEach(function (student) {
+                    if (student.fullname.toLowerCase().indexOf($scope.fullname.toLowerCase()) > -1) {
+                        filteredDrivers.fullname.push(student);
+                    }
+                });
+            }
+
+            drivers= filteredDrivers.fullname;
+
+            $scope.drivers = drivers;
+        };
+
+        $scope.init = function () {
+            $scope.getAllDrivers();
         };
 
         $scope.init();

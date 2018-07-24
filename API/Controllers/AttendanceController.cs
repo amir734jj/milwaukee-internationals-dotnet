@@ -14,5 +14,21 @@ namespace API.Controllers
         {
             return View();
         }
+        
+        // GET
+        [HttpGet]
+        [Route("Student")]
+        public IActionResult Student()
+        {
+            return View();
+        }
+        
+        // GET
+        [HttpGet]
+        [Route("Driver")]
+        public IActionResult Driver()
+        {
+            return View();
+        }
     }
 }

@@ -6,6 +6,8 @@ namespace Logic.Interfaces
 {
     public interface IAttendanceLogic
     {
-        bool SetAttendance(AttendanceViewModel attendanceViewModel);
+        bool StudentSetAttendance(AttendanceViewModel attendanceViewModel);
+        
+        bool DriverSetAttendance(AttendanceViewModel attendanceViewModel);
     }
 }

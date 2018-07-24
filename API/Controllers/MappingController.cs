@@ -27,5 +27,17 @@ namespace API.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Returns Driver-Host Mapping view
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("DriverHostMapping")]
+        [SwaggerOperation("DriverHostMapping")]
+        public IActionResult DriverHostMapping()
+        {
+            return View();
+        }
     }
 }

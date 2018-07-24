@@ -26,11 +26,23 @@ namespace API.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("SetAttendance")]
+        [Route("Student/SetAttendance")]
         [SwaggerOperation("SetAttendance")]
-        public IActionResult SetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
+        public IActionResult StudentSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
         {
-            return Ok(_attendanceLogic.SetAttendance(attendanceViewModel));
+            return Ok(_attendanceLogic.StudentSetAttendance(attendanceViewModel));
+        }
+        
+        /// <summary>
+        /// Returns the status of mappings
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Driver/SetAttendance")]
+        [SwaggerOperation("SetAttendance")]
+        public IActionResult DriverSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
+        {
+            return Ok(_attendanceLogic.StudentSetAttendance(attendanceViewModel));
         }
     }
 }
