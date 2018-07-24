@@ -26,9 +26,7 @@ namespace API.Attributes
             var method = ((ControllerActionDescriptor) context.ActionDescriptor).MethodInfo;
             
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
-            var actionLevelAuthorize = method.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
-
-            var amir = method.GetType().CustomAttributes.ToList();
+            var actionLevelAuthorize = method.GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             
             if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
             
