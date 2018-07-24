@@ -55,17 +55,19 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Home") ? "active" : "")">
-                    <a href="/">Register</a>
+                    <a href="/">Register for Tour</a>
                 </li>
                 
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Driver") ? "active" : "")">
-                        <a href="~/Driver">Drivers</a>
-                    </li>
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Student") ? "active" : "")">
                         <a href="~/Student">Students</a>
                     </li>
+                    
+                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Driver") ? "active" : "")">
+                        <a href="~/Driver">Drivers</a>
+                    </li>
+
                     <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Host") ? "active" : "")">
                         <a href="~/Host">Hosts</a>
                     </li>
