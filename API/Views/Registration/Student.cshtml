@@ -61,16 +61,16 @@
             <tags-input ng-model="tags", use-strings="true" placeholder="we can try to connect you with people having similar interests"></tags-input>
         </div>
         
-        <div class="form-group">
+        <div class="form-group"  ng-init="needCarSeat = @Model.NeedCarSeat.ToString().ToLower(); needCarSeat_val = needCarSeat">
             @Html.LabelFor(x => x.NeedCarSeat)
-            @Html.CheckBoxFor(x => x.NeedCarSeat, new { @class = "form-control hidden", ng_model = "needCarSeat" })
-            <toggle class="pull-right" ng-model="needCarSeat" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default"></toggle>
+            @Html.CheckBoxFor(x => x.NeedCarSeat, new { @class = "form-control hidden", ng_model = "needCarSeat_val" })
+            <toggle class="pull-right" ng-model="needCarSeat" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="needCarSeat_val = needCarSeat"></toggle>
         </div>
         
-        <div class="form-group">
+        <div class="form-group"  ng-init="kosherFood = @Model.KosherFood.ToString().ToLower(); kosherFood_val = kosherFood">
             @Html.LabelFor(x => x.KosherFood)
-            @Html.CheckBoxFor(x => x.KosherFood, new { @class = "form-control hidden", ng_model = "kosherFood" })
-            <toggle class="pull-right" ng-model="kosherFood" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default"></toggle>
+            @Html.CheckBoxFor(x => x.KosherFood, new { @class = "form-control hidden", ng_model = "kosherFood_val" })
+            <toggle class="pull-right" ng-model="kosherFood" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="kosherFood_val = kosherFood"></toggle>
         </div>
         
         <input class="btn btn-primary" type="submit" value="Register For Tour" />

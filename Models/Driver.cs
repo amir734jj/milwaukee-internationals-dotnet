@@ -28,7 +28,7 @@ namespace Models
         public int Capacity { get; set; } = 1;
         
         [Display(Name="Require Navigator")]
-        public bool RequireNavigator { get; set; }
+        public bool RequireNavigator { get; set; } = true;
         
         [Display(Name="Navigator fullname")]
         public string Navigator { get; set; }

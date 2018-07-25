@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Models.Interfaces;
 
 namespace Logic.Utilities
@@ -12,7 +13,10 @@ namespace Logic.Utilities
         /// <returns></returns>
         public static string GenerateDisplayId(IPerson person)
         {
-            return person.Fullname.Substring(0, 3).Replace(" ", string.Empty).ToUpper() + "-" + Guid.NewGuid().ToString().Substring(0, 3).ToUpper();
+            return string.Join(string.Empty, person.Fullname.Split(" ")
+                       .Select(x => x.Trim())
+                       .Where(x => !string.IsNullOrWhiteSpace(x))
+                       .Select(x => x.Substring(0, 1))) + "-" + new Random().Next(1, 10);
         }
     }
 }

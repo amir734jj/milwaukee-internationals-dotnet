@@ -1,4 +1,5 @@
 ﻿@using Models
+@using Models.Enums
 @model Driver
 
 @{
@@ -36,10 +37,10 @@
             @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", type = "tel", placeholder = "Enter phone number" })
         </div>
         
-        <div class="form-group">
+        <div class="form-group" ng-init="role = @((Model.Role == RolesEnum.Driver).ToString().ToLower())">
             @Html.LabelFor(x => x.Role)
-            @Html.TextBoxFor(x => x.Role, new { @class = "form-control hidden", ng_bind = "role ? 'Driver' : 'Navigator'" })
-            <toggle class="pull-right" ng-model="role" on="Driver" off="Navigator" onstyle="btn-success" offstyle="btn-primary"></toggle>
+            @Html.TextBoxFor(x => x.Role, new { @class = "form-control hidden", ng_model = "role_val" })
+            <toggle class="pull-right" ng-model="role" on="Driver" off="Navigator" onstyle="btn-success" offstyle="btn-primary" ng-change="role_val = role ? 'Driver' : 'Navigator'"></toggle>
         </div>
         
         <div ng-if="role">
@@ -48,10 +49,10 @@
                 @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control", type = "number", min = "1", max = "7", placeholder = "Enter capacity" })
             </div>
             
-            <div class="form-group">
+            <div class="form-group" ng-init="requireNavigator = @Model.RequireNavigator.ToString().ToLower(); requireNavigator_val = requireNavigator">
                 @Html.LabelFor(x => x.RequireNavigator)
-                @Html.CheckBoxFor(x => x.RequireNavigator, new { @class = "form-control hidden", ng_bind = "requireNavigator" })
-                <toggle class="pull-right" ng-model="requireNavigator" on="Yes" off="No" onstyle="btn-success" offstyle="btn-danger"></toggle>
+                @Html.CheckBoxFor(x => x.RequireNavigator, new { @class = "form-control hidden", ng_model = "requireNavigator_val"})
+                <toggle class="pull-right" ng-model="requireNavigator" on="Yes" off="No" onstyle="btn-success" offstyle="btn-danger" ng-change="requireNavigator_val = requireNavigator"></toggle>
             </div>
             
             <div class="form-group" ng-if="!requireNavigator">

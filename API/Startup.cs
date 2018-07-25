@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Constants;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using StructureMap;
@@ -109,6 +110,7 @@ namespace API
             }).AddJsonOptions(x =>
             {
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                x.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
             
             _container = new Container();
