@@ -83,17 +83,7 @@ namespace API
                 options.LowercaseUrls = true; 
             });
 
-            if (_env.IsLocalhost())
-            {
-                services.AddDistributedMemoryCache();
-            }
-            else
-            {
-                services.AddDistributedRedisCache(option =>
-                {
-                    option.Configuration = Environment.GetEnvironmentVariable("REDISCLOUD_URL");
-                });
-            }
+            services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
             {
