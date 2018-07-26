@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Models.User>
+﻿@using API.Extensions
+@using Microsoft.AspNetCore.Http
+@model IEnumerable<Models.User>
 
 @{
     ViewBag.Title = "Users";
@@ -24,13 +26,15 @@
         <tbody>
         @foreach (var user in Model)
         {
+            var disabled = Context.Session.GetUseramePassword().username == user.Username;
+            
             <tr>
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td>@user.Phone</td>
                 <td>@user.Username</td>
                 <td class="hidden-xs">
-                    <a href="~/User/delete/@user.Id" class="btn btn-danger">Delete</a>
+                    <a href="@(disabled ? string.Empty : "~/User/delete/@user.Id")" class="btn btn-danger @(disabled ? "disabled" : string.Empty)">Delete</a>
                 </td>
             </tr>
         }
