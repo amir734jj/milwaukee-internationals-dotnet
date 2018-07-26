@@ -54,45 +54,45 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Home") ? "active" : "")">
+                <li class="@(ViewContext.RouteData.Matches("Home") ? "active" : "")">
                     <a href="/">Register for Tour</a>
                 </li>
                 
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("User") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("user") ? "active" : "")">
                         <a href="~/User">Users</a>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Student") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Student") ? "active" : "")">
                         <a href="~/Student">Students</a>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Driver") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Driver") ? "active" : "")">
                         <a href="~/Driver">Drivers</a>
                     </li>
 
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Host") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Host") ? "active" : "")">
                         <a href="~/Host">Hosts</a>
                     </li>
 
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Registration", "Driver") ? "active" : "")">
                         <a href="~/Registration/Driver">Register Driver</a>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Registration") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Registration", "Host") ? "active" : "")">
                         <a href="~/Registration/Host">Register Host</a>
                     </li>
 
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Mapping", "StudentDriverMapping") ? "active" : "")">
                         <a href="~/Mapping/StudentDriverMapping">Driver Mapping</a>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Mapping") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Mapping", "DriverHostMapping") ? "active" : "")">
                         <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.GetAction().ContainsIgnoreCase("Attendance") ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
                 }
