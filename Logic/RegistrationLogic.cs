@@ -115,6 +115,8 @@ namespace Logic
             if (result != null)
             {
                 _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
+                    <p> This is an automatically generated email. </p>
+                    <p> ----------------------------------------- </p>
                     <p>Name: {host.Fullname}</p>       
                     <p>Email: {host.Email}</p>
                     <p>Address: {host.Address}</p>          
@@ -124,7 +126,7 @@ namespace Logic
                     <p> Date: August 25, 2018</p> 
                     <p> Time: 5:00 pm</p> 
                     <p> We will send you more details once we have them.</p> 
-                    <p> For questions, any updates in plans, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
                     <p> Blessings,</p>
                 ");
             }
