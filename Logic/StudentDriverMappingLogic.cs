@@ -78,7 +78,7 @@ namespace Logic
             return new StudentDriverMappingViewModel
             {
                 AvailableStudents = students.Where(x => x.Driver == null & x.IsPressent),
-                AvailableDrivers = drivers.Where(x => x.Capacity >= x.Students?.Count),
+                AvailableDrivers = drivers.Where(x => x.Capacity >= (x.Students ?? new List<Student>()).Count),
                 MappedDrivers = drivers.Where(x => x.Students != null && x.Students.Any()),
                 MappedStudents = students.Where(x => x.Driver != null)
             };

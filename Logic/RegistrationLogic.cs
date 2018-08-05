@@ -90,12 +90,12 @@ namespace Logic
                     <p>See you at the Tour of Milwaukee</p> 
                     <br>                                    
                     <p> 2018 Tour of Milwaukee Registration</p> 
-                    <p> Date: August 26, 2018</p> 
+                    <p> Date: August 25, 2018</p> 
                     <p> Time: 12:00 noon</p> 
                     <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
                     <p> Location: Union Ballroom</p> 
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p> 
-                    <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Amanda Johnson (414-801-4431) on campus.</p> 
+                    <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Prayag (646-226-4330) on campus.</p> 
                 ");
             }
 
@@ -115,19 +115,19 @@ namespace Logic
             if (result != null)
             {
                 _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
+                    <p> This is an automatically generated email. </p>
+                    <p> ----------------------------------------- </p>
                     <p>Name: {host.Fullname}</p>       
                     <p>Email: {host.Email}</p>
                     <p>Address: {host.Address}</p>          
                     <hr>                                
-                    <p>See you at the Tour of Milwaukee</p> 
+                    <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p> 
                     <br>                                    
-                    <p> 2018 Tour of Milwaukee Registration</p> 
-                    <p> Date: August 26, 2018</p> 
-                    <p> Time: 12:00 noon</p> 
-                    <p> Address: 2200 E Kenwood Blvd, Milwaukee, WI 53211 </p> 
-                    <p> Location: Union Ballroom</p> 
-                    <p> Thank you for registering for this event. Please share this with other new international friends.</p> 
-                    <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Amanda Johnson (414-801-4431) on campus.</p> 
+                    <p> Date: August 25, 2018</p> 
+                    <p> Time: 5:00 pm</p> 
+                    <p> We will send you more details once we have them.</p> 
+                    <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <p> Blessings,</p>
                 ");
             }
             
