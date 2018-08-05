@@ -34,7 +34,13 @@
                 <td>@user.Phone</td>
                 <td>@user.Username</td>
                 <td class="hidden-xs">
-                    <a href="@(disabled ? string.Empty : "~/User/delete/@user.Id")" class="btn btn-danger @(disabled ? "disabled" : string.Empty)">Delete</a>
+                    @if (disabled) {
+                        <a href="" class="btn btn-danger disabled">Delete</a>
+                    }
+                    else
+                    {
+                        <a href="~/User/delete/@user.Id" class="btn btn-danger">Delete</a>
+                    }
                 </td>
             </tr>
         }
