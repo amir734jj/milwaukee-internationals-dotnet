@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Interfaces;
@@ -38,7 +39,7 @@ namespace DAL.Abstracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual T Get(int id) => GetDbSet().FirstOrDefault(x => x.Id == id);
+        public virtual T Get(int id) => GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
         /// <summary>
         /// Saves an instance
@@ -59,7 +60,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual T Delete(int id)
         {
-            var instance = GetDbSet().FirstOrDefault(x => x.Id == id);
+            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
             if (instance != null)
             {
@@ -79,7 +80,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual T Update(int id, T updatedInstance)
         {
-            var instance = GetDbSet().FirstOrDefault(x => x.Id == id);
+            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
             if (instance != null)
             {
