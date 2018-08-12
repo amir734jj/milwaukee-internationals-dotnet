@@ -42,7 +42,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                     var str = stringTable.create(temparray.map(function (student) {
                         student.fullname = student.fullname.substring(0, 30);
-                        return subsetAttr(["fullname", "country", "email", "university", "attendance"], student);
+                        return subsetAttr(["fullname", "country", "email", "university", "isPressent"], student);
                     }));
 
                     doc.text(20, 20, str);
