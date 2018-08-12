@@ -42,7 +42,7 @@ namespace API.Controllers.Api
         [SwaggerOperation("SetAttendance")]
         public IActionResult DriverSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
         {
-            return Ok(_attendanceLogic.StudentSetAttendance(attendanceViewModel));
+            return Ok(_attendanceLogic.DriverSetAttendance(attendanceViewModel));
         }
     }
 }

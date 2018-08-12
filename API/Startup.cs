@@ -5,6 +5,8 @@ using System.Reflection;
 using API.Attributes;
 using API.Extensions;
 using AutoMapper;
+using DAL.Interfaces;
+using DAL.ServiceApi;
 using DAL.Utilities;
 using Logic;
 using Logic.Interfaces;
@@ -84,7 +86,7 @@ namespace API
             });
 
             services.AddDistributedMemoryCache();
-
+            
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -126,7 +128,7 @@ namespace API
                     _.WithDefaultConventions();
                 });
 
-                //Populate the container using the service collection
+                // Populate the container using the service collection
                 config.Populate(services);
 
                 config.For<EntityDbContext>().Use(new EntityDbContext(builder =>
@@ -141,6 +143,12 @@ namespace API
                                           ?? throw new Exception("DATABASE_URL is null"));
                     }
                 })).Singleton();
+
+                // If environment is localhost then use mock email service
+                if (_env.IsLocalhost())
+                {
+                    config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
+                }
 
                 // It has to be a singleton
                 config.For<IIdentityDictionary>().Singleton();

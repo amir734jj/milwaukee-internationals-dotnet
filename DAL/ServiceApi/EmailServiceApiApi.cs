@@ -14,12 +14,20 @@ namespace DAL.ServiceApi
     {
         private readonly IEmailService _emailServiceApi;
 
+        private readonly bool _connected;
+        
+        public EmailServiceApi()
+        {
+            _connected = false;
+        }
+        
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="emailServiceApi"></param>
         public EmailServiceApi(IEmailService emailServiceApi)
         {
+            _connected = true;
             _emailServiceApi = emailServiceApi;
         }
 
@@ -32,7 +40,7 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public Task SendEmailAsync(string emailAddress, string emailSubject, string emailText)
         {
-            return _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true);
+            return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
         }
     }
 }

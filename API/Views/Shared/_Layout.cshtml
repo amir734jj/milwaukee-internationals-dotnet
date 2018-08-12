@@ -60,21 +60,32 @@
                 
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li class="@(ViewContext.RouteData.Matches("user") ? "active" : "")">
-                        <a href="~/User">Users</a>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listing
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/User">Users</a></li>
+                            <li><a href="~/Student">Students</a></li>
+                            <li><a href="~/Driver">Drivers</a></li>
+                            <li><a href="~/Host">Hosts</a></li>
+                        </ul>
                     </li>
                     
-                    <li class="@(ViewContext.RouteData.Matches("Student") ? "active" : "")">
-                        <a href="~/Student">Students</a>
-                    </li>
-                    
-                    <li class="@(ViewContext.RouteData.Matches("Driver") ? "active" : "")">
-                        <a href="~/Driver">Drivers</a>
-                    </li>
-
-                    <li class="@(ViewContext.RouteData.Matches("Host") ? "active" : "")">
-                        <a href="~/Host">Hosts</a>
-                    </li>
+@*                     <li class="@(ViewContext.RouteData.Matches("user") ? "active" : "")"> *@
+@*                         <a href="~/User">Users</a> *@
+@*                     </li> *@
+@*                      *@
+@*                     <li class="@(ViewContext.RouteData.Matches("Student") ? "active" : "")"> *@
+@*                         <a href="~/Student">Students</a> *@
+@*                     </li> *@
+@*                      *@
+@*                     <li class="@(ViewContext.RouteData.Matches("Driver") ? "active" : "")"> *@
+@*                         <a href="~/Driver">Drivers</a> *@
+@*                     </li> *@
+@* *@
+@*                     <li class="@(ViewContext.RouteData.Matches("Host") ? "active" : "")"> *@
+@*                         <a href="~/Host">Hosts</a> *@
+@*                     </li> *@
 
                     <li class="@(ViewContext.RouteData.Matches("Registration", "Driver") ? "active" : "")">
                         <a href="~/Registration/Driver">Register Driver</a>
@@ -90,6 +101,10 @@
                     
                     <li class="@(ViewContext.RouteData.Matches("Mapping", "DriverHostMapping") ? "active" : "")">
                         <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
+                    </li>
+                    
+                    <li class="@(ViewContext.RouteData.Matches("Attendance", "Driver") ? "active" : "")">
+                        <a href="~/Attendance/Driver">Driver Attendance</a>
                     </li>
                     
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
