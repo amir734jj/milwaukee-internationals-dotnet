@@ -340,7 +340,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             if ($scope.attendanceFilter === "all") {
                 filteredDrivers.attendance = drivers;
             } else {
-                students.forEach(function (driver) {
+                drivers.forEach(function (driver) {
                     if ((driver.isPressent && $scope.attendanceFilter === "yes") || (!driver.isPressent && $scope.attendanceFilter === "no")) {
                         filteredDrivers.attendance.push(driver);
                     }
@@ -352,9 +352,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             if (!$scope.fullname) {
                 filteredDrivers.fullname = drivers;
             } else {
-                drivers.forEach(function (student) {
-                    if (student.fullname.toLowerCase().indexOf($scope.fullname.toLowerCase()) > -1) {
-                        filteredDrivers.fullname.push(student);
+                drivers.forEach(function (driver) {
+                    if (driver.fullname.toLowerCase().indexOf($scope.fullname.toLowerCase()) > -1) {
+                        filteredDrivers.fullname.push(driver);
                     }
                 });
             }
