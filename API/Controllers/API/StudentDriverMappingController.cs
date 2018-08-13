@@ -57,5 +57,17 @@ namespace API.Controllers.Api
         {
             return Ok(_studentDriverMappingLogic.UnMapStudentToDriver(newStudentDriverMappingViewModel));
         }
+        
+        /// <summary>
+        /// Email mappings to drivers
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("EmailMappings")]
+        [SwaggerOperation("EmailMappings")]
+        public IActionResult EmailMappings()
+        {
+            return Ok(_studentDriverMappingLogic.EmailMappings());
+        }
     }
 }

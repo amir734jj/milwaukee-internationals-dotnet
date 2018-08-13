@@ -152,6 +152,9 @@ namespace API
 
                 // It has to be a singleton
                 config.For<IIdentityDictionary>().Singleton();
+                
+                // Singleton to handle identities
+                config.For<IIdentityLogic>().Singleton();
             });
             
             return _container.GetInstance<IServiceProvider>();

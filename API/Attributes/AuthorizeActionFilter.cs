@@ -33,6 +33,7 @@ namespace API.Attributes
             // Try to get username/password from session
             var (username, password) = context.HttpContext.Session.GetUseramePassword();
 
+            // Validate username/password
             if (_identityLogic.IsAuthenticated(username, password))
             {
                 return next();
