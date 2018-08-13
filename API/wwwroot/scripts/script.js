@@ -1,4 +1,14 @@
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+    .controller('emailUtilityCtrl', ["$timeout", function ($timeout) {
+        
+        // Hide the .autoclose
+        $timeout(function () {
+            angular.element(".autoclose").fadeOut();
+        }, 2000);  
+        
+        // Start the text editor
+        angular.element('.summernote').summernote();
+    }])
     .controller('driverRegistrationCtrl', ['$scope', function () {
 
     }])

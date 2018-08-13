@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Models.Interfaces;
 
 namespace Models.ViewModels
 {
     /// <summary>
     /// Driver-Host mapping all
     /// </summary>
-    public class DriverHostMappingViewModel
+    public class DriverHostMappingViewModel : IViewModel
     {
         public IEnumerable<Driver> AvailableDrivers { get; set; }
         

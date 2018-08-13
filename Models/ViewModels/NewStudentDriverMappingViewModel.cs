@@ -1,9 +1,11 @@
-﻿namespace Models.ViewModels
+﻿using Models.Interfaces;
+
+namespace Models.ViewModels
 {
     /// <summary>
     /// Student-Driver mapping view model for new map
     /// </summary>
-    public class NewStudentDriverMappingViewModel
+    public class NewStudentDriverMappingViewModel : IViewModel
     {
         public int StudentId { get; set; }
         

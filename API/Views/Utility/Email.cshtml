@@ -1,53 +1,68 @@
-<div class="container page-header">
-    <h2 class="text-danger text-center">Email service</h2>
-</div>
+@using Logic.Extensions
+@using Models.ViewModels
+@model EmailFormViewModel
 
-@using (Html.BeginForm("Email", "UtilityController", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "driverRegistrationCtrl", ng_init = "requireNavigator = true; role = true;"}))
-{
-    
+@{
+    ViewBag.Title = "Email Utility";
+    Layout = "_Layout";
 }
 
-<form action="/utility/email" method="post" class="">
-    <div class="form-group">
-        <label for="subject" class="control-label col-sm-3">Subject:</label>
-        <div class="col-sm-9">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="students" name="students"/>Students
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="drivers" name="drivers"/>Drivers
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="hosts" name="hosts"/>Hosts
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="users" name="users"/>Users
-                </label>
+<div class="container">
+    
+    @if (Model.Status)
+    {
+        <div class="alert alert-success autoclose">
+            Successfully sent the email
+        </div>
+    }
+
+    <div class="page-header">
+        <h3>Email Utility Service</h3>
+    </div>
+
+    @using (Html.BeginForm("EmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl"}))
+    {
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Students)
+                            @Model.PropName(x => x.Students)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Drivers)
+                            @Model.PropName(x => x.Drivers)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Hosts)
+                            @Model.PropName(x => x.Hosts)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Users)
+                            @Model.PropName(x => x.Users)
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="subject" class="control-label col-sm-3">Subject:</label>
-        <div class="col-sm-9">
-            <input id="subject" type="text" name="subject" placeholder="Enter your subject" required="required" class="form-control"/>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Subject)
+            @Html.TextBoxFor(x => x.Subject, new {@class = "form-control", type = "text", placeholder = "Enter subject"})
         </div>
-    </div>
-    <div class="form-group">
-        <label for="text" class="control-label col-sm-3">Text:</label>
-        <div class="col-sm-9">
-            <textarea id="text" type="text" name="text" placeholder="Enter text" rows="10" required="required" class="form-control summernote"></textarea>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Message)
+            @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control summernote", rows = "10"})
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-10">
-            <button type="submit" class="btn btn-primary NaN">Send email</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Send email</button>
         </div>
-    </div>
-</form>
+    }
+</div>
+

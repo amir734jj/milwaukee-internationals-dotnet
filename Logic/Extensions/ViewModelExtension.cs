@@ -6,14 +6,24 @@ using Models.Interfaces;
 
 namespace Logic.Extensions
 {
-    public static class ObjectExtension
+    /// <summary>
+    /// View model extensions
+    /// </summary>
+    public static class ViewModelExtension
     {
-        public static string Name<T>(this Expression<Func<T, object>> obj) where T : IViewModel
+        /// <summary>
+        /// Property name or display name value all via linq
+        /// </summary>
+        /// <param name="_"></param>
+        /// <param name="expression"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static string PropName<T>(this T _, Expression<Func<T, object>> expression) where T : IViewModel
         {
             var info = InfoViaLinq<T>.New()
-                .PropLambda(obj);
+                .PropLambda(expression);
 
-            return info.GetAttribute<DisplayAttribute>().Name ?? info.GetPropertyName();
+            return info.GetAttribute<DisplayAttribute>()?.Name ?? info.GetPropertyName();
         }
     }
 }

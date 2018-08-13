@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Models.Interfaces;
 
 namespace Models.ViewModels
 {
     /// <summary>
     /// Student-Driver mapping all
     /// </summary>
-    public class StudentDriverMappingViewModel
+    public class StudentDriverMappingViewModel : IViewModel
     {
         public IEnumerable<Driver> AvailableDrivers { get; set; }
         

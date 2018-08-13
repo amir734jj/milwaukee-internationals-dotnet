@@ -1,6 +1,8 @@
-﻿namespace Models.ViewModels
+﻿using Models.Interfaces;
+
+namespace Models.ViewModels
 {
-    public class AttendanceViewModel
+    public class AttendanceViewModel : IViewModel
     {
         public int Id { get; set; }
         
