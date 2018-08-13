@@ -16,18 +16,22 @@
     
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th>Fullname</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th class="hidden-xs">Action</th>
-        </tr>
+            <tr>
+                <th>Fullname</th>
+                <th>Country</th>
+                <th>University</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th class="hidden-xs">Action</th>
+            </tr>
         </thead>
         <tbody>
         @foreach (var student in Model)
         {
             <tr>
                 <td>@student.Fullname</td>
+                <td>@student.Country</td>
+                <td>@student.University</td>
                 <td>@student.Email</td>
                 <td>@student.Phone</td>
                 <td class="hidden-xs">
