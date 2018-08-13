@@ -17,7 +17,9 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>DisplayId</th>
                 <th>Fullname</th>
+                <th>Capacity</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th class="hidden-xs">Action</th>
@@ -27,7 +29,9 @@
         @foreach (var driver in Model)
         {
             <tr>
+                <td>@driver.DisplayId</td>
                 <td>@driver.Fullname</td>
+                <td>@driver.Capacity</td>
                 <td>@driver.Email</td>
                 <td>@driver.Phone</td>
                 <td class="hidden-xs">
