@@ -106,16 +106,16 @@ namespace Logic
         {(host.Drivers != null && host.Drivers.Any() ? $@"
             <p>List of drivers and assigned students assigned to your home</p>
             <ul>
-                {host.Drivers.Select(driver => $@"
+                {string.Join(Environment.NewLine, host.Drivers?.Select(driver => $@"
                     <li>
-                        List of drivers and assigned students
+                        <p>Driver fullname: {driver.Fullname}</p>
                         <ul>
-                            {driver.Students?.Select(student => $@"
+                            {string.Join(Environment.NewLine, driver.Students?.Select(student => $@"
                                 <li>{student.Fullname} ({student.Country})</li>
-                            ")}
+                            ") ?? new List<string>())}
                         </ul>
                     </li>
-                ")}
+                "))}
             </ul>
         " : "<p>No driver is assigned to your home.</p>")}
         <br>                                                                    

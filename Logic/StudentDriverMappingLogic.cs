@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DAL.Extensions;
 using DAL.Interfaces;
@@ -105,7 +106,7 @@ namespace Logic
         <p> Your Driver ID:<strong> {driver.DisplayId} </strong></p> 
         <p> Students: </p>                       
         <ul>                                                                    
-            {driver.Students?.Select(student => $"<li>{student.Fullname} ({student.Country})</li>")}                                                    
+            {string.Join(Environment.NewLine, driver.Students?.Select(student => $"<li>{student.Fullname} ({student.Country})</li>") ?? new List<string>())}                                                    
         </ul>                                                                   
         <br>
             {(driver.Host != null ? $@"
