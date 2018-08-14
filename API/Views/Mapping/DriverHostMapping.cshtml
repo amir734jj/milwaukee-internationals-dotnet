@@ -7,74 +7,85 @@
 
 <div class="container">
     <div class="page-header">
-      <h3>Driver-Host Mapping</h3>
+        <h3>Driver-Host Mapping</h3>
     </div>
 
     <div ng-controller="driverHostMappingCtrl" class="row">
-      @* <div class="row pull-right col-md-3"><a ng-click="getAllDriverMappingPDF()" class="btn btn-primary btn-space">Download pdf</a> *@
-      @*   <a ng-click="sendMailToDrivers($event)" data-message="Are you sure to send email?" class="btn btn-primary btn-space">Send Mapping</a> *@
-      @* </div> *@
-      <br/>
-      <div class="col-sm-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Hosts and Assigned Drivers</h3>
-          </div>
-          <div class="panel-body">
-            <div class="container-fluid">
-              <div class="row">
-                <div ng-repeat="host in mappedHosts" class="panel panel-default info-card col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <h4 class="panel-heading info-card-header">{{host.fullname}}
-                        @* <div class="small">(capacity = {{driver.capacity}})</div> *@
-                      </h4>
-                    </div>
-                    <div class="col-sm-12">
-                      <div class="list-group">
-                        <div ng-repeat="driver in host.drivers" ng-class="driver.isPressent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
-                          <div class="pull-left vcenter">{{driver.fullname}}</div><span class="pull-right">
-                            <a ng-click="unmap(driver.id, host.id)" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                          </span>
+
+        <div class="row">
+            <div class="pull-right col-md-3 clearfix">
+                <a ng-click="getAllDriverMappingPDF()" class="btn btn-primary btn-space">Download pdf</a>
+                <a ng-click="sendMailToHosts($event)" class="btn btn-primary btn-space">Send Mapping</a>
+            </div>
+        </div>
+
+        <br/>
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Hosts and Assigned Drivers</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div ng-repeat="host in mappedHosts" class="panel panel-default info-card col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4 class="panel-heading info-card-header">
+                                            {{host.fullname}}
+                                            @* <div class="small">(capacity = {{driver.capacity}})</div> *@
+                                        </h4>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="list-group">
+                                            <div ng-repeat="driver in host.drivers" ng-class="driver.isPressent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
+                                                <div class="pull-left vcenter">{{driver.fullname}}</div>
+                                                <span class="pull-right">
+                                                    <a ng-click="unmap(driver.id, host.id)" class="btn btn-danger pull-right">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div ng-show="!host.drivers.length" class="list-group-item list-group-item-warning">This host does not have any drivers</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div ng-show="!host.drivers.length" class="list-group-item list-group-item-warning">This host does not have any drivers</div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="col-sm-12">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Drivers without Hosts</h3>
-          </div>
-          <div class="panel-body">
-            <div class="list-group">
-              <div class="container-fluid">
-                <div class="row">
-                  <div ng-repeat="driver in availableDrivers" ng-class="driver.isPressent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
-                    
-                    <label>{{driver.fullname}}</label>
-                    
-                    <div class="pull-right">
-                      <div class="form-group form-inline">
-                        <label>Select host: &nbsp;&nbsp;</label>
-                        <select ng-model="driver.hostId" class="form-control">
-                          <option value="{{host.id}}" ng-repeat="host in availableHosts"> {{host.fullname}}</option>
-                        </select>
-                        <a ng-click="map(driver.id, driver.hostId)" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
-                      </div>
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Drivers without Hosts</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div ng-repeat="driver in availableDrivers" ng-class="driver.isPressent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
+
+                                    <label>{{driver.fullname}}</label>
+
+                                    <div class="pull-right">
+                                        <div class="form-group form-inline">
+                                            <label>Select host: &nbsp;&nbsp;</label>
+                                            <select ng-model="driver.hostId" class="form-control">
+                                                <option value="{{host.id}}" ng-repeat="host in availableHosts"> {{host.fullname}}</option>
+                                            </select>
+                                            <a ng-click="map(driver.id, driver.hostId)" class="btn btn-success">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 </div>

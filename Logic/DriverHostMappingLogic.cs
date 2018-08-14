@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using DAL.Extensions;
+using DAL.Interfaces;
 using Logic.Interfaces;
 using Models;
 using Models.Interfaces;
@@ -10,18 +13,22 @@ namespace Logic
     public class DriverHostMappingLogic : IDriverHostMappingLogic
     {
         private readonly IDriverLogic _driverLogic;
-        
+
         private readonly IHostLogic _hostLogic;
+
+        private readonly IEmailServiceApi _emailServiceApi;
 
         /// <summary>
         /// Driver-Host mapping logic
         /// </summary>
         /// <param name="driverLogic"></param>
         /// <param name="hostLogic"></param>
-        public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic)
+        /// <param name="emailServiceApi"></param>
+        public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApi)
         {
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
+            _emailServiceApi = emailServiceApi;
         }
 
         /// <summary>
@@ -36,7 +43,7 @@ namespace Logic
 
             // Initialize the list if it not already initialized
             host.Drivers = host.Drivers ?? new List<Driver>();
-            
+
             // Add the map
             driver.Host = host;
 
@@ -73,7 +80,7 @@ namespace Logic
         {
             var hosts = _hostLogic.GetAll().ToList();
             var drivers = _driverLogic.GetAll().ToList();
-            
+
             // TODO: add check to return only students that are pressent
             return new DriverHostMappingViewModel
             {
@@ -82,6 +89,47 @@ namespace Logic
                 MappedDrivers = drivers.Where(x => x.Host != null),
                 MappedHosts = hosts.Where(x => x.Drivers != null && x.Drivers.Any())
             };
+        }
+
+        /// <summary>
+        /// Emails the mappings to hosts
+        /// </summary>
+        /// <returns></returns>
+        public bool EmailMappings()
+        {
+            string MessageFunc(Host host)
+            {
+                return $@"
+        <p> **This is an automatically generated email** </p>                      
+        <br>                                                                    
+        <p> Hello {host.Fullname},</p>                                                 
+        {(host.Drivers != null && host.Drivers.Any() ? $@"
+            <p>List of drivers and assigned students assigned to your home</p>
+            <ul>
+                {string.Join(Environment.NewLine, host.Drivers?.Select(driver => $@"
+                    <li>
+                        <p>Driver fullname: {driver.Fullname}</p>
+                        <ul>
+                            {string.Join(Environment.NewLine, driver.Students?.Select(student => $@"
+                                <li>{student.Fullname} ({student.Country})</li>
+                            ") ?? new List<string>())}
+                        </ul>
+                    </li>
+                "))}
+            </ul>
+        " : "<p>No driver is assigned to your home.</p>")}
+        <br>                                                                    
+        <br>                                                                    
+        <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
+        <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
+        ";
+            }
+
+            // Send the email to hosts
+            _hostLogic.GetAll().ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+
+            // Return true
+            return true;
         }
     }
 }

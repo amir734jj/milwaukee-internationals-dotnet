@@ -57,5 +57,17 @@ namespace API.Controllers.Api
         {
             return Ok(_driverHostMappingLogic.UnMapDriverToHost(newDriverHostMappingViewModel));
         }
+        
+        /// <summary>
+        /// Email mappings to hosts
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("EmailMappings")]
+        [SwaggerOperation("EmailMappings")]
+        public IActionResult EmailMappings()
+        {
+            return Ok(_driverHostMappingLogic.EmailMappings());
+        }
     }
 }

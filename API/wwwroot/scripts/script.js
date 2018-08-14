@@ -154,7 +154,65 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
-    .controller("studentDriverMappingCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
+
+        $scope.getAllDriverMappingPDF = function() {
+            $http.get("/api/studentDriverMapping/status").then(function(response) {
+                var driverBucket = response.data.mappedDrivers;
+
+                var doc = new jsPDF({
+                    orientation: "l",
+                    lineHeight: 1.5
+                });
+
+                doc.setFont('courier');
+
+                doc.setFontSize(11);
+
+                var subsetAttr = function(attrList, obj) {
+                    return attrList.reduce(function(o, k) {
+                        o[k] = obj[k];
+                        return o;
+                    }, {});
+                };
+
+                driverBucket.map(function(driver, index) {
+                    var str = "";
+
+                    if (driver) {
+                        str += "Driver Name: " + driver.fullname + "\n";
+                        str += "Driver Contact: " + driver.phone + "\n";
+                        str += "Driver Capacity: " + driver.capacity + "\n";
+                        str += "\n";
+                    }
+
+                    if (!driver.students) {
+                        driver.students = [];
+                    }
+                    
+                    str += stringTable.create(driver.students.map(function(driver) {
+                        return subsetAttr(["fullname", "email", "phone", "country", "isPressent"], driver);
+                    }));
+
+                    doc.text(20, 20, str);
+
+                    if (index + 1 < driverBucket.length) {
+                        doc.addPage();
+                    }
+                });
+
+                doc.save("student-driver-mapping.pdf");
+            });
+        };
+
+        $scope.sendMailToDrivers = function($event) {
+            if ($window.confirm("Are you sure to email mappings to drivers?")) {
+                $http.post("/api/studentDriverMapping/EmailMappings").then(function (response) {
+                    $window.alert("Successfully sent the mappings");
+                });
+            }
+        };
+        
         $scope.getStatus = function() {
             return $http.get("/api/studentDriverMapping/status").then(function(response) {
                 var data = response.data;
@@ -278,7 +336,61 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.init();
     }])
-    .controller("driverHostMappingCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
+
+        $scope.getAllDriverMappingPDF = function() {
+            $http.get("/api/driverHostMapping/status").then(function(response) {
+                var hostBucket = response.data.mappedHosts;
+
+                var doc = new jsPDF({
+                    orientation: "l",
+                    lineHeight: 1.5
+                });
+
+                doc.setFont('courier');
+
+                doc.setFontSize(11);
+
+                var subsetAttr = function(attrList, obj) {
+                    return attrList.reduce(function(o, k) {
+                        o[k] = obj[k];
+                        return o;
+                    }, {});
+                };
+
+                hostBucket.map(function(host, index) {
+                    var str = "";
+
+                    if (host) {
+                        str += "Host Name: " + host.fullname + "\n";
+                        str += "Host Address: " + host.address + "\n";
+                        str += "Host Contact: " + host.phone + "\n";
+                        str += "\n";
+                    }
+
+                    str += stringTable.create(host.drivers.map(function(driver) {
+                        return subsetAttr(["fullname", "email", "phone", "capacity", "isPressent"], driver);
+                    }));
+
+                    doc.text(20, 20, str);
+
+                    if (index + 1 < hostBucket.length) {
+                        doc.addPage();
+                    }
+                });
+
+                doc.save("driver-host-mapping.pdf");
+            });
+        };
+
+        $scope.sendMailToHosts = function($event) {
+            if ($window.confirm("Are you sure to email mappings to hosts?")) {
+                $http.post("/api/driverHostMapping/EmailMappings").then(function (response) {
+                    $window.alert("Successfully sent the mappings");
+                });
+            }
+        };
+        
         $scope.getStatus = function() {
             return $http.get("/api/driverHostMapping/status").then(function(response) {
                 var data = response.data;

@@ -9,5 +9,7 @@ namespace Logic.Interfaces
         bool UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel);
 
         StudentDriverMappingViewModel MappingStatus();
+        
+        bool EmailMappings();
     }
 }
