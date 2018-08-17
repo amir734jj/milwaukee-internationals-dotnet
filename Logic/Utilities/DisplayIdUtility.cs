@@ -10,13 +10,14 @@ namespace Logic.Utilities
         /// Generates a display Id
         /// </summary>
         /// <param name="person"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public static string GenerateDisplayId(IPerson person)
+        public static string GenerateDisplayId(IPerson person, int id)
         {
             return string.Join(string.Empty, person.Fullname.Split(" ")
                        .Select(x => x.Trim())
                        .Where(x => !string.IsNullOrWhiteSpace(x))
-                       .Select(x => x.Substring(0, 1))) + "-" + new Random().Next(1, 10);
+                       .Select(x => x.Substring(0, 1))) + "-" + id;
         }
     }
 }

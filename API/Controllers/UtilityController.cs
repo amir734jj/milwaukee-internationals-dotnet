@@ -45,7 +45,7 @@ namespace API.Controllers
         public async Task<IActionResult> EmailAction(EmailFormViewModel emailFormViewModel)
         {
             // Handle the action
-            await _emailUtilityLogic.Handle(emailFormViewModel);
+            await _emailUtilityLogic.HandleAdHocEmail(emailFormViewModel);
 
             return RedirectToAction("Email", new { status = true });
         }
