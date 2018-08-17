@@ -80,7 +80,7 @@ namespace Logic
             // If save was successful
             if (result != null)
             {
-                _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee: Driver registration", $@"
+                _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation", $@"
                     <p>Name: {student.Fullname}</p>       
                     <p>Email: {student.Email}</p>
                     <p>University: {student.University}</p>          
