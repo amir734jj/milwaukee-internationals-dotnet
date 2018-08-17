@@ -86,6 +86,7 @@ namespace DAL.Abstracts
             if (instance != null)
             {
                 GetMapper().Map(updatedInstance, instance);
+                GetDbContext().Update(instance);
                 GetDbContext().SaveChanges();
                 return updatedInstance;
             }

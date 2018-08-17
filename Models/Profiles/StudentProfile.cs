@@ -8,13 +8,10 @@ namespace Models.Profiles
         {
             CreateMap<Student, Student>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
-                .ForMember(x => x.Driver, opt => opt.MapAtRuntime())
                 .ForMember(x => x.DriverRefId, opt =>
                 {
-                    // If driver is not null
-                    opt.Condition(x => x.Driver != null);
-
-                    opt.MapFrom(x => x.Driver.Id);
+                    // If condition
+                    opt.Condition((x, y) => x.DriverRefId != x.Driver?.Id);
                 });
         }
     }
