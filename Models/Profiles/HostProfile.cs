@@ -6,7 +6,7 @@ namespace Models.Profiles
     {
         public HostProfile()
         {
-            CreateMap<Host, Host>().ForMember(x => x.Id, opt => opt.Ignore());;
+            CreateMap<Host, Host>().ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }

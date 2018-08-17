@@ -44,10 +44,10 @@ namespace Logic
             // Initialize the list if it not already initialized
             driver.Students = driver.Students ?? new List<Student>();
             
-            // Add the map
+            // Add the map to student
             student.Driver = driver;
 
-            // Save changes
+            // Save changes to student
             _studentLogic.Update(student.Id, student);
 
             return true;
@@ -63,10 +63,10 @@ namespace Logic
             var driver = _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
             var student = _studentLogic.Get(newStudentDriverMappingViewModel.StudentId);
 
-            // Initialize the list if it not already initialized
+            // Remove the map from student
             student.Driver = null;
 
-            // Save changes
+            // Save changes to student
             _studentLogic.Update(student.Id, student);
             
             return true;

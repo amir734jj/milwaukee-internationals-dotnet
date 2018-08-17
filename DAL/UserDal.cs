@@ -40,6 +40,6 @@ namespace DAL
         /// Returns students entity
         /// </summary>
         /// <returns></returns>
-        public override DbSet<User> GetDbSet() => _dbContext.Users;
+        protected override DbSet<User> GetDbSet() => _dbContext.Users;
     }
 }

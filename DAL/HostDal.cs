@@ -40,6 +40,6 @@ namespace DAL
         /// Returns hosts entity
         /// </summary>
         /// <returns></returns>
-        public override DbSet<Host> GetDbSet() => _dbContext.Hosts;
+        protected override DbSet<Host> GetDbSet() => _dbContext.Hosts;
     }
 }

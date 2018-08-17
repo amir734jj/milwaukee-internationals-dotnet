@@ -44,11 +44,11 @@ namespace Logic
             // Initialize the list if it not already initialized
             host.Drivers = host.Drivers ?? new List<Driver>();
 
-            // Add the map
+            // Add the map to driver
             driver.Host = host;
-
-            // Save changes
-            _driverLogic.Update(driver.Id, driver);
+            
+            // Add the map to host
+            host.Drivers.Add(driver);
 
             return true;
         }
@@ -63,10 +63,10 @@ namespace Logic
             var driver = _driverLogic.Get(newDriverHostMappingViewModel.DriverId);
             var host = _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
-            // Add the map
+            // Remove the map from driver
             driver.Host = null;
 
-            // Save changes
+            // Save changes to driver
             _driverLogic.Update(driver.Id, driver);
 
             return true;

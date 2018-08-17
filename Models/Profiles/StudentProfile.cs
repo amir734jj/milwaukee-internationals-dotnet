@@ -6,7 +6,9 @@ namespace Models.Profiles
     {
         public StudentProfile()
         {
-            CreateMap<Student, Student>().ForMember(x => x.Id, opt => opt.Ignore());;
+            CreateMap<Student, Student>()
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.DriverRefId, opt => opt.MapFrom(x => x.Driver.Id));
         }
     }
 }
