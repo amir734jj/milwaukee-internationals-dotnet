@@ -34,9 +34,18 @@ namespace Logic
         public override Student Save(Student instance)
         {
             // TODO: make this faster
-            instance.DisplayId = GenerateDisplayId(instance, _studentDal.GetAll().Select(x => x.Id).Max() + 1);
+            instance.DisplayId = "Null";
             
-            return base.Save(instance);
+            // Save student
+            var retVal = base.Save(instance);
+            
+            // Set the display id
+            instance.DisplayId = GenerateDisplayId(instance, instance.Id);
+
+            // Update
+            Update(instance.Id, instance);
+
+            return retVal;
         }
     }
 }

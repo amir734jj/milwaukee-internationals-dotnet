@@ -7,7 +7,7 @@
 
 <div class="container" ng-controller="studentListCtrl">
     <div class="page-header">
-        <h3>List of Students</h3>
+        <h3>List of Students (@Model.Count())</h3>
         
         <div class="clearfix">
             <button class="btn btn-default pull-right" ng-click="getAllStudentsPDF()">Download PDF</button>
@@ -20,8 +20,11 @@
                 <th>Fullname</th>
                 <th>Country</th>
                 <th>University</th>
+                <th>Major</th>
+                <th>Interest</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Kosher</th>
                 <th class="hidden-xs">Action</th>
             </tr>
         </thead>
@@ -32,8 +35,11 @@
                 <td>@student.Fullname</td>
                 <td>@student.Country</td>
                 <td>@student.University</td>
+                <td>@student.Major</td>
+                <td>@student.Interests</td>
                 <td>@student.Email</td>
                 <td>@student.Phone</td>
+                <td>@student.KosherFood</td>
                 <td class="hidden-xs">
                     <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
                 </td>

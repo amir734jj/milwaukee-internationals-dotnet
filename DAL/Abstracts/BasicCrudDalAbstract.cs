@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using DAL.Extensions;
@@ -79,7 +79,7 @@ namespace DAL.Abstracts
         /// <param name="updatedInstance"></param>
         /// <returns></returns>
         public virtual T Update(int id, T updatedInstance)
-        {
+        {   
             var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
             if (instance != null)

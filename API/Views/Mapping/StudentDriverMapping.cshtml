@@ -13,7 +13,8 @@
     <div ng-controller="studentDriverMappingCtrl" class="row">
       
       <div class="row">
-        <div class="pull-right col-md-3 clearfix">
+        <div class="pull-right col-md-4 clearfix">
+          <toggle ng-model="showPresentOnly" ng-change="togglePressentStudents(showPresentOnly)" on="Show present" off="Show all" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
           <a ng-click="getAllDriverMappingPDF()" class="btn btn-primary btn-space">Download pdf</a>
           <a ng-click="sendMailToDrivers($event)" class="btn btn-primary btn-space">Send Mapping</a>
         </div>

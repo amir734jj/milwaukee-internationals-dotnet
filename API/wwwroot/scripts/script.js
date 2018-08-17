@@ -52,7 +52,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                     var str = stringTable.create(temparray.map(function (student) {
                         student.fullname = student.fullname.substring(0, 30);
-                        return subsetAttr(["fullname", "country", "email", "university", "isPressent"], student);
+                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "totalFamilyMembers", "isPressent"], student);
                     }));
 
                     doc.text(20, 20, str);
@@ -92,7 +92,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     temparray = drivers.slice(i, i + chunk);
 
                     var str = stringTable.create(temparray.map(function (driver) {
-                        return subsetAttr(["displayId", "fullname", "email", "phone", "capacity"], driver);
+                        
+                        // Set the navigator for the PDF
+                        driver.navigator = (driver.navigator || driver.navigator === "null") ? driver.navigator : "-";
+                        
+                        return subsetAttr(["displayId", "fullname", "capacity", "navigator"], driver);
                     }));
 
                     if (i === 0) {
@@ -156,6 +160,18 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     }])
     .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
 
+        $scope.showPresentOnly = false;
+        
+        $scope.togglePressentStudents = function(flag) {
+            if (flag) {
+                $scope.availableStudents = $scope.rawAvailableStudents.filter(function (student) {
+                    return student.isPressent;
+                });
+            } else {
+                $scope.availableStudents = $scope.rawAvailableStudents;
+            }
+        };
+        
         $scope.getAllDriverMappingPDF = function() {
             $http.get("/api/studentDriverMapping/status").then(function(response) {
                 var driverBucket = response.data.mappedDrivers;
@@ -218,6 +234,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 var data = response.data;
                 $scope.availableDrivers = data.availableDrivers;
                 $scope.availableStudents = data.availableStudents;
+                $scope.rawAvailableStudents = $scope.availableStudents;
                 $scope.mappedDrivers = data.mappedDrivers;
             });
         };

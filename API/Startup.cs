@@ -5,11 +5,13 @@ using System.Reflection;
 using API.Attributes;
 using API.Extensions;
 using AutoMapper;
+using DAL.Extensions;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using Logic;
 using Logic.Interfaces;
+using Logic.Utilities;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -197,6 +199,28 @@ namespace API
             _container.GetInstance<EntityDbContext>();
             
             Console.WriteLine("Application Started!");
+
+            var driverLogic = _container.GetInstance<IDriverLogic>();
+            
+            driverLogic.GetAll().ForEach(instance =>
+            {
+                // Set the display id
+                instance.DisplayId = DisplayIdUtility.GenerateDisplayId(instance, instance.Id);
+
+                // Update
+                driverLogic.Update(instance.Id, instance);
+            });
+            
+/*            var studentLogic = _container.GetInstance<IStudentLogic>();
+            
+            studentLogic.GetAll().ForEach(instance =>
+            {
+                // Set the display id
+                instance.DisplayId = DisplayIdUtility.GenerateDisplayId(instance, instance.Id);
+
+                // Update
+                studentLogic.Update(instance.Id, instance);
+            });*/
         }
     }
 }

@@ -84,7 +84,7 @@ namespace Logic
             // TODO: add check to return only students that are pressent
             return new StudentDriverMappingViewModel
             {
-                AvailableStudents = students.Where(x => x.Driver == null & x.IsPressent),
+                AvailableStudents = students.Where(x => x.Driver == null),
                 AvailableDrivers = drivers.Where(x => x.Capacity >= (x.Students ?? new List<Student>()).Count),
                 MappedDrivers = drivers.Where(x => x.Students != null && x.Students.Any()),
                 MappedStudents = students.Where(x => x.Driver != null)
