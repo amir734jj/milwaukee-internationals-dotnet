@@ -17,6 +17,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>DisplayId</th>
                 <th>Fullname</th>
                 <th>Capacity</th>
@@ -29,6 +30,7 @@
         @foreach (var driver in Model)
         {
             <tr>
+                <td>@driver.Id</td>
                 <td>@driver.DisplayId</td>
                 <td>@driver.Fullname</td>
                 <td>@driver.Capacity</td>
