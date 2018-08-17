@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using Models.Interfaces;
 
 namespace DAL.Abstracts
@@ -73,24 +75,30 @@ namespace DAL.Abstracts
         }
 
         /// <summary>
-        /// Updates enity given the id and new instance
+        /// Update entity
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="instance"></param>
         /// <param name="updatedInstance"></param>
         /// <returns></returns>
-        public virtual T Update(int id, T updatedInstance)
-        {   
-            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
-
+        public virtual T Update(int id, T instance, T updatedInstance)
+        {
             if (instance != null)
             {
-                instance = GetMapper().Map(updatedInstance, instance);
-                GetDbSet().Update(instance);
+                GetMapper().Map(updatedInstance, instance);
                 GetDbContext().SaveChanges();
                 return updatedInstance;
             }
 
             return null;
-        }        
+        }
+
+        /// <summary>    
+        /// Updates entity given the id and updated instance
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedInstance"></param>
+        /// <returns></returns>
+        public virtual T Update(int id, T updatedInstance) => Update(id, Get(id), updatedInstance);
     }
 }

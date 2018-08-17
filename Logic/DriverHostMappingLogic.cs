@@ -41,15 +41,12 @@ namespace Logic
             var driver = _driverLogic.Get(newDriverHostMappingViewModel.DriverId);
             var host = _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
-            // Initialize the list if it not already initialized
-            host.Drivers = host.Drivers ?? new List<Driver>();
-
             // Add the map to driver
             driver.Host = host;
-            
-            // Add the map to host
-            host.Drivers.Add(driver);
 
+            // Update driver
+            _driverLogic.Update(driver.Id, driver);
+            
             return true;
         }
 
