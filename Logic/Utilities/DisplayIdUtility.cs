@@ -14,10 +14,10 @@ namespace Logic.Utilities
         /// <returns></returns>
         public static string GenerateDisplayId(IPerson person, int id)
         {
-            return string.Join(string.Empty, person.Fullname.Split(" ")
+            return (string.Join(string.Empty, person.Fullname.Split(" ")
                        .Select(x => x.Trim())
                        .Where(x => !string.IsNullOrWhiteSpace(x))
-                       .Select(x => x.Substring(0, 1))) + "-" + id;
+                       .Select(x => x.Substring(0, 1))) + "-" + id).ToUpper();
         }
     }
 }
