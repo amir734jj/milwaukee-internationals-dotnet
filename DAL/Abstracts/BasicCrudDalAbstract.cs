@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using DAL.Extensions;
 using DAL.Interfaces;
+using EntityFramework.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.Interfaces;
@@ -81,8 +82,10 @@ namespace DAL.Abstracts
         /// <param name="instance"></param>
         /// <param name="updatedInstance"></param>
         /// <returns></returns>
-        public virtual T Update(int id, T instance, T updatedInstance)
+        private T Update(int id, T instance, T updatedInstance)
         {
+            GetDbSet().Update(updatedInstance);
+            
             if (instance != null)
             {
                 GetMapper().Map(updatedInstance, instance);

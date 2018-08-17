@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
@@ -41,5 +42,12 @@ namespace DAL
         /// </summary>
         /// <returns></returns>
         protected override DbSet<Host> GetDbSet() => _dbContext.Hosts;
+        
+        /// <summary>
+        /// Override to include related entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public override Host Get(int id) => GetDbSet().Include(x => x.Drivers).FirstOrDefault();
     }
 }

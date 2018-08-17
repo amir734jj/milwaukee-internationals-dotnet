@@ -46,6 +46,7 @@ namespace Logic
             
             // Add the map to student
             student.Driver = driver;
+            student.DriverRefId = driver.Id;
 
             // Save changes to student
             _studentLogic.Update(student.Id, student);
@@ -65,6 +66,7 @@ namespace Logic
 
             // Remove the map from student
             student.Driver = null;
+            student.DriverRefId = null;
 
             // Save changes to student
             _studentLogic.Update(student.Id, student);

@@ -45,16 +45,10 @@ namespace DAL
         protected override DbSet<Driver> GetDbSet() => _dbContext.Drivers;
 
         /// <summary>
-        /// Update while eager loading the PK/FK
+        /// Override to include related entity
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="updatedInstance"></param>
         /// <returns></returns>
-        public override Driver Update(int id, Driver updatedInstance)
-        {
-            var instance = GetDbSet().Include(x => x.Host).FirstOrDefault(x => x.Id == id);
-            
-            return base.Update(id, instance, updatedInstance);
-        }
+        public override Driver Get(int id) => GetDbSet().Include(x => x.Host).FirstOrDefault();
     }
 }

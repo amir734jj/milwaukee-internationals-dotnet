@@ -43,18 +43,12 @@ namespace DAL
         /// </summary>
         /// <returns></returns>
         protected override DbSet<Student> GetDbSet() => _dbContext.Students;
-        
+
         /// <summary>
-        /// Update while eager loading the PK/FK
+        /// Override to include related entity
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="updatedInstance"></param>
         /// <returns></returns>
-        public override Student Update(int id, Student updatedInstance)
-        {
-            var instance = GetDbSet().Include(x => x.Driver).FirstOrDefault(x => x.Id == id);
-            
-            return base.Update(id, instance, updatedInstance);
-        }
+        public override Student Get(int id) => GetDbSet().Include(x => x.Driver).FirstOrDefault();
     }
 }

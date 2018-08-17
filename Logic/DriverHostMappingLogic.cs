@@ -43,6 +43,7 @@ namespace Logic
 
             // Add the map to driver
             driver.Host = host;
+            driver.HostRefId = host.Id;
 
             // Update driver
             _driverLogic.Update(driver.Id, driver);
@@ -62,6 +63,7 @@ namespace Logic
 
             // Remove the map from driver
             driver.Host = null;
+            driver.HostRefId = null;
 
             // Save changes to driver
             _driverLogic.Update(driver.Id, driver);
