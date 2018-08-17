@@ -6,7 +6,9 @@ namespace Models.Profiles
     {
         public DriverProfile()
         {
-            CreateMap<Driver, Driver>().ForMember(x => x.Id, opt => opt.Ignore());;
+            CreateMap<Driver, Driver>()
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.HostRefId, opt => opt.MapFrom(x => x.Host.Id));
         }
     }
 }
