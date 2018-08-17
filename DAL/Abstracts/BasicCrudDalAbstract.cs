@@ -8,7 +8,7 @@ using Models.Interfaces;
 
 namespace DAL.Abstracts
 {
-    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel
+    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel, IPerson
     {
         /// <summary>
         /// Abstract to get IMapper
@@ -26,13 +26,13 @@ namespace DAL.Abstracts
         /// Abstract to get entity set
         /// </summary>
         /// <returns></returns>
-        public abstract DbSet<T> GetDbSet();
-        
+        protected abstract DbSet<T> GetDbSet();
+
         /// <summary>
         /// Returns all enities
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll() => GetDbSet().ToList();
+        public virtual IEnumerable<T> GetAll() => GetDbSet().OrderBy(x => x.Fullname).ToList();
 
         /// <summary>
         /// Returns an entity given the id
