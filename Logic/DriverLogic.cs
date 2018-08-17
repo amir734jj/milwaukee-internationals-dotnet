@@ -1,4 +1,5 @@
-﻿using DAL.Interfaces;
+﻿using System.Linq;
+using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models;
@@ -32,7 +33,8 @@ namespace Logic
         /// <returns></returns>
         public override Driver Save(Driver instance)
         {
-            instance.DisplayId = GenerateDisplayId(instance);
+            // TODO: make this faster
+            instance.DisplayId = GenerateDisplayId(instance, _driverDal.GetAll().Select(x => x.Id).Max() + 1);
             
             return base.Save(instance);
         }

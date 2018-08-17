@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Models.Enums;
 using Models.ViewModels;
 
 namespace Logic
@@ -37,7 +39,7 @@ namespace Logic
         /// </summary>
         /// <param name="emailFormViewModel"></param>
         /// <returns></returns>
-        public async Task<bool> Handle(EmailFormViewModel emailFormViewModel)
+        public async Task<bool> HandleAdHocEmail(EmailFormViewModel emailFormViewModel)
         {
             var emailAddresses = new List<string>();
 
@@ -70,6 +72,39 @@ namespace Logic
 
             // Send the eamil
             await _emailServiceApiApi.SendEmailAsync(emailAddresses, emailFormViewModel.Subject, emailFormViewModel.Message);
+
+            return true;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="entitiesEnum"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id)
+        {
+            switch (entitiesEnum)
+            {
+                case EntitiesEnum.User:
+                    break;
+                case EntitiesEnum.Student:
+                    break;
+                case EntitiesEnum.Driver:
+                    // Get the driver by id
+                    var driver = _driverLogic.Get(id);
+                    
+                    // Set attendance to true
+                    driver.IsPressent = true;
+
+                    // Update the driver
+                    _driverLogic.Update(id, driver);
+                    break;
+                case EntitiesEnum.Host:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(entitiesEnum), entitiesEnum, null);
+            }
 
             return true;
         }
