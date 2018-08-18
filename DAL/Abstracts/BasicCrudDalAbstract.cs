@@ -81,7 +81,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public T Update(int id, T instance)
         {
-            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
                 
             if (entity != null)
             {
@@ -111,7 +111,7 @@ namespace DAL.Abstracts
         /// <exception cref="NotImplementedException"></exception>
         public T Update(int id, Action<T> modifyAction)
         {            
-            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
                 
             if (entity != null)
             {

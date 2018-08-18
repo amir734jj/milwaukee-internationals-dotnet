@@ -9,5 +9,9 @@ namespace Logic.Interfaces
         bool StudentSetAttendance(AttendanceViewModel attendanceViewModel);
         
         bool DriverSetAttendance(AttendanceViewModel attendanceViewModel);
+
+        bool HandleStudentSendCheckIn();
+
+        bool HandleDriverSendCheckIn();
     }
 }

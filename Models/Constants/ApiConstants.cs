@@ -18,5 +18,9 @@ namespace Models.Constants
         public const string Password = "Password";
 
         public const string InviteCode = "Tour2018";
+
+        public const string WebSiteUrl = "http://milwaukeeinternationals.com";
+        
+        public const string WebSiteApiUrl = "http://milwaukeeinternationals.com/api";
     }
 }

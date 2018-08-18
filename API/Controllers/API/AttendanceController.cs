@@ -44,5 +44,29 @@ namespace API.Controllers.Api
         {
             return Ok(_attendanceLogic.DriverSetAttendance(attendanceViewModel));
         }
+        
+        /// <summary>
+        /// Send check-in email to drivers
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Driver/SendCheckIn")]
+        [SwaggerOperation("DriverSendCheckIn")]
+        public IActionResult DriverSendCheckIn()
+        {
+            return Ok(_attendanceLogic.HandleDriverSendCheckIn());
+        }
+        
+        /// <summary>
+        /// Send check-in email to students
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Student/SendCheckIn")]
+        [SwaggerOperation("StudentSendCheckIn")]
+        public IActionResult StudentSendCheckIn()
+        {
+            return Ok(_attendanceLogic.HandleStudentSendCheckIn());
+        }
     }
 }

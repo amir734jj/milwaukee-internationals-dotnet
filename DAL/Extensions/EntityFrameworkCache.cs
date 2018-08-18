@@ -10,7 +10,7 @@ namespace DAL.Extensions
         public static TEntity FirstOrDefaultCache<TEntity>(this DbSet<TEntity> queryable, Expression<Func<TEntity, bool>> condition) 
             where TEntity : class
         {
-            return queryable.FirstOrDefault(condition);
+            return queryable.Local.FirstOrDefault(condition.Compile()) ?? queryable.FirstOrDefault(condition);
         }
     }
 }
