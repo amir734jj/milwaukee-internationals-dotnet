@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DAL.Interfaces
 {
@@ -12,6 +13,8 @@ namespace DAL.Interfaces
         
         T Delete(int id);
 
-        T Update(int id, T updatedInstance);
+        T Update(int id, T instance);
+        
+        T Update(int id, Action<T> modifyAction);
     }
 }

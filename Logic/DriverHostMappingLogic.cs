@@ -38,19 +38,15 @@ namespace Logic
         /// <returns></returns>
         public bool MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
-            var driver = _driverLogic.Get(newDriverHostMappingViewModel.DriverId);
             var host = _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
-            // Initialize the list if it not already initialized
-            host.Drivers = host.Drivers ?? new List<Driver>();
-
-            // Add the map to driver
-            driver.Host = host;
-            
-            // Add the map to host
-            host.Drivers.Add(driver);
-
-            return true;
+            // Save changes to driver
+            return _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            {
+                // Add map
+                x.Host = host;
+                x.HostRefId = host.Id;
+            }) != null;
         }
 
         /// <summary>
@@ -60,16 +56,13 @@ namespace Logic
         /// <returns></returns>
         public bool UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
-            var driver = _driverLogic.Get(newDriverHostMappingViewModel.DriverId);
-            var host = _hostLogic.Get(newDriverHostMappingViewModel.HostId);
-
-            // Remove the map from driver
-            driver.Host = null;
-
             // Save changes to driver
-            _driverLogic.Update(driver.Id, driver);
-
-            return true;
+            return _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            {
+                // Remove map
+                x.Host = null;
+                x.HostRefId = null;
+            }) != null;
         }
 
         /// <summary>

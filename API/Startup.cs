@@ -140,14 +140,15 @@ namespace API
                 {
                     if (_env.IsLocalhost())
                     {
-                        builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));    
+                        builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
                     }
                     else
                     {
-                        builder.UseNpgsql(ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
-                                          ?? throw new Exception("DATABASE_URL is null"));
+                        builder.UseNpgsql(
+                            ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                            ?? throw new Exception("DATABASE_URL is null"));
                     }
-                })).Singleton();
+                })).Transient();
 
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())

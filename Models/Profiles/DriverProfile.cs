@@ -8,7 +8,13 @@ namespace Models.Profiles
         {
             CreateMap<Driver, Driver>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
-                .ForMember(x => x.HostRefId, opt => opt.MapFrom(x => x.Host.Id));
+                .ForMember(x => x.Host, opt => opt.Ignore())
+                .ForMember(x => x.HostRefId, opt => opt.Ignore())
+                .BeforeMap((source, destination) =>
+                {
+                    destination.HostRefId = source.HostRefId;
+                    destination.Host = source.Host;
+                });
         }
     }
 }

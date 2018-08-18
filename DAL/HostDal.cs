@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
@@ -28,18 +29,25 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        public override IMapper GetMapper() => _mapper;
+        protected override IMapper GetMapper() => _mapper;
         
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        public override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext() => _dbContext;
 
         /// <summary>
         /// Returns hosts entity
         /// </summary>
         /// <returns></returns>
         protected override DbSet<Host> GetDbSet() => _dbContext.Hosts;
+        
+        /// <summary>
+        /// Override to include related entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public override Host Get(int id) => GetDbSet().Include(x => x.Drivers).FirstOrDefault();
     }
 }

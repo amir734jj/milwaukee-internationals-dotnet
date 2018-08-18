@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -14,13 +15,13 @@ namespace DAL.Abstracts
         /// Abstract to get IMapper
         /// </summary>
         /// <returns></returns>
-        public abstract IMapper GetMapper();
+        protected abstract IMapper GetMapper();
         
         /// <summary>
         /// Abstract to get database context
         /// </summary>
         /// <returns></returns>
-        public abstract DbContext GetDbContext();
+        protected abstract DbContext GetDbContext();
         
         /// <summary>
         /// Abstract to get entity set
@@ -73,24 +74,59 @@ namespace DAL.Abstracts
         }
 
         /// <summary>
-        /// Updates enity given the id and new instance
+        /// Handles update
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="updatedInstance"></param>
+        /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual T Update(int id, T updatedInstance)
-        {   
-            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
-
-            if (instance != null)
+        public T Update(int id, T instance)
+        {
+            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
+                
+            if (entity != null)
             {
-                instance = GetMapper().Map(updatedInstance, instance);
-                GetDbSet().Update(instance);
+                // Being tracking
+                GetDbContext().Update(entity);
+
+                // Update
+                GetMapper().Map(instance, entity);
+                    
+                // Save and dispose
                 GetDbContext().SaveChanges();
-                return updatedInstance;
+
+                // Returns the updated entity
+                return instance;
             }
 
+            // Not found
             return null;
-        }        
+        }
+
+        /// <summary>
+        /// Handles manual update
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="modifyAction"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public T Update(int id, Action<T> modifyAction)
+        {            
+            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
+                
+            if (entity != null)
+            {
+                // Update
+                modifyAction(entity);
+                    
+                // Save and dispose
+                GetDbContext().SaveChanges();
+
+                // Returns the updated entity
+                return entity;
+            }
+
+            // Not found
+            return null;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Logic.Interfaces
 {
@@ -13,5 +14,7 @@ namespace Logic.Interfaces
         T Delete(int id);
 
         T Update(int id, T updatedInstance);
+        
+        T Update(int id, Action<T> modifyAction);
     }
 }
