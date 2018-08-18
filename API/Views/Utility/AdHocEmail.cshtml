@@ -3,7 +3,7 @@
 @model EmailFormViewModel
 
 @{
-    ViewBag.Title = "Email Utility";
+    ViewBag.Title = "Email AdHoc Utility";
     Layout = "_Layout";
 }
 
@@ -20,7 +20,7 @@
         <h3>Email Utility Service</h3>
     </div>
 
-    @using (Html.BeginForm("EmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl"}))
+    @using (Html.BeginForm("AdHocEmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl"}))
     {
         <div class="form-group">
             <div class="row">

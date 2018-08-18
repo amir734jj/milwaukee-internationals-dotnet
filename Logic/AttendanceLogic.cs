@@ -1,4 +1,8 @@
-﻿using Logic.Interfaces;
+﻿using System.Linq;
+using DAL.Extensions;
+using DAL.Interfaces;
+using Logic.Interfaces;
+using Models.Constants;
 using Models.ViewModels;
 
 namespace Logic
@@ -8,16 +12,20 @@ namespace Logic
         private readonly IStudentLogic _studentLogic;
         
         private readonly IDriverLogic _driverLogic;
+        
+        private readonly IEmailServiceApi _emailServiceApi;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
-        public AttendanceLogic(IStudentLogic studentLogic, IDriverLogic driverLogic)
+        /// <param name="emailServiceApi"></param>
+        public AttendanceLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApi)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
+            _emailServiceApi = emailServiceApi;
         }
         
         /// <summary>
@@ -48,6 +56,50 @@ namespace Logic
             {
                 // Set attendance
                 x.IsPressent = attendanceViewModel.Attendance;
+            });
+
+            return true;
+        }
+
+        /// <summary>
+        /// Handles sending email to students so they check-in
+        /// </summary>
+        /// <returns></returns>
+        public bool HandleStudentSendCheckIn()
+        {
+            _studentLogic.GetAll().ForEach(x =>
+            {
+                var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
+                
+                _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
+                    <h4>Please use this link to check-in</h4>
+                    <br>
+                    <p><a href=""{url}"">Link</a> ({url})</p>
+                    <br>
+                    <p>Thank you</p>
+                ");
+            });
+            
+            return true;
+        }
+
+        /// <summary>
+        /// Handles sending email to drivers so they check-in
+        /// </summary>
+        /// <returns></returns>
+        public bool HandleDriverSendCheckIn()
+        {
+            _driverLogic.GetAll().ForEach(x =>
+            {
+                var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
+                
+                _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
+                    <h4>Please use this link to check-in</h4>
+                    <br>
+                    <p><a href=""{url}"">Link</a> ({url})</p>
+                    <br>
+                    <p>Thank you</p>
+                ");
             });
 
             return true;

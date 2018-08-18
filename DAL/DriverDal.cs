@@ -49,6 +49,6 @@ namespace DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public override Driver Get(int id) => GetDbSet().Include(x => x.Host).FirstOrDefault();
+        public override Driver Get(int id) => GetDbSet().Include(x => x.Host).FirstOrDefault(x => x.Id == id);
     }
 }

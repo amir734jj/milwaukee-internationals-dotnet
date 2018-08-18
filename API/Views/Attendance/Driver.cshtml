@@ -5,12 +5,15 @@
     Layout = "_Layout";
 }
 
-<div class="container">
+<div class="container" ng-controller="driverAttendanceCtrl">
     <div class="page-header">
         <h3>Driver Attendance</h3>
+        <div class="clearfix">
+            <button class="btn btn-primary pull-right" ng-click="checkInViaEmail()">Send Check-In via email</button>
+        </div>
     </div>
 
-    <div ng-controller="driverAttendanceCtrl">
+    <div>
         <form>
             <div class="form-group">
                 <label for="fullname">Fullname:</label>
