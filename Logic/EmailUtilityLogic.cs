@@ -77,30 +77,29 @@ namespace Logic
         }
 
         /// <summary>
-        /// TODO
+        /// Check-In all via an email
         /// </summary>
         /// <param name="entitiesEnum"></param>
         /// <param name="id"></param>
+        /// <param name="present"></param>
         /// <returns></returns>
-        public bool HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id)
+        public bool HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present)
         {
             switch (entitiesEnum)
             {
-                case EntitiesEnum.User:
-                    break;
                 case EntitiesEnum.Student:
+                    _studentLogic.Update(id, student =>
+                    {
+                        // Checked-in
+                        student.IsPressent = present;
+                    });
                     break;
                 case EntitiesEnum.Driver:
-                    // Get the driver by id
-                    var driver = _driverLogic.Get(id);
-                    
-                    // Set attendance to true
-                    driver.IsPressent = true;
-
-                    // Update the driver
-                    _driverLogic.Update(id, driver);
-                    break;
-                case EntitiesEnum.Host:
+                    _driverLogic.Update(id, driver =>
+                    {
+                        // Checked-in
+                        driver.IsPressent = present;
+                    });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(entitiesEnum), entitiesEnum, null);

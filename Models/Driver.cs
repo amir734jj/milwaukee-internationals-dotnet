@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Models.Enums;
 using Models.Interfaces;
+using HashCode = Invio.Hashing.HashCode;
 
 namespace Models
 {
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
     public class Driver : IPerson
     {
         [Key]
@@ -47,5 +51,19 @@ namespace Models
         public Host Host { get; set; }
         
         public bool IsPressent { get; set; }
+
+        /// <summary>
+        /// Override generate hashcode
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return Math.Abs(HashCode.From(
+                HashCode.From(Id),
+                HashCode.FromSet(Email),
+                HashCode.FromSet(Phone),
+                HashCode.FromSet(Fullname)
+            ));
+        }
     }
 }

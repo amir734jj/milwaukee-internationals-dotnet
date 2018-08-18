@@ -9,10 +9,17 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         // Start the text editor
         angular.element('.summernote').summernote();
     }])
-    .controller('driverRegistrationCtrl', ['$scope', function () {
+    .controller("emailCheckInCtrl", ['$scope', '$http', function ($scope, $http) {
+        $scope.changeAttendance = function (type, id, value) {
+            return $http.post("/utility/emailCheckInAction/" + type + "/" + id + "?present=" + value).then(function () { 
+               console.log("Updated the attendance"); 
+            });
+        };
+    }])
+    .controller('driverRegistrationCtrl', ['$scope', function ($scope) {
 
     }])
-    .controller("studentRegistrationCtrl", ['$scope', function () {
+    .controller("studentRegistrationCtrl", ['$scope', function ($scope) {
 
     }])
     .controller('userRegistrationCtrl', ['$scope', function ($scope) {
@@ -264,7 +271,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         
         $scope.init();
     }])
-    .controller("studentAttendanceCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("studentAttendanceCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
         $scope.countries = ["All Countries"];
         $scope.students = [];
         $scope.allStudents = [];
@@ -272,7 +279,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.country = "All Countries";
         $scope.attendanceFilter = "all";
         $scope.fullname = "";
-        
+
+        $scope.checkInViaEmail = function() {
+            if ($window.confirm("Are you sure to send check-in via email to students?")) {
+                return $http.post("/api/attendance/student/sendCheckIn").then(function () {
+                    alert("Check-in via email is sent to students");
+                });
+            }
+        };
         
         $scope.getAllStudents = function () {
             return $http.get("/api/student").then(function (response) {
@@ -442,13 +456,20 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.init();
     }])
-    .controller("driverAttendanceCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("driverAttendanceCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
         $scope.drivers = [];
         $scope.allDrivers = [];
         
         $scope.attendanceFilter = "all";
         $scope.fullname = "";
 
+        $scope.checkInViaEmail = function() {
+            if ($window.confirm("Are you sure to send check-in via email to drivers?")) {
+                return $http.post("/api/attendance/driver/sendCheckIn").then(function () {
+                    alert("Check-in via email is sent to drivers");
+                });
+            }
+        };
 
         $scope.getAllDrivers = function () {
             return $http.get("/api/driver").then(function (response) {
