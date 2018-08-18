@@ -27,12 +27,11 @@ namespace Logic
         /// <returns></returns>
         public bool StudentSetAttendance(AttendanceViewModel attendanceViewModel)
         {
-            var student = _studentLogic.Get(attendanceViewModel.Id);
-
-            // Set attendance
-            student.IsPressent = attendanceViewModel.Attendance;
-
-            _studentLogic.Update(student.Id, student);
+            _studentLogic.Update(attendanceViewModel.Id, x =>
+            {
+                // Set attendance
+                x.IsPressent = attendanceViewModel.Attendance;
+            });
 
             return true;
         }
@@ -44,12 +43,12 @@ namespace Logic
         /// <returns></returns>
         public bool DriverSetAttendance(AttendanceViewModel attendanceViewModel)
         {
-            var driver = _driverLogic.Get(attendanceViewModel.Id);
-
             // Set attendance
-            driver.IsPressent = attendanceViewModel.Attendance;
-
-            _driverLogic.Update(driver.Id, driver);
+            _driverLogic.Update(attendanceViewModel.Id, x =>
+            {
+                // Set attendance
+                x.IsPressent = attendanceViewModel.Attendance;
+            });
 
             return true;
         }

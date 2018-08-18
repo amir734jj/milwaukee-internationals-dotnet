@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DAL.Interfaces;
 using Logic.Interfaces;
 
@@ -46,5 +47,14 @@ namespace Logic.Abstracts
         /// <param name="updatedInstance"></param>
         /// <returns></returns>
         public virtual T Update(int id, T updatedInstance) => GetBasicCrudDal().Update(id, updatedInstance);
+
+        /// <summary>
+        /// Call forwarding
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="modifyAction"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public T Update(int id, Action<T> modifyAction) => GetBasicCrudDal().Update(id, modifyAction);
     }
 }

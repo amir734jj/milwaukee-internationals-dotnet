@@ -29,13 +29,13 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        public override IMapper GetMapper() => _mapper;
+        protected override IMapper GetMapper() => _mapper;
         
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        public override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext() => _dbContext;
 
         /// <summary>
         /// Returns hosts entity

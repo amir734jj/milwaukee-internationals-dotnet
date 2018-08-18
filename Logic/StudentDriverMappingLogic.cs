@@ -39,19 +39,14 @@ namespace Logic
         public bool MapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {
             var driver = _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
-            var student = _studentLogic.Get(newStudentDriverMappingViewModel.StudentId);
-
-            // Initialize the list if it not already initialized
-            driver.Students = driver.Students ?? new List<Student>();
             
-            // Add the map to student
-            student.Driver = driver;
-            student.DriverRefId = driver.Id;
-
-            // Save changes to student
-            _studentLogic.Update(student.Id, student);
-
-            return true;
+            // Save changes to driver
+            return _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            {
+                // Add map
+                x.Driver = driver;
+                x.DriverRefId = driver.Id;
+            }) != null;
         }
 
         /// <summary>
@@ -60,18 +55,14 @@ namespace Logic
         /// <param name="newStudentDriverMappingViewModel"></param>
         /// <returns></returns>
         public bool UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
-        {
-            var driver = _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
-            var student = _studentLogic.Get(newStudentDriverMappingViewModel.StudentId);
-
-            // Remove the map from student
-            student.Driver = null;
-            student.DriverRefId = null;
-
-            // Save changes to student
-            _studentLogic.Update(student.Id, student);
-            
-            return true;
+        {            
+            // Save changes to driver
+            return _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            {
+                // Remove map
+                x.Driver = null;
+                x.DriverRefId = null;
+            }) != null;
         }
 
         /// <summary>
