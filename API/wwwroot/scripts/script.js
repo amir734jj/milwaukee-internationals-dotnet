@@ -59,8 +59,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                     var str = stringTable.create(temparray.map(function (student) {
                         student.fullname = student.fullname.substring(0, 30);
-                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "totalFamilyMembers", "isPressent"], student);
+                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "isPressent"], student);
                     }));
+
+                    // Needed
+                    str = str.replace(/’/g, "'");
 
                     doc.text(20, 20, str);
 
@@ -106,6 +109,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                         
                         return subsetAttr(["displayId", "fullname", "capacity", "navigator"], driver);
                     }));
+                    
+                    // Needed
+                    str = str.replace(/’/g, "'");
 
                     if (i === 0) {
                         str = "Driver List ( count of drivers: " + drivers.length + " )" + "\n\n" + str;
