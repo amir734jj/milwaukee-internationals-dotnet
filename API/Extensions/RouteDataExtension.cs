@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Routing;
 
 namespace API.Extensions
@@ -29,5 +30,14 @@ namespace API.Extensions
         public static bool Matches(this RouteData data, string controller, string action = null) =>
             string.Equals(data.GetController(), controller, StringComparison.InvariantCultureIgnoreCase) &&
             string.Equals(data.GetAction(), action ?? data.GetAction(), StringComparison.CurrentCultureIgnoreCase);
+
+        /// <summary>
+        /// Matches any controller
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="controllers"></param>
+        /// <returns></returns>
+        public static bool MatchesAnyController(this RouteData data, params string[] controllers) =>
+            controllers.Any(x => string.Equals(data.GetController(), x, StringComparison.InvariantCultureIgnoreCase));
     }
 }

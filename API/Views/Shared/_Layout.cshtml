@@ -64,7 +64,7 @@
                 
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li class="dropdown">
+                    <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("User", "Student", "Driver", "Host") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listing
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
