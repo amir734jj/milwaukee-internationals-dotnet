@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Models.Constants;
 using Models.Enums;
 using Models.ViewModels;
 
@@ -43,6 +44,12 @@ namespace Logic
         {
             var emailAddresses = new List<string>();
 
+            // Add admin email
+            if (emailFormViewModel.Admin)
+            {
+                emailAddresses.Add(ApiConstants.AdminEmail);
+            }
+            
             // Add student emails
             if (emailFormViewModel.Students)
             {

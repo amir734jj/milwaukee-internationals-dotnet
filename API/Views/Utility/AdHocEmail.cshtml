@@ -27,6 +27,12 @@
                 <div class="col-sm-4">
                     <div class="checkbox">
                         <label>
+                            @Html.CheckBoxFor(x => x.Admin)
+                            @Model.PropName(x => x.Admin)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
                             @Html.CheckBoxFor(x => x.Students)
                             @Model.PropName(x => x.Students)
                         </label>

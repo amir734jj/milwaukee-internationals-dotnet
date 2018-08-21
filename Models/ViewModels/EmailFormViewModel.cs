@@ -7,6 +7,8 @@ namespace Models.ViewModels
     /// </summary>
     public class EmailFormViewModel : IViewModel
     {
+        public bool Admin { get; set; }
+
         public bool Users { get; set; }
         
         public bool Students { get; set; }
