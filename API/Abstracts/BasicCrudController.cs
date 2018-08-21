@@ -18,7 +18,7 @@ namespace API.Abstracts
         [ProducesResponseType(typeof(IEnumerable), 200)]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(BasicCrudLogic().GetAll());
+            return Ok(await BasicCrudLogic().GetAll());
         }
 
         [HttpGet]
@@ -26,7 +26,7 @@ namespace API.Abstracts
         [SwaggerOperation("Get")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            return Ok(BasicCrudLogic().Get(id));
+            return Ok(await BasicCrudLogic().Get(id));
         }
 
         [HttpPut]
@@ -34,7 +34,7 @@ namespace API.Abstracts
         [SwaggerOperation("Update")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] T instance)
         {
-            return Ok(BasicCrudLogic().Update(id, instance));
+            return Ok(await BasicCrudLogic().Update(id, instance));
         }
 
         [HttpDelete]
@@ -42,7 +42,7 @@ namespace API.Abstracts
         [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            return Ok(BasicCrudLogic().Delete(id));
+            return Ok(await BasicCrudLogic().Delete(id));
         }
         
         [HttpPost]
@@ -50,7 +50,7 @@ namespace API.Abstracts
         [SwaggerOperation("Save")]
         public async Task<IActionResult> Save([FromBody] T instance)
         {
-            return Ok(BasicCrudLogic().Save(instance));
+            return Ok(await BasicCrudLogic().Save(instance));
         }
     }
 }

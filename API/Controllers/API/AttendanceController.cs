@@ -1,4 +1,5 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
@@ -28,9 +29,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Student/SetAttendance")]
         [SwaggerOperation("SetAttendance")]
-        public IActionResult StudentSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
+        public async Task<IActionResult> StudentSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
         {
-            return Ok(_attendanceLogic.StudentSetAttendance(attendanceViewModel));
+            return Ok(await _attendanceLogic.StudentSetAttendance(attendanceViewModel));
         }
         
         /// <summary>
@@ -40,9 +41,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Driver/SetAttendance")]
         [SwaggerOperation("SetAttendance")]
-        public IActionResult DriverSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
+        public async Task<IActionResult> DriverSetAttendance([FromBody] AttendanceViewModel attendanceViewModel)
         {
-            return Ok(_attendanceLogic.DriverSetAttendance(attendanceViewModel));
+            return Ok(await _attendanceLogic.DriverSetAttendance(attendanceViewModel));
         }
         
         /// <summary>
@@ -52,9 +53,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Driver/SendCheckIn")]
         [SwaggerOperation("DriverSendCheckIn")]
-        public IActionResult DriverSendCheckIn()
+        public async Task<IActionResult> DriverSendCheckIn()
         {
-            return Ok(_attendanceLogic.HandleDriverSendCheckIn());
+            return Ok(await _attendanceLogic.HandleDriverSendCheckIn());
         }
         
         /// <summary>
@@ -64,9 +65,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Student/SendCheckIn")]
         [SwaggerOperation("StudentSendCheckIn")]
-        public IActionResult StudentSendCheckIn()
+        public async Task<IActionResult> StudentSendCheckIn()
         {
-            return Ok(_attendanceLogic.HandleStudentSendCheckIn());
+            return Ok(await _attendanceLogic.HandleStudentSendCheckIn());
         }
     }
 }

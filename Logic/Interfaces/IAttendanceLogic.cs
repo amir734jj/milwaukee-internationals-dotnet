@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Models;
 using Models.ViewModels;
 
@@ -6,12 +7,12 @@ namespace Logic.Interfaces
 {
     public interface IAttendanceLogic
     {
-        bool StudentSetAttendance(AttendanceViewModel attendanceViewModel);
+        Task<bool> StudentSetAttendance(AttendanceViewModel attendanceViewModel);
         
-        bool DriverSetAttendance(AttendanceViewModel attendanceViewModel);
+        Task<bool> DriverSetAttendance(AttendanceViewModel attendanceViewModel);
 
-        bool HandleStudentSendCheckIn();
+        Task<bool> HandleStudentSendCheckIn();
 
-        bool HandleDriverSendCheckIn();
+        Task<bool> HandleDriverSendCheckIn();
     }
 }

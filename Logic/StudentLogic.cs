@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -24,26 +25,26 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudDal<Student> GetBasicCrudDal() => _studentDal;
+        protected override IBasicCrudDal<Student> GetBasicCrudDal() => _studentDal;
         
         /// <summary>
         /// Make sure display ID is not null or empty
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public override Student Save(Student instance)
+        public override async Task<Student> Save(Student instance)
         {
             // TODO: make this faster
             instance.DisplayId = "Null";
             
             // Save student
-            var retVal = base.Save(instance);
+            var retVal = await base.Save(instance);
             
             // Set the display id
             instance.DisplayId = GenerateDisplayId(instance, instance.Id);
 
             // Update
-            Update(instance.Id, instance);
+            await Update(instance.Id, instance);
 
             return retVal;
         }

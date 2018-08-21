@@ -1,4 +1,5 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using API.Extensions;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Login")]
         [SwaggerOperation("Login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View(new User());
         }
@@ -42,7 +43,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Register")]
         [SwaggerOperation("Register")]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             return View(new User());
         }
@@ -54,7 +55,7 @@ namespace API.Controllers
         [HttpPost]
         [Route("LoginAction")]
         [SwaggerOperation("LoginAction")]
-        public IActionResult LoginAction(User user)
+        public async Task<IActionResult> LoginAction(User user)
         {
             _identityLogic.TryLogin(user.Username, user.Password, out var result);
 
@@ -76,10 +77,10 @@ namespace API.Controllers
         [HttpPost]
         [Route("RegisterAction")]
         [SwaggerOperation("RegisterAction")]
-        public IActionResult RegisterAction(User user)
+        public async Task<IActionResult> RegisterAction(User user)
         {
             // Save the user
-            var result = _userLogic.Save(user);
+            var result = await _userLogic.Save(user);
 
             return result != null ? RedirectToAction("Login") : RedirectToAction("RegisterAction");
         }
@@ -91,7 +92,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("LogoutAction")]
         [SwaggerOperation("LogoutAction")]
-        public IActionResult LogoutAction()
+        public async Task<IActionResult> LogoutAction()
         {
             var (username, password) = HttpContext.Session.GetUseramePassword();
             
@@ -113,7 +114,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("NotAuthenticated")]
         [SwaggerOperation("NotAuthenticated")]
-        public IActionResult NotAuthenticated()
+        public async Task<IActionResult> NotAuthenticated()
         {
             return View();
         }

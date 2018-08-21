@@ -1,4 +1,5 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -28,9 +29,9 @@ namespace API.Controllers
         [HttpGet]
         [Route("")]
         [SwaggerOperation("Index")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_driverLogic.GetAll());
+            return View(await _driverLogic.GetAll());
         }
         
         /// <summary>
@@ -41,9 +42,9 @@ namespace API.Controllers
         [HttpGet]
         [Route("Delete/{id}")]
         [SwaggerOperation("Delete")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _driverLogic.Delete(id);
+            await _driverLogic.Delete(id);
 
             return RedirectToAction("Index");
         }

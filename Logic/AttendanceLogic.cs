@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
@@ -33,9 +34,9 @@ namespace Logic
         /// </summary>
         /// <param name="attendanceViewModel"></param>
         /// <returns></returns>
-        public bool StudentSetAttendance(AttendanceViewModel attendanceViewModel)
+        public async Task<bool> StudentSetAttendance(AttendanceViewModel attendanceViewModel)
         {
-            _studentLogic.Update(attendanceViewModel.Id, x =>
+            await _studentLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
                 x.IsPressent = attendanceViewModel.Attendance;
@@ -49,10 +50,10 @@ namespace Logic
         /// </summary>
         /// <param name="attendanceViewModel"></param>
         /// <returns></returns>
-        public bool DriverSetAttendance(AttendanceViewModel attendanceViewModel)
+        public async Task<bool> DriverSetAttendance(AttendanceViewModel attendanceViewModel)
         {
             // Set attendance
-            _driverLogic.Update(attendanceViewModel.Id, x =>
+            await _driverLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
                 x.IsPressent = attendanceViewModel.Attendance;
@@ -65,9 +66,9 @@ namespace Logic
         /// Handles sending email to students so they check-in
         /// </summary>
         /// <returns></returns>
-        public bool HandleStudentSendCheckIn()
+        public async Task<bool> HandleStudentSendCheckIn()
         {
-            _studentLogic.GetAll().ForEach(x =>
+            (await _studentLogic.GetAll()).ForEach(x =>
             {
                 var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Student/{x.GetHashCode()}";
                 
@@ -87,9 +88,9 @@ namespace Logic
         /// Handles sending email to drivers so they check-in
         /// </summary>
         /// <returns></returns>
-        public bool HandleDriverSendCheckIn()
+        public async Task<bool> HandleDriverSendCheckIn()
         {
-            _driverLogic.GetAll().ForEach(x =>
+            (await _driverLogic.GetAll()).ForEach(x =>
             {
                 var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
                 

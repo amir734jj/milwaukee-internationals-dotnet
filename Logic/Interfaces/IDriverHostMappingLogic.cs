@@ -1,15 +1,16 @@
-﻿using Models.ViewModels;
+﻿using System.Threading.Tasks;
+using Models.ViewModels;
 
 namespace Logic.Interfaces
 {
     public interface IDriverHostMappingLogic
     {
-        bool MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel);
+        Task<bool> MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel);
         
-        bool UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel);
+        Task<bool> UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel);
 
-        DriverHostMappingViewModel MappingStatus();
+        Task<DriverHostMappingViewModel> MappingStatus();
 
-        bool EmailMappings();
+        Task<bool> EmailMappings();
     }
 }

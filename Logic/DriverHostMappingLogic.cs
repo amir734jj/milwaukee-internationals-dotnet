@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
@@ -36,9 +37,9 @@ namespace Logic
         /// </summary>
         /// <param name="newDriverHostMappingViewModel"></param>
         /// <returns></returns>
-        public bool MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+        public async Task<bool> MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
-            var host = _hostLogic.Get(newDriverHostMappingViewModel.HostId);
+            var host = await _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
             // Save changes to driver
             return _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
@@ -54,10 +55,10 @@ namespace Logic
         /// </summary>
         /// <param name="newDriverHostMappingViewModel"></param>
         /// <returns></returns>
-        public bool UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+        public async Task<bool> UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
             // Save changes to driver
-            return _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            return await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
             {
                 // Remove map
                 x.Host = null;
@@ -69,10 +70,10 @@ namespace Logic
         /// Returns the status of mappings
         /// </summary>
         /// <returns></returns>
-        public DriverHostMappingViewModel MappingStatus()
+        public async Task<DriverHostMappingViewModel> MappingStatus()
         {
-            var hosts = _hostLogic.GetAll().ToList();
-            var drivers = _driverLogic.GetAll().ToList();
+            var hosts = (await _hostLogic.GetAll()).ToList();
+            var drivers = (await _driverLogic.GetAll()).ToList();
 
             // TODO: add check to return only students that are pressent
             return new DriverHostMappingViewModel
@@ -88,7 +89,7 @@ namespace Logic
         /// Emails the mappings to hosts
         /// </summary>
         /// <returns></returns>
-        public bool EmailMappings()
+        public async Task<bool> EmailMappings()
         {
             string MessageFunc(Host host)
             {
@@ -119,7 +120,7 @@ namespace Logic
             }
 
             // Send the email to hosts
-            _hostLogic.GetAll().ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+            _hostLogic.GetAll().Result.ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 
             // Return true
             return true;

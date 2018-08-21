@@ -32,7 +32,7 @@ namespace Logic
         public void TryLogin(string username, string password, out bool result)
         {
             // Authenticate the user
-            if (_userLogic.GetAll().Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
+            if (_userLogic.GetAll().Result.Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
             {
                 _authenticatedUsers[username] = SecureHashPassword(password);
 
@@ -53,7 +53,7 @@ namespace Logic
         public void TryLogout(string username, string password, out bool result)
         {
             // Authenticate the user
-            if (_userLogic.GetAll().Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
+            if (_userLogic.GetAll().Result.Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
             {
                 _authenticatedUsers.Remove(username, out var _);
 

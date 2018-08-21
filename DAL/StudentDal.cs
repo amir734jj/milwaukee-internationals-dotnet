@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Abstracts;
 using DAL.Extensions;
@@ -49,6 +50,6 @@ namespace DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public override Student Get(int id) => GetDbSet().Include(x => x.Driver).FirstOrDefault(x => x.Id == id);
+        public override async Task<Student> Get(int id) => await GetDbSet().Include(x => x.Driver).FirstOrDefaultAsync(x => x.Id == id);
     }
 }

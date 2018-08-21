@@ -1,4 +1,5 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -11,7 +12,7 @@ namespace API.Controllers
     {
         // GET the view
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -23,7 +24,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("StudentDriverMapping")]
         [SwaggerOperation("StudentDriverMapping")]
-        public IActionResult StudentDriverMapping()
+        public async Task<IActionResult> StudentDriverMapping()
         {
             return View();
         }
@@ -35,7 +36,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("DriverHostMapping")]
         [SwaggerOperation("DriverHostMapping")]
-        public IActionResult DriverHostMapping()
+        public async Task<IActionResult> DriverHostMapping()
         {
             return View();
         }

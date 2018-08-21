@@ -23,6 +23,6 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudDal<Host> GetBasicCrudDal() => _hostDal;
+        protected override IBasicCrudDal<Host> GetBasicCrudDal() => _hostDal;
     }
 }

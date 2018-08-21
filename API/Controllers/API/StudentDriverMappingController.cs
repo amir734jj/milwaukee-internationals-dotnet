@@ -1,7 +1,7 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models.Interfaces;
 using Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -29,9 +29,9 @@ namespace API.Controllers.Api
         [HttpGet]
         [Route("Status")]
         [SwaggerOperation("StudentDriverMappingStatus")]
-        public IActionResult StudentDriverMappingStatus()
+        public async Task<IActionResult> StudentDriverMappingStatus()
         {
-            return Ok(_studentDriverMappingLogic.MappingStatus());
+            return Ok(await _studentDriverMappingLogic.MappingStatus());
         }
         
         /// <summary>
@@ -41,9 +41,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Map")]
         [SwaggerOperation("StudentDriverMappingMap")]
-        public IActionResult StudentDriverMappingMap([FromBody] NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
+        public async Task<IActionResult> StudentDriverMappingMap([FromBody] NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {
-            return Ok(_studentDriverMappingLogic.MapStudentToDriver(newStudentDriverMappingViewModel));
+            return Ok(await _studentDriverMappingLogic.MapStudentToDriver(newStudentDriverMappingViewModel));
         }
         
         /// <summary>
@@ -53,9 +53,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("UnMap")]
         [SwaggerOperation("StudentDriverMappingUnMap")]
-        public IActionResult StudentDriverMappingUnMap([FromBody] NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
+        public async Task<IActionResult> StudentDriverMappingUnMap([FromBody] NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {
-            return Ok(_studentDriverMappingLogic.UnMapStudentToDriver(newStudentDriverMappingViewModel));
+            return Ok(await _studentDriverMappingLogic.UnMapStudentToDriver(newStudentDriverMappingViewModel));
         }
         
         /// <summary>
@@ -65,9 +65,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("EmailMappings")]
         [SwaggerOperation("EmailMappings")]
-        public IActionResult EmailMappings()
+        public async Task<IActionResult> EmailMappings()
         {
-            return Ok(_studentDriverMappingLogic.EmailMappings());
+            return Ok(await _studentDriverMappingLogic.EmailMappings());
         }
     }
 }

@@ -23,7 +23,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Driver")]
-        public IActionResult Driver()
+        public async Task<IActionResult> Driver()
         {
             return View(new Driver());
         }
@@ -45,7 +45,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Driver/Register")]
-        public IActionResult RegisterDriver(Driver driver)
+        public async Task<IActionResult> RegisterDriver(Driver driver)
         {
             if (_registrationLogic.RegisterDriver(driver))
             {
@@ -58,7 +58,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("Student")]
-        public IActionResult Student()
+        public async Task<IActionResult> Student()
         {
             return View(new Student());
         }
@@ -69,7 +69,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Student/Register")]
-        public IActionResult RegisterStudent(Student student)
+        public async Task<IActionResult> RegisterStudent(Student student)
         {
             if (_registrationLogic.RegisterStudent(student))
             {
@@ -83,7 +83,7 @@ namespace API.Controllers
         [AuthorizeMiddleware]
         [HttpGet]
         [Route("Host")]
-        public IActionResult Host()
+        public async Task<IActionResult> Host()
         {
             return View(new Host());
         }
@@ -95,7 +95,7 @@ namespace API.Controllers
         [AuthorizeMiddleware]
         [HttpPost]
         [Route("Host/Register")]
-        public IActionResult RegisterHost(Host host)
+        public async Task<IActionResult> RegisterHost(Host host)
         {
             if (_registrationLogic.RegisterHost(host))
             {

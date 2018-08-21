@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
@@ -36,12 +37,12 @@ namespace Logic
         /// </summary>
         /// <param name="newStudentDriverMappingViewModel"></param>
         /// <returns></returns>
-        public bool MapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
+        public async Task<bool> MapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {
-            var driver = _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
+            var driver = await _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
             
             // Save changes to driver
-            return _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            return await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
             {
                 // Add map
                 x.Driver = driver;
@@ -54,10 +55,10 @@ namespace Logic
         /// </summary>
         /// <param name="newStudentDriverMappingViewModel"></param>
         /// <returns></returns>
-        public bool UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
+        public async Task<bool> UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {            
             // Save changes to driver
-            return _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            return await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
             {
                 // Remove map
                 x.Driver = null;
@@ -69,10 +70,10 @@ namespace Logic
         /// Returns the status of mappings
         /// </summary>
         /// <returns></returns>
-        public StudentDriverMappingViewModel MappingStatus()
+        public async Task<StudentDriverMappingViewModel> MappingStatus()
         {
-            var students = _studentLogic.GetAll().ToList();
-            var drivers = _driverLogic.GetAll().ToList();
+            var students = (await _studentLogic.GetAll()).ToList();
+            var drivers = (await _driverLogic.GetAll()).ToList();
             
             // TODO: add check to return only students that are pressent
             return new StudentDriverMappingViewModel
@@ -88,7 +89,7 @@ namespace Logic
         /// Emails the mappings to drivers
         /// </summary>
         /// <returns></returns>
-        public bool EmailMappings()
+        public async Task<bool> EmailMappings()
         {
             string MessageFunc(Driver driver)
             {
@@ -115,7 +116,7 @@ namespace Logic
             }
 
             // Send the email to drivers
-            _driverLogic.GetAll().ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+            (await _driverLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 
             // Return true
             return true;

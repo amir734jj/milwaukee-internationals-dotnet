@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Extensions;
 using DAL.Interfaces;
@@ -33,24 +34,24 @@ namespace DAL.Abstracts
         /// Returns all enities
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetAll() => GetDbSet().OrderBy(x => x.Fullname).ToList();
+        public virtual async Task<IEnumerable<T>> GetAll() => await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
 
         /// <summary>
         /// Returns an entity given the id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual T Get(int id) => GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+        public virtual async Task<T> Get(int id) => await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
 
         /// <summary>
         /// Saves an instance
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual T Save(T instance)
+        public virtual async Task<T> Save(T instance)
         {
             GetDbSet().Add(instance);
-            GetDbContext().SaveChanges();
+            await GetDbContext().SaveChangesAsync();
             return instance;
         }
 
@@ -59,14 +60,14 @@ namespace DAL.Abstracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual T Delete(int id)
+        public virtual async Task<T> Delete(int id)
         {
             var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
             if (instance != null)
             {
                 GetDbSet().Remove(instance);
-                GetDbContext().SaveChanges();
+                await GetDbContext().SaveChangesAsync();
                 return instance;
             }
 
@@ -79,7 +80,7 @@ namespace DAL.Abstracts
         /// <param name="id"></param>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public T Update(int id, T instance)
+        public virtual async Task<T> Update(int id, T instance)
         {
             var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
                 
@@ -92,7 +93,7 @@ namespace DAL.Abstracts
                 GetMapper().Map(instance, entity);
                     
                 // Save and dispose
-                GetDbContext().SaveChanges();
+                await GetDbContext().SaveChangesAsync();
 
                 // Returns the updated entity
                 return instance;
@@ -109,7 +110,7 @@ namespace DAL.Abstracts
         /// <param name="modifyAction"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public T Update(int id, Action<T> modifyAction)
+        public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {            
             var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
                 
@@ -119,7 +120,7 @@ namespace DAL.Abstracts
                 modifyAction(entity);
                     
                 // Save and dispose
-                GetDbContext().SaveChanges();
+                await GetDbContext().SaveChangesAsync();
 
                 // Returns the updated entity
                 return entity;

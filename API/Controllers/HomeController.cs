@@ -7,7 +7,7 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return Redirect("~/Registration/Student".ToLower());
         }
@@ -19,7 +19,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Register")]
         [SwaggerOperation("Register")]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             return Redirect("~/Identity/Register".ToLower());
         }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -25,17 +26,17 @@ namespace Logic
         /// Returns instance of user DAL
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudDal<User> GetBasicCrudDal() => _userDal;
+        protected override IBasicCrudDal<User> GetBasicCrudDal() => _userDal;
 
         /// <summary>
         /// Override
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public override User Save(User instance)
+        public override async Task<User> Save(User instance)
         {
             // Make sure username is not duplicate
-            if (GetAll().Any(x => x.Username == instance.Username))
+            if ((await GetAll()).Any(x => x.Username == instance.Username))
             {
                 return null;
             }
@@ -43,7 +44,7 @@ namespace Logic
             // Do not store the plain-text password
             instance.Password = SecureHashPassword(instance.Password);
             
-            return base.Save(instance);
+            return await base.Save(instance);
         }
     }
 }

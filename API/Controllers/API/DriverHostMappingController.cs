@@ -1,7 +1,7 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models.Interfaces;
 using Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -29,9 +29,9 @@ namespace API.Controllers.Api
         [HttpGet]
         [Route("Status")]
         [SwaggerOperation("DriverHostMappingStatus")]
-        public IActionResult DriverHostMappingStatus()
+        public async Task<IActionResult> DriverHostMappingStatus()
         {
-            return Ok(_driverHostMappingLogic.MappingStatus());
+            return Ok(await _driverHostMappingLogic.MappingStatus());
         }
         
         /// <summary>
@@ -41,9 +41,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("Map")]
         [SwaggerOperation("DriverHostMappingMap")]
-        public IActionResult DriverHostMappingMap([FromBody] NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+        public async Task<IActionResult> DriverHostMappingMap([FromBody] NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
-            return Ok(_driverHostMappingLogic.MapDriverToHost(newDriverHostMappingViewModel));
+            return Ok(await _driverHostMappingLogic.MapDriverToHost(newDriverHostMappingViewModel));
         }
         
         /// <summary>
@@ -53,9 +53,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("UnMap")]
         [SwaggerOperation("DriverHostMappingUnMap")]
-        public IActionResult DriverHostMappingUnMap([FromBody] NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+        public async Task<IActionResult> DriverHostMappingUnMap([FromBody] NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
-            return Ok(_driverHostMappingLogic.UnMapDriverToHost(newDriverHostMappingViewModel));
+            return Ok(await _driverHostMappingLogic.UnMapDriverToHost(newDriverHostMappingViewModel));
         }
         
         /// <summary>
@@ -65,9 +65,9 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("EmailMappings")]
         [SwaggerOperation("EmailMappings")]
-        public IActionResult EmailMappings()
+        public async Task<IActionResult> EmailMappings()
         {
-            return Ok(_driverHostMappingLogic.EmailMappings());
+            return Ok(await _driverHostMappingLogic.EmailMappings());
         }
     }
 }

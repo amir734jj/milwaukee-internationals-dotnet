@@ -46,25 +46,25 @@ namespace Logic
             // Add student emails
             if (emailFormViewModel.Students)
             {
-                emailAddresses.AddRange(_studentLogic.GetAll().Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
+                emailAddresses.AddRange(_studentLogic.GetAll().Result.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
 
             // Add driver emails
             if (emailFormViewModel.Drivers)
             {
-                emailAddresses.AddRange(_driverLogic.GetAll().Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
+                emailAddresses.AddRange(_driverLogic.GetAll().Result.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             
             // Add host emails
             if (emailFormViewModel.Hosts)
             {
-                emailAddresses.AddRange(_hostLogic.GetAll().Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
+                emailAddresses.AddRange(_hostLogic.GetAll().Result.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             
             // Add user emails
             if (emailFormViewModel.Users)
             {
-                emailAddresses.AddRange(_userLogic.GetAll().Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
+                emailAddresses.AddRange(_userLogic.GetAll().Result.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
 
             // Remove duplicates

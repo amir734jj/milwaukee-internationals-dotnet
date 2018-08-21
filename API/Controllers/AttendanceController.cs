@@ -1,4 +1,5 @@
-﻿using API.Attributes;
+﻿using System.Threading.Tasks;
+using API.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,7 +11,7 @@ namespace API.Controllers
     {
         // GET
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -18,7 +19,7 @@ namespace API.Controllers
         // GET
         [HttpGet]
         [Route("Student")]
-        public IActionResult Student()
+        public async Task<IActionResult> Student()
         {
             return View();
         }
@@ -26,7 +27,7 @@ namespace API.Controllers
         // GET
         [HttpGet]
         [Route("Driver")]
-        public IActionResult Driver()
+        public async Task<IActionResult> Driver()
         {
             return View();
         }

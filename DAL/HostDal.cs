@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
@@ -48,6 +49,6 @@ namespace DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public override Host Get(int id) => GetDbSet().Include(x => x.Drivers).FirstOrDefault(x => x.Id == id);
+        public override async Task<Host> Get(int id) => await GetDbSet().Include(x => x.Drivers).FirstOrDefaultAsync(x => x.Id == id);
     }
 }
