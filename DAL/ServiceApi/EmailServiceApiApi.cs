@@ -52,20 +52,25 @@ namespace DAL.ServiceApi
             // return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
             if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
             {
-                var request = new MailjetRequest { Resource = Send.Resource }
-                    .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
-                    .Property(Send.FromName, "Milwaukee-Internationals")
-                    .Property(Send.Subject, emailSubject)
-                    .Property(Send.HtmlPart, emailHtml)
-                    .Property(Send.Recipients, new JArray
-                    {
-                        new JObject
+                var task = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(async _ =>
+                {
+                    var request = new MailjetRequest {Resource = Send.Resource}
+                        .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
+                        .Property(Send.FromName, "Milwaukee-Internationals")
+                        .Property(Send.Subject, emailSubject)
+                        .Property(Send.HtmlPart, emailHtml)
+                        .Property(Send.Recipients, new JArray
                         {
-                            {"Email", emailAddress}
-                        }
-                    });
-                
-                var response = await _mailjetClient.PostAsync(request);
+                            new JObject
+                            {
+                                {"Email", emailAddress}
+                            }
+                        });
+                    
+                    var response = await _mailjetClient.PostAsync(request);
+                });
+
+                await task;
             }
         }
 
@@ -78,7 +83,7 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task SendEmailAsync(IEnumerable<string> emailAddresses, string emailSubject, string emailHtml)
         {
-            var tasks = emailAddresses.Select(x => Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => SendEmailAsync(x, emailSubject, emailHtml))).ToArray();
+            var tasks = emailAddresses.Select(x => SendEmailAsync(x, emailSubject, emailHtml)).ToArray();
 
             await Task.WhenAll(tasks);
         }
