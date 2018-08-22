@@ -10,6 +10,7 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -110,6 +111,9 @@ namespace API
             {
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
+            }).AddRazorPagesOptions(x =>
+            {
+                x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
             });
             
             _container = new Container();
