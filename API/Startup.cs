@@ -7,6 +7,7 @@ using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using Logic.Interfaces;
+using Mailjet.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -72,12 +73,12 @@ namespace API
                     Password = emailSection.GetValue<string>("Password"),
 
                     // Enable ssl or tls
-                    Security = false
+                    Security = true
                 };
                 
                 optionBuilder.UseMailKit(mailKitOptions);
             });
-            
+                        
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true; 
@@ -157,6 +158,9 @@ namespace API
                 
                 // Singleton to handle identities
                 config.For<IIdentityLogic>().Singleton();
+                
+                // Initialize the email jet client
+                config.For<IMailjetClient>().Use(new MailjetClient(_configuration.GetValue<string>("MailJet:Key"), _configuration.GetValue<string>("MailJet:Secret"))).Singleton();
             });
             
             return _container.GetInstance<IServiceProvider>();
