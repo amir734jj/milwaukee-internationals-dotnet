@@ -97,7 +97,6 @@ namespace Logic
                 _emailServiceApi.SendEmailAsync(new [] { "amirhesamyan@gmail.com", "asherimtiaz@gmail.com"}, "Tour Driver Check-In", $@"
                     <h4>Hello {x.Fullname}</h4>
                     <h4>Please use this link to check-in</h4>
-                    <br>
                     <p><a href=""{url}"">Link</a> ({url})</p>
                     <br>
                     <p>Thank you</p>
