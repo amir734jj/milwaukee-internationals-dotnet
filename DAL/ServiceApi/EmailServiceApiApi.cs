@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
@@ -54,26 +55,9 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task SendEmailAsync(IEnumerable<string> emailAddresses, string emailSubject, string emailText)
         {
-            // Delay task
-            var delayTask = Task.Delay(10);
-                
-            // Start of the chain
-            var chainTask = Task.Run(() => { });
-                
-            // Chain the tasks
-            emailAddresses.ForEach(x =>
-            {
-                // ReSharper disable once AccessToModifiedClosure
-                chainTask = chainTask
-                    .ContinueWith(_ => SendEmailAsync(x, emailSubject, emailText))
-                    .ContinueWith(_ => delayTask);
-            });
-                
-            // Start the chain
-            chainTask = chainTask.ContinueWith(_ => Task.CompletedTask);
+            var tasks = emailAddresses.Select(x => Task.Delay(10).ContinueWith(_ => SendEmailAsync(x, emailSubject, emailText))).ToArray();
 
-            // Await
-            await chainTask;
+            await Task.WhenAll(tasks);
         }
     }
 }
