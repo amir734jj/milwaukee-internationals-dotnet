@@ -72,7 +72,7 @@ namespace API
                     Password = emailSection.GetValue<string>("Password"),
 
                     // Enable ssl or tls
-                    Security = true
+                    Security = false
                 };
                 
                 optionBuilder.UseMailKit(mailKitOptions);
