@@ -94,7 +94,7 @@ namespace Logic
             {
                 var url = $"{ApiConstants.WebSiteUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
                 
-                _emailServiceApi.SendEmailAsync("asherimtiaz@gmail.com", "Tour Driver Check-In", $@"
+                _emailServiceApi.SendEmailAsync(x.Email, "Tour Driver Check-In", $@"
                     <h4>Hello {x.Fullname}, please use this link to check-in</h4>
                     <p><a href=""{url}"">{url}</a></p>
                     <br>
