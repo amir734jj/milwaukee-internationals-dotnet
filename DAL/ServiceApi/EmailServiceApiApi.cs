@@ -50,7 +50,7 @@ namespace DAL.ServiceApi
         public async Task SendEmailAsync(string emailAddress, string emailSubject, string emailHtml)
         {
             // return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
-            if (_connected)
+            if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
             {
                 var request = new MailjetRequest { Resource = Send.Resource }
                     .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
