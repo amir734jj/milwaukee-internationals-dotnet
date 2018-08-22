@@ -89,12 +89,12 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("EmailCheckInAction/{type}/{hashcode}")]
+        [Route("EmailCheckInAction/{type}/{id}")]
         [SwaggerOperation("EmailCheckInAction")]
-        public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int hashcode,
+        public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
             [FromQuery] bool present)
         {
-            var result = _emailUtilityLogic.HandleEmailCheckIn(type, hashcode, present);
+            var result = _emailUtilityLogic.HandleEmailCheckIn(type, id, present);
 
             // Redirect to home page
             return Ok(result);
