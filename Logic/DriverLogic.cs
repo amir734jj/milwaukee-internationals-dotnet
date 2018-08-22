@@ -46,7 +46,7 @@ namespace Logic
             // Update
             await Update(instance.Id, instance);
             
-            return retVal;
+            return instance;
         }
     }
 }

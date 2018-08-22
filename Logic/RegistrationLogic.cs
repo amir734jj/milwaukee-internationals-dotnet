@@ -37,10 +37,10 @@ namespace Logic
         /// <returns></returns>
         public bool RegisterDriver(Driver driver)
         {
-            var result = _driverLogic.Save(driver);
+            driver = _driverLogic.Save(driver).Result;
 
             // If save was successful
-            if (result != null)
+            if (driver != null)
             {
                 _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
                     <p> This is an automatically generated email. </p>
