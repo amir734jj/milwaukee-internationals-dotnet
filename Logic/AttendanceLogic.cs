@@ -92,9 +92,9 @@ namespace Logic
         {
             (await _driverLogic.GetAll()).ForEach(x =>
             {
-                var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
+                var url = $"{ApiConstants.WebSiteUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
                 
-                _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
+                _emailServiceApi.SendEmailAsync(new [] { "hesamian@uwm.edu", "asherimtiaz@gmail.com"}, "Tour Driver Check-In", $@"
                     <h4>Please use this link to check-in</h4>
                     <br>
                     <p><a href=""{url}"">Link</a> ({url})</p>

@@ -70,7 +70,9 @@
                       <div class="form-group form-inline">
                         <label>Select driver: &nbsp;&nbsp;</label>
                         <select ng-model="student.driverId" class="form-control">
-                          <option value="{{driver.id}}" ng-repeat="driver in availableDrivers"> {{driver.fullname}}</option>
+                          <option value="{{driver.id}}" ng-repeat="driver in availableDrivers">
+                            {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }}]
+                          </option>
                         </select>
                         <a ng-click="map(student.id, student.driverId)" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
                       </div>
