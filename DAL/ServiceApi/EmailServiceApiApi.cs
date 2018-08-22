@@ -55,7 +55,7 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task SendEmailAsync(IEnumerable<string> emailAddresses, string emailSubject, string emailText)
         {
-            var tasks = emailAddresses.Select(x => Task.Delay(10).ContinueWith(_ => SendEmailAsync(x, emailSubject, emailText).Wait())).ToArray();
+            var tasks = emailAddresses.Select(x => Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => SendEmailAsync(x, emailSubject, emailText))).ToArray();
 
             await Task.WhenAll(tasks);
         }
