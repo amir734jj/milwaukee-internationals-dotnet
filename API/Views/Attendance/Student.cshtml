@@ -62,7 +62,7 @@
                 <td class="col-xs-4 col-sm-2">
                     <toggle ng-model="student.isPressent" ng-change="changeAttendance(student)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
                 </td>
-                <td>{{student.driver ? student.driver.fullname : ""}}</td>
+                <td>{{student.driver ? ( student.driver.fullname + " (" + student.driver.displayId +  ")" ) : ""}}</td>
                 <td>{{(student.driver && student.driver.host) ? student.driver.host.fullname : ""}}</td>
             </tr>
             </tbody>
