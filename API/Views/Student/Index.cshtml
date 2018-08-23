@@ -14,37 +14,39 @@
         </div>
     </div>
     
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Fullname</th>
-                <th>Country</th>
-                <th>University</th>
-                <th>Major</th>
-                <th>Interest</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Kosher</th>
-                <th class="hidden-xs">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var student in Model)
-        {
-            <tr>
-                <td>@student.Fullname</td>
-                <td>@student.Country</td>
-                <td>@student.University</td>
-                <td>@student.Major</td>
-                <td>@student.Interests</td>
-                <td>@student.Email</td>
-                <td>@student.Phone</td>
-                <td>@student.KosherFood</td>
-                <td class="hidden-xs">
-                    <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <div class="table-responsive"> 
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Fullname</th>
+                    <th>Country</th>
+                    <th>University</th>
+                    <th>Major</th>
+                    <th>Interest</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Kosher</th>
+                    <th class="hidden-xs">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.Fullname</td>
+                    <td>@student.Country</td>
+                    <td>@student.University</td>
+                    <td>@student.Major</td>
+                    <td>@student.Interests</td>
+                    <td>@student.Email</td>
+                    <td>@student.Phone</td>
+                    <td>@student.KosherFood</td>
+                    <td class="hidden-xs">
+                        <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
