@@ -58,6 +58,7 @@ namespace DAL
         /// <returns></returns>
         public override async Task<IEnumerable<Host>> GetAll() => await GetDbSet()
             .Include(x => x.Drivers)
+            .OrderBy(x => x.Fullname)
             .ToListAsync();
     }
 }
