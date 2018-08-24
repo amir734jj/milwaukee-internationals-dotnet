@@ -23,6 +23,11 @@ namespace Models.Constants
         
         public const string WebSiteApiUrl = "http://milwaukeeinternationals.com/api";
 
-        public const string AdminEmail = "amirhesamyan@gmail.com";
+        public static readonly string[] AdminEmail = {
+            "amirhesamyan@gmail.com",
+            "asherimtiaz@gmail.com"
+        };
+
+        public const string WebSiteEmail = "tourofmilwaukee@gmail.com";
     }
 }

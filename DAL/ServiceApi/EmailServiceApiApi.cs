@@ -11,6 +11,7 @@ using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using Models.Constants;
 using Newtonsoft.Json.Linq;
 using NETCore.MailKit.Core;
 
@@ -59,6 +60,7 @@ namespace DAL.ServiceApi
                         .Property(Send.FromName, "Milwaukee-Internationals")
                         .Property(Send.Subject, emailSubject)
                         .Property(Send.HtmlPart, emailHtml)
+                        .Property(Send.Cc, ApiConstants.WebSiteEmail)
                         .Property(Send.Recipients, new JArray
                         {
                             new JObject

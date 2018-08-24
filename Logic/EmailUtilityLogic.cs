@@ -47,7 +47,7 @@ namespace Logic
             // Add admin email
             if (emailFormViewModel.Admin)
             {
-                emailAddresses.Add(ApiConstants.AdminEmail);
+                emailAddresses.AddRange(ApiConstants.AdminEmail);
             }
             
             // Add student emails
