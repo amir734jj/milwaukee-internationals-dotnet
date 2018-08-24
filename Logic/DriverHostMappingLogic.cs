@@ -124,7 +124,7 @@ namespace Logic
             (await _hostLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(new []
             {
                 "amirhesamyan@gmail.com"
-            }, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+            }, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
 
             // Return true
             return true;
