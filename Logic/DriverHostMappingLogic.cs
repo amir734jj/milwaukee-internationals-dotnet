@@ -120,9 +120,8 @@ namespace Logic
             }
 
             // Send the email to hosts
-            _hostLogic.GetAll().Result.ForEach(x => _emailServiceApi.SendEmailAsync(new []
+            (await _hostLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(new []
             {
-                "asherimtiaz@gmail.com",
                 "amirhesamyan@gmail.com"
             }, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 

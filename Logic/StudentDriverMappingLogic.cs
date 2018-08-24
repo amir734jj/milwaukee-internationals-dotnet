@@ -105,10 +105,10 @@ namespace Logic
         <br />
             {string.Join(Environment.NewLine, driver.Host != null ? new List<string>
                 {
-                    $"<p> Host Name: {driver.Host.Fullname} </p>",
-                    $"<p> Host Contact: {driver.Host.Phone} </p>",
-                    $"<p> Host Address: {driver.Host.Address} </p>"
-                } : new List<string> { "You are not assigned to a host home yet." })}
+                    $"<p> Host Name: {driver.Host?.Fullname} </p>",
+                    $"<p> Host Contact: {driver.Host?.Phone} </p>",
+                    $"<p> Host Address: {driver.Host?.Address} </p>"
+                } : new List<string> { "<p>You are not assigned to a host home yet.</p>" })}
         <br>                                                                    
         <br>                                                                    
         <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
@@ -119,7 +119,6 @@ namespace Logic
             // Send the email to drivers
             (await _driverLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(new []
             {
-                "asherimtiaz@gmail.com",
                 "amirhesamyan@gmail.com"
             }, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 

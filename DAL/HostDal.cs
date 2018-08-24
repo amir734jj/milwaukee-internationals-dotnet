@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Abstracts;
@@ -50,5 +51,13 @@ namespace DAL
         /// <param name="id"></param>
         /// <returns></returns>
         public override async Task<Host> Get(int id) => await GetDbSet().Include(x => x.Drivers).FirstOrDefaultAsync(x => x.Id == id);
+        
+        /// <summary>
+        /// Override to include related entity
+        /// </summary>
+        /// <returns></returns>
+        public override async Task<IEnumerable<Host>> GetAll() => await GetDbSet()
+            .Include(x => x.Drivers)
+            .ToListAsync();
     }
 }
