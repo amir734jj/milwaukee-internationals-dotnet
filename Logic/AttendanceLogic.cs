@@ -94,9 +94,17 @@ namespace Logic
             {
                 var url = $"{ApiConstants.WebSiteUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
                 
-                _emailServiceApi.SendEmailAsync(x.Email, "Tour Driver Check-In", $@"
-                    <h4>Hello {x.Fullname}, please use this link to check-in</h4>
+                _emailServiceApi.SendEmailAsync(x.Email, "Tour Driver Check-In and Host Info", $@"
+                    <h4>Hello {x.Fullname},</h4>
+                    <h4>Please use the following link to see details and to check-in</h4>
                     <p><a href=""{url}"">{url}</a></p>
+                    <br>
+                    <p>Most important thing to remember is your -Display ID-. Students are matched to this ID. The number next to your initials is unique.</p>
+                    <p>The link has information about your host where you will go for dinner with students. </p>
+                    <br>
+                    <p>For those who have access to email on Tour day,</p>
+                    <p>To save time when you arrive at UWM, Just click on the button which says 'Check-In'. We will know that you are there and ready to drive students.</p>
+                    <p>Reach out to us if there are issues.</p>
                     <br>
                     <p>Thank you</p>
                 ");
