@@ -102,12 +102,13 @@ namespace Logic
         <ul>                                                                    
             {string.Join(Environment.NewLine, driver.Students?.Select(student => $"<li>{student.Fullname} ({student.Country})</li>") ?? new List<string>())}                                                    
         </ul>                                                                   
-        <br>
-            {(driver.Host != null ? $@"
-          <p> Host Name: {driver.Host.Fullname} </p>                              
-          <p> Host Contact: {driver.Host.Phone} </p>                              
-          <p> Host Address: {driver.Host.Address} </p>                            
-            " : string.Empty)}
+        <br />
+            {string.Join(Environment.NewLine, driver.Host != null ? new List<string>
+                {
+                    $"<p> Host Name: {driver.Host.Fullname} </p>",
+                    $"<p> Host Contact: {driver.Host.Phone} </p>",
+                    $"<p> Host Address: {driver.Host.Address} </p>"
+                } : new List<string> { "You are not assigned to a host home yet." })}
         <br>                                                                    
         <br>                                                                    
         <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
