@@ -95,7 +95,7 @@ namespace Logic
             {
                 return $@"
         <p> **This is an automatically generated email** </p>                      
-        <br>                                                                    
+        <br />                                                                    
         <p> Hello {driver.Fullname},</p>
         <p> Your Driver ID:<strong> {driver.DisplayId} </strong></p> 
         <p> Students: </p>                       
@@ -103,15 +103,16 @@ namespace Logic
             {string.Join(Environment.NewLine, driver.Students?.Select(student =>
                                                   $"<li>{student.Fullname} ({student.Country})</li>")
                                               ?? new List<string> { "<p>No student is assigned to you yet.</p>"})}                                                    
-        </ul>                                                                   
+        </ul>
+        <br />                                                                   
             {string.Join(Environment.NewLine, driver.Host != null ? new List<string>
                 {
                     $"<p> Host Name: {driver.Host?.Fullname} </p>",
                     $"<p> Host Contact: {driver.Host?.Phone} </p>",
                     $"<p> Host Address: {driver.Host?.Address} </p>"
                 } : new List<string> { "<p>You are not assigned to a host home yet.</p>" })}
-        <br>                                                                    
-        <br>                                                                    
+        <br />                                                                   
+        <br />                                                                
         <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
         <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
         ";

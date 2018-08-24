@@ -113,8 +113,8 @@ namespace Logic
                 "))}
             </ul>
         " : "<p>No driver is assigned to your home.</p>")}
-        <br>                                                                    
-        <br>                                                                    
+        <br />                                                                     
+        <br />                                                                     
         <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
         <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
         ";
