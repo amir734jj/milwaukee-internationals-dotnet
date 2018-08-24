@@ -116,7 +116,11 @@ namespace Logic
             }
 
             // Send the email to drivers
-            (await _driverLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+            (await _driverLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(new []
+            {
+                "asherimtiaz@gmail.com",
+                "amirhesamyan@gmail.com"
+            }, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 
             // Return true
             return true;
