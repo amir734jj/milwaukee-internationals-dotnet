@@ -60,10 +60,12 @@ namespace DAL.ServiceApi
                         .Property(Send.FromName, "Milwaukee-Internationals")
                         .Property(Send.Subject, emailSubject)
                         .Property(Send.HtmlPart, emailHtml)
+                        // CC to ...
                         .Property(Send.Cc, ApiConstants.WebSiteEmail)
                         .Property(Send.Recipients, new JArray
                         {
                             new JObject {{ "Email", emailAddress }},
+                            // Send to ...
                             new JObject {{ "Email", ApiConstants.WebSiteEmail }}
                         });
 
