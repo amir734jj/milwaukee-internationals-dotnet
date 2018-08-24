@@ -100,9 +100,10 @@ namespace Logic
         <p> Your Driver ID:<strong> {driver.DisplayId} </strong></p> 
         <p> Students: </p>                       
         <ul>                                                                    
-            {string.Join(Environment.NewLine, driver.Students?.Select(student => $"<li>{student.Fullname} ({student.Country})</li>") ?? new List<string>())}                                                    
+            {string.Join(Environment.NewLine, driver.Students?.Select(student =>
+                                                  $"<li>{student.Fullname} ({student.Country})</li>")
+                                              ?? new List<string> { "<p>No student is assigned to you yet.</p>"})}                                                    
         </ul>                                                                   
-        <br />
             {string.Join(Environment.NewLine, driver.Host != null ? new List<string>
                 {
                     $"<p> Host Name: {driver.Host?.Fullname} </p>",
