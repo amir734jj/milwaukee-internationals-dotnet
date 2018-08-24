@@ -63,11 +63,11 @@ namespace DAL.ServiceApi
                         .Property(Send.Cc, ApiConstants.WebSiteEmail)
                         .Property(Send.Recipients, new JArray
                         {
-                            new JObject {{ "Email", emailAddress}},
-                            new JObject {{ "Email", ApiConstants.WebSiteEmail}}
+                            new JObject {{ "Email", emailAddress }},
+                            new JObject {{ "Email", ApiConstants.WebSiteEmail }}
                         });
-                    
-                    var response = await _mailjetClient.PostAsync(request);
+
+                    await _mailjetClient.PostAsync(request);
                 });
 
                 await task;

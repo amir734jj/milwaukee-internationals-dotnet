@@ -9,8 +9,11 @@
     <div class="page-header">
         <h3>List of Students (@Model.Count())</h3>
         
-        <div class="clearfix">
-            <button class="btn btn-default pull-right" ng-click="getAllStudentsPDF()">Download PDF</button>
+        <div class="row">
+            <div class="pull-right col-md-3 clearfix">
+                <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                <button class="btn btn-default pull-right" ng-click="getAllStudentsPDF()">Download PDF</button>
+            </div>
         </div>
     </div>
     
@@ -22,11 +25,11 @@
                     <th>Country</th>
                     <th>University</th>
                     <th>Major</th>
-                    <th>Interest</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th ng-show="showDetail">Interest</th>
+                    <th ng-show="showDetail">Email</th>
+                    <th ng-show="showDetail">Phone</th>
                     <th>Kosher</th>
-                    <th class="hidden-xs">Action</th>
+                    <th class="hidden-xs" ng-show="showDetail">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,11 +40,11 @@
                     <td>@student.Country</td>
                     <td>@student.University</td>
                     <td>@student.Major</td>
-                    <td>@student.Interests</td>
-                    <td>@student.Email</td>
-                    <td>@student.Phone</td>
+                    <td ng-show="showDetail">@student.Interests</td>
+                    <td ng-show="showDetail">@student.Email</td>
+                    <td ng-show="showDetail">@student.Phone</td>
                     <td>@student.KosherFood</td>
-                    <td class="hidden-xs">
+                    <td class="hidden-xs" ng-show="showDetail">
                         <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>

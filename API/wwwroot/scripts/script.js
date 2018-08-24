@@ -33,6 +33,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         }
     }])
     .controller('studentListCtrl', ['$scope', '$http', function ($scope, $http) {
+        
+        $scope.showDetail = false;
+        
+        $scope.toggleShowDetail = function() { };
+        
         $scope.getAllStudentsPDF = function () {
             $http.get("/api/student").then(function (response) {
                 var students = response.data;
@@ -376,6 +381,24 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     }])
     .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
 
+        $scope.getHostInfo = function(host) {
+            var hostCapacity = 0;
+            var hostAssigned = 0;
+
+            if (host.drivers) {
+                hostCapacity = host.drivers.map(function (driver) { return driver.capacity })
+                    .reduce(function (accumulator, currentValue) {  return accumulator + currentValue; });
+                
+                hostAssigned = host.drivers.map(function (driver) { return driver.students ? driver.students.length : 0})
+                    .reduce(function (accumulator, currentValue) {  return accumulator + currentValue; });
+            } 
+            
+            return {
+                "hostCapacity": hostCapacity,
+                "hostAssigned": hostAssigned
+            };
+        };
+        
         $scope.getAllDriverMappingPDF = function() {
             $http.get("/api/driverHostMapping/status").then(function(response) {
                 var hostBucket = response.data.mappedHosts;
