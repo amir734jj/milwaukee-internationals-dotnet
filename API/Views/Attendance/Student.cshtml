@@ -66,12 +66,12 @@
                 <td ng-if="student.driver == null">
                     
                     <div class="row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <select class="form-control" ng-model="student.driverId">
                                 <option value="{{driver.id}}" ng-repeat="driver in drivers">{{driver.fullname}}</option>
                             </select>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <a ng-click="addDriverMap(student.id, student.driverId)" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
                         </div>
                     </div>
