@@ -70,7 +70,7 @@ namespace Logic
         {
             (await _studentLogic.GetAll()).ForEach(x =>
             {
-                var url = $"{ApiConstants.WebSiteApiUrl}/utility/EmailCheckIn/Student/{x.GetHashCode()}";
+                var url = $"{ApiConstants.WebSiteUrl}/utility/EmailCheckIn/Student/{x.GetHashCode()}";
                 
                 _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
                     <h4>Please use this link to check-in</h4>
