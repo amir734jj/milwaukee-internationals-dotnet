@@ -291,6 +291,26 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.country = "All Countries";
         $scope.attendanceFilter = "all";
         $scope.fullname = "";
+        $scope.drivers = [];
+        
+        // Get All Drivers
+        $scope.getAllDrivers = function () {
+            $http.get("/api/driver/").then(function (response) {
+                $scope.drivers = response.data;
+            });
+        };
+        
+        $scope.addDriverMap = function(studentId, driverId) {
+            if (driverId && studentId) {
+                $http.post("/api/studentDriverMapping/map", {
+                    "driverId": driverId,
+                    "studentId": studentId
+                }).then(function() {
+                    $scope.getAllDrivers();
+                    $scope.getAllStudents();
+                });
+            }
+        };
 
         $scope.checkInViaEmail = function() {
             if ($window.confirm("Are you sure to send check-in via email to students?")) {
@@ -310,6 +330,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                         $scope.countries.push(student.country);
                     }
                 });
+
+                // Filter
+                var countries = $scope.countries.filter(function (value) { return value !== "All Countries" });
+                
+                // Sort
+                countries.sort();
+                
+                $scope.countries = [ "All Countries" ].concat(countries);
                 
                 $scope.updateTable();
             });
@@ -337,7 +365,6 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 filteredStudents.country = students;
             } else {
                 students.forEach(function (student) {
-                    
                     if (student.country === $scope.country) {
                         filteredStudents.country.push(student);
                     }
@@ -374,6 +401,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         $scope.init = function () {
+            $scope.getAllDrivers();
             $scope.getAllStudents();
         };
 
@@ -549,7 +577,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 });
             }
 
-            drivers= filteredDrivers.fullname;
+            drivers = filteredDrivers.fullname;
 
             $scope.drivers = drivers;
         };

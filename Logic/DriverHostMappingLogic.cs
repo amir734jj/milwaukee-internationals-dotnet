@@ -95,14 +95,14 @@ namespace Logic
             {
                 return $@"
         <p> **This is an automatically generated email** </p>                      
-        <br />                                                                    
+        <br />
         <p> Hello {host.Fullname}</p>                                                 
         {(host.Drivers != null && host.Drivers.Any() ? $@"
-            <p>List of drivers and assigned students assigned to your home</p>
+            <p>List of drivers and students assigned to your home</p>
             <ul>
                 {string.Join(Environment.NewLine, host.Drivers?.Select(driver => $@"
                     <li>
-                        <p>Driver fullname: {driver.Fullname}</p>
+                        <p>Driver: {driver.Fullname}</p>
                         {(!string.IsNullOrEmpty(driver.Navigator) ? $"<p>Navigator: {driver.Navigator}</p>" : string.Empty)}
                         <ul>
                             {string.Join(Environment.NewLine, driver.Students?.Select(student => $@"
