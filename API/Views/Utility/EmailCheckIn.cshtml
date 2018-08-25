@@ -40,6 +40,22 @@
                 <label class="pull-left">Host Phone Number</label>
                 <label class="pull-right">@driver?.Host?.Phone</label>
             </li>
+            @if (driver.Students != null && driver.Students.Any())
+            {
+                <li class="list-group-item clearfix">
+                    <label>Assigned Students</label>
+                    
+                    <ul class="list-group">
+                        @foreach (var student in driver.Students)
+                        {
+                            <li class="list-group-item clearfix">
+                                <label class="pull-left">@student.Fullname (@student.Country)</label>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            
         </ul>
         
         <div class="row">

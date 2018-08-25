@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -7,9 +9,16 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
+        private IDriverLogic _driverLogic;
+
+        public HomeController(IDriverLogic driverLogic)
+        {
+            _driverLogic = driverLogic;
+        }
+        
         public async Task<IActionResult> Index()
         {
-            return Redirect("~/Registration/Student".ToLower());
+            return Ok(_driverLogic.GetAll().Result.Select(x => x.GetHashCode()));
         }
 
         /// <summary>
