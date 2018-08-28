@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using API.Extensions;
 using Logic.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,11 +9,11 @@ using Models.Constants;
 
 namespace API.Attributes
 {
-    public class AuthorizeActionFilter : IAsyncActionFilter
+    public class UserRoleActionFilter : IAsyncActionFilter
     {
         private readonly IIdentityLogic _identityLogic;
 
-        public AuthorizeActionFilter(IIdentityLogic identityLogic)
+        public UserRoleActionFilter(IIdentityLogic identityLogic)
         {
             _identityLogic = identityLogic;
         }
@@ -25,16 +23,18 @@ namespace API.Attributes
             var controller = (Controller) context.Controller;
             var method = ((ControllerActionDescriptor) context.ActionDescriptor).MethodInfo;
             
-            var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
-            var actionLevelAuthorize = method.GetCustomAttribute<AuthorizeMiddlewareAttribute>();
+            var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<UserRoleMiddlewareAttribute>();
+            var actionLevelAuthorize = method.GetCustomAttribute<UserRoleMiddlewareAttribute>();
             
             if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
+
+            var userRole = controllerLevelAuthorize?.UserRoleEnum ?? actionLevelAuthorize.UserRoleEnum;
             
             // Try to get username/password from session
             var userInfo = context.HttpContext.Session.GetUserInfo();
 
             // Validate username/password
-            if (_identityLogic.IsAuthenticated(userInfo.Username, userInfo.Password))
+            if (_identityLogic.IsAuthenticated(userInfo.Username, userInfo.Password) && userInfo.UserRoleEnum == userRole)
             {
                 return next();
             }

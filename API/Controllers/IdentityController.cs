@@ -64,6 +64,7 @@ namespace API.Controllers
             {
                 HttpContext.Session.SetString(ApiConstants.Username, user.Username);
                 HttpContext.Session.SetString(ApiConstants.Password, user.Password);
+                HttpContext.Session.SetString(ApiConstants.UserRole, user.UserRoleEnum.ToString());
                 HttpContext.Session.SetString(ApiConstants.Authenticated.Key, ApiConstants.Authenticated.Value);
             }
             
@@ -94,9 +95,9 @@ namespace API.Controllers
         [SwaggerOperation("LogoutAction")]
         public async Task<IActionResult> LogoutAction()
         {
-            var (username, password) = HttpContext.Session.GetUseramePassword();
+            var userInfo = HttpContext.Session.GetUserInfo();
             
-            _identityLogic.TryLogout(username, password, out var result);
+            _identityLogic.TryLogout(userInfo.Username, userInfo.Password, out var result);
             
             // Remove session values
             if (result)

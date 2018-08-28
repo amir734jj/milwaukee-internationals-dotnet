@@ -16,6 +16,8 @@ namespace Models.Constants
         public const string Username = "Username";
 
         public const string Password = "Password";
+        
+        public const string UserRole = "UserRole";
 
         public const string InviteCode = "Tour2018";
 

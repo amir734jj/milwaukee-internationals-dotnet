@@ -39,6 +39,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [AuthorizeMiddleware]
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("AdHocEmail")]
         [SwaggerOperation("AdHocEmail")]
@@ -52,6 +53,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [AuthorizeMiddleware]
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
         [HttpPost]
         [Route("AdHocEmailAction")]
         [SwaggerOperation("AdHocEmailAction")]
