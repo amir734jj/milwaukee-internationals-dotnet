@@ -5,6 +5,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models;
+using Models.Enums;
 using static Logic.Utilities.HashingUtility;
 
 namespace Logic
@@ -45,6 +46,18 @@ namespace Logic
             instance.Password = SecureHashPassword(instance.Password);
             
             return await base.Save(instance);
+        }
+
+        /// <summary>
+        /// Updates user role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userRoleEnum"></param>
+        /// <returns></returns>
+        public async Task<User> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
+        {
+            // Update UserRole
+            return await _userDal.Update(id, user => user.UserRoleEnum = userRoleEnum);
         }
     }
 }

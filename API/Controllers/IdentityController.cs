@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.Constants;
+using Models.Enums;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
@@ -47,7 +48,7 @@ namespace API.Controllers
         {
             return View(new User());
         }
-
+        
         /// <summary>
         /// Login the user
         /// </summary>

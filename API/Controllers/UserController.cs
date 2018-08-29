@@ -2,6 +2,7 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Enums;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
@@ -47,6 +48,20 @@ namespace API.Controllers
             await _userLogic.Delete(id);
 
             return RedirectToAction("Index");
+        }
+         
+        /// <summary>
+        /// Update User Role
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("UpdateUserRole")]
+        [SwaggerOperation("UpdateUserRole")]
+        public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
+        {
+            var result = await _userLogic.UpdateUserRole(id, userRoleEnum);
+
+            return Ok(result);
         }
     }
 }
