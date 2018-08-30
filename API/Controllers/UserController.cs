@@ -59,9 +59,9 @@ namespace API.Controllers
         [SwaggerOperation("UpdateUserRole")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
-            var result = await _userLogic.UpdateUserRole(id, userRoleEnum);
+            await _userLogic.UpdateUserRole(id, userRoleEnum);
 
-            return Ok(result);
+            return RedirectToAction("Index");
         }
     }
 }

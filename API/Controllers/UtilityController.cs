@@ -72,7 +72,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("EmailCheckIn/{type}/{hashcode}")]
         [SwaggerOperation("EmailCheckIn")]
-        public async Task<IActionResult> EmailCheckin([FromRoute] EntitiesEnum type, [FromRoute] int hashcode)
+        public async Task<IActionResult> EmailCheckIn([FromRoute] EntitiesEnum type, [FromRoute] int hashcode)
         {
             // ReSharper disable once SwitchStatementMissingSomeCases
             switch (type)

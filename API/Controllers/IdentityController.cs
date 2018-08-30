@@ -120,5 +120,17 @@ namespace API.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Not authorized view
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("NotAuthorized")]
+        [SwaggerOperation("NotAuthorized")]
+        public async Task<IActionResult> NotAuthorized()
+        {
+            return View();
+        }
     }
 }

@@ -2,6 +2,7 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Enums;
 using Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -65,6 +66,7 @@ namespace API.Controllers.Api
         [HttpPost]
         [Route("EmailMappings")]
         [SwaggerOperation("EmailMappings")]
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> EmailMappings()
         {
             return Ok(await _driverHostMappingLogic.EmailMappings());
