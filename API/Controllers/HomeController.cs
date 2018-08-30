@@ -8,7 +8,6 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
-        
         public async Task<IActionResult> Index()
         {
             return Redirect("~/Registration/Student".ToLower());

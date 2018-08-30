@@ -1,4 +1,7 @@
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+    .controller('userListCtrl', ['$scope', '$http', function ($scope, $http) {
+        
+    }])
     .controller('emailUtilityCtrl', ["$timeout", function ($timeout) {
         
         // Hide the .autoclose

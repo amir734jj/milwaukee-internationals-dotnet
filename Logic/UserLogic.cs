@@ -10,7 +10,7 @@ using static Logic.Utilities.HashingUtility;
 
 namespace Logic
 {
-    public class UserLogic  : BasicCrudLogicAbstract<User>, IUserLogic
+    public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
     {
         private readonly IUserDal _userDal;
 

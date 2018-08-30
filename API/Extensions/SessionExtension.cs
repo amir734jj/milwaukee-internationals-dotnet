@@ -24,12 +24,15 @@ namespace API.Extensions
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public static UserInfo GetUserInfo(this ISession session) => new UserInfo
+        public static UserInfo GetUserInfo(this ISession session)
         {
-            Username = session.GetString(ApiConstants.Username),
-            Password = session.GetString(ApiConstants.Password),
-            UserRoleEnum = Enum.Parse<UserRoleEnum>(session.GetString(ApiConstants.UserRole))
-        };
+            return new UserInfo
+            {
+                Username = session.GetString(ApiConstants.Username),
+                Password = session.GetString(ApiConstants.Password),
+                UserRoleEnum = Enum.Parse<UserRoleEnum>(session.GetString(ApiConstants.UserRole))
+            };
+        }
 
         /// <summary>
         /// Extension method to check whether user is logged in or not
