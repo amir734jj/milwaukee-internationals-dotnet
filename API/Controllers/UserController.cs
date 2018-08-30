@@ -54,7 +54,7 @@ namespace API.Controllers
         /// Update User Role
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Route("UpdateUserRole/{id}/{userRoleEnum}")]
         [SwaggerOperation("UpdateUserRole")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
