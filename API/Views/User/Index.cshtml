@@ -67,10 +67,10 @@
                             switch (user.UserRoleEnum)
                             {
                                 case UserRoleEnum.Basic:
-                                    <a href="~/User/updateUserRole/@user.Id/@adminRole" class="btn btn-info disabled">Set Admin</a>
+                                    <a href="~/User/updateUserRole/@user.Id/@adminRole" class="btn btn-info">Set Admin</a>
                                     break;
                                 case UserRoleEnum.Admin:
-                                    <a href="~/User/updateUserRole/@user.Id/@basicRole" class="btn btn-info disabled">Set Basic</a>
+                                    <a href="~/User/updateUserRole/@user.Id/@basicRole" class="btn btn-info">Set Basic</a>
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
