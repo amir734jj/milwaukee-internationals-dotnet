@@ -32,7 +32,7 @@ namespace API.Extensions
             {
                 Username = session.GetString(ApiConstants.Username),
                 Password = session.GetString(ApiConstants.Password),
-                UserRoleEnum = Enum.Parse<UserRoleEnum>(role)
+                UserRoleEnum = !string.IsNullOrWhiteSpace(role) ? Enum.Parse<UserRoleEnum>(role) : default 
             };
         }
 
