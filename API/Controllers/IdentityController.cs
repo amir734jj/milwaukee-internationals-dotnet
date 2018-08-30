@@ -58,14 +58,14 @@ namespace API.Controllers
         [SwaggerOperation("LoginAction")]
         public async Task<IActionResult> LoginAction(User user)
         {
-            _identityLogic.TryLogin(user.Username, user.Password, out var result);
+            _identityLogic.TryLogin(user.Username, user.Password, out var userRoleEnum, out var result);
 
             // Set session values
             if (result)
             {
                 HttpContext.Session.SetString(ApiConstants.Username, user.Username);
                 HttpContext.Session.SetString(ApiConstants.Password, user.Password);
-                HttpContext.Session.SetString(ApiConstants.UserRole, user.UserRoleEnum.ToString());
+                HttpContext.Session.SetString(ApiConstants.UserRole, userRoleEnum.ToString());
                 HttpContext.Session.SetString(ApiConstants.Authenticated.Key, ApiConstants.Authenticated.Value);
             }
             

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Logic.Interfaces;
+using Models;
+using Models.Enums;
 using static Logic.Utilities.HashingUtility;
 
 namespace Logic
@@ -28,18 +30,27 @@ namespace Logic
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
+        /// <param name="userRoleEnum"></param>
         /// <param name="result"></param>
-        public void TryLogin(string username, string password, out bool result)
+        public void TryLogin(string username, string password, out UserRoleEnum userRoleEnum, out bool result)
         {
+            // Try to get the user
+            var user = _userLogic.GetAll().Result.FirstOrDefault(x => x.Username == username && x.Password == SecureHashPassword(password));
+            
             // Authenticate the user
-            if (_userLogic.GetAll().Result.Any(x => x.Username == username && x.Password == SecureHashPassword(password)))
+            if (user != null)
             {
                 _authenticatedUsers[username] = SecureHashPassword(password);
 
+                // Out the UserRole
+                userRoleEnum = user.UserRoleEnum;
+                
+                // Out the flag
                 result = true;
             }
             else
             {
+                userRoleEnum = default(UserRoleEnum);
                 result = false;
             }
         }

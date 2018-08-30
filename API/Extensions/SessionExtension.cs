@@ -26,11 +26,13 @@ namespace API.Extensions
         /// <returns></returns>
         public static UserInfo GetUserInfo(this ISession session)
         {
+            var role = session.GetString(ApiConstants.UserRole);
+            
             return new UserInfo
             {
                 Username = session.GetString(ApiConstants.Username),
                 Password = session.GetString(ApiConstants.Password),
-                UserRoleEnum = Enum.Parse<UserRoleEnum>(session.GetString(ApiConstants.UserRole))
+                UserRoleEnum = Enum.Parse<UserRoleEnum>(role)
             };
         }
 

@@ -1,8 +1,11 @@
-﻿namespace Logic.Interfaces
+﻿using Models;
+using Models.Enums;
+
+namespace Logic.Interfaces
 {
     public interface IIdentityLogic
     {        
-        void TryLogin(string username, string password, out bool result);
+        void TryLogin(string username, string password, out UserRoleEnum userRoleEnum, out bool result);
 
         void TryLogout(string username, string password, out bool resul);
 

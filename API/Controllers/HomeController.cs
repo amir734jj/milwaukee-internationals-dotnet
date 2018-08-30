@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using API.Extensions;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -23,6 +24,18 @@ namespace API.Controllers
         public async Task<IActionResult> Register()
         {
             return Redirect("~/Identity/Register".ToLower());
+        }
+        
+        /// <summary>
+        /// View page to register
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Echo")]
+        [SwaggerOperation("Echo")]
+        public async Task<IActionResult> Echo()
+        {
+            return Ok(HttpContext.Session.GetUserInfo());
         }
     }
 }
