@@ -1,6 +1,11 @@
 ﻿@using API.Extensions
-@using Logic.Extensions
-@using Microsoft.AspNetCore.Http
+@using Models.Enums
+
+@{
+    var userInfo = Context.Session.GetUserInfo();
+}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,10 +119,13 @@
                 }
                 else
                 {
-                    <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
-                        <a href="~/Utility/AdHocEmail">Email Utility</a>
-                    </li>
-                    
+                    if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
+                            <a href="~/Utility/AdHocEmail">Email Utility</a>
+                        </li>
+                    }
+
                     <li><a href="~/Identity/LogoutAction"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 }
             </ul>
