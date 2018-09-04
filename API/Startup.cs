@@ -102,8 +102,12 @@ namespace API
 
             services.AddMvc(x =>
             {   
+                // Authorize
                 x.Filters.Add<AuthorizeActionFilter>();
-
+                
+                // Role
+                x.Filters.Add<UserRoleActionFilter>();
+                
                 x.ModelValidatorProviders.Clear();
 
                 // Not need to have https
