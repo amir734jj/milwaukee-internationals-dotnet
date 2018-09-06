@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
@@ -45,10 +46,16 @@ namespace Logic
             await _eventDal.Update(eventId, @event =>
             {
                 // Make sure it is not null or empty
-                @event.Students = @event.Students ?? new List<Student>();
+                @event.Students = @event.Students ?? new List<EventStudentRelationship>();
                 
                 // Add student
-                @event.Students.Add(student);
+                @event.Students.Add(new EventStudentRelationship
+                {
+                    Event = @event,
+                    EventId = @event.Id,
+                    Student = student,
+                    StudentId = student.Id
+                });
             });
 
             return true;
@@ -69,7 +76,7 @@ namespace Logic
             await _eventDal.Update(eventId, @event =>
             {
                 // Remove student
-                @event.Students?.Remove(student);
+                @event.Students = @event.Students.Where(x => x.StudentId != studentId).ToList();
             });
 
             return true;

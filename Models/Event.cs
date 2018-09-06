@@ -18,6 +18,9 @@ namespace Models
         
         public string Address { get; set; }
         
-        public List<Student> Students { get; set; }
+        /// <summary>
+        /// List of Event Student Relationships
+        /// </summary>
+        public List<EventStudentRelationship> Students { get; set; }
     }
 }

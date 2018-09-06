@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -52,6 +53,11 @@ namespace Models
         
         [Display(Name = "Total family members")]
         public int TotalFamilyMembers { get; set; }
+        
+        /// <summary>
+        /// List of Event Student Relationships
+        /// </summary>
+        public List<EventStudentRelationship> Events { get; set; }
         
         /// <summary>
         /// Override generate hashcode

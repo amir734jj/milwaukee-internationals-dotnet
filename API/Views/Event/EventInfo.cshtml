@@ -6,7 +6,7 @@
     Layout = "_Layout";
 
     // Make sure Students is not null
-    Model.Students = Model.Students ?? new List<Student>();
+    Model.Students = Model.Students ?? new List<EventStudentRelationship>();
 }
 
 <div class="container">
@@ -26,9 +26,9 @@
         @foreach (var student in Model.Students)
         {
             <tr>
-                <td>@student.Fullname</td>
-                <td>@student.Country</td>
-                <td>@student.Email</td>
+                <td>@student.Student.Fullname</td>
+                <td>@student.Student.Country</td>
+                <td>@student.Student.Email</td>
             </tr>
         }
         </tbody>
