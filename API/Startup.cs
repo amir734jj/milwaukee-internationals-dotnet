@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -112,6 +113,13 @@ namespace API
 
                 // Not need to have https
                 x.RequireHttpsPermanent = false;
+
+                // Allow anonymous for localhost
+                if (_env.IsLocalhost())
+                {
+                    x.Filters.Add<AllowAnonymousFilter>();
+                }
+
             }).AddJsonOptions(x =>
             {
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -165,6 +173,8 @@ namespace API
                 
                 // Initialize the email jet client
                 config.For<IMailjetClient>().Use(new MailjetClient(_configuration.GetValue<string>("MailJet:Key"), _configuration.GetValue<string>("MailJet:Secret"))).Singleton();
+
+                config.For<IHostingEnvironment>().Use(_env);
             });
             
             return _container.GetInstance<IServiceProvider>();

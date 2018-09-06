@@ -1,0 +1,9 @@
+﻿@using Models
+@model IEnumerable<Event>
+
+@{
+    ViewBag.Title = "Event management";
+    Layout = "_Layout";
+}
+
+@Html.Partial("EventTable", Model)

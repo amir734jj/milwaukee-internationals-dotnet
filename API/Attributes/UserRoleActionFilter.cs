@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using API.Extensions;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -12,10 +13,12 @@ namespace API.Attributes
     public class UserRoleActionFilter : IAsyncActionFilter
     {
         private readonly IIdentityLogic _identityLogic;
+        private readonly IHostingEnvironment _env;
 
-        public UserRoleActionFilter(IIdentityLogic identityLogic)
+        public UserRoleActionFilter(IIdentityLogic identityLogic, IHostingEnvironment env)
         {
             _identityLogic = identityLogic;
+            _env = env;
         }
         
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -26,7 +29,7 @@ namespace API.Attributes
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<UserRoleMiddlewareAttribute>();
             var actionLevelAuthorize = method.GetCustomAttribute<UserRoleMiddlewareAttribute>();
             
-            if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
+            if (controllerLevelAuthorize == null && actionLevelAuthorize == null || _env.IsLocalhost()) return next();
 
             var userRole = controllerLevelAuthorize?.UserRoleEnum ?? actionLevelAuthorize.UserRoleEnum;
             

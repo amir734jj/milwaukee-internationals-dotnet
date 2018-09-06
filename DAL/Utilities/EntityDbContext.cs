@@ -15,6 +15,8 @@ namespace DAL.Utilities
         public DbSet<Driver> Drivers { get; set; }
         
         public DbSet<Host> Hosts { get; set; }
+        
+        public DbSet<Event> Events { get; set; }
 
         private readonly Action<DbContextOptionsBuilder> _onConfiguring;
 

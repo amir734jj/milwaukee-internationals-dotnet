@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using API.Extensions;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -14,10 +15,13 @@ namespace API.Attributes
     public class AuthorizeActionFilter : IAsyncActionFilter
     {
         private readonly IIdentityLogic _identityLogic;
+        
+        private readonly IHostingEnvironment _env;
 
-        public AuthorizeActionFilter(IIdentityLogic identityLogic)
+        public AuthorizeActionFilter(IIdentityLogic identityLogic, IHostingEnvironment env)
         {
             _identityLogic = identityLogic;
+            _env = env;
         }
         
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -28,7 +32,7 @@ namespace API.Attributes
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             var actionLevelAuthorize = method.GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             
-            if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
+            if (controllerLevelAuthorize == null && actionLevelAuthorize == null || _env.IsLocalhost()) return next();
             
             // Try to get username/password from session
             var userInfo = context.HttpContext.Session.GetUserInfo();

@@ -45,7 +45,7 @@ namespace DAL
         /// </summary>
         /// <returns></returns>
         protected override DbSet<Driver> GetDbSet() => _dbContext.Drivers;
-
+        
         /// <summary>
         /// Override to include related entity
         /// </summary>

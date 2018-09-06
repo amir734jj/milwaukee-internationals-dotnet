@@ -10,7 +10,7 @@ using Models.Interfaces;
 
 namespace DAL.Abstracts
 {
-    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel, IPerson
+    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel
     {
         /// <summary>
         /// Abstract to get IMapper
@@ -34,8 +34,8 @@ namespace DAL.Abstracts
         /// Returns all enities
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll() => await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
-
+        public virtual async Task<IEnumerable<T>> GetAll() =>  await GetDbSet().ToListAsync();
+        
         /// <summary>
         /// Returns an entity given the id
         /// </summary>
