@@ -18,7 +18,7 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Description</th>
+            <th>DateTime</th>
             <th>Address</th>
             <th>Count of Students</th>
             @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
@@ -32,13 +32,16 @@
         {
             <tr>
                 <td>@eventModel.Name</td>
-                <td>@eventModel.Description</td>
+                <td>@eventModel.DateTime</td>
                 <td>@eventModel.Address</td>
                 <td>@(eventModel.Students?.Count ?? 0)</td>
                 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
-                    <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger">Delete</a>
+                    <td>
+                        <a href="~/Event/Info/@eventModel.Id" class="btn btn-info">Preview</a>
+                        <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger">Delete</a>
+                    </td>
                 }
             </tr>
         }

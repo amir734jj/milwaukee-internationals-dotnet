@@ -1,0 +1,41 @@
+﻿@using Models
+@model Event
+
+@{
+    ViewBag.Title = "Driver-Navigator Registration";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h4>Event Registration</h4>
+    </div>
+    
+    <br />
+    
+    @using (Html.BeginForm("RegisterEvent", "Event", FormMethod.Post))
+    {
+        @Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", type = "text", placeholder = "Enter name" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Description)
+            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", type = "text", placeholder = "Enter description" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address)
+            @Html.TextBoxFor(x => x.Address, new { @class = "form-control", type = "text", placeholder = "Enter address" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.DateTime)
+            @Html.TextBoxFor(x => x.DateTime, new { @class = "form-control", type = "datetime-local", placeholder = "Enter date" })
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Register" />
+    }
+</div>

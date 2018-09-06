@@ -1,0 +1,36 @@
+﻿@using Models
+@model Models.Event
+
+@{
+    ViewBag.Title = "Event Info page";
+    Layout = "_Layout";
+
+    // Make sure Students is not null
+    Model.Students = Model.Students ?? new List<Student>();
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>Count of RSVP students @(Model.Students?.Count ?? 0)</h3>
+    </div>
+    
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Country</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Fullname</td>
+                <td>@student.Country</td>
+                <td>@student.Email</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

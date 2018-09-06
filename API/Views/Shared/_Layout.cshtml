@@ -109,6 +109,10 @@
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
+                    
+                    <li class="@(ViewContext.RouteData.Matches("Event") ? "active" : "")">
+                        <a href="~/Event">Events</a>
+                    </li>
                 }
             </ul>
             
