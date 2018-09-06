@@ -18,6 +18,6 @@ namespace Models
         
         public string Address { get; set; }
         
-        public List<Student> Student { get; set; }
+        public List<Student> Students { get; set; }
     }
 }

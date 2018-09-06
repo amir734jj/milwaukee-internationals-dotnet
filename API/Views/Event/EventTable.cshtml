@@ -34,7 +34,7 @@
                 <td>@eventModel.Name</td>
                 <td>@eventModel.Description</td>
                 <td>@eventModel.Address</td>
-                <td>@(eventModel.Student?.Count ?? 0)</td>
+                <td>@(eventModel.Students?.Count ?? 0)</td>
                 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
