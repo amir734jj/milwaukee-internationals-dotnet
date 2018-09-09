@@ -1,7 +1,12 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Models
 {
     public class EventStudentRelationship
     {
+        [Key]
+        public int Id { get; set; }
+        
         public int StudentId { get; set; }
         
         public Student Student { get; set; }

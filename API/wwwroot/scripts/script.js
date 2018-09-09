@@ -1,4 +1,33 @@
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+    .controller('eventInfoCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+        
+        $scope.mapStudent = function ($event, eventId, studentId) {
+            $event.preventDefault();
+
+            if (eventId && studentId) {
+                $http.post("/api/event/map/" + eventId + "/" + studentId).then(function (response) {
+                    $window.location.reload()
+                });
+            }
+        };
+
+        $scope.unMapStudent = function (eventId, studentId) {
+            if (eventId && studentId) {
+                $http.post("/api/event/unmap/" + eventId + "/" + studentId).then(function (response) {
+                    $window.location.reload()
+                });
+            }
+        };
+        
+        $scope.sendAdHocEmail = function ($event, eventId, emailSubject, emailBody) {
+            $event.preventDefault();
+
+            if (eventId && studentId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
+                
+            }
+        };
+
+    }])
     .controller('userListCtrl', ['$scope', '$http', function ($scope, $http) {
         
     }])

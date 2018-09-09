@@ -76,9 +76,9 @@ namespace API.Controllers
         [SwaggerOperation("Register")]
         public async Task<IActionResult> EventInfo([FromRoute] int id)
         {
-            var @event = await _eventLogic.Get(id);
+            var eventInfo = await _eventLogic.GetEventInfo(id);
 
-            return View(@event);
+            return View(eventInfo);
         }
     }
 }

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
+using Microsoft.EntityFrameworkCore.Internal;
 using Models;
+using Models.ViewModels;
 
 namespace Logic
 {
@@ -30,6 +32,26 @@ namespace Logic
         /// </summary>
         /// <returns></returns>
         protected override IBasicCrudDal<Event> GetBasicCrudDal() => _eventDal;
+
+        /// <summary>
+        /// Returns event info
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<EventManagementViewModel> GetEventInfo(int id)
+        {
+            var @event = await Get(id);
+
+            // Prevent potential null pointer exception
+            @event.Students = @event.Students ?? new List<EventStudentRelationship>();
+
+            return new EventManagementViewModel
+            {
+                Event = @event,
+                AvailableStudents = (await _studentLogic.GetAll())
+                    .Where(x => @event.Students.All(y => y.Student != x))
+            };
+        }
 
         /// <summary>
         /// Assignes student to event
