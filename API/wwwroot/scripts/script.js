@@ -19,13 +19,18 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             }
         };
         
-        $scope.sendAdHocEmail = function ($event, eventId, emailSubject, emailBody) {
+        $scope.sendAdHocEmail = function ($event, eventId, emailSubject) {
             $event.preventDefault();
 
-            if (eventId && studentId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
+            var emailBody = angular.element('.summernote').eq(0).summernote("code");
+            
+            if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
                 
             }
         };
+
+        // Start the text editor
+        angular.element('.summernote').summernote();
 
     }])
     .controller('userListCtrl', ['$scope', '$http', function ($scope, $http) {

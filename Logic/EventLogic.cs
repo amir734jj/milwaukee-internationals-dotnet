@@ -54,7 +54,7 @@ namespace Logic
         }
 
         /// <summary>
-        /// Assignes student to event
+        /// Assigns student to event
         /// </summary>
         /// <param name="eventId"></param>
         /// <param name="studentId"></param>
@@ -63,6 +63,14 @@ namespace Logic
         {
             // Gets the student by Id
             var student = await _studentLogic.Get(studentId);
+
+            var eventOriginal = await Get(eventId);
+
+            // Avoid adding duplicated
+            if (eventOriginal.Students != null && eventOriginal.Students.Any(x => x.StudentId == studentId))
+            {
+                return false;
+            }
 
             // Update the event
             await _eventDal.Update(eventId, @event =>
@@ -94,6 +102,14 @@ namespace Logic
             // Gets the student by Id
             var student = await _studentLogic.Get(studentId);
 
+            var eventOriginal = await Get(eventId);
+
+            // Avoid unnecessary remove
+            if (eventOriginal.Students == null || eventOriginal.Students.Any(x => x.StudentId != studentId))
+            {
+                return false;
+            }
+            
             // Update the event
             await _eventDal.Update(eventId, @event =>
             {
