@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using API.Extensions;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
