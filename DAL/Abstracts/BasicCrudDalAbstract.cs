@@ -63,13 +63,13 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
-            if (instance != null)
+            if (entity != null)
             {
-                GetDbSet().Remove(instance);
+                GetDbSet().Persist(GetMapper()).Remove(entity);
                 await GetDbContext().SaveChangesAsync();
-                return instance;
+                return entity;
             }
 
             return null;
