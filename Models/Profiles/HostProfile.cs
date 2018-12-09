@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Models.Entities;
 
 namespace Models.Profiles
 {    
@@ -6,7 +8,8 @@ namespace Models.Profiles
     {
         public HostProfile()
         {
-            CreateMap<Host, Host>().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Host, Host>()
+                .EqualityComparison((x, y) => x.Id == y.Id);
         }
     }
 }

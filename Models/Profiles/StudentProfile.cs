@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Models.Entities;
 
 namespace Models.Profiles
 {    
@@ -7,14 +9,7 @@ namespace Models.Profiles
         public StudentProfile()
         {
             CreateMap<Student, Student>()
-                .ForMember(x => x.Id, opt => opt.Ignore())
-                .ForMember(x => x.Driver, opt => opt.Ignore())
-                .ForMember(x => x.DriverRefId, opt => opt.Ignore())
-                .BeforeMap((source, destination) =>
-                {
-                    destination.DriverRefId = source.DriverRefId;
-                    destination.Driver = source.Driver;
-                });
+                .EqualityComparison((x, y) => x.Id == y.Id);
         }
     }
 }

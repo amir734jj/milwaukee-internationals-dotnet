@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Entities;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace DAL.Utilities

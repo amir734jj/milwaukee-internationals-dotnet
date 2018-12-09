@@ -8,6 +8,7 @@ using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Entities;
 
 namespace DAL
 {

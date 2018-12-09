@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Models.Interfaces;
 
-namespace Models
+namespace Models.Entities
 {
     public class Event : IBasicModel
     {

@@ -7,7 +7,7 @@ using Models.Enums;
 using Models.Interfaces;
 using HashCode = Invio.Hashing.HashCode;
 
-namespace Models
+namespace Models.Entities
 {
     [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
     public class Driver : IPerson

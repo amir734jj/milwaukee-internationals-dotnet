@@ -6,6 +6,7 @@ using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Models;
+using Models.Entities;
 using Models.Interfaces;
 using Models.ViewModels;
 

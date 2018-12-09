@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Models.Entities;
 
 namespace Models.Profiles
 {
