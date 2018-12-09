@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.EntityFrameworkCore;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -82,15 +83,10 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, T instance)
         {
-            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
-                
-            if (entity != null)
+            if (instance != null)
             {
-                // Being tracking
-                GetDbContext().Update(entity);
-
                 // Update
-                GetMapper().Map(instance, entity);
+                GetDbSet().Persist(GetMapper()).InsertOrUpdate(instance);
                     
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
@@ -118,7 +114,7 @@ namespace DAL.Abstracts
             {
                 // Update
                 modifyAction(entity);
-                    
+                
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
 
