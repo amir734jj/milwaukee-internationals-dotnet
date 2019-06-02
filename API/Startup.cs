@@ -63,7 +63,7 @@ namespace API
 
                 var mailKitOptions = new MailKitOptions
                 {
-                    // Get options from sercets.json
+                    // Get options from secrets.json
                     Server = emailSection.GetValue<string>("Server"),
                     Port = emailSection.GetValue<int>("Port"),
                     SenderName = emailSection.GetValue<string>("SenderName"),

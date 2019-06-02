@@ -9,6 +9,7 @@ namespace Models.Profiles
         public DriverProfile()
         {
             CreateMap<Driver, Driver>()
+                .ForMember(x => x.Id, opt => opt.Ignore())
                 .EqualityComparison((x, y) => x.Id == y.Id);
         }
     }
