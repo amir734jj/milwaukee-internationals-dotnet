@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Models.Entities;
 using Models.Interfaces;
 
 namespace Models.ViewModels

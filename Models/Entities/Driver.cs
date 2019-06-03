@@ -1,58 +1,57 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+using Models.Enums;
 using Models.Interfaces;
 using HashCode = Invio.Hashing.HashCode;
 
-namespace Models
+namespace Models.Entities
 {
     [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-    public class Student : IPerson
+    public class Driver : IPerson
     {
         [Key]
         public int Id { get; set; }
         
-        public string Fullname { get; set; }
-        
-        public string Major { get; set; }
-        
-        public string University { get; set; }
-        
+        [Display(Name="Email")]
         public string Email { get; set; }
         
+        [Display(Name="Phone")]
         public string Phone { get; set; }
         
-        public string Country { get; set; }
-
-        [Display(Name = "Tell us some of your interests")]
-        public string Interests { get; set; }
+        [Display(Name="Fullname")]
+        public string Fullname { get; set; }
         
         public string DisplayId { get; set; }
         
-        [Display(Name="Need a car seat?")]
-        public bool NeedCarSeat { get; set; }
+        [Display(Name = "Capacity")]
         
-        [Display(Name="Halal or Kosher food")]
-        public bool KosherFood { get; set; }
+        [Range(1, 7)]
+        public int Capacity { get; set; } = 1;
         
-        public bool IsPressent { get; set; }
+        [Display(Name="Require Navigator")]
+        public bool RequireNavigator { get; set; } = true;
+        
+        [Display(Name="Navigator fullname")]
+        public string Navigator { get; set; }
+        
+        [Display(Name="Role")]
+        public RolesEnum Role { get; set; }
+        
+        public List<Student> Students { get; set; }
         
         /// <summary>
         /// Optional
         /// </summary>
-        public int? DriverRefId { get; set; }
+        public int? HostRefId { get; set; }
 
-        [ForeignKey("DriverRefId")]
-        public Driver Driver { get; set; }
+        [ForeignKey("HostRefId")]
+        public Host Host { get; set; }
         
-        [Display(Name = "Registering as a family?")]
-        public bool IsFamily { get; set; }
-        
-        [Display(Name = "Total family members")]
-        public int TotalFamilyMembers { get; set; }
-        
+        public bool IsPressent { get; set; }
+
         /// <summary>
         /// Override generate hashcode
         /// </summary>

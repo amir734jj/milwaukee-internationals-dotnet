@@ -2,6 +2,7 @@
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models;
+using Models.Entities;
 using static Logic.Utilities.DisplayIdUtility;
 
 namespace Logic

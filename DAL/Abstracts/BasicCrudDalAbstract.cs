@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.EntityFrameworkCore;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Save(T instance)
         {
-            GetDbSet().Add(instance);
+            GetDbSet().Persist(GetMapper()).InsertOrUpdate(instance);
             await GetDbContext().SaveChangesAsync();
             return instance;
         }
@@ -62,13 +63,13 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            var instance = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
 
-            if (instance != null)
+            if (entity != null)
             {
-                GetDbSet().Remove(instance);
+                GetDbSet().Persist(GetMapper()).Remove(entity);
                 await GetDbContext().SaveChangesAsync();
-                return instance;
+                return entity;
             }
 
             return null;
@@ -82,15 +83,10 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, T instance)
         {
-            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
-                
-            if (entity != null)
+            if (instance != null)
             {
-                // Being tracking
-                GetDbContext().Update(entity);
-
                 // Update
-                GetMapper().Map(instance, entity);
+                GetDbSet().Persist(GetMapper()).InsertOrUpdate(instance);
                     
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
@@ -118,7 +114,7 @@ namespace DAL.Abstracts
             {
                 // Update
                 modifyAction(entity);
-                    
+                
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
 

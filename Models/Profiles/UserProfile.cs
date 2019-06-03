@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Models.Entities;
 
 namespace Models.Profiles
 {    
@@ -6,7 +8,9 @@ namespace Models.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, User>().ForMember(x => x.Id, opt => opt.Ignore());;
+            CreateMap<User, User>()
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .EqualityComparison((x, y) => x.Id == y.Id);
         }
     }
 }

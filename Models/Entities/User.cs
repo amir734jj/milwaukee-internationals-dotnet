@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Models.Enums;
 using Models.Interfaces;
 
-namespace Models
+namespace Models.Entities
 {
     public class User : IPerson
     {
@@ -16,7 +16,6 @@ namespace Models
         
         public string Fullname { get; set; }
         
-        [Index(IsUnique = true)]
         public string Username { get; set; }
         
         public string Password { get; set; }

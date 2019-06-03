@@ -5,6 +5,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models;
+using Models.Entities;
 using Models.Enums;
 using static Logic.Utilities.HashingUtility;
 

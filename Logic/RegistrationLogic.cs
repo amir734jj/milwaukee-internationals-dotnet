@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Models;
+using Models.Entities;
 
 namespace Logic
 {
