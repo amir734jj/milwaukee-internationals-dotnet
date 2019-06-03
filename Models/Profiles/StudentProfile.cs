@@ -9,6 +9,7 @@ namespace Models.Profiles
         public StudentProfile()
         {
             CreateMap<Student, Student>()
+                .ForMember(x => x.Id, opt => opt.Ignore())
                 .EqualityComparison((x, y) => x.Id == y.Id);
         }
     }
