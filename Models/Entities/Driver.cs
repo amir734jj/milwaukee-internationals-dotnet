@@ -51,6 +51,11 @@ namespace Models.Entities
         public Host Host { get; set; }
         
         public bool IsPressent { get; set; }
+        
+        /// <summary>
+        /// Indicates the year in which driver attended the tour
+        /// </summary>
+        public int Year { get; set; }
 
         /// <summary>
         /// Override generate hashcode

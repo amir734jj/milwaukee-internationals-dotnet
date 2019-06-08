@@ -37,10 +37,18 @@ namespace Logic
         /// <returns></returns>
         public override async Task<User> Save(User instance)
         {
+            var existingUsers = (await GetAll()).ToList();
+            
             // Make sure username is not duplicate
-            if ((await GetAll()).Any(x => x.Username == instance.Username))
+            if (existingUsers.Any(x => x.Username == instance.Username))
             {
                 return null;
+            }
+
+            // First user is Admin user
+            if (!existingUsers.Any())
+            {
+                instance.UserRoleEnum = UserRoleEnum.Admin;
             }
             
             // Do not store the plain-text password
