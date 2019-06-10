@@ -22,10 +22,7 @@ namespace Logic
         
         public async Task<YearContextViewModel> ResolveYearContext()
         {
-            var years = (await _studentLogic.GetAll()).Select(x => x.Year)
-                .Concat((await _driverLogic.GetAll()).Select(x => x.Year))
-                .Concat((await _hostLogic.GetAll()).Select(x => x.Year))
-                .Distinct();
+            var years = new List<int> { 2018, 2019};
 
             return new YearContextViewModel
             {
