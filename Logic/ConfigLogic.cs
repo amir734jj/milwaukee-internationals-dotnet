@@ -15,7 +15,8 @@ namespace Logic
 
             var retVal = new YearContextViewModel
             {
-                Years = years.ToList()
+                Years = years.ToList(),
+                UpdatedYear = YearContext.YearValue
             };
             
             return await Task.FromResult(retVal);
