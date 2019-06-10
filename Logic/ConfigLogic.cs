@@ -19,10 +19,10 @@ namespace Logic
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
         }
-        
+
         public async Task<YearContextViewModel> ResolveYearContext()
         {
-            var years = new List<int> { 2018, 2019};
+            var years = new List<int> {2018, 2019};
 
             return new YearContextViewModel
             {

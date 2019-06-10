@@ -5,13 +5,14 @@
 @{
     ViewBag.Title = "Year Context Change";
     Layout = "_Layout";
+    var currentYear = DateTime.Now.Year;
 }
 
-@using (Html.BeginForm("UpdateYearContext", "Config", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UpdateYearContext", "Config", FormMethod.Post, new {enctype = "multipart/form-data"}))
 {
     @Html.LabelFor(x => x.UpdatedYear, "Select a year context")
-    
-    @Html.DropDownListFor(x => x.UpdatedYear, Model.Years.Select(x => new SelectListItem { Text = x.ToString(), Value = x.ToString()}),   new { @class = "form-control" })
+
+    @Html.DropDownListFor(x => x.UpdatedYear, Model.Years.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == currentYear}), new {@class = "form-control"})
 
     <div class="form-group" style="margin: 1rem;">
         <button type="submit" class="btn btn-success">Save</button>
