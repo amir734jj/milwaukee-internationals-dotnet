@@ -32,21 +32,5 @@ namespace DAL.Utilities
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _onConfiguring(optionsBuilder);
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-/*            // Configure 1 to many relationship
-            modelBuilder.Entity<Driver>()
-                .HasMany<Student>()
-                .WithOne();
-
-            // Configure 1 to many relationship
-            modelBuilder.Entity<Student>()
-                .HasOne(x => x.Driver)
-                .WithMany()
-                .HasForeignKey(x => x.DriverRefId);*/
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

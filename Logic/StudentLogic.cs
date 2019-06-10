@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
@@ -43,6 +44,9 @@ namespace Logic
             
             // Set the display id
             instance.DisplayId = GenerateDisplayId(instance, instance.Id);
+            
+            // Set the year
+            instance.Year = DateTime.Now.Year;
 
             // Update
             await Update(instance.Id, instance);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
@@ -35,19 +36,16 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Driver> Save(Driver instance)
         {
-            // TODO: make this faster
-            instance.DisplayId = "Null";
-            
-            // Save the instance
-            var retVal = await base.Save(instance);
-
             // Set the display id
             instance.DisplayId = GenerateDisplayId(instance, instance.Id);
-
-            // Update
-            await Update(instance.Id, instance);
             
-            return instance;
+            // Set the year
+            instance.Year = DateTime.Now.Year;
+
+            // Save the instance
+            var retVal = await base.Save(instance);
+            
+            return retVal;
         }
     }
 }

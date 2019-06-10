@@ -1,9 +1,9 @@
-﻿using DAL.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
-using Models;
 using Models.Entities;
-using static Logic.Utilities.DisplayIdUtility;
 
 namespace Logic
 {
@@ -25,5 +25,13 @@ namespace Logic
         /// </summary>
         /// <returns></returns>
         protected override IBasicCrudDal<Host> GetBasicCrudDal() => _hostDal;
+
+        public override Task<Host> Save(Host instance)
+        {
+            // Set the year
+            instance.Year = DateTime.Now.Year;
+            
+            return base.Save(instance);
+        }
     }
 }

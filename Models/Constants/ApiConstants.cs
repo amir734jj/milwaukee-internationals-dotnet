@@ -19,7 +19,7 @@ namespace Models.Constants
         
         public const string UserRole = "UserRole";
 
-        public const string InviteCode = "Tour2018";
+        public static readonly string InviteCode = $"Tour{DateTime.Now.Year}";
 
         public const string WebSiteUrl = "http://milwaukeeinternationals.com";
         
