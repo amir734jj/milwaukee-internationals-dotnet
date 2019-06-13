@@ -100,7 +100,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     temparray = students.slice(i, i + chunk);
 
                     var str = stringTable.create(temparray.map(function (student) {
-                        student.fullname = student.fullname.substring(0, 30);
+                        student.fullname = (student.fullname && student.fullname.substring(0, 30)) || '';
                         return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "isPressent"], student);
                     }));
 

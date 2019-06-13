@@ -125,8 +125,17 @@
                 {
                     if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
-                            <a href="~/Utility/AdHocEmail">Email Utility</a>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
+                                    <a href="~/Utility/AdHocEmail">Email Utility</a>
+                                </li>
+                        
+                                <li class="@(ViewContext.RouteData.Matches("Config") ? "active" : "")">
+                                    <a href="~/Config">Year Context</a>
+                                </li>
+                            </ul>
                         </li>
                     }
 

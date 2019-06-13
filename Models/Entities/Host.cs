@@ -18,5 +18,10 @@ namespace Models.Entities
         public string Address { get; set; }
         
         public List<Driver> Drivers { get; set; }
+        
+        /// <summary>
+        /// Indicates the year in which host attended the tour
+        /// </summary>
+        public int Year { get; set; }
     }
 }

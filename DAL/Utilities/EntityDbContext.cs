@@ -34,21 +34,5 @@ namespace DAL.Utilities
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _onConfiguring(optionsBuilder);
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasKey(t => new { t.StudentId, t.EventId });
-
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasOne(pt => pt.Event)
-                .WithMany(p => p.Students)
-                .HasForeignKey(pt => pt.StudentId);
-
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasOne(pt => pt.Event)
-                .WithMany(t => t.Students)
-                .HasForeignKey(pt => pt.EventId);
-        }
     }
 }

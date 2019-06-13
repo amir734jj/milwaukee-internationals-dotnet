@@ -7,6 +7,7 @@ using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Constants;
 using Models.Entities;
 
 namespace DAL
@@ -59,6 +60,7 @@ namespace DAL
         /// <returns></returns>
         public override async Task<IEnumerable<Host>> GetAll() => await GetDbSet()
             .Include(x => x.Drivers)
+            .Where(x => x.Year == YearContext.YearValue)
             .OrderBy(x => x.Fullname)
             .ToListAsync();
     }
