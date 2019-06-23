@@ -196,16 +196,18 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
+            else
+            {
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
 
             app.UseDeveloperExceptionPage();
-
             app.UseCookiePolicy();
-
             app.UseSession();
+            app.UseStaticFiles();
 
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
-
-            app.UseStaticFiles();
 
             // Just to make sure everything is running fine
             _container.GetInstance<EntityDbContext>();
