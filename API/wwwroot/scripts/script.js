@@ -67,7 +67,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                     var str = stringTable.create(temparray.map(function (student) {
                         student.fullname = (student.fullname && student.fullname.substring(0, 30)) || '';
-                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "isPressent"], student);
+                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "isPresent"], student);
                     }));
 
                     // Needed
@@ -187,7 +187,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.togglePressentStudents = function(flag) {
             if (flag) {
                 $scope.availableStudents = $scope.rawAvailableStudents.filter(function (student) {
-                    return student.isPressent;
+                    return student.isPresent;
                 });
             } else {
                 $scope.availableStudents = $scope.rawAvailableStudents;
@@ -229,7 +229,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     }
                     
                     str += stringTable.create(driver.students.map(function(driver) {
-                        return subsetAttr(["fullname", "email", "phone", "country", "isPressent"], driver);
+                        return subsetAttr(["fullname", "email", "phone", "country", "isPresent"], driver);
                     }));
 
                     doc.text(20, 20, str);
@@ -349,7 +349,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.changeAttendance = function (student) {
             return $http.post("/api/attendance/student/setAttendance", {
                 id: student.id,
-                attendance: student.isPressent
+                attendance: student.isPresent
             }).then(function () {
                 $scope.getAllStudents();
             });
@@ -380,7 +380,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 filteredStudents.attendance = students;
             } else {
                 students.forEach(function (student) {
-                    if ((student.isPressent && $scope.attendanceFilter === "yes") || (!student.isPressent && $scope.attendanceFilter === "no")) {
+                    if ((student.isPresent && $scope.attendanceFilter === "yes") || (!student.isPresent && $scope.attendanceFilter === "no")) {
                         filteredStudents.attendance.push(student);
                     }
                 });
@@ -461,7 +461,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     }
 
                     str += stringTable.create(host.drivers.map(function(driver) {
-                        return subsetAttr(["fullname", "email", "phone", "capacity", "isPressent"], driver);
+                        return subsetAttr(["fullname", "email", "phone", "capacity", "isPresent"], driver);
                     }));
 
                     doc.text(20, 20, str);
@@ -544,7 +544,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.changeAttendance = function (driver) {
             return $http.post("/api/attendance/driver/setAttendance", {
                 id: driver.id,
-                attendance: driver.isPressent
+                attendance: driver.isPresent
             }).then(function () {
                 $scope.getAllStudents();
             });
@@ -562,7 +562,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 filteredDrivers.attendance = drivers;
             } else {
                 drivers.forEach(function (driver) {
-                    if ((driver.isPressent && $scope.attendanceFilter === "yes") || (!driver.isPressent && $scope.attendanceFilter === "no")) {
+                    if ((driver.isPresent && $scope.attendanceFilter === "yes") || (!driver.isPresent && $scope.attendanceFilter === "no")) {
                         filteredDrivers.attendance.push(driver);
                     }
                 });
