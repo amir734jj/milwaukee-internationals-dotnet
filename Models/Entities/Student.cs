@@ -27,6 +27,9 @@ namespace Models.Entities
 
         [Display(Name = "Tell us some of your interests")]
         public string Interests { get; set; }
+
+        [Display(Name = "Family members joining you (not including yourself)")]
+        public int FamilySize { get; set; } = 1;
         
         public string DisplayId { get; set; }
         
@@ -36,7 +39,7 @@ namespace Models.Entities
         [Display(Name="Halal or Kosher food")]
         public bool KosherFood { get; set; }
         
-        public bool IsPressent { get; set; }
+        public bool IsPresent { get; set; }
         
         /// <summary>
         /// Optional
@@ -48,10 +51,7 @@ namespace Models.Entities
         
         [Display(Name = "Registering as a family?")]
         public bool IsFamily { get; set; }
-        
-        [Display(Name = "Total family members")]
-        public int TotalFamilyMembers { get; set; }
-        
+
         /// <summary>
         /// Indicates the year in which student attended the tour
         /// </summary>

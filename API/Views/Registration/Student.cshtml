@@ -61,7 +61,18 @@
             <tags-input ng-model="tags", use-strings="true" placeholder="we can try to connect you with people having similar interests"></tags-input>
         </div>
 
-        <div class="form-group"  ng-init="needCarSeat = @Model.NeedCarSeat.ToString().ToLower(); needCarSeat_val = needCarSeat">
+        <div class="form-group" ng-init="isFamily = @Model.IsFamily.ToString().ToLower(); isFamily_val = isFamily">
+            @Html.LabelFor(x => x.IsFamily)
+            @Html.CheckBoxFor(x => x.IsFamily, new { @class = "form-control hidden", ng_model = "isFamily_val" })
+            <toggle class="pull-right" ng-model="isFamily" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="isFamily_val = isFamily"></toggle>
+        </div> 
+
+        <div ng-show="isFamily">
+            @Html.LabelFor(x => x.FamilySize)
+            @Html.TextBoxFor(x => x.FamilySize, new { @class = "form-control", type = "number", placeholder = "1", min="1", max="10" })
+        </div>
+        
+        <div ng-show="isFamily" class="form-group" ng-init="needCarSeat = @Model.NeedCarSeat.ToString().ToLower(); needCarSeat_val = needCarSeat">
             @Html.LabelFor(x => x.NeedCarSeat)
             @Html.CheckBoxFor(x => x.NeedCarSeat, new { @class = "form-control hidden", ng_model = "needCarSeat_val" })
             <toggle class="pull-right" ng-model="needCarSeat" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="needCarSeat_val = needCarSeat"></toggle>

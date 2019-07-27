@@ -65,7 +65,6 @@ namespace DAL
         public override async Task<IEnumerable<Student>> GetAll() => await GetDbSet()
             .Include(x => x.Driver)
             .Include(x => x.Driver.Host)
-            .Where(x => x.Year == YearContext.YearValue)
             .OrderBy(x => x.Fullname)
             .ToListAsync();
     }
