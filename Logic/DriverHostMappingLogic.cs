@@ -76,7 +76,7 @@ namespace Logic
             var hosts = (await _hostLogic.GetAll()).ToList();
             var drivers = (await _driverLogic.GetAll()).ToList();
 
-            // TODO: add check to return only students that are pressent
+            // TODO: add check to return only students that are present
             return new DriverHostMappingViewModel
             {
                 AvailableHosts = hosts,

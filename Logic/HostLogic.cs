@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
+using Models.Constants;
 using Models.Entities;
 
 namespace Logic
@@ -32,6 +35,11 @@ namespace Logic
             instance.Year = DateTime.Now.Year;
             
             return base.Save(instance);
+        }
+        
+        public override async Task<IEnumerable<Host>> GetAll()
+        {
+            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
         }
     }
 }

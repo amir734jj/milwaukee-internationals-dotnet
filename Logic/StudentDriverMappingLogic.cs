@@ -76,7 +76,7 @@ namespace Logic
             var students = (await _studentLogic.GetAll()).ToList();
             var drivers = (await _driverLogic.GetAll()).ToList();
             
-            // TODO: add check to return only students that are pressent
+            // TODO: add check to return only students that are present
             return new StudentDriverMappingViewModel
             {
                 AvailableStudents = students.Where(x => x.Driver == null),

@@ -28,6 +28,9 @@ namespace Models.Entities
         [Display(Name = "Tell us some of your interests")]
         public string Interests { get; set; }
         
+        [Display(Name = "Family members joining you (not including yourself)")]
+        public int FamilySize { get; set; }
+        
         public string DisplayId { get; set; }
         
         [Display(Name="Need a car seat?")]
@@ -36,7 +39,7 @@ namespace Models.Entities
         [Display(Name="Halal or Kosher food")]
         public bool KosherFood { get; set; }
         
-        public bool IsPressent { get; set; }
+        public bool IsPresent { get; set; }
         
         /// <summary>
         /// Optional

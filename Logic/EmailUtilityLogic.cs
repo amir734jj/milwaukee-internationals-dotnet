@@ -102,7 +102,7 @@ namespace Logic
                     _studentLogic.Update(id, student =>
                     {
                         // Checked-in
-                        student.IsPressent = present;
+                        student.IsPresent = present;
                     });
                     break;
                 case EntitiesEnum.Driver:

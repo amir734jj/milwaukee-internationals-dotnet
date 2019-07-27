@@ -64,7 +64,6 @@ namespace DAL
             .Include(x => x.Host.Drivers)
             .Include(x => x.Students)
             .OrderBy(x => x.Fullname)
-            .Where(x => x.Year == YearContext.YearValue)
             .ToListAsync();
     }
 }

@@ -39,7 +39,7 @@ namespace Logic
             await _studentLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
-                x.IsPressent = attendanceViewModel.Attendance;
+                x.IsPresent = attendanceViewModel.Attendance;
             });
 
             return true;

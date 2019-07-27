@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models;
+using Models.Constants;
 using Models.Entities;
 using static Logic.Utilities.DisplayIdUtility;
 
@@ -52,6 +54,11 @@ namespace Logic
             await Update(instance.Id, instance);
 
             return retVal;
+        }
+        
+        public override async Task<IEnumerable<Student>> GetAll()
+        {
+            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
         }
     }
 }
