@@ -176,6 +176,8 @@ namespace API
                 // Populate the container using the service collection
                 config.Populate(services);
             });
+            
+            _container.AssertConfigurationIsValid();
 
             return _container.GetInstance<IServiceProvider>();
         }
