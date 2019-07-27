@@ -71,7 +71,7 @@ namespace API
 
                     // Can be optional with no authentication 
                     Account = emailSection.GetValue<string>("Account"),
-                    Password = emailSection.GetValue<string>("Password"),
+                    Password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD"),
 
                     // Enable ssl or tls
                     Security = true
@@ -150,7 +150,7 @@ namespace API
                 // All the other service configuration.
                 services.AddAutoMapper(x =>
                 {
-                    x.AddProfiles(Assembly.Load("Models"));
+                    x.AddMaps(Assembly.Load("Models"));
                     x.AddCollectionMappers();
                     x.UseEntityFrameworkCoreModel<EntityDbContext>(services);
                 });
@@ -169,8 +169,8 @@ namespace API
 
                 // Initialize the email jet client
                 config.For<IMailjetClient>().Use(new MailjetClient(
-                        _configuration.GetValue<string>("MailJet:Key"),
-                        _configuration.GetValue<string>("MailJet:Secret"))
+                    Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
+                    Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
                     ).Singleton();
                 
                 // Populate the container using the service collection
