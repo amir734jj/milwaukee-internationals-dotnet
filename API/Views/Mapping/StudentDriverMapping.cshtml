@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="list-group">
-                                            <div ng-repeat="student in driver.students" ng-class="student.isPressent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
+                                            <div ng-repeat="student in driver.students" ng-class="student.isPresent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
                                                 <div class="pull-left vcenter">{{student.fullname}}</div>
                                                 <span class="pull-right">
                                                     <a ng-click="unmap(student.id, driver.id)" class="btn btn-danger pull-right">
@@ -74,7 +74,7 @@
                     <div class="list-group">
                         <div class="container-fluid">
                             <div class="row">
-                                <div ng-repeat="student in availableStudents" ng-class="student.isPressent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
+                                <div ng-repeat="student in availableStudents" ng-class="student.isPresent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
 
                                     <label>{{student.fullname}} ({{student.country}})</label>
 
@@ -82,9 +82,11 @@
                                         <div class="form-group form-inline">
                                             <label>Select driver: &nbsp;&nbsp;</label>
                                             <select ng-model="student.driverId" class="form-control">
-                                                <option value="{{driver.id}}" ng-repeat="driver in availableDrivers">
-                                                    {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }}]
-                                                </option>
+                                                <optgroup label="{{hostFullname}}" ng-repeat="(hostFullname, drivers) in availableDriversBuckets">
+                                                    <option value="{{driver.id}}" ng-repeat="driver in drivers">
+                                                        {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }}]
+                                                    </option>
+                                                </optgroup>
                                             </select>
                                             <a ng-click="map(student.id, student.driverId)" class="btn btn-success">
                                                 <span class="glyphicon glyphicon-plus"></span>

@@ -183,7 +183,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
 
         $scope.showPresentOnly = false;
-        
+
         $scope.togglePressentStudents = function(flag) {
             if (flag) {
                 $scope.availableStudents = $scope.rawAvailableStudents.filter(function (student) {
@@ -258,6 +258,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 $scope.availableStudents = data.availableStudents;
                 $scope.rawAvailableStudents = $scope.availableStudents;
                 $scope.mappedDrivers = data.mappedDrivers;
+                $scope.availableDriversBuckets = data.availableDrivers.reduce(function(rv, x) {
+                    var key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                    (rv[key] = rv[key] || []).push(x);
+                    return rv;
+                }, {});
             });
         };
 

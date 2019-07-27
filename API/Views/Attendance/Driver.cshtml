@@ -53,7 +53,7 @@
                 <td>{{driver.fullname}}</td>
                 <td>{{driver.capacity}}</td>
                 <td class="col-xs-4 col-sm-2">
-                    <toggle ng-model="driver.isPressent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                    <toggle ng-model="driver.isPresent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
                 </td>
                 <td>{{driver.host ? driver.host.fullname : ""}}</td>
             </tr>
