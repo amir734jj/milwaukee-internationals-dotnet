@@ -3,6 +3,7 @@
 
 @{
     var userInfo = Context.Session.GetUserInfo();
+    var cacheBustingSuffix = DateTime.Now.Date.Day;
 }
 
 
@@ -49,8 +50,8 @@
     <script src="https://cdn.jsdelivr.net/npm/angular-tablesort@1.6.1/js/angular-tablesort.min.js"></script>
     
     @* customs *@
-    <script src="~/scripts/script.js"></script>
-    <link rel="stylesheet" href="~/styles/style.css">
+    <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
+    <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix">
 </head>
 <body>
   
