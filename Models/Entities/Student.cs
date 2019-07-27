@@ -51,10 +51,7 @@ namespace Models.Entities
         
         [Display(Name = "Registering as a family?")]
         public bool IsFamily { get; set; }
-        
-        [Display(Name = "Total family members")]
-        public int TotalFamilyMembers { get; set; }
-        
+
         /// <summary>
         /// Indicates the year in which student attended the tour
         /// </summary>

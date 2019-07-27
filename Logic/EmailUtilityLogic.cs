@@ -109,7 +109,7 @@ namespace Logic
                     _driverLogic.Update(id, driver =>
                     {
                         // Checked-in
-                        driver.IsPressent = present;
+                        driver.IsPresent = present;
                     });
                     break;
                 default:

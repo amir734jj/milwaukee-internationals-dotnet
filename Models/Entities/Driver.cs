@@ -50,7 +50,7 @@ namespace Models.Entities
         [ForeignKey("HostRefId")]
         public Host Host { get; set; }
         
-        public bool IsPressent { get; set; }
+        public bool IsPresent { get; set; }
         
         /// <summary>
         /// Indicates the year in which driver attended the tour
