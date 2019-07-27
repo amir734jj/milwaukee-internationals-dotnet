@@ -57,18 +57,24 @@ namespace DAL.Abstracts
         }
 
         /// <summary>
-        /// Deletes enitity given the id
+        /// Deletes entity given the id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
 
             if (entity != null)
             {
+                // Remove from persistence
                 GetDbSet().Persist(GetMapper()).Remove(entity);
+                
+                // Remove form DbContext
+                GetDbContext().Remove(entity);
+                
                 await GetDbContext().SaveChangesAsync();
+                
                 return entity;
             }
 
