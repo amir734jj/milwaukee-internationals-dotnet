@@ -118,6 +118,10 @@ namespace API
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x => { x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
+            
+            services.AddWebMarkupMin()
+                .AddHtmlMinification()
+                .AddHttpCompression();
 
             _container = new Container();
 
