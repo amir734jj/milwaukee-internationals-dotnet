@@ -81,7 +81,7 @@ namespace Logic
             // Remove duplicates
             emailAddresses = emailAddresses.Distinct().ToList();
 
-            // Send the eamil
+            // Send the email
             await _emailServiceApiApi.SendEmailAsync(emailAddresses, emailFormViewModel.Subject, emailFormViewModel.Message);
 
             return true;
