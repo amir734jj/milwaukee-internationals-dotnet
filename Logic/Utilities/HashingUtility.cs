@@ -2,7 +2,7 @@
 
 namespace Logic.Utilities
 {
-    public class HashingUtility
+    public static class HashingUtility
     {
         /// <summary>
         /// Secure hashing of passwords
