@@ -119,7 +119,11 @@ namespace API
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x => { x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
             
-            services.AddWebMarkupMin()
+            services.AddWebMarkupMin(opt =>
+                {
+                    opt.AllowMinificationInDevelopmentEnvironment = true;
+                    opt.AllowCompressionInDevelopmentEnvironment = true;
+                })
                 .AddHtmlMinification()
                 .AddHttpCompression();
 
