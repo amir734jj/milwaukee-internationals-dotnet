@@ -90,7 +90,7 @@
                         </ul>
                     </li>
                     
-                    <li class="dropdown">
+                    <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("Registration") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Registration <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="~/Registration/Driver">Register Driver</a></li>

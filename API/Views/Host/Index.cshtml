@@ -25,15 +25,16 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var driver in Model)
+        @foreach (var host in Model)
         {
             <tr>
-                <td>@driver.Fullname</td>
-                <td>@driver.Email</td>
-                <td>@driver.Phone</td>
-                <td>@driver.Address</td>
+                <td>@host.Fullname</td>
+                <td>@host.Email</td>
+                <td>@host.Phone</td>
+                <td>@host.Address</td>
                 <td class="hidden-xs">
-                    <a href="~/Host/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                    <a href="~/Host/edit/@host.Id" class="btn btn-primary">Edit</a>
+                    <a href="~/Host/delete/@host.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

@@ -1,0 +1,13 @@
+@model Models.Entities.Driver
+
+@{
+    ViewBag.Title = "Edit Driver";
+    Layout = "_Layout";
+}
+
+@using (Html.BeginForm("EditHandler", "Driver", FormMethod.Post, new {ng_controller = "driverEditCtrl"}))
+{
+    @Html.Partial("DriverContent", Model)
+
+    <input class="btn btn-primary" type="submit" value="Update"/>
+}

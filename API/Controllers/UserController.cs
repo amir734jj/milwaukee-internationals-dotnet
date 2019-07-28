@@ -29,7 +29,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [SwaggerOperation("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _userLogic.GetAll());
@@ -42,7 +41,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
-        [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _userLogic.Delete(id);
@@ -56,7 +54,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("UpdateUserRole/{id}/{userRoleEnum}")]
-        [SwaggerOperation("UpdateUserRole")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
             await _userLogic.UpdateUserRole(id, userRoleEnum);

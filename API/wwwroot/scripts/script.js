@@ -19,6 +19,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
+    .controller('hostEditCtrl', ['$scope', function ($scope) {
+
+    }])
+    .controller('hostRegistrationCtrl', ['$scope', function ($scope) {
+
+    }])
+    .controller('driverEditCtrl', ['$scope', function ($scope) {
+
+    }])
     .controller('driverRegistrationCtrl', ['$scope', function ($scope) {
 
     }])

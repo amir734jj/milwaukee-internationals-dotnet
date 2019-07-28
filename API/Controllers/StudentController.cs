@@ -27,7 +27,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [SwaggerOperation("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _studentLogic.GetAll());
@@ -40,7 +39,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
-        [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _studentLogic.Delete(id);

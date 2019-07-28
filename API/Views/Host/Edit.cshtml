@@ -1,0 +1,14 @@
+@model Models.Entities.Host
+
+@{
+    ViewBag.Title = "Edit Host";
+    Layout = "_Layout";
+}
+
+
+@using (Html.BeginForm("EditHandler", "Host", FormMethod.Post, new {ng_controller = "hostEditCtrl"}))
+{
+    @Html.Partial("HostContent", Model)
+
+    <input class="btn btn-primary" type="submit" value="Update"/>
+}

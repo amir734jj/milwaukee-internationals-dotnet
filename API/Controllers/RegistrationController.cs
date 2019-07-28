@@ -18,7 +18,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Returns registeration page for drivers
+        /// Returns registration page for drivers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns registeration page for drivers
+        /// Returns registration page for drivers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// POST registertaion
+        /// POST registration
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -64,7 +64,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// POST registertaion
+        /// POST registration
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -89,7 +89,7 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// POST registertaion
+        /// POST registration
         /// </summary>
         /// <returns></returns>
         [AuthorizeMiddleware]
