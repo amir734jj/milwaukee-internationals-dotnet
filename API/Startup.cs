@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Console;
 using Models.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -56,6 +57,8 @@ namespace API
         /// <returns></returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+            
             //Add MailKit
             services.AddMailKit(optionBuilder =>
             {
@@ -186,8 +189,7 @@ namespace API
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMapper mapper)
+        public void Configure(IApplicationBuilder app)
         {
             if (_env.IsLocalhost())
             {
@@ -198,11 +200,11 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
-            else
-            {
-                app.UseHsts();
-                app.UseHttpsRedirection();
-            }
+//            else
+//            {
+//                app.UseHsts();
+//                app.UseHttpsRedirection();
+//            }
 
             app.UseDeveloperExceptionPage();
             app.UseCookiePolicy();
