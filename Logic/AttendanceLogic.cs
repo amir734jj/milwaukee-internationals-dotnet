@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;

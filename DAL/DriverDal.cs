@@ -3,12 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DAL.Abstracts;
-using DAL.Extensions;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Models;
-using Models.Constants;
 using Models.Entities;
 
 namespace DAL

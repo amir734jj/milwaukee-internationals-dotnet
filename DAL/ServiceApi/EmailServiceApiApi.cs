@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Extensions;
 using DAL.Interfaces;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
-using MailKit.Net.Imap;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
 using Models.Constants;
 using Newtonsoft.Json.Linq;
 using NETCore.MailKit.Core;

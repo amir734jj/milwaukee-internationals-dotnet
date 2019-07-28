@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using API.Extensions;
-using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

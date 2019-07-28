@@ -2,7 +2,6 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Models.Entities;
 
 namespace API.Controllers.Api

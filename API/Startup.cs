@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Console;
 using Models.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -193,6 +192,20 @@ namespace API
         {
             if (_env.IsLocalhost())
             {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+
+            // Use wwwroot folder as default static path
+            app.UseDefaultFiles();
+            
+            // Serve static files
+            app.UseStaticFiles();
+
+            if (_env.IsLocalhost())
+            {
+                app.UseDeveloperExceptionPage();
+
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 
@@ -200,16 +213,9 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
-//            else
-//            {
-//                app.UseHsts();
-//                app.UseHttpsRedirection();
-//            }
 
-            app.UseDeveloperExceptionPage();
             app.UseCookiePolicy();
             app.UseSession();
-            app.UseStaticFiles();
 
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
