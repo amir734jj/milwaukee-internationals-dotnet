@@ -32,7 +32,7 @@ namespace DAL.Abstracts
         protected abstract DbSet<T> GetDbSet();
 
         /// <summary>
-        /// Returns all enities
+        /// Returns all entities
         /// </summary>
         /// <returns></returns>
         public virtual async Task<IEnumerable<T>> GetAll() => await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
