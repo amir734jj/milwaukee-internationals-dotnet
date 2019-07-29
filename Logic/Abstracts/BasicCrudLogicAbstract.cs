@@ -18,28 +18,40 @@ namespace Logic.Abstracts
         /// Call forwarding
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll() => await GetBasicCrudDal().GetAll();
+        public virtual async Task<IEnumerable<T>> GetAll()
+        {
+            return await GetBasicCrudDal().GetAll();
+        }
 
         /// <summary>
         /// Call forwarding
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual async Task<T> Get(int id) => await GetBasicCrudDal().Get(id);
+        public virtual async Task<T> Get(int id)
+        {
+            return await GetBasicCrudDal().Get(id);
+        }
 
         /// <summary>
         /// Call forwarding
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual async Task<T> Save(T instance) => await GetBasicCrudDal().Save(instance);
+        public virtual async Task<T> Save(T instance)
+        {
+            return await GetBasicCrudDal().Save(instance);
+        }
 
         /// <summary>
         /// Call forwarding
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual async Task<T> Delete(int id) => await GetBasicCrudDal().Delete(id);
+        public virtual async Task<T> Delete(int id)
+        {
+            return await GetBasicCrudDal().Delete(id);
+        }
 
         /// <summary>
         /// Call forwarding
@@ -47,7 +59,10 @@ namespace Logic.Abstracts
         /// <param name="id"></param>
         /// <param name="updatedInstance"></param>
         /// <returns></returns>
-        public virtual async Task<T> Update(int id, T updatedInstance) => await GetBasicCrudDal().Update(id, updatedInstance);
+        public virtual async Task<T> Update(int id, T updatedInstance)
+        {
+            return await GetBasicCrudDal().Update(id, updatedInstance);
+        }
 
         /// <summary>
         /// Call forwarding
@@ -56,6 +71,9 @@ namespace Logic.Abstracts
         /// <param name="modifyAction"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual async Task<T> Update(int id, Action<T> modifyAction) => await GetBasicCrudDal().Update(id, modifyAction);
+        public virtual async Task<T> Update(int id, Action<T> modifyAction)
+        {
+            return await GetBasicCrudDal().Update(id, modifyAction);
+        }
     }
 }

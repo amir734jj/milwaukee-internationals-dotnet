@@ -35,14 +35,20 @@ namespace DAL.Abstracts
         /// Returns all entities
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll() => await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
+        public virtual async Task<IEnumerable<T>> GetAll()
+        {
+            return await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
+        }
 
         /// <summary>
         /// Returns an entity given the id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual async Task<T> Get(int id) => await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+        public virtual async Task<T> Get(int id)
+        {
+            return await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+        }
 
         /// <summary>
         /// Saves an instance

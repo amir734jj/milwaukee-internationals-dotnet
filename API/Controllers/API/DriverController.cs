@@ -25,6 +25,9 @@ namespace API.Controllers.Api
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<Driver> BasicCrudLogic() => _driverLogic;
+        public override IBasicCrudLogic<Driver> BasicCrudLogic()
+        {
+            return _driverLogic;
+        }
     }
 }

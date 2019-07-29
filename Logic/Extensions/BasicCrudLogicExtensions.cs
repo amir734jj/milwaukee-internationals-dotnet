@@ -12,7 +12,9 @@ namespace Logic.Extensions
         /// <param name="hashcode"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, int hashcode) =>
-            basicCrudLogic.GetAll().Result.FirstOrDefault(x => x.GetHashCode() == hashcode);
+        public static T GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, int hashcode)
+        {
+            return basicCrudLogic.GetAll().Result.FirstOrDefault(x => x.GetHashCode() == hashcode);
+        }
     }
 }

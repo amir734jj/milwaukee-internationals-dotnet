@@ -29,6 +29,9 @@ namespace DAL.Utilities
             Database.Migrate();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _onConfiguring(optionsBuilder);
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            _onConfiguring(optionsBuilder);
+        }
     }
 }

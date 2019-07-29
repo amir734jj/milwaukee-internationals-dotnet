@@ -28,8 +28,11 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Student> GetBasicCrudDal() => _studentDal;
-        
+        protected override IBasicCrudDal<Student> GetBasicCrudDal()
+        {
+            return _studentDal;
+        }
+
         /// <summary>
         /// Make sure display ID is not null or empty
         /// </summary>

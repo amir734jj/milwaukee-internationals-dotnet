@@ -11,14 +11,20 @@ namespace API.Extensions
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static string GetController(this RouteData data) => data.Values["Controller"].ToString();
+        private static string GetController(this RouteData data)
+        {
+            return data.Values["Controller"].ToString();
+        }
 
         /// <summary>
         /// Returns the controller action
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private static string GetAction(this RouteData data) => data.Values["action"].ToString();
+        private static string GetAction(this RouteData data)
+        {
+            return data.Values["action"].ToString();
+        }
 
         /// <summary>
         /// Returns matches flag

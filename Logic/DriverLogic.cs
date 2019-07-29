@@ -28,7 +28,10 @@ namespace Logic
         /// Returns instance of driver DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Driver> GetBasicCrudDal() => _driverDal;
+        protected override IBasicCrudDal<Driver> GetBasicCrudDal()
+        {
+            return _driverDal;
+        }
 
         /// <summary>
         /// Make sure display ID is not null or empty

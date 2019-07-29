@@ -26,7 +26,10 @@ namespace Logic
         /// Returns instance of user DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<User> GetBasicCrudDal() => _userDal;
+        protected override IBasicCrudDal<User> GetBasicCrudDal()
+        {
+            return _userDal;
+        }
 
         /// <summary>
         /// Override

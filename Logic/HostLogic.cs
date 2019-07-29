@@ -27,7 +27,10 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Host> GetBasicCrudDal() => _hostDal;
+        protected override IBasicCrudDal<Host> GetBasicCrudDal()
+        {
+            return _hostDal;
+        }
 
         public override Task<Host> Save(Host instance)
         {

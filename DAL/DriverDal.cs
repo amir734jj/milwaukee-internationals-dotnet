@@ -31,36 +31,51 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        protected override IMapper GetMapper() => _mapper;
-        
+        protected override IMapper GetMapper()
+        {
+            return _mapper;
+        }
+
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        protected override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext()
+        {
+            return _dbContext;
+        }
 
         /// <summary>
         /// Returns students entity
         /// </summary>
         /// <returns></returns>
-        protected override DbSet<Driver> GetDbSet() => _dbContext.Drivers;
+        protected override DbSet<Driver> GetDbSet()
+        {
+            return _dbContext.Drivers;
+        }
 
         /// <summary>
         /// Override to include related entity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public override async Task<Driver> Get(int id) => await GetDbSet().Include(x => x.Host).FirstOrDefaultAsync(x => x.Id == id);
-        
+        public override async Task<Driver> Get(int id)
+        {
+            return await GetDbSet().Include(x => x.Host).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         /// <summary>
         /// Override to include related entity
         /// </summary>
         /// <returns></returns>
-        public override async Task<IEnumerable<Driver>> GetAll() => await GetDbSet()
-            .Include(x => x.Host)
-            .Include(x => x.Host.Drivers)
-            .Include(x => x.Students)
-            .OrderBy(x => x.Fullname)
-            .ToListAsync();
+        public override async Task<IEnumerable<Driver>> GetAll()
+        {
+            return await GetDbSet()
+                .Include(x => x.Host)
+                .Include(x => x.Host.Drivers)
+                .Include(x => x.Students)
+                .OrderBy(x => x.Fullname)
+                .ToListAsync();
+        }
     }
 }

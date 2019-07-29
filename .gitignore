@@ -13,3 +13,7 @@ Models/obj
 \.idea/
 
 API/database\.sqlite
+
+*.min.js
+*.min.css
+.DS_Store

@@ -28,18 +28,27 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        protected override IMapper GetMapper() => _mapper;
-        
+        protected override IMapper GetMapper()
+        {
+            return _mapper;
+        }
+
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        protected override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext()
+        {
+            return _dbContext;
+        }
 
         /// <summary>
         /// Returns students entity
         /// </summary>
         /// <returns></returns>
-        protected override DbSet<User> GetDbSet() => _dbContext.Users;
+        protected override DbSet<User> GetDbSet()
+        {
+            return _dbContext.Users;
+        }
     }
 }
