@@ -1,5 +1,4 @@
-﻿@using Models
-@using Models.Entities
+﻿@using Models.Entities
 @model Models.ViewModels.EventManagementViewModel
 
 @{
@@ -12,7 +11,7 @@
 
 <div class="container" ng-controller="eventInfoCtrl">
     <div class="page-header">
-        <h3>Count of RSVP students @(Model.Event.Students?.Count ?? 0)</h3>
+        <h3>Count of RSVP students: @Model.Event.Students?.Count</h3>
     </div>
 
     <table class="table table-hover table-bordered">

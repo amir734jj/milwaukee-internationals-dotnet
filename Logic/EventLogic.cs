@@ -40,6 +40,14 @@ namespace Logic
             return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
         }
 
+        public override Task<Event> Save(Event instance)
+        {
+            // Set year context
+            instance.Year = YearContext.YearValue;
+            
+            return base.Save(instance);
+        }
+
         /// <summary>
         /// Returns event info
         /// </summary>
