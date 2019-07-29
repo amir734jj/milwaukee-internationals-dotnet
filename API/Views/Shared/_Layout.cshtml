@@ -1,6 +1,7 @@
 ﻿@using API.Extensions
 @using Models.Constants
 @using Models.Enums
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 
 @{
     var userInfo = Context.Session.GetUserInfo();
@@ -52,8 +53,16 @@
     <script src="https://cdn.jsdelivr.net/npm/angular-tablesort@1.6.1/js/angular-tablesort.min.js"></script>
     
     @* customs *@
+    @if (env.IsLocalhost())
+    {
     <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
-    <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix">
+    <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix"> 
+    }
+    else
+    {
+    <script src="~/scripts/script.min.js?@cacheBustingSuffix"></script>
+    <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingSuffix">
+    }
 </head>
 <body>
   
