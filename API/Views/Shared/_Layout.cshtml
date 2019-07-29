@@ -55,13 +55,13 @@
     @* customs *@
     @if (env.IsLocalhost())
     {
-    <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
-    <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix"> 
+        <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
+        <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix"> 
     }
     else
     {
-    <script src="~/scripts/script.min.js?@cacheBustingSuffix"></script>
-    <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingSuffix">
+        <script src="~/scripts/script.min.js?@cacheBustingSuffix"></script>
+        <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingSuffix">
     }
 </head>
 <body>
