@@ -2,10 +2,9 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Models.Entities;
 
-namespace API.Controllers.Api
+namespace API.Controllers.API
 {
     [AuthorizeMiddleware]
     [Route("api/[controller]")]
@@ -26,6 +25,9 @@ namespace API.Controllers.Api
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<Student> BasicCrudLogic() => _studentLogic;
+        public override IBasicCrudLogic<Student> BasicCrudLogic()
+        {
+            return _studentLogic;
+        }
     }
 }

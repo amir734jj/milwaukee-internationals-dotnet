@@ -10,6 +10,9 @@ namespace Logic.Extensions
         /// <param name="str"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static bool ContainsIgnoreCase(this string str, string token) => str.Contains(token, StringComparison.InvariantCultureIgnoreCase);
+        public static bool ContainsIgnoreCase(this string str, string token)
+        {
+            return str.Contains(token, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
@@ -28,7 +29,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [SwaggerOperation("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _hostLogic.GetAll());
@@ -41,10 +41,37 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
-        [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _hostLogic.Delete(id);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// Edit a host
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> EditView(int id)
+        {
+            var driver = await _hostLogic.Get(id);
+
+            return View("Edit", driver);
+        }
+        
+        /// <summary>
+        /// Edit a host
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Edit")]
+        public async Task<IActionResult> EditHandler(Host host)
+        {
+            await _hostLogic.Update(host.Id, host);
 
             return RedirectToAction("Index");
         }

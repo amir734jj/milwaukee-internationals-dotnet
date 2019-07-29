@@ -1,6 +1,4 @@
-﻿@model object
-
-@{
+﻿@{
     ViewBag.Title = "Student Attendance";
     Layout = "_Layout";
 }
@@ -50,7 +48,7 @@
             <tr>
                 <th ts-criteria="fullname" ts-default="ts-default">Fullname</th>
                 <th ts-criteria="country">Country</th>
-                <th ts-criteria="isPressent">Checked-in</th>
+                <th ts-criteria="isPresent">Checked-in</th>
                 <th>Driver</th>
                 <th>Host</th>
             </tr>
@@ -60,7 +58,7 @@
                 <td>{{student.fullname}}</td>
                 <td>{{student.country}}</td>
                 <td class="col-xs-4 col-sm-2">
-                    <toggle ng-model="student.isPressent" ng-change="changeAttendance(student)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                    <toggle ng-model="student.isPresent" ng-change="changeAttendance(student)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
                 </td>
                 <td ng-if="student.driver != null">{{student.driver ? ( student.driver.fullname + " (" + student.driver.displayId +  ")" ) : ""}}</td>
                 <td ng-if="student.driver == null">

@@ -19,11 +19,11 @@ namespace Models.Constants
         
         public const string UserRole = "UserRole";
 
-        public const string InviteCode = "Tour2018";
+        public static readonly string InviteCode = $"Tour{DateTime.UtcNow.Year}";
 
-        public const string WebSiteUrl = "http://milwaukeeinternationals.com";
+        public const string WebSiteUrl = "http://www.milwaukeeinternationals.com";
         
-        public const string WebSiteApiUrl = "http://milwaukeeinternationals.com/api";
+        public const string WebSiteApiUrl = "http://www.milwaukeeinternationals.com/api";
 
         public static readonly string[] AdminEmail = {
             "amirhesamyan@gmail.com",

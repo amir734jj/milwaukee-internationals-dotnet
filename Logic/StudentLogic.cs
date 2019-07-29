@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
-using Models;
+using Models.Constants;
 using Models.Entities;
 using static Logic.Utilities.DisplayIdUtility;
 
@@ -26,8 +28,11 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Student> GetBasicCrudDal() => _studentDal;
-        
+        protected override IBasicCrudDal<Student> GetBasicCrudDal()
+        {
+            return _studentDal;
+        }
+
         /// <summary>
         /// Make sure display ID is not null or empty
         /// </summary>
@@ -43,11 +48,19 @@ namespace Logic
             
             // Set the display id
             instance.DisplayId = GenerateDisplayId(instance, instance.Id);
+            
+            // Set the year
+            instance.Year = DateTime.UtcNow.Year;
 
             // Update
             await Update(instance.Id, instance);
 
             return retVal;
+        }
+        
+        public override async Task<IEnumerable<Student>> GetAll()
+        {
+            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
         }
     }
 }

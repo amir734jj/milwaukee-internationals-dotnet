@@ -1,5 +1,4 @@
 ﻿@using API.Extensions
-@using Microsoft.AspNetCore.Http
 @using Models.Enums
 @model IEnumerable<Models.Entities.User>
 
@@ -15,6 +14,15 @@
 <div class="container" ng-controller="userListCtrl">
     <div class="page-header">
         <h3>List of Users (@Model.Count())</h3>
+        
+        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+        {
+            <div class="row">
+                <div class="pull-right col-md-2 col-sm-2 clearfix">
+                    <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                </div>
+            </div>
+        }
     </div>
     
     <table class="table table-hover table-bordered">
@@ -28,7 +36,7 @@
             
             @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
             {
-                <th class="hidden-xs">Action</th>
+                <th class="hidden-xs" ng-show="showDetail">Action</th>
             }
         </tr>
         </thead>
@@ -46,7 +54,7 @@
 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
-                    <td class="hidden-xs">
+                    <td class="hidden-xs" ng-show="showDetail">
                         @if (disabled)
                         {
                             switch (user.UserRoleEnum)

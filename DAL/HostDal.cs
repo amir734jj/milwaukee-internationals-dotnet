@@ -6,7 +6,6 @@ using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.Entities;
 
 namespace DAL
@@ -32,34 +31,49 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        protected override IMapper GetMapper() => _mapper;
-        
+        protected override IMapper GetMapper()
+        {
+            return _mapper;
+        }
+
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        protected override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext()
+        {
+            return _dbContext;
+        }
 
         /// <summary>
         /// Returns hosts entity
         /// </summary>
         /// <returns></returns>
-        protected override DbSet<Host> GetDbSet() => _dbContext.Hosts;
-        
+        protected override DbSet<Host> GetDbSet()
+        {
+            return _dbContext.Hosts;
+        }
+
         /// <summary>
         /// Override to include related entity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public override async Task<Host> Get(int id) => await GetDbSet().Include(x => x.Drivers).FirstOrDefaultAsync(x => x.Id == id);
-        
+        public override async Task<Host> Get(int id)
+        {
+            return await GetDbSet().Include(x => x.Drivers).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         /// <summary>
         /// Override to include related entity
         /// </summary>
         /// <returns></returns>
-        public override async Task<IEnumerable<Host>> GetAll() => await GetDbSet()
-            .Include(x => x.Drivers)
-            .OrderBy(x => x.Fullname)
-            .ToListAsync();
+        public override async Task<IEnumerable<Host>> GetAll()
+        {
+            return await GetDbSet()
+                .Include(x => x.Drivers)
+                .OrderBy(x => x.Fullname)
+                .ToListAsync();
+        }
     }
 }

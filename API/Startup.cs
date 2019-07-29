@@ -24,6 +24,7 @@ using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using StructureMap;
 using Swashbuckle.AspNetCore.Swagger;
+using WebMarkupMin.AspNetCore2;
 using static API.Utilities.ConnectionStringUtility;
 
 namespace API
@@ -42,8 +43,8 @@ namespace API
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
@@ -57,6 +58,8 @@ namespace API
         /// <returns></returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+            
             //Add MailKit
             services.AddMailKit(optionBuilder =>
             {
@@ -72,7 +75,7 @@ namespace API
 
                     // Can be optional with no authentication 
                     Account = emailSection.GetValue<string>("Account"),
-                    Password = emailSection.GetValue<string>("Password"),
+                    Password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD"),
 
                     // Enable ssl or tls
                     Security = true
@@ -123,11 +126,23 @@ namespace API
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x => { x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
+            
+            services.AddWebMarkupMin(opt =>
+                {
+                    opt.AllowMinificationInDevelopmentEnvironment = true;
+                    opt.AllowCompressionInDevelopmentEnvironment = true;
+                })
+                .AddHtmlMinification()
+                .AddHttpCompression();
+            
+            var entityDbContextResolve = new Func<EntityDbContext>(() => ResolveEntityDbContext(_env, _configuration));
 
-            _container = new Container();
-
-            _container.Configure(config =>
+            _container = new Container(config =>
             {
+                config.For<EntityDbContext>().Use(() => entityDbContextResolve());
+
+                services.AddSingleton(entityDbContextResolve());
+                
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
@@ -136,33 +151,14 @@ namespace API
                     _.Assembly("DAL");
                     _.WithDefaultConventions();
                 });
-
-                var entityDbContext = new EntityDbContext(builder =>
-                {
-                    if (_env.IsLocalhost())
-                    {
-                        builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
-                    }
-                    else
-                    {
-                        builder.UseNpgsql(
-                            ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
-                            ?? throw new Exception("DATABASE_URL is null"));
-                    }
-                });
                 
-                config.For<EntityDbContext>().Use(entityDbContext).Transient();
-                
-                services.AddSingleton(entityDbContext);
-
                 // All the other service configuration.
                 services.AddAutoMapper(x =>
                 {
-                    x.AddProfiles(Assembly.Load("Models"));
                     x.AddCollectionMappers();
                     x.UseEntityFrameworkCoreModel<EntityDbContext>(services);
-                });
-
+                }, Assembly.Load("Models"));
+                
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())
                 {
@@ -177,13 +173,15 @@ namespace API
 
                 // Initialize the email jet client
                 config.For<IMailjetClient>().Use(new MailjetClient(
-                        _configuration.GetValue<string>("MailJet:Key"),
-                        _configuration.GetValue<string>("MailJet:Secret"))
-                    ).Singleton();
+                    Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
+                    Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
+                ).Singleton();
                 
                 // Populate the container using the service collection
                 config.Populate(services);
             });
+
+            _container.AssertConfigurationIsValid();
 
             return _container.GetInstance<IServiceProvider>();
         }
@@ -192,11 +190,14 @@ namespace API
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMapper mapper)
+        public void Configure(IApplicationBuilder app)
         {
             if (_env.IsLocalhost())
             {
+                app.UseDatabaseErrorPage();
+
+                app.UseDeveloperExceptionPage();
+
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 
@@ -204,21 +205,47 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
-
-            app.UseDeveloperExceptionPage();
-
-            app.UseCookiePolicy();
-
-            app.UseSession();
-
-            app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
-
+            else
+            {
+                app.UseWebMarkupMin();
+            }
+            
+            // Use wwwroot folder as default static path
+            app.UseDefaultFiles();
+            
+            // Serve static files
             app.UseStaticFiles();
 
-            // Just to make sure everything is running fine
-            _container.GetInstance<EntityDbContext>();
+            app.UseCookiePolicy();
+            
+            app.UseSession();
+            
+            app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
             Console.WriteLine("Application Started!");
+        }
+
+        /// <summary>
+        /// Resolve EntityDbContext
+        /// </summary>
+        /// <param name="env"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        private static EntityDbContext ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
+        {
+            return new EntityDbContext(builder =>
+            {
+                if (env.IsLocalhost())
+                {
+                    builder.UseSqlite(configuration.GetValue<string>("ConnectionStrings:Sqlite"));
+                }
+                else
+                {
+                    builder.UseNpgsql(
+                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                        ?? throw new Exception("DATABASE_URL is null"));
+                }
+            });
         }
     }
 }

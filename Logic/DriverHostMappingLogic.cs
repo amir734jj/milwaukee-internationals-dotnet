@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
-using Models;
 using Models.Entities;
-using Models.Interfaces;
 using Models.ViewModels;
 
 namespace Logic
@@ -76,7 +74,7 @@ namespace Logic
             var hosts = (await _hostLogic.GetAll()).ToList();
             var drivers = (await _driverLogic.GetAll()).ToList();
 
-            // TODO: add check to return only students that are pressent
+            // TODO: add check to return only students that are present
             return new DriverHostMappingViewModel
             {
                 AvailableHosts = hosts,
@@ -121,9 +119,14 @@ namespace Logic
         ";
             }
 
-            // Send the email to hosts
-            (await _hostLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+            var hosts = await _hostLogic.GetAll();
 
+            // Send the email to hosts
+            var tasks = hosts
+                .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+
+            await Task.WhenAll(tasks);
+            
             // Return true
             return true;
         }

@@ -32,17 +32,23 @@ namespace DAL.Abstracts
         protected abstract DbSet<T> GetDbSet();
 
         /// <summary>
-        /// Returns all enities
+        /// Returns all entities
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll() =>  await GetDbSet().ToListAsync();
-        
+        public virtual async Task<IEnumerable<T>> GetAll()
+        {
+            return await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
+        }
+
         /// <summary>
         /// Returns an entity given the id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual async Task<T> Get(int id) => await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+        public virtual async Task<T> Get(int id)
+        {
+            return await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+        }
 
         /// <summary>
         /// Saves an instance
@@ -57,18 +63,24 @@ namespace DAL.Abstracts
         }
 
         /// <summary>
-        /// Deletes enitity given the id
+        /// Deletes entity given the id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
 
             if (entity != null)
             {
+                // Remove from persistence
                 GetDbSet().Persist(GetMapper()).Remove(entity);
+                
+                // Remove form DbContext
+                GetDbContext().Remove(entity);
+                
                 await GetDbContext().SaveChangesAsync();
+                
                 return entity;
             }
 
@@ -105,7 +117,6 @@ namespace DAL.Abstracts
         /// <param name="id"></param>
         /// <param name="modifyAction"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {            
             var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);

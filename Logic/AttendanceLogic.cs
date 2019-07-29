@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
@@ -39,7 +38,7 @@ namespace Logic
             await _studentLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
-                x.IsPressent = attendanceViewModel.Attendance;
+                x.IsPresent = attendanceViewModel.Attendance;
             });
 
             return true;
@@ -56,7 +55,7 @@ namespace Logic
             await _driverLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
-                x.IsPressent = attendanceViewModel.Attendance;
+                x.IsPresent = attendanceViewModel.Attendance;
             });
 
             return true;
@@ -103,7 +102,7 @@ namespace Logic
                     <p>The link has information about your host where you will go for dinner with students. </p>
                     <br>
                     <p>For those who have access to email on Tour day,</p>
-                    <p>To save time when you arrive at UWM, Just click on the button which says 'Check-In'. We will know that you are there and ready to drive students.</p>
+                    <p>To save time when you arrive at UWM, just click on the button which says 'Check-In'. We will know that you are there and ready to drive students.</p>
                     <p>Reach out to us if there are issues.</p>
                     <br>
                     <p>Thank you</p>

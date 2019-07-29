@@ -8,9 +8,12 @@
 <div class="container" ng-controller="hostListCtrl">
     <div class="page-header">
         <h3>List of Hosts (@Model.Count())</h3>
-        
-        <div class="clearfix">
-            <button class="btn btn-default pull-right" ng-click="getAllHostPDF()">Download PDF</button>
+
+        <div class="row">
+            <div class="pull-right col-md-3 col-sm-4 clearfix">
+                <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                <button class="btn btn-default pull-right" ng-click="getAllHostPDF()">Download PDF</button>
+            </div>
         </div>
     </div>
     
@@ -21,19 +24,20 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Address</th>
-            <th class="hidden-xs">Action</th>
+            <th class="hidden-xs" ng-show="showDetail">Action</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var driver in Model)
+        @foreach (var host in Model)
         {
             <tr>
-                <td>@driver.Fullname</td>
-                <td>@driver.Email</td>
-                <td>@driver.Phone</td>
-                <td>@driver.Address</td>
-                <td class="hidden-xs">
-                    <a href="~/Host/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                <td>@host.Fullname</td>
+                <td>@host.Email</td>
+                <td>@host.Phone</td>
+                <td>@host.Address</td>
+                <td class="hidden-xs" ng-show="showDetail">
+                    <a href="~/Host/edit/@host.Id" class="btn btn-primary">Edit</a>
+                    <a href="~/Host/delete/@host.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

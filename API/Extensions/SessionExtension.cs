@@ -41,6 +41,9 @@ namespace API.Extensions
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public static bool IsAuthenticated(this ISession session) => session.GetString(ApiConstants.Authenticated.Key) == ApiConstants.Authenticated.Value;
+        public static bool IsAuthenticated(this ISession session)
+        {
+            return session.GetString(ApiConstants.Authenticated.Key) == ApiConstants.Authenticated.Value;
+        }
     }
 }

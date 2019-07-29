@@ -2,6 +2,7 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
@@ -28,7 +29,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [SwaggerOperation("Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _driverLogic.GetAll());
@@ -41,10 +41,37 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
-        [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _driverLogic.Delete(id);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// Edit a driver
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> EditView(int id)
+        {
+            var driver = await _driverLogic.Get(id);
+
+            return View("Edit", driver);
+        }
+        
+        /// <summary>
+        /// Edit a driver
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Edit")]
+        public async Task<IActionResult> EditHandler(Driver driver)
+        {
+            await _driverLogic.Update(driver.Id, driver);
 
             return RedirectToAction("Index");
         }

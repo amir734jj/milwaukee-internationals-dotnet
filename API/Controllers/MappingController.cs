@@ -23,7 +23,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("StudentDriverMapping")]
-        [SwaggerOperation("StudentDriverMapping")]
         public async Task<IActionResult> StudentDriverMapping()
         {
             return View();
@@ -35,7 +34,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DriverHostMapping")]
-        [SwaggerOperation("DriverHostMapping")]
         public async Task<IActionResult> DriverHostMapping()
         {
             return View();

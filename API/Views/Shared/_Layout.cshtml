@@ -1,8 +1,14 @@
 ﻿@using API.Extensions
+@using Models.Constants
 @using Models.Enums
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 
 @{
     var userInfo = Context.Session.GetUserInfo();
+    var dateTimeNow = DateTime.UtcNow;
+    var cacheBustingSuffix = dateTimeNow.Day;
+    var currentYear = dateTimeNow.Year;
+    var yearContext = YearContext.YearValue;
 }
 
 
@@ -49,8 +55,16 @@
     <script src="https://cdn.jsdelivr.net/npm/angular-tablesort@1.6.1/js/angular-tablesort.min.js"></script>
     
     @* customs *@
-    <script src="~/scripts/script.js"></script>
-    <link rel="stylesheet" href="~/styles/style.css">
+    @if (env.IsLocalhost())
+    {
+        <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
+        <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix"> 
+    }
+    else
+    {
+        <script src="~/scripts/script.min.js?@cacheBustingSuffix"></script>
+        <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingSuffix">
+    }
 </head>
 <body>
   
@@ -62,7 +76,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
             </button>
-            <a class="navbar-brand" href="~/">Milwaukee Internationals</a>
+            <a class="navbar-brand" href="~/">Milwaukee Internationals
+                 @if (Context.Session.IsAuthenticated())
+                 {
+                     <sub><span class="badge">@yearContext</span></sub>
+                 }
+            </a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
@@ -82,7 +101,7 @@
                         </ul>
                     </li>
                     
-                    <li class="dropdown">
+                    <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("Registration") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Registration <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="~/Registration/Driver">Register Driver</a></li>
@@ -125,8 +144,17 @@
                 {
                     if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
-                            <a href="~/Utility/AdHocEmail">Email Utility</a>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="@(ViewContext.RouteData.Matches("Utility", "Email") ? "active" : "")">
+                                    <a href="~/Utility/AdHocEmail">Email Utility</a>
+                                </li>
+                        
+                                <li class="@(ViewContext.RouteData.Matches("Config") ? "active" : "")">
+                                    <a href="~/Config">Year Context</a>
+                                </li>
+                            </ul>
                         </li>
                     }
 
@@ -138,6 +166,14 @@
 </nav>
 
 <div class="container" ng-app="tourApp" ng-cloak>
+    
+    @if (yearContext != currentYear)
+    {
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> Year Context global variable does not equal to the current year, any registration may be stored in-correctly!
+        </div>
+    }
+
     @RenderBody()
 </div>
 

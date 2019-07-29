@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.Entities;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
@@ -33,8 +31,6 @@ namespace DAL.Utilities
             Database.Migrate();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _onConfiguring(optionsBuilder);
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventStudentRelationship>()
@@ -49,6 +45,8 @@ namespace DAL.Utilities
                 .HasOne(pt => pt.Event)
                 .WithMany(t => t.Students)
                 .HasForeignKey(pt => pt.EventId);
+            
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿@using Models
-@using Models.Entities
+﻿@using Models.Entities
 @model Models.Interfaces.IPerson
 
 @{
@@ -60,7 +59,7 @@
         </ul>
         
         <div class="row">
-            <div class="pull-right" ng-init="present = @driver.IsPressent.ToString().ToLower()">
+            <div class="pull-right" ng-init="present = @driver.IsPresent.ToString().ToLower()">
                 <toggle ng-model="present" ng-change="changeAttendance('driver', '@driver.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
             </div>
         </div>
@@ -96,7 +95,7 @@
         </ul>
         
         <div class="row">
-            <div class="pull-right" ng-init="present = @student.IsPressent.ToString().ToLower()">
+            <div class="pull-right" ng-init="present = @student.IsPresent.ToString().ToLower()">
                 <toggle ng-model="present" ng-change="changeAttendance('student', '@student.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
             </div>
         </div>

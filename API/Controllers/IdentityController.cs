@@ -1,13 +1,10 @@
 ﻿using System.Threading.Tasks;
-using API.Attributes;
 using API.Extensions;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Models.Constants;
 using Models.Entities;
-using Models.Enums;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers

@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Extensions;
 using DAL.Interfaces;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
-using MailKit.Net.Imap;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
 using Models.Constants;
 using Newtonsoft.Json.Linq;
 using NETCore.MailKit.Core;
@@ -22,7 +16,7 @@ namespace DAL.ServiceApi
         private readonly IEmailService _emailServiceApi;
 
         private readonly bool _connected;
-        private readonly IMailjetClient _mailjetClient;
+        private readonly IMailjetClient _mailJetClient;
 
         public EmailServiceApi()
         {
@@ -33,12 +27,12 @@ namespace DAL.ServiceApi
         /// Constructor dependency injection
         /// </summary>
         /// <param name="emailServiceApi"></param>
-        /// <param name="mailjetClient"></param>
-        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailjetClient)
+        /// <param name="mailJetClient"></param>
+        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient)
         {
             _connected = true;
             _emailServiceApi = emailServiceApi;
-            _mailjetClient = mailjetClient;
+            _mailJetClient = mailJetClient;
         }
 
         /// <summary>
@@ -69,7 +63,7 @@ namespace DAL.ServiceApi
                             new JObject {{ "Email", ApiConstants.WebSiteEmail }}
                         });
 
-                    await _mailjetClient.PostAsync(request);
+                    await _mailJetClient.PostAsync(request);
                 });
 
                 await task;

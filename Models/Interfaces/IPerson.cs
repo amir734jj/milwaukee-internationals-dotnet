@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Models.Interfaces
+﻿namespace Models.Interfaces
 {
     public interface IPerson : IBasicModel
     {

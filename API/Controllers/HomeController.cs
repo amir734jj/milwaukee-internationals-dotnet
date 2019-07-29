@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using API.Extensions;
-using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -20,7 +19,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Register")]
-        [SwaggerOperation("Register")]
         public async Task<IActionResult> Register()
         {
             return Redirect("~/Identity/Register".ToLower());
@@ -32,7 +30,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Echo")]
-        [SwaggerOperation("Echo")]
         public async Task<IActionResult> Echo()
         {
             return Ok(HttpContext.Session.GetUserInfo());

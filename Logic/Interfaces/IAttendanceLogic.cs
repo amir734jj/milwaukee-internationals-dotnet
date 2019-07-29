@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Models;
+﻿using System.Threading.Tasks;
 using Models.ViewModels;
 
 namespace Logic.Interfaces
