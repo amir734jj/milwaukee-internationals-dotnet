@@ -1,12 +1,8 @@
-﻿@using Models.Entities
-@model Models.ViewModels.EventManagementViewModel
+﻿@model Models.ViewModels.EventManagementViewModel
 
 @{
     ViewBag.Title = "Event Info page";
     Layout = "_Layout";
-
-    // Make sure Students is not null
-    Model.Event.Students = Model.Event.Students ?? new List<EventStudentRelationship>();
 }
 
 <div class="container" ng-controller="eventInfoCtrl">
