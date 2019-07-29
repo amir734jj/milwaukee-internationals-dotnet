@@ -111,7 +111,6 @@ namespace DAL.Abstracts
         /// <param name="id"></param>
         /// <param name="modifyAction"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {            
             var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
