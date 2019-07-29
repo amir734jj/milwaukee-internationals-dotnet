@@ -6,6 +6,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models;
+using Models.Constants;
 using Models.Entities;
 using Models.ViewModels;
 
@@ -33,6 +34,11 @@ namespace Logic
         /// </summary>
         /// <returns></returns>
         protected override IBasicCrudDal<Event> GetBasicCrudDal() => _eventDal;
+        
+        public override async Task<IEnumerable<Event>> GetAll()
+        {
+            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
+        }
 
         /// <summary>
         /// Returns event info
@@ -100,9 +106,6 @@ namespace Logic
         /// <returns></returns>
         public async Task<bool> UnMapStudent(int eventId, int studentId)
         {
-            // Gets the student by Id
-            var student = await _studentLogic.Get(studentId);
-
             var eventOriginal = await Get(eventId);
 
             // Avoid unnecessary remove

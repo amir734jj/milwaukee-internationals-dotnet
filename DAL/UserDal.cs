@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
@@ -49,6 +52,13 @@ namespace DAL
         protected override DbSet<User> GetDbSet()
         {
             return _dbContext.Users;
+        }
+
+        public override async Task<IEnumerable<User>> GetAll()
+        {
+            return await GetDbSet()
+                .OrderBy(x => x.Fullname)
+                .ToListAsync();
         }
     }
 }

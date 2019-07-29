@@ -29,7 +29,7 @@ namespace API.Attributes
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<UserRoleMiddlewareAttribute>();
             var actionLevelAuthorize = method.GetCustomAttribute<UserRoleMiddlewareAttribute>();
             
-            if (controllerLevelAuthorize == null && actionLevelAuthorize == null || _env.IsLocalhost()) return next();
+            if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
 
             var userRole = controllerLevelAuthorize?.UserRoleEnum ?? actionLevelAuthorize.UserRoleEnum;
             

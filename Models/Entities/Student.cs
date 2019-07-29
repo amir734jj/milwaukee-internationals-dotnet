@@ -64,11 +64,6 @@ namespace Models.Entities
         public List<EventStudentRelationship> Events { get; set; }
         
         /// <summary>
-        /// Indicates the year in which student attended the tour
-        /// </summary>
-        public int Year { get; set; }
-        
-        /// <summary>
         /// Override generate hashcode
         /// </summary>
         /// <returns></returns>

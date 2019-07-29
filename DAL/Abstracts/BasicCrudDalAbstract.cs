@@ -37,7 +37,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
+            return await GetDbSet().ToListAsync();
         }
 
         /// <summary>

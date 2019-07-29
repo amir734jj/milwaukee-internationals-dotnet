@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.Entities;
 
 namespace DAL
@@ -41,5 +43,12 @@ namespace DAL
         /// </summary>
         /// <returns></returns>
         protected override DbSet<Event> GetDbSet() => _dbContext.Events;
+
+        public override async Task<IEnumerable<Event>> GetAll()
+        {
+            return await GetDbSet()
+                .OrderBy(x => x.Name)
+                .ToListAsync();
+        }
     }
 }

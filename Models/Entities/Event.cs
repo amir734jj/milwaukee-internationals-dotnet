@@ -22,5 +22,10 @@ namespace Models.Entities
         /// List of Event Student Relationships
         /// </summary>
         public List<EventStudentRelationship> Students { get; set; }
+        
+        /// <summary>
+        /// Indicates the year in which driver attended the tour
+        /// </summary>
+        public int Year { get; set; }
     }
 }

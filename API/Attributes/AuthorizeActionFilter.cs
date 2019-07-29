@@ -30,7 +30,7 @@ namespace API.Attributes
             var controllerLevelAuthorize = controller.GetType().GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             var actionLevelAuthorize = method.GetCustomAttribute<AuthorizeMiddlewareAttribute>();
             
-            if (controllerLevelAuthorize == null && actionLevelAuthorize == null || _env.IsLocalhost()) return next();
+            if (controllerLevelAuthorize == null && actionLevelAuthorize == null) return next();
             
             // Try to get username/password from session
             var userInfo = context.HttpContext.Session.GetUserInfo();
