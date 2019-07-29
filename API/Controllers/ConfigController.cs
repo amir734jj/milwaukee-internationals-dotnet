@@ -4,6 +4,7 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using Models.ViewModels;
+using Models.ViewModels.Config;
 
 namespace API.Controllers
 {

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Models.ViewModels;
+using Models.ViewModels.Config;
 
 namespace Logic.Interfaces
 {

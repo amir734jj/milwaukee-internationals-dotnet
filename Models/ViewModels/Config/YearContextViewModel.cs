@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-namespace Models.ViewModels
+namespace Models.ViewModels.Config
 {
     public class YearContextViewModel
     {
-        public List<int> Years { get; set; }
+        public IEnumerable<int> Years { get; set; }
         
         public int UpdatedYear { get; set; }
     }

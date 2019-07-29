@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Logic.Interfaces;
 using Models.Constants;
 using Models.ViewModels;
+using Models.ViewModels.Config;
 
 namespace Logic
 {
@@ -11,11 +13,13 @@ namespace Logic
     {
         public async Task<YearContextViewModel> ResolveYearContext()
         {
-            var years = new List<int> {2018, 2019};
+            var currentYear = DateTime.Now.Date.Year;
+
+            var years = new HashSet<int> {2018, 2019, currentYear};
 
             var retVal = new YearContextViewModel
             {
-                Years = years.ToList(),
+                Years = years,
                 UpdatedYear = YearContext.YearValue
             };
             

@@ -6,7 +6,7 @@ using Models.Enums;
 using Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace API.Controllers.Api
+namespace API.Controllers.API
 {
     [AuthorizeMiddleware]
     [Route("api/[controller]")]
