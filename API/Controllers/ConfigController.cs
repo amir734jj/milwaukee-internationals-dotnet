@@ -9,6 +9,7 @@ namespace API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
+    [AuthorizeMiddleware]
     public class ConfigController : Controller
     {
         private readonly IConfigLogic _configLogic;
