@@ -67,7 +67,7 @@
             <toggle class="pull-right" ng-model="isFamily" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="isFamily_val = isFamily"></toggle>
         </div> 
 
-        <div ng-show="isFamily">
+        <div ng-show="isFamily" class="form-group">
             @Html.LabelFor(x => x.FamilySize)
             @Html.TextBoxFor(x => x.FamilySize, new { @class = "form-control", type = "number", placeholder = "1", min="1", max="10" })
         </div>
