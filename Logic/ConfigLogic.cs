@@ -13,7 +13,7 @@ namespace Logic
     {
         public async Task<YearContextViewModel> ResolveYearContext()
         {
-            var currentYear = DateTime.Now.Date.Year;
+            var currentYear = DateTime.UtcNow.Year;
 
             var years = new HashSet<int> {2018, 2019, currentYear};
 

@@ -5,8 +5,9 @@
 
 @{
     var userInfo = Context.Session.GetUserInfo();
-    var cacheBustingSuffix = DateTime.Now.Date.Day;
-    var currentYear = DateTime.Now.Date.Year;
+    var dateTimeNow = DateTime.UtcNow;
+    var cacheBustingSuffix = dateTimeNow.Day;
+    var currentYear = dateTimeNow.Year;
     var yearContext = YearContext.YearValue;
 }
 

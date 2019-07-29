@@ -35,7 +35,7 @@ namespace Logic
         public override Task<Host> Save(Host instance)
         {
             // Set the year
-            instance.Year = DateTime.Now.Year;
+            instance.Year = DateTime.UtcNow.Year;
             
             return base.Save(instance);
         }

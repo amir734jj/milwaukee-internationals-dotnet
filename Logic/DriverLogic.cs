@@ -44,7 +44,7 @@ namespace Logic
             instance.DisplayId = GenerateDisplayId(instance, instance.Id);
             
             // Set the year
-            instance.Year = DateTime.Now.Year;
+            instance.Year = DateTime.UtcNow.Year;
 
             // Save the instance
             var retVal = await base.Save(instance);

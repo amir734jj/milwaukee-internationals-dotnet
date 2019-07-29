@@ -4,6 +4,6 @@ namespace Models.Constants
 {
     public static class YearContext
     {
-        public static int YearValue { get; set; } = DateTime.Now.Year;
+        public static int YearValue { get; set; } = DateTime.UtcNow.Year;
     }
 }
