@@ -119,9 +119,14 @@ namespace Logic
         ";
             }
 
-            // Send the email to hosts
-            (await _hostLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+            var hosts = await _hostLogic.GetAll();
 
+            // Send the email to hosts
+            var tasks = hosts
+                .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+
+            await Task.WhenAll(tasks);
+            
             // Return true
             return true;
         }

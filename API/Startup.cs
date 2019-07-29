@@ -42,8 +42,8 @@ namespace API
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
@@ -126,11 +126,15 @@ namespace API
                 })
                 .AddHtmlMinification()
                 .AddHttpCompression();
+            
+            var entityDbContextResolve = new Func<EntityDbContext>(() => ResolveEntityDbContext(_env, _configuration));
 
-            _container = new Container();
-
-            _container.Configure(config =>
+            _container = new Container(config =>
             {
+                config.For<EntityDbContext>().Use(() => entityDbContextResolve());
+
+                services.AddSingleton(entityDbContextResolve());
+                
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
@@ -139,33 +143,14 @@ namespace API
                     _.Assembly("DAL");
                     _.WithDefaultConventions();
                 });
-
-                var entityDbContext = new EntityDbContext(builder =>
-                {
-                    if (_env.IsLocalhost())
-                    {
-                        builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
-                    }
-                    else
-                    {
-                        builder.UseNpgsql(
-                            ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
-                            ?? throw new Exception("DATABASE_URL is null"));
-                    }
-                });
                 
-                config.For<EntityDbContext>().Use(entityDbContext).Transient();
-                
-                services.AddSingleton(entityDbContext);
-
                 // All the other service configuration.
                 services.AddAutoMapper(x =>
                 {
-                    x.AddMaps(Assembly.Load("Models"));
                     x.AddCollectionMappers();
                     x.UseEntityFrameworkCoreModel<EntityDbContext>(services);
-                });
-
+                }, Assembly.Load("Models"));
+                
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())
                 {
@@ -182,12 +167,12 @@ namespace API
                 config.For<IMailjetClient>().Use(new MailjetClient(
                     Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
                     Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
-                    ).Singleton();
+                ).Singleton();
                 
                 // Populate the container using the service collection
                 config.Populate(services);
             });
-            
+
             _container.AssertConfigurationIsValid();
 
             return _container.GetInstance<IServiceProvider>();
@@ -229,10 +214,30 @@ namespace API
             
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
-            // Just to make sure everything is running fine
-            _container.GetInstance<EntityDbContext>();
-
             Console.WriteLine("Application Started!");
+        }
+
+        /// <summary>
+        /// Resolve EntityDbContext
+        /// </summary>
+        /// <param name="env"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        private static EntityDbContext ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
+        {
+            return new EntityDbContext(builder =>
+            {
+                if (env.IsLocalhost())
+                {
+                    builder.UseSqlite(configuration.GetValue<string>("ConnectionStrings:Sqlite"));
+                }
+                else
+                {
+                    builder.UseNpgsql(
+                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                        ?? throw new Exception("DATABASE_URL is null"));
+                }
+            });
         }
     }
 }

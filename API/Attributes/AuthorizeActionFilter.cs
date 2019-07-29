@@ -37,8 +37,10 @@ namespace API.Attributes
                 return next();
             }
 
+            var websiteUrl = context.HttpContext.Request.Host;
+
             // Redirect to not-authenticated
-            context.HttpContext.Response.Redirect($"{ApiConstants.WebSiteUrl}/Identity/NotAuthenticated");
+            context.HttpContext.Response.Redirect($"{websiteUrl}/Identity/NotAuthenticated");
 
             return Task.CompletedTask;
         }

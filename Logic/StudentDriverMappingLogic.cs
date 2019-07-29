@@ -117,9 +117,14 @@ namespace Logic
         ";
             }
 
+            var drivers = await _driverLogic.GetAll();
+            
             // Send the email to drivers
-            (await _driverLogic.GetAll()).ForEach(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
+            var tasks = drivers.Select(x =>
+                _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Students", MessageFunc(x)));
 
+            await Task.WhenAll(tasks);
+            
             // Return true
             return true;
         }
