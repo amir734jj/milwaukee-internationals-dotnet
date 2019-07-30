@@ -125,6 +125,10 @@ namespace DAL.Abstracts
             {
                 // Update
                 modifyAction(entity);
+
+                GetDbSet().Persist(GetMapper());
+
+                GetDbSet().Update(entity);
                 
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();

@@ -20,12 +20,12 @@
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="student in event.students">
-                <td>{{student.fullname}}</td>
-                <td>{{student.country}}</td>
-                <td>{{student.email}}</td>
+            <tr ng-repeat="map in event.students">
+                <td>{{map.student.fullname}}</td>
+                <td>{{map.student.country}}</td>
+                <td>{{map.student.email}}</td>
                 <td>
-                    <button class="btn btn-danger" ng-click="unMapStudent($event, student.studentId)">
+                    <button class="btn btn-danger" ng-click="unMapStudent($event, map.student.id)">
                         Remove RSVP
                     </button>
                 </td>

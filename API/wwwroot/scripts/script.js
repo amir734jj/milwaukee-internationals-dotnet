@@ -35,7 +35,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             
             if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
                 $http.post("/api/event/email", {
-                    students: $scope.event.students,
+                    emails: $scope.event.students.map(function (x) { return x.student.email; }),
                     body: emailBody,
                     subject: emailSubject
                 }).then(function () {
