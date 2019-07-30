@@ -59,7 +59,7 @@ namespace Logic
                     <p> Date: August 31, 2019</p>
                     <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
-                    <p> Location: Lubar Hall</p>
+                    <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <br>
                     <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
@@ -96,7 +96,7 @@ namespace Logic
                     <p> Date: August 31, 2019</p>
                     <p> Time: 12:00 noon</p>
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
-                    <p> Location: Lubar Hall </p>
+                    <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Prayag (646-226-4330) on campus.</p>
                 ");

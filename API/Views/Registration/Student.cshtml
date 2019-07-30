@@ -14,7 +14,7 @@
     <div class="page-header">
         <h2 class="text-center">2019 Free Tour of Milwaukee Registration</h2>
         <h4 class="text-center">Date and Time: August 31, 2019 at 12:00 noon</h4>
-        <h4 class="text-center">Location: Lubar Hall Lobby</h4>
+        <h4 class="text-center">Location: Lubar Hall Lobby (Business Building) </h4>
         <p class="text-center"><a href="https://www.facebook.com/Milwaukeeinternationals/">Questions? Click here to send us a message on our Facebook page</a></p>
 
     </div>
@@ -65,13 +65,13 @@
             @Html.LabelFor(x => x.IsFamily)
             @Html.CheckBoxFor(x => x.IsFamily, new { @class = "form-control hidden", ng_model = "isFamily_val" })
             <toggle class="pull-right" ng-model="isFamily" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="isFamily_val = isFamily"></toggle>
-        </div> 
+        </div>
 
         <div ng-show="isFamily" class="form-group">
             @Html.LabelFor(x => x.FamilySize)
             @Html.TextBoxFor(x => x.FamilySize, new { @class = "form-control", type = "number", placeholder = "1", min="1", max="10" })
         </div>
-        
+
         <div ng-show="isFamily" class="form-group" ng-init="needCarSeat = @Model.NeedCarSeat.ToString().ToLower(); needCarSeat_val = needCarSeat">
             @Html.LabelFor(x => x.NeedCarSeat)
             @Html.CheckBoxFor(x => x.NeedCarSeat, new { @class = "form-control hidden", ng_model = "needCarSeat_val" })
