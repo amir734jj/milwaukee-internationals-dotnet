@@ -31,7 +31,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [SwaggerOperation("Index")]
         public async Task<IActionResult> Index()
         {
             var events = await _eventLogic.GetAll();
@@ -46,7 +45,6 @@ namespace API.Controllers
         [UserRoleMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Delete/{id}")]
-        [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _eventLogic.Delete(id);
@@ -55,31 +53,43 @@ namespace API.Controllers
         }
         
         /// <summary>
-        /// Registers an event
+        /// Returns edit event view
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        [Route("Register")]
-        [SwaggerOperation("Register")]
-        public async Task<IActionResult> RegisterEvent(Event @event)
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> Edit([FromRoute] int id)
         {
-            await _eventLogic.Save(@event);
+            var @event = await _eventLogic.Get(id);
+
+            return View(@event);
+        }
+        
+        /// <summary>
+        /// Returns edit event view
+        /// </summary>
+        /// <returns></returns>
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [HttpPost]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> EditHandler(Event @event)
+        {
+            await _eventLogic.Update(@event.Id, @event);
 
             return RedirectToAction("Index");
         }
         
         /// <summary>
-        /// Registers an event
+        /// Returns event info
         /// </summary>
         /// <returns></returns>
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Info/{id}")]
-        [SwaggerOperation("Register")]
-        public async Task<IActionResult> EventInfo([FromRoute] int id)
+        public async Task<IActionResult> Info([FromRoute] int id)
         {
-            var eventInfo = await _eventLogic.GetEventInfo(id);
-
-            return View(eventInfo);
+            return View(id);
         }
     }
 }

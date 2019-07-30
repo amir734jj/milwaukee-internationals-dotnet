@@ -1,13 +1,64 @@
-﻿@using Models
-@using Models.Entities
+﻿@using API.Extensions
+@using Models.Enums
 @model IEnumerable<Models.Entities.Event>
 
 @{
-    ViewBag.Title = "Event management";
+    ViewBag.Title = "Event List";
     Layout = "_Layout";
+    
+    var userInfo = Context.Session.GetUserInfo();
 }
 
-@Html.Partial("EventTable", Model)
+<div class="container">
+    <div class="page-header">
+        <h3>List of Events (@Model.Count())</h3>
+        
+        <div class="row">
+            <div class="pull-right col-md-3 col-sm-4 clearfix">
+                <a class="btn btn-default pull-right" href="~/Registration/Event">Register Event</a>
+            </div>
+        </div>
+    </div>
+    
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>DateTime</th>
+            <th>Address</th>
+            <th>Count of Students</th>
+            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+            {
+                <th class="hidden-xs">Action</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var eventModel in Model)
+        {
+            <tr>
+                <td>@eventModel.Name</td>
+                <td>@eventModel.DateTime</td>
+                <td>@eventModel.Address</td>
+                <td>@(eventModel.Students?.Count ?? 0)</td>
+                
+                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                {
+                    <td>
+                        <a href="~/Event/Info/@eventModel.Id" class="btn btn-primary">Preview</a>
+                        <a href="~/Event/Edit/@eventModel.Id" class="btn btn-warning">Edit</a>
+                        <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a href="~/Event/Info/@eventModel.Id" class="btn btn-primary">Preview</a>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
 
-@Html.Partial("RegisterEvent", new Event())
-
+</div>

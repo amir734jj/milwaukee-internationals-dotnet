@@ -1,4 +1,5 @@
-﻿using DAL.Interfaces;
+﻿using System.Threading.Tasks;
+using DAL.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
 
@@ -11,7 +12,9 @@ namespace Logic
         private readonly IDriverLogic _driverLogic;
 
         private readonly IHostLogic _hostLogic;
-
+        
+        private readonly IEventLogic _eventLogic;
+        
         private readonly IEmailServiceApi _emailServiceApiApi;
 
         /// <summary>
@@ -21,11 +24,12 @@ namespace Logic
         /// <param name="driverLogic"></param>
         /// <param name="hostLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApiApi)
+        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
+            _eventLogic = eventLogic;
             _emailServiceApiApi = emailServiceApiApi;
         }
 
@@ -34,9 +38,9 @@ namespace Logic
         /// </summary>
         /// <param name="driver"></param>
         /// <returns></returns>
-        public bool RegisterDriver(Driver driver)
+        public async Task<bool> RegisterDriver(Driver driver)
         {
-            driver = _driverLogic.Save(driver).Result;
+            driver = await _driverLogic.Save(driver);
 
             // If save was successful
             if (driver != null)
@@ -72,14 +76,14 @@ namespace Logic
         /// </summary>
         /// <param name="student"></param>
         /// <returns></returns>
-        public bool RegisterStudent(Student student)
+        public async Task<bool> RegisterStudent(Student student)
         {
-            var result = _studentLogic.Save(student);
+            var result = await _studentLogic.Save(student);
 
             // If save was successful
             if (result != null)
             {
-                _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation", $@"
+                await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation", $@"
                     <p>Name: {student.Fullname}</p>
                     <p>Email: {student.Email}</p>
                     <p>University: {student.University}</p>
@@ -106,14 +110,14 @@ namespace Logic
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        public bool RegisterHost(Host host)
+        public async Task<bool> RegisterHost(Host host)
         {
-            var result = _hostLogic.Save(host);
+            var result = await _hostLogic.Save(host);
 
             // If save was successful
             if (result != null)
             {
-                _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
+                await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>
                     <p>Name: {host.Fullname}</p>
@@ -131,6 +135,13 @@ namespace Logic
             }
 
             return true;
+        }
+
+        public async Task<bool> RegisterEvent(Event @event)
+        {
+            var savedEvent = await _eventLogic.Save(@event);
+
+            return savedEvent != null;
         }
     }
 }

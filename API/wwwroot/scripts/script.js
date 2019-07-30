@@ -1,32 +1,55 @@
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     .controller('eventInfoCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
         
-        $scope.mapStudent = function ($event, eventId, studentId) {
+        $scope.mapStudent = function ($event) {
             $event.preventDefault();
-
+            
+            var eventId = $scope.eventId;
+            var studentId = $scope.studentId;
+            
             if (eventId && studentId) {
-                $http.post("/api/event/map/" + eventId + "/" + studentId).then(function (response) {
-                    $window.location.reload()
+                $http.post("/api/event/map/" + eventId + "/" + studentId).then(function () {
+                    $scope.fetchInfo();
                 });
             }
         };
 
-        $scope.unMapStudent = function (eventId, studentId) {
+        $scope.unMapStudent = function ($event, studentId) {
+            $event.preventDefault();
+            
+            var eventId = $scope.eventId;
+            
             if (eventId && studentId) {
-                $http.post("/api/event/unmap/" + eventId + "/" + studentId).then(function (response) {
-                    $window.location.reload()
+                $http.post("/api/event/unmap/" + eventId + "/" + studentId).then(function () {
+                    $scope.fetchInfo();
                 });
             }
         };
         
-        $scope.sendAdHocEmail = function ($event, eventId, emailSubject) {
+        $scope.sendAdHocEmail = function ($event) {
             $event.preventDefault();
 
+            var eventId = $scope.eventId;
+            var emailSubject = $scope.emailSubject;
             var emailBody = angular.element('.summernote').eq(0).summernote("code");
             
             if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
-                
+                $http.post("/api/event/email", {
+                    students: $scope.event.students,
+                    body: emailBody,
+                    subject: emailSubject
+                }).then(function () {
+                    $window.alert("Successfully sent email!");
+                });
             }
+        };
+        
+        $scope.fetchInfo = function() {
+          $http.get('/api/event/info/' + $scope.eventId).then(function (response) {
+                var data = response.data;
+                $scope.event = data.event;
+                $scope.availableStudents = data.availableStudents;
+            });
         };
 
         // Start the text editor
