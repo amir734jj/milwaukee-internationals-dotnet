@@ -47,7 +47,7 @@ namespace API.Controllers
         [Route("Driver/Register")]
         public async Task<IActionResult> RegisterDriver(Driver driver)
         {
-            if (_registrationLogic.RegisterDriver(driver))
+            if (await _registrationLogic.RegisterDriver(driver))
             {
                 return View("Thankyou");   
             }
@@ -71,7 +71,7 @@ namespace API.Controllers
         [Route("Student/Register")]
         public async Task<IActionResult> RegisterStudent(Student student)
         {
-            if (_registrationLogic.RegisterStudent(student))
+            if (await _registrationLogic.RegisterStudent(student))
             {
                 return View("Thankyou");   
             }
@@ -97,7 +97,33 @@ namespace API.Controllers
         [Route("Host/Register")]
         public async Task<IActionResult> RegisterHost(Host host)
         {
-            if (_registrationLogic.RegisterHost(host))
+            if (await _registrationLogic.RegisterHost(host))
+            {
+                return View("Thankyou");   
+            }
+
+            // TODO: use a proper 500 error page
+            return Ok("Failed!");
+        }
+        
+        [AuthorizeMiddleware]
+        [HttpGet]
+        [Route("Event")]
+        public async Task<IActionResult> Event()
+        {
+            return View(new Event());
+        }
+        
+        /// <summary>
+        /// POST registration
+        /// </summary>
+        /// <returns></returns>
+        [AuthorizeMiddleware]
+        [HttpPost]
+        [Route("Event/Register")]
+        public async Task<IActionResult> RegisterEvent(Event @event)
+        {
+            if (await _registrationLogic.RegisterEvent(@event))
             {
                 return View("Thankyou");   
             }

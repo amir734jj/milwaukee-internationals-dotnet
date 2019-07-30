@@ -1,0 +1,74 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Event Info page";
+    Layout = "_Layout";
+}
+
+<div class="container" ng-controller="eventInfoCtrl" ng-init="eventId=@Model; fetchInfo()">
+    <div class="page-header">
+        <h3>Count of RSVP students: {{event.students.length}}</h3>
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Country</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="map in event.students">
+                <td>{{map.student.fullname}}</td>
+                <td>{{map.student.country}}</td>
+                <td>{{map.student.email}}</td>
+                <td>
+                    <button class="btn btn-danger" ng-click="unMapStudent($event, map.student.id)">
+                        Remove RSVP
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr/>
+
+    <div>
+        <h3>Manually assign student ({{ availableStudents.length }} available students)</h3>
+
+        <div>
+            <div class="form-group">
+                <label>Available Students</label>
+
+                <select class="form-control" ng-model="studentId">
+                    <option value="{{student.id}}" ng-repeat="student in availableStudents">{{student.fullname}}</option>
+                </select>
+            </div>
+            
+            <input class="btn btn-primary" type="submit" value="Add Student" ng-click="mapStudent($event)"/>
+        </div>
+    </div>
+    
+    <hr/>
+
+    <div>
+        <h3>Sent AD-HOC email to RSVPed students</h3>
+
+        <div>
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" class="form-control" ng-model="emailSubject" />
+            </div>
+            
+            <div class="form-group">
+                <label>Email body</label>
+                <textarea class="form-control summernote" rows="5"></textarea>
+            </div>
+            
+            <input class="btn btn-primary" type="submit" value="Sent Email" ng-click="sendAdHocEmail($event)" />
+        </div>
+    </div>
+
+</div>

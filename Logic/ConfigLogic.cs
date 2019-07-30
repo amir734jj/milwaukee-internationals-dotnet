@@ -11,25 +11,28 @@ namespace Logic
 {
     public class ConfigLogic : IConfigLogic
     {
-        public async Task<YearContextViewModel> ResolveYearContext()
+        public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
         {
             var currentYear = DateTime.UtcNow.Year;
 
             var years = new HashSet<int> {2018, 2019, currentYear};
 
-            var retVal = new YearContextViewModel
+            var retVal = new GlobalConfigViewModel
             {
                 Years = years,
-                UpdatedYear = YearContext.YearValue
+                UpdatedYear = YearContext.YearValue,
+                EventFeature = GlobalConfigs.EventFeature
             };
             
             return await Task.FromResult(retVal);
         }
 
-        public Task SetYearContext(int year)
+        public Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            YearContext.YearValue = year;
+            YearContext.YearValue = globalConfigViewModel.UpdatedYear;
 
+            GlobalConfigs.EventFeature = globalConfigViewModel.EventFeature;
+            
             return Task.CompletedTask;
         }
     }

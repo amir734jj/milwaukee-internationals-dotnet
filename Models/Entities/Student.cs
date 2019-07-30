@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -56,6 +57,11 @@ namespace Models.Entities
         /// Indicates the year in which student attended the tour
         /// </summary>
         public int Year { get; set; }
+        
+        /// <summary>
+        /// List of Event Student Relationships
+        /// </summary>
+        public List<EventStudentRelationship> Events { get; set; }
         
         /// <summary>
         /// Override generate hashcode

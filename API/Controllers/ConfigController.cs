@@ -24,17 +24,17 @@ namespace API.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            var result = await _configLogic.ResolveYearContext();
+            var result = await _configLogic.ResolveGlobalConfig();
             
-            return View("ChangeYearContext", result);
+            return View(result);
         }
         
         [HttpPost]
         [Route("")]
         [UserRoleMiddleware(UserRoleEnum.Admin)]
-        public async Task<IActionResult> UpdateYearContext(YearContextViewModel yearContextViewModel)
+        public async Task<IActionResult> UpdateConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            await _configLogic.SetYearContext(yearContextViewModel.UpdatedYear);
+            await _configLogic.SetGlobalConfig(globalConfigViewModel);
 
             return RedirectToAction("Index");
         }

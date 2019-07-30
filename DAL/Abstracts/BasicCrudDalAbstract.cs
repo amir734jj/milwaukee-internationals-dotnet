@@ -11,7 +11,7 @@ using Models.Interfaces;
 
 namespace DAL.Abstracts
 {
-    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel, IPerson
+    public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel
     {
         /// <summary>
         /// Abstract to get IMapper
@@ -37,7 +37,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await GetDbSet().OrderBy(x => x.Fullname).ToListAsync();
+            return await GetDbSet().ToListAsync();
         }
 
         /// <summary>
@@ -125,6 +125,10 @@ namespace DAL.Abstracts
             {
                 // Update
                 modifyAction(entity);
+
+                // GetDbSet().Persist(GetMapper());
+
+                GetDbSet().Update(entity);
                 
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();

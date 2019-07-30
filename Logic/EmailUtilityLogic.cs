@@ -33,7 +33,15 @@ namespace Logic
             _hostLogic = hostLogic;
             _userLogic = userLogic;
             _emailServiceApiApi = emailServiceApiApi;
-        } 
+        }
+
+        public async Task<bool> HandleEventEmail(EmailEventViewModel emailEventViewModel)
+        {
+            // Send the email
+            await _emailServiceApiApi.SendEmailAsync(emailEventViewModel.Emails, emailEventViewModel.Subject, emailEventViewModel.Body);
+
+            return true;
+        }
         
         /// <summary>
         /// Handles email form view model

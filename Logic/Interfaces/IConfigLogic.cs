@@ -6,8 +6,8 @@ namespace Logic.Interfaces
 {
     public interface IConfigLogic
     {
-        Task<YearContextViewModel> ResolveYearContext();
+        Task<GlobalConfigViewModel> ResolveGlobalConfig();
 
-        Task SetYearContext(int year);
+        Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel);
     }
 }

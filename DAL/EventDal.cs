@@ -10,10 +10,9 @@ using Models.Entities;
 
 namespace DAL
 {
-    public class UserDal :  BasicCrudDalAbstract<User>, IUserDal
+    public class EventDal : BasicCrudDalAbstract<Event>, IEventDal
     {
         private readonly EntityDbContext _dbContext;
-        
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace DAL
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public UserDal(EntityDbContext dbContext, IMapper mapper)
+        public EventDal(EntityDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -46,18 +45,19 @@ namespace DAL
         }
 
         /// <summary>
-        /// Returns students entity
+        /// Returns hosts entity
         /// </summary>
         /// <returns></returns>
-        protected override DbSet<User> GetDbSet()
+        protected override DbSet<Event> GetDbSet()
         {
-            return _dbContext.Users;
+            return _dbContext.Events;
         }
 
-        public override async Task<IEnumerable<User>> GetAll()
+        public override async Task<IEnumerable<Event>> GetAll()
         {
             return await GetDbSet()
-                .OrderBy(x => x.Fullname)
+                .Include(x => x.Students)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
         }
     }

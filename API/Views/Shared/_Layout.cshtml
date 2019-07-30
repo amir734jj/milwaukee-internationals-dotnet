@@ -128,6 +128,13 @@
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
+
+                    if (GlobalConfigs.EventFeature)
+                    {
+                        <li class="@(ViewContext.RouteData.Matches("Event") ? "active" : "")">
+                            <a href="~/Event">Events</a>
+                        </li>
+                    }
                 }
             </ul>
             
@@ -148,7 +155,7 @@
                                 </li>
                         
                                 <li class="@(ViewContext.RouteData.Matches("Config") ? "active" : "")">
-                                    <a href="~/Config">Year Context</a>
+                                    <a href="~/Config">Configuration</a>
                                 </li>
                             </ul>
                         </li>
