@@ -57,7 +57,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Save(T instance)
         {
-            GetDbSet().Persist(GetMapper()).InsertOrUpdate(instance);
+            GetDbSet().Add(instance);
             await GetDbContext().SaveChangesAsync();
             return instance;
         }
