@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Models.ViewModels.Config
 {
-    public class YearContextViewModel
+    public class GlobalConfigViewModel
     {
         public IEnumerable<int> Years { get; set; }
         

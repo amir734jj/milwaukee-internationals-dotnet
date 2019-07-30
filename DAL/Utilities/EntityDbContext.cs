@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
@@ -19,6 +20,7 @@ namespace DAL.Utilities
 
         private readonly Action<DbContextOptionsBuilder> _onConfiguring;
 
+        /// <inheritdoc />
         /// <summary>
         /// Constructor that will be called by startup.cs
         /// </summary>
@@ -45,7 +47,7 @@ namespace DAL.Utilities
                 .HasOne(pt => pt.Event)
                 .WithMany(t => t.Students)
                 .HasForeignKey(pt => pt.EventId);
-            
+
             base.OnModelCreating(modelBuilder);
         }
 

@@ -32,9 +32,9 @@ namespace API.Controllers
         [HttpPost]
         [Route("")]
         [UserRoleMiddleware(UserRoleEnum.Admin)]
-        public async Task<IActionResult> UpdateYearContext(YearContextViewModel yearContextViewModel)
+        public async Task<IActionResult> UpdateYearContext(GlobalConfigViewModel globalConfigViewModel)
         {
-            await _configLogic.SetYearContext(yearContextViewModel.UpdatedYear);
+            await _configLogic.SetYearContext(globalConfigViewModel.UpdatedYear);
 
             return RedirectToAction("Index");
         }

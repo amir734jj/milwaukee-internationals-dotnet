@@ -11,13 +11,13 @@ namespace Logic
 {
     public class ConfigLogic : IConfigLogic
     {
-        public async Task<YearContextViewModel> ResolveYearContext()
+        public async Task<GlobalConfigViewModel> ResolveYearContext()
         {
             var currentYear = DateTime.UtcNow.Year;
 
             var years = new HashSet<int> {2018, 2019, currentYear};
 
-            var retVal = new YearContextViewModel
+            var retVal = new GlobalConfigViewModel
             {
                 Years = years,
                 UpdatedYear = YearContext.YearValue

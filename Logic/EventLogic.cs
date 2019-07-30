@@ -125,8 +125,10 @@ namespace Logic
             // Update the event
             await _eventDal.Update(eventId, @event =>
             {
+                var item = @event.Students.FirstOrDefault(x => x.StudentId == studentId);
+                
                 // Remove student
-                @event.Students = @event.Students.Where(x => x.StudentId != studentId).ToList();
+                @event.Students.Remove(item);
             });
 
             return true;
