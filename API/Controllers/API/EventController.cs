@@ -35,7 +35,10 @@ namespace API.Controllers.Api
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<Event> BasicCrudLogic() => _eventLogic;
+        public override IBasicCrudLogic<Event> BasicCrudLogic()
+        {
+            return _eventLogic;
+        }
 
         /// <summary>
         /// Map Student to event

@@ -126,7 +126,7 @@ namespace DAL.Abstracts
                 // Update
                 modifyAction(entity);
 
-                GetDbSet().Persist(GetMapper());
+                // GetDbSet().Persist(GetMapper());
 
                 GetDbSet().Update(entity);
                 

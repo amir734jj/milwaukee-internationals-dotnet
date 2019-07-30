@@ -21,7 +21,7 @@ namespace Logic
             {
                 Years = years,
                 UpdatedYear = YearContext.YearValue,
-                EnableEventFeature = GlobalConfigs.EventFeature
+                EventFeature = GlobalConfigs.EventFeature
             };
             
             return await Task.FromResult(retVal);
@@ -31,7 +31,7 @@ namespace Logic
         {
             YearContext.YearValue = globalConfigViewModel.UpdatedYear;
 
-            GlobalConfigs.EventFeature = globalConfigViewModel.EnableEventFeature;
+            GlobalConfigs.EventFeature = globalConfigViewModel.EventFeature;
             
             return Task.CompletedTask;
         }

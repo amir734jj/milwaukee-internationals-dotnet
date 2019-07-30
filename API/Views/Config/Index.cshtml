@@ -8,7 +8,7 @@
     var selectedYear = Model.UpdatedYear;
 }
 
-@using (Html.BeginForm("UpdateConfig", "Config", FormMethod.Post, new {enctype = "multipart/form-data"}))
+@using (Html.BeginForm("UpdateConfig", "Config", FormMethod.Post))
 {
     <div class="alert alert-warning">
         <strong>Warning!</strong> Year Context is a global variable and changing this variable may cause all registration to be stored with a wrong year variable!
@@ -20,10 +20,10 @@
         @Html.DropDownListFor(x => x.UpdatedYear, Model.Years.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == selectedYear}), new {@class = "form-control"})
     </div>
     
-    <div class="form-group" ng-init="enableEventFeature = @Model.EnableEventFeature.ToString().ToLower(); enableEventFeature_val = enableEventFeature">
-        @Html.LabelFor(x => x.EnableEventFeature)
-        @Html.CheckBoxFor(x => x.EnableEventFeature, new { @class = "form-control hidden", ng_model = "enableEventFeature_val" })
-        <toggle class="pull-right" ng-model="enableEventFeature" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="enableEventFeature_val = enableEventFeature"></toggle>
+    <div class="form-group" ng-init="enableEventFeature = @Model.EventFeature.ToString().ToLower(); enableEventFeature_val = enableEventFeature">
+        @Html.LabelFor(x => x.EventFeature)
+        @Html.CheckBoxFor(x => x.EventFeature, new { @class = "form-control hidden", ng_model = "enableEventFeature_val" })
+        <toggle class="pull-right" ng-model="enableEventFeature" on="Enable" off="Disable" onstyle="btn-success" offstyle="btn-default" ng-change="enableEventFeature_val = enableEventFeature"></toggle>
     </div> 
     
     <div class="form-group" style="margin: 1rem;">

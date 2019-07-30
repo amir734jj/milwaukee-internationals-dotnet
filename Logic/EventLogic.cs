@@ -33,8 +33,11 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Event> GetBasicCrudDal() => _eventDal;
-        
+        protected override IBasicCrudDal<Event> GetBasicCrudDal()
+        {
+            return _eventDal;
+        }
+
         public override async Task<IEnumerable<Event>> GetAll()
         {
             return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);

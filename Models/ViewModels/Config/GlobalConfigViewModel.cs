@@ -10,6 +10,6 @@ namespace Models.ViewModels.Config
         public int UpdatedYear { get; set; }
         
         [Display(Name = "AD-HOC Event Feature")]
-        public bool EnableEventFeature { get; set; }
+        public bool EventFeature { get; set; }
     }
 }

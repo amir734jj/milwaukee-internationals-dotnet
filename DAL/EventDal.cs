@@ -30,23 +30,33 @@ namespace DAL
         /// Returns IMapper
         /// </summary>
         /// <returns></returns>
-        protected override IMapper GetMapper() => _mapper;
-        
+        protected override IMapper GetMapper()
+        {
+            return _mapper;
+        }
+
         /// <summary>
         /// Returns database context
         /// </summary>
         /// <returns></returns>
-        protected override DbContext GetDbContext() => _dbContext;
+        protected override DbContext GetDbContext()
+        {
+            return _dbContext;
+        }
 
         /// <summary>
         /// Returns hosts entity
         /// </summary>
         /// <returns></returns>
-        protected override DbSet<Event> GetDbSet() => _dbContext.Events;
+        protected override DbSet<Event> GetDbSet()
+        {
+            return _dbContext.Events;
+        }
 
         public override async Task<IEnumerable<Event>> GetAll()
         {
             return await GetDbSet()
+                .Include(x => x.Students)
                 .OrderBy(x => x.Name)
                 .ToListAsync();
         }
