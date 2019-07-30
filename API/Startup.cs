@@ -192,11 +192,13 @@ namespace API
         /// <param name="app"></param>
         public void Configure(IApplicationBuilder app)
         {
+            app.UseDatabaseErrorPage();
+
+            app.UseDeveloperExceptionPage();
+            
             if (_env.IsLocalhost())
             {
-                app.UseDatabaseErrorPage();
 
-                app.UseDeveloperExceptionPage();
 
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
