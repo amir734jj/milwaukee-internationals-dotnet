@@ -91,13 +91,18 @@
                 
                 @if (Context.Session.IsAuthenticated())
                 {
-                    <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("User", "Student", "Driver", "Host") ? "active" : "")">
+                    <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("User", "Student", "Driver", "Host", "Event") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listing <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="~/User">Users</a></li>
                             <li><a href="~/Student">Students</a></li>
                             <li><a href="~/Driver">Drivers</a></li>
                             <li><a href="~/Host">Hosts</a></li>
+                            
+                            @if (GlobalConfigs.EventFeature)
+                            {
+                                <li><<a href="~/Event">Events</a></li>
+                            }
                         </ul>
                     </li>
                     
@@ -128,13 +133,6 @@
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
-
-                    if (GlobalConfigs.EventFeature)
-                    {
-                        <li class="@(ViewContext.RouteData.Matches("Event") ? "active" : "")">
-                            <a href="~/Event">Events</a>
-                        </li>
-                    }
                 }
             </ul>
             
