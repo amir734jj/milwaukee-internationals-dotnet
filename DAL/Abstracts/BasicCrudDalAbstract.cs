@@ -57,8 +57,10 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Save(T instance)
         {
-            GetDbSet().Add(instance);
+            await GetDbSet().AddAsync(instance);
+
             await GetDbContext().SaveChangesAsync();
+
             return instance;
         }
 
