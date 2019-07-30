@@ -11,7 +11,7 @@ namespace Logic
 {
     public class ConfigLogic : IConfigLogic
     {
-        public async Task<GlobalConfigViewModel> ResolveYearContext()
+        public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
         {
             var currentYear = DateTime.UtcNow.Year;
 
@@ -20,16 +20,19 @@ namespace Logic
             var retVal = new GlobalConfigViewModel
             {
                 Years = years,
-                UpdatedYear = YearContext.YearValue
+                UpdatedYear = YearContext.YearValue,
+                EnableEventFeature = GlobalConfigs.EnableEventFeature
             };
             
             return await Task.FromResult(retVal);
         }
 
-        public Task SetYearContext(int year)
+        public Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            YearContext.YearValue = year;
+            YearContext.YearValue = globalConfigViewModel.UpdatedYear;
 
+            GlobalConfigs.EnableEventFeature = globalConfigViewModel.EnableEventFeature;
+            
             return Task.CompletedTask;
         }
     }

@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using Models.ViewModels
+@model Models.ViewModels.Config.GlobalConfigViewModel
+
+@{
+    ViewBag.Title = "Configuration";
+    Layout = "_Layout";
+    var selectedYear = Model.UpdatedYear;
+}
+
+@using (Html.BeginForm("UpdateConfig", "Config", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> Year Context is a global variable and changing this variable may cause all registration to be stored with a wrong year variable!
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.UpdatedYear, "Select a year context")
+
+        @Html.DropDownListFor(x => x.UpdatedYear, Model.Years.Select(x => new SelectListItem {Text = x.ToString(), Value = x.ToString(), Selected = x == selectedYear}), new {@class = "form-control"})
+    </div>
+    
+    <div class="form-group" ng-init="enableEventFeature = @Model.EnableEventFeature.ToString().ToLower(); enableEventFeature_val = enableEventFeature">
+        @Html.LabelFor(x => x.EnableEventFeature)
+        @Html.CheckBoxFor(x => x.EnableEventFeature, new { @class = "form-control hidden", ng_model = "enableEventFeature_val" })
+        <toggle class="pull-right" ng-model="enableEventFeature" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="enableEventFeature_val = enableEventFeature"></toggle>
+    </div> 
+    
+    <div class="form-group" style="margin: 1rem;">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+}
