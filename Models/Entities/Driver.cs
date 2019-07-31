@@ -52,6 +52,9 @@ namespace Models.Entities
         
         public bool IsPresent { get; set; }
         
+        [Display(Name = "Have a child seat available")]
+        public bool HaveChildSeat { get; set; }
+        
         /// <summary>
         /// Indicates the year in which driver attended the tour
         /// </summary>

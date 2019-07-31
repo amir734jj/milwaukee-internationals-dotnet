@@ -34,6 +34,12 @@
             @Html.LabelFor(x => x.Capacity)
             @Html.TextBoxFor(x => x.Capacity, new {@class = "form-control", type = "number", min = "1", max = "7", placeholder = "Enter capacity"})
         </div>
+          
+        <div class="form-group" ng-init="haveChildSeat = @Model.HaveChildSeat.ToString().ToLower(); haveChildSeat_val = haveChildSeat">
+            @Html.LabelFor(x => x.HaveChildSeat)
+            @Html.CheckBoxFor(x => x.HaveChildSeat, new {@class = "form-control hidden", ng_model = "haveChildSeat_val"})
+            <toggle class="pull-right" ng-model="haveChildSeat" on="Yes" off="No" onstyle="btn-success" offstyle="btn-danger" ng-change="haveChildSeat_val = haveChildSeat"></toggle>
+        </div>
 
         <div class="form-group" ng-init="requireNavigator = @Model.RequireNavigator.ToString().ToLower(); requireNavigator_val = requireNavigator">
             @Html.LabelFor(x => x.RequireNavigator)
