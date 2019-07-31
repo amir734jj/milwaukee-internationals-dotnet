@@ -181,7 +181,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                         driver.navigator = (driver.navigator || driver.navigator === "null") ? 
                             (driver.navigator.length > 10 ? driver.navigator.substring(0, 10) + " ..." : driver.navigator) : "-";
                         
-                        return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role"], driver);
+                        return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
                     }));
                     
                     // Needed
