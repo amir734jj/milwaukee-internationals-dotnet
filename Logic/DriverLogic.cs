@@ -40,14 +40,16 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Driver> Save(Driver instance)
         {
-            // Set the display id
-            instance.DisplayId = GenerateDisplayId(instance, instance.Id);
-            
+            // TODO: make this faster
+            instance.DisplayId = "Null";
+
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
             // Save the instance
             var retVal = await base.Save(instance);
+
+            await _driverDal.Update(retVal.Id, x => x.DisplayId = GenerateDisplayId(x, x.Id));
             
             return retVal;
         }

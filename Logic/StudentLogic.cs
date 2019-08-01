@@ -40,20 +40,16 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Student> Save(Student instance)
         {
-            // TODO: make this faster
             instance.DisplayId = "Null";
-            
-            // Save student
-            var retVal = await base.Save(instance);
-            
-            // Set the display id
-            instance.DisplayId = GenerateDisplayId(instance, instance.Id);
-            
+
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
+            // Save student
+            var retVal = await base.Save(instance);
+
             // Update
-            await Update(instance.Id, instance);
+            await _studentDal.Update(retVal.Id, x => x.DisplayId = GenerateDisplayId(x, x.Id));
 
             return retVal;
         }
