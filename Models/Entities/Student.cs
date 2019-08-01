@@ -61,7 +61,7 @@ namespace Models.Entities
         /// <summary>
         /// List of Event Student Relationships
         /// </summary>
-        public List<EventStudentRelationship> Events { get; set; }
+        public List<EventStudentRelationship> Events { get; set; } = new List<EventStudentRelationship>();
         
         /// <summary>
         /// Override generate hashcode
