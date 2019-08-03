@@ -117,7 +117,7 @@ namespace Logic
         ";
             }
 
-            var drivers = await _driverLogic.GetAll();
+            var drivers = await _driverLogic.GetAll(DateTime.UtcNow.Year);
             
             // Send the email to drivers
             var tasks = drivers.Select(x =>

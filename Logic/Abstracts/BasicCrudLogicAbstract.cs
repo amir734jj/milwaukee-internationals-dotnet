@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Models.Entities;
 
 namespace Logic.Abstracts
 {
@@ -13,6 +15,25 @@ namespace Logic.Abstracts
         /// </summary>
         /// <returns></returns>
         protected abstract IBasicCrudDal<T> GetBasicCrudDal();
+
+        public async Task<IEnumerable<T>> GetAll(int year)
+        {
+            var rslt = await GetAll();
+            
+            switch (rslt)
+            {
+                case IEnumerable<Driver> drivers:
+                    return drivers.Where(x => x.Year == year).Cast<T>();
+                case IEnumerable<Host> hosts:
+                    return hosts.Where(x => x.Year == year).Cast<T>();
+                case IEnumerable<Student> students:
+                    return students.Where(x => x.Year == year).Cast<T>();
+                case IEnumerable<User> users:
+                    return users.Cast<T>();
+                default:
+                    return rslt;
+            }            
+        }
 
         /// <summary>
         /// Call forwarding

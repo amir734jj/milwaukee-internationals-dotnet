@@ -119,7 +119,7 @@ namespace Logic
         ";
             }
 
-            var hosts = await _hostLogic.GetAll();
+            var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
 
             // Send the email to hosts
             var tasks = hosts

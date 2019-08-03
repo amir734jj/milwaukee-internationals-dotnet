@@ -6,6 +6,8 @@ namespace Logic.Interfaces
 {
     public interface IBasicCrudLogic<T>
     {
+        Task<IEnumerable<T>> GetAll(int year);
+        
         Task<IEnumerable<T>> GetAll();
 
         Task<T> Get(int id);

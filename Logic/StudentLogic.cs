@@ -45,7 +45,7 @@ namespace Logic
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
-            var count = (await base.GetAll()).Count(x => x.Year == DateTime.UtcNow.Year);
+            var count = (await base.GetAll(DateTime.UtcNow.Year)).Count();
 
             instance.DisplayId = GenerateDisplayId(instance, count);
             

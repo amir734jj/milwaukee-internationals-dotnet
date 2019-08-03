@@ -61,21 +61,21 @@ namespace Logic
             // Add student emails
             if (emailFormViewModel.Students)
             {
-                var students = await _studentLogic.GetAll();
+                var students = await _studentLogic.GetAll(DateTime.UtcNow.Year);
                 emailAddresses.AddRange(students.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
 
             // Add driver emails
             if (emailFormViewModel.Drivers)
             {
-                var drivers = await _driverLogic.GetAll();
+                var drivers = await _driverLogic.GetAll(DateTime.UtcNow.Year);
                 emailAddresses.AddRange(drivers.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             
             // Add host emails
             if (emailFormViewModel.Hosts)
             {
-                var hosts = await _hostLogic.GetAll();
+                var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
                 emailAddresses.AddRange(hosts.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             
