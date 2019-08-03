@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Models.Entities.Driver>
+﻿@using API.Extensions
+@using Models.Enums
+@model IEnumerable<Models.Entities.Driver>
 
 @{
     ViewBag.Title = "Drivers";
     Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
 }
 
 <div class="container" ng-controller="driverListCtrl">
@@ -44,7 +47,10 @@
                     <td>@driver.HaveChildSeat</td>
                     <td class="hidden-xs" ng-show="showDetail">
                         <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
-                        <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                        {
+                            <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                        }
                     </td>
                 </tr>
             }

@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Models.Entities.Host>
+﻿@using API.Extensions
+@using Models.Enums
+@model IEnumerable<Models.Entities.Host>
 
 @{
     ViewBag.Title = "Hosts";
     Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
 }
 
 <div class="container" ng-controller="hostListCtrl">
@@ -37,7 +40,10 @@
                 <td>@host.Address</td>
                 <td class="hidden-xs" ng-show="showDetail">
                     <a href="~/Host/edit/@host.Id" class="btn btn-primary">Edit</a>
-                    <a href="~/Host/delete/@host.Id" class="btn btn-danger">Delete</a>
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <a href="~/Host/delete/@host.Id" class="btn btn-danger">Delete</a>
+                    }
                 </td>
             </tr>
         }

@@ -3,6 +3,7 @@ using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Models.Enums;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
@@ -41,6 +42,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
+        [UserRoleMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _driverLogic.Delete(id);

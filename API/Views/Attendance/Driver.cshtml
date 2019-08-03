@@ -1,14 +1,21 @@
-﻿@{
+﻿@using API.Extensions
+@using Models.Enums
+@{
     ViewBag.Title = "Student Attendance";
     Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
 }
 
 <div class="container" ng-controller="driverAttendanceCtrl">
     <div class="page-header">
         <h3>Driver Attendance</h3>
-        <div class="clearfix">
-            <button class="btn btn-primary pull-right" ng-click="checkInViaEmail()">Send Check-In via email</button>
-        </div>
+        
+        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+        {
+            <div class="clearfix">
+                <button class="btn btn-primary pull-right" ng-click="checkInViaEmail()">Send Check-In via email</button>
+            </div>
+        }
     </div>
 
     <div>

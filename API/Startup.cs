@@ -196,8 +196,6 @@ namespace API
             
             if (_env.IsLocalhost())
             {
-
-
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 
