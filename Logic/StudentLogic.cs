@@ -45,11 +45,12 @@ namespace Logic
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
+            var count = (await base.GetAll()).Count(x => x.Year == DateTime.UtcNow.Year);
+
+            instance.DisplayId = GenerateDisplayId(instance, count);
+            
             // Save student
             var retVal = await base.Save(instance);
-
-            // Update
-            await _studentDal.Update(retVal.Id, x => x.DisplayId = GenerateDisplayId(x, x.Id));
 
             return retVal;
         }

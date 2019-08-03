@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.EntityFrameworkCore;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +75,7 @@ namespace DAL.Abstracts
             if (entity != null)
             {
                 // Remove from persistence
-                GetDbSet().Persist(GetMapper()).Remove(entity);
+                GetDbSet().Remove(entity);
                 
                 // Remove form DbContext
                 GetDbContext().Remove(entity);
@@ -93,20 +92,20 @@ namespace DAL.Abstracts
         /// Handles update
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="instance"></param>
+        /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<T> Update(int id, T instance)
+        public virtual async Task<T> Update(int id, T entity)
         {
-            if (instance != null)
+            if (entity != null)
             {
                 // Update
-                GetDbSet().Persist(GetMapper()).InsertOrUpdate(instance);
-                    
+                GetDbSet().Update(entity);
+                
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
 
                 // Returns the updated entity
-                return instance;
+                return entity;
             }
 
             // Not found

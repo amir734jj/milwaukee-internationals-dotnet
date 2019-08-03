@@ -79,5 +79,24 @@ namespace DAL
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
         }
+
+        public override async Task<Student> Update(int id, Student dto)
+        {
+            var entity = await Get(id);
+
+            entity.Fullname = dto.Fullname;
+            entity.Email = dto.Email;
+            entity.Phone = dto.Phone;
+            entity.Major = dto.Major;
+            entity.Country = dto.Country;
+            entity.University = dto.University;
+            entity.IsFamily = dto.IsFamily;
+            entity.Interests = dto.Interests;
+            entity.NeedCarSeat = dto.NeedCarSeat;
+            entity.KosherFood = dto.KosherFood;
+            entity.FamilySize = dto.FamilySize;
+            
+            return await base.Update(id, entity);
+        }
     }
 }

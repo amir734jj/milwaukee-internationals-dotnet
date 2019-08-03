@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
+using Models.Enums;
 
 namespace Logic
 {
@@ -45,7 +47,10 @@ namespace Logic
             // If save was successful
             if (driver != null)
             {
-                _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
+                switch (driver.Role)
+                {
+                    case RolesEnum.Driver:
+                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
@@ -66,6 +71,31 @@ namespace Logic
                     <br>
                     <p> Blessings, </p>
                 ");
+                        break;
+                    case RolesEnum.Navigator:
+                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
+                    <p> This is an automatically generated email. </p>
+                    <p> ----------------------------------------- </p>
+                    <p> Name: {driver.Fullname}</p>
+                    <p> Role: {driver.Role}</p>
+                    <p> Phone: {driver.Phone}</p>
+                    <p> Display Id: {driver.DisplayId}</p>
+                    <br>
+                    <p> 2019 Tour of Milwaukee</p>
+                    <p> Date: August 31, 2019</p>
+                    <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
+                    <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
+                    <p> Location: Lubar Hall (Business Building, UWM) </p>
+                    <br>
+                    <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>
+                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <br>
+                    <p> Blessings, </p>
+                ");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
             return true;

@@ -7,6 +7,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
 using Models.Entities;
+using Models.Enums;
 using static Logic.Utilities.DisplayIdUtility;
 
 namespace Logic
@@ -40,18 +41,36 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Driver> Save(Driver instance)
         {
-            // TODO: make this faster
+            // If role is navigator then capaciy is 0
+            if (instance.Role == RolesEnum.Navigator)
+            {
+                instance.Capacity = 0;
+            }
+            
+            var count = (await base.GetAll()).Count(x => x.Year == DateTime.UtcNow.Year);
+          
             instance.DisplayId = "Null";
 
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
+            instance.DisplayId = GenerateDisplayId(instance, count);
+
             // Save the instance
             var retVal = await base.Save(instance);
 
-            await _driverDal.Update(retVal.Id, x => x.DisplayId = GenerateDisplayId(x, x.Id));
-            
             return retVal;
+        }
+
+        public override async Task<Driver> Update(int id, Driver instance)
+        {
+            // If role is navigator then capaciy is 0
+            if (instance.Role == RolesEnum.Navigator)
+            {
+                instance.Capacity = 0;
+            }
+
+            return await base.Update(id, instance);
         }
 
         public override async Task<IEnumerable<Driver>> GetAll()

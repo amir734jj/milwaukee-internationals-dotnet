@@ -47,10 +47,7 @@ namespace Logic
             }
 
             // First user is Admin user
-            if (!existingUsers.Any())
-            {
-                instance.UserRoleEnum = UserRoleEnum.Admin;
-            }
+            instance.UserRoleEnum = existingUsers.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
             
             // Do not store the plain-text password
             instance.Password = SecureHashPassword(instance.Password);

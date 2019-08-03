@@ -9,14 +9,14 @@ namespace Logic.Utilities
         /// Generates a display Id
         /// </summary>
         /// <param name="person"></param>
-        /// <param name="id"></param>
+        /// <param name="count"></param>
         /// <returns></returns>
-        public static string GenerateDisplayId(IPerson person, int id)
-        {
+        public static string GenerateDisplayId(IPerson person, int count)
+        {            
             return (string.Join(string.Empty, person.Fullname.Split(" ")
                        .Select(x => x.Trim())
                        .Where(x => !string.IsNullOrWhiteSpace(x))
-                       .Select(x => x.Substring(0, 1))) + "-" + id).ToUpper();
+                       .Select(x => x.Substring(0, 1))) + "-" + ++count).ToUpper();
         }
     }
 }

@@ -77,5 +77,22 @@ namespace DAL
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
         }
+
+        public override async Task<Driver> Update(int id, Driver dto)
+        {
+            var entity = await Get(id);
+
+            entity.Fullname = dto.Fullname;
+            entity.Role = dto.Role;
+            entity.Phone = dto.Phone;
+            entity.Email = dto.Email;
+            entity.Capacity = dto.Capacity;
+            entity.Navigator = dto.Navigator;
+            entity.DisplayId = dto.DisplayId;
+            entity.RequireNavigator = dto.RequireNavigator;
+            entity.HaveChildSeat = dto.HaveChildSeat;
+            
+            return await base.Update(id, entity);
+        }
     }
 }

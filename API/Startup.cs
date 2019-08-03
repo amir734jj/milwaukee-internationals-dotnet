@@ -3,7 +3,6 @@ using System.Reflection;
 using API.Attributes;
 using API.Extensions;
 using AutoMapper;
-using AutoMapper.EquivalencyExpression;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
@@ -155,8 +154,7 @@ namespace API
                 // All the other service configuration.
                 services.AddAutoMapper(x =>
                 {
-                    x.AddCollectionMappers();
-                    x.UseEntityFrameworkCoreModel<EntityDbContext>(services);
+
                 }, Assembly.Load("Models"));
                 
                 // If environment is localhost then use mock email service

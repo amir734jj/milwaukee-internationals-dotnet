@@ -60,5 +60,19 @@ namespace DAL
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
         }
+        
+        public override async Task<User> Update(int id, User dto)
+        {
+            var entity = await Get(id);
+
+            entity.Fullname = dto.Fullname;
+            entity.Password = dto.Password;
+            entity.Username = dto.Username;
+            entity.UserRoleEnum = dto.UserRoleEnum;
+            entity.Phone = dto.Phone;
+            entity.Email = dto.Email;
+            
+            return await base.Update(id, entity);
+        }
     }
 }
