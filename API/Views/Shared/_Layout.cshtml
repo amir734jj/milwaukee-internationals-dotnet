@@ -168,13 +168,6 @@
 
 <div class="container" ng-app="tourApp" ng-cloak>
     
-    @if (yearContext != currentYear)
-    {
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> Year Context global variable does not equal to the current year, any registration may be stored in-correctly!
-        </div>
-    }
-
     @RenderBody()
 </div>
 
