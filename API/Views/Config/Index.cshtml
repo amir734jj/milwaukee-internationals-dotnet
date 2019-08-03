@@ -10,10 +10,6 @@
 
 @using (Html.BeginForm("UpdateConfig", "Config", FormMethod.Post))
 {
-    <div class="alert alert-warning">
-        <strong>Warning!</strong> Year Context is a global variable and changing this variable may cause all registration to be stored with a wrong year variable!
-    </div>
-    
     <div class="form-group">
         @Html.LabelFor(x => x.UpdatedYear, "Select a year context")
 
