@@ -17,37 +17,38 @@
         </div>
     </div>
     
-    <table class="table table-hover table-bordered">
-        <thead>
-            <tr>
-                <th>DisplayId</th>
-                <th>Fullname</th>
-                <th>Capacity</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Navigator</th>
-                <th>Have Child Seat</th>
-                <th class="hidden-xs" ng-show="showDetail">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var driver in Model)
-        {
-            <tr>
-                <td>@driver.DisplayId</td>
-                <td>@driver.Fullname</td>
-                <td>@driver.Capacity</td>
-                <td>@driver.Email</td>
-                <td>@driver.Phone</td>
-                <td>@driver.Navigator</td>
-                <td>@driver.HaveChildSeat</td>
-                <td class="hidden-xs" ng-show="showDetail">
-                    <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
-                    <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>DisplayId</th>
+                    <th>Fullname</th>
+                    <th>Capacity</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Navigator</th>
+                    <th>Have Child Seat</th>
+                    <th class="hidden-xs" ng-show="showDetail">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var driver in Model)
+            {
+                <tr>
+                    <td>@driver.DisplayId</td>
+                    <td>@driver.Fullname</td>
+                    <td>@driver.Capacity</td>
+                    <td>@driver.Email</td>
+                    <td>@driver.Phone</td>
+                    <td>@driver.Navigator</td>
+                    <td>@driver.HaveChildSeat</td>
+                    <td class="hidden-xs" ng-show="showDetail">
+                        <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
+                        <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
