@@ -1,39 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
+using EntityUpdater.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
 namespace DAL
 {
-    public class UserDal :  BasicCrudDalAbstract<User>, IUserDal
+    public class UserDal : BasicCrudDalAbstract<User>, IUserDal
     {
         private readonly EntityDbContext _dbContext;
-        
-        private readonly IMapper _mapper;
+        private readonly IAssignmentUtility _mapper;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="dbContext"></param>
-        /// <param name="mapper"></param>
-        public UserDal(EntityDbContext dbContext, IMapper mapper)
+        public UserDal(EntityDbContext dbContext, IAssignmentUtility mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Returns IMapper
-        /// </summary>
-        /// <returns></returns>
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
         }
 
         /// <summary>
@@ -54,25 +43,20 @@ namespace DAL
             return _dbContext.Users;
         }
 
+        /// <summary>
+        /// Returns IAssignmentUtility
+        /// </summary>
+        /// <returns></returns>
+        protected override IAssignmentUtility Mapper()
+        {
+            return _mapper;
+        }
+
         public override async Task<IEnumerable<User>> GetAll()
         {
             return await GetDbSet()
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
-        }
-        
-        public override async Task<User> Update(int id, User dto)
-        {
-            var entity = await Get(id);
-
-            entity.Fullname = dto.Fullname;
-            entity.Password = dto.Password;
-            entity.Username = dto.Username;
-            entity.UserRoleEnum = dto.UserRoleEnum;
-            entity.Phone = dto.Phone;
-            entity.Email = dto.Email;
-            
-            return await base.Update(id, entity);
         }
     }
 }

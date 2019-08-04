@@ -1,14 +1,17 @@
-﻿using AutoMapper;
+﻿
+using EntityUpdater.Abstracts;
 using Models.Entities;
 
 namespace Models.Profiles
 {
-    public class EventProfile : Profile
+    public class EventProfile : AssignmentProfile<Event>
     {
         public EventProfile()
         {
-            CreateMap<Event, Event>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Map(x => x.Name)
+                .Then(x => x.Address)
+                .Then(x => x.Description)
+                .Then(x => x.DateTime);
         }
     }
 }

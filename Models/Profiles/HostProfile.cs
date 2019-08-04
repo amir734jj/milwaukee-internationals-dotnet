@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+﻿using EntityUpdater.Abstracts;
 using Models.Entities;
 
 namespace Models.Profiles
 {    
-    public class HostProfile : Profile
+    public class HostProfile : AssignmentProfile<Host>
     {
         public HostProfile()
         {
-            CreateMap<Host, Host>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Map(x => x.Email)
+                .Then(x => x.Phone)
+                .Then(x => x.Address)
+                .Then(x => x.Fullname);
         }
     }
 }

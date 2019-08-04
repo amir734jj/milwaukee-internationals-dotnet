@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
+using EntityUpdater.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
@@ -13,27 +13,17 @@ namespace DAL
     public class DriverDal : BasicCrudDalAbstract<Driver>, IDriverDal
     {
         private readonly EntityDbContext _dbContext;
-        
-        private readonly IMapper _mapper;
+        private readonly IAssignmentUtility _mapper;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public DriverDal(EntityDbContext dbContext, IMapper mapper)
+        public DriverDal(EntityDbContext dbContext, IAssignmentUtility mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Returns IMapper
-        /// </summary>
-        /// <returns></returns>
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
         }
 
         /// <summary>
@@ -52,6 +42,15 @@ namespace DAL
         protected override DbSet<Driver> GetDbSet()
         {
             return _dbContext.Drivers;
+        }
+
+        /// <summary>
+        /// Returns IAssignmentUtility
+        /// </summary>
+        /// <returns></returns>
+        protected override IAssignmentUtility Mapper()
+        {
+            return _mapper;
         }
 
         /// <summary>
@@ -76,23 +75,6 @@ namespace DAL
                 .Include(x => x.Students)
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
-        }
-
-        public override async Task<Driver> Update(int id, Driver dto)
-        {
-            var entity = await Get(id);
-
-            entity.Fullname = dto.Fullname;
-            entity.Role = dto.Role;
-            entity.Phone = dto.Phone;
-            entity.Email = dto.Email;
-            entity.Capacity = dto.Capacity;
-            entity.Navigator = dto.Navigator;
-            entity.DisplayId = dto.DisplayId;
-            entity.RequireNavigator = dto.RequireNavigator;
-            entity.HaveChildSeat = dto.HaveChildSeat;
-            
-            return await base.Update(id, entity);
         }
     }
 }

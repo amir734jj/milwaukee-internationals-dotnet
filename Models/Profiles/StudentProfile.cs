@@ -1,14 +1,24 @@
-﻿using AutoMapper;
+﻿
+using EntityUpdater.Abstracts;
 using Models.Entities;
 
 namespace Models.Profiles
 {    
-    public class StudentProfile : Profile
+    public class StudentProfile : AssignmentProfile<Student>
     {
         public StudentProfile()
         {
-            CreateMap<Student, Student>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Map(x => x.Email)
+                .Then(x => x.Phone)
+                .Then(x => x.Fullname)
+                .Then(x => x.IsPresent)
+                .Then(x => x.Major)
+                .Then(x => x.Country)
+                .Then(x => x.Interests)
+                .Then(x => x.KosherFood)
+                .Then(x => x.University)
+                .Then(x => x.FamilySize)
+                .Then(x => x.NeedCarSeat);
         }
     }
 }

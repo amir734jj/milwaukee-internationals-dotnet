@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using InfoViaLinq;
 using Models.Interfaces;
 
@@ -21,9 +23,11 @@ namespace Logic.Extensions
         public static string PropName<T>(this T _, Expression<Func<T, object>> expression) where T : IViewModel
         {
             var info = InfoViaLinq<T>.New()
-                .PropLambda(expression);
+                .PropLambda(expression)
+                .Members()
+                .First();
 
-            return info.GetAttribute<DisplayAttribute>()?.Name ?? info.GetPropertyName();
+            return info.GetCustomAttribute<DisplayAttribute>()?.Name ?? info.Name;
         }
     }
 }

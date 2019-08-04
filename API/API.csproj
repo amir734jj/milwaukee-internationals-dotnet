@@ -11,7 +11,6 @@
     <PackageReference Include="StructureMap" Version="4.7.1" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.2.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="WebMarkupMin.AspNetCore2" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup>

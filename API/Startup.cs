@@ -2,10 +2,11 @@ using System;
 using System.Reflection;
 using API.Attributes;
 using API.Extensions;
-using AutoMapper;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
+using EntityUpdater;
+using EntityUpdater.Interfaces;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Builder;
@@ -150,12 +151,12 @@ namespace API
                     _.Assembly("DAL");
                     _.WithDefaultConventions();
                 });
-                
-                // All the other service configuration.
-                services.AddAutoMapper(x =>
-                {
 
-                }, Assembly.Load("Models"));
+                // All the other service configuration.
+                services.AddSingleton(AssignmentUtility.Build(_ =>
+                {
+                    _.Assembly("Models");
+                }));
                 
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())

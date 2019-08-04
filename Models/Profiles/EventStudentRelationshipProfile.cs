@@ -1,14 +1,16 @@
-using AutoMapper;
+using EntityUpdater.Abstracts;
 using Models.Entities;
 
 namespace Models.Profiles
 {
-    public class EventStudentRelationshipProfile : Profile
+    public class EventStudentRelationshipProfile : AssignmentProfile<EventStudentRelationship>
     {
         public EventStudentRelationshipProfile()
         {
-            CreateMap<EventStudentRelationship, EventStudentRelationship>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Map(x => x.Event)
+                .Then(x => x.EventId)
+                .Then(x => x.Student)
+                .Then(x => x.StudentId);
         }
     }
 }
