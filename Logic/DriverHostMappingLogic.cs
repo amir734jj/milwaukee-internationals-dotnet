@@ -6,6 +6,7 @@ using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
+using Models.Enums;
 using Models.ViewModels;
 
 namespace Logic
@@ -72,7 +73,7 @@ namespace Logic
         public async Task<DriverHostMappingViewModel> MappingStatus()
         {
             var hosts = (await _hostLogic.GetAll()).ToList();
-            var drivers = (await _driverLogic.GetAll()).ToList();
+            var drivers = (await _driverLogic.GetAll()).Where(x => x.Role == RolesEnum.Driver).ToList();
 
             // TODO: add check to return only students that are present
             return new DriverHostMappingViewModel
