@@ -27,12 +27,12 @@
 
         <div class="form-group">
             @Html.LabelFor(x => x.Fullname)
-            @Html.TextBoxFor(x => x.Fullname, new { @class = "form-control", type = "text", placeholder = "Enter fullname" })
+            @Html.TextBoxFor(x => x.Fullname, new { @class = "form-control", type = "text", placeholder = "Enter fullname", required = "required" })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(x => x.Email)
-            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email", placeholder = "Enter email" })
+            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email", placeholder = "Enter email", required = "required" })
         </div>
 
         <div class="form-group">
@@ -47,12 +47,12 @@
 
         <div class="form-group">
             @Html.LabelFor(x => x.Major)
-            @Html.TextBoxFor(x => x.Major, new { @class = "form-control", type = "text", placeholder = "Enter major" })
+            @Html.TextBoxFor(x => x.Major, new { @class = "form-control", type = "text", placeholder = "Enter major", required = "required" })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(x => x.Country)
-            @Html.DropDownListFor(x => x.Country, CountriesConstant.Countries.Select(x => new SelectListItem { Text = x, Value = x }), new { @class = "form-control" })
+            @Html.DropDownListFor(x => x.Country, CountriesConstant.Countries.Select(x => new SelectListItem { Text = x, Value = x }), new { @class = "form-control", required = "required" })
         </div>
 
         <div class="form-group">
