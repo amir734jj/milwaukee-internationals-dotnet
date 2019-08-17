@@ -76,7 +76,7 @@
                             <div class="row">
                                 <div ng-repeat="student in availableStudents" ng-class="student.isPresent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
 
-                                    <label>{{student.fullname}} ({{student.country}})</label>
+                                    <label>{{student.fullname}} ({{student.country}}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }} </label>
 
                                     <div class="pull-right">
                                         <div class="form-group form-inline">
