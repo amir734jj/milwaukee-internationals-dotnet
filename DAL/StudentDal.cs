@@ -84,6 +84,7 @@ namespace DAL
         {
             var entity = await Get(id);
 
+            entity.DisplayId = dto.DisplayId;
             entity.Fullname = dto.Fullname;
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;

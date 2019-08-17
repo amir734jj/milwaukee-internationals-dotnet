@@ -6,7 +6,17 @@
 
     @Html.TextBoxFor(x => x.Year, new {@class = "hidden"})
     
-    @Html.TextBoxFor(x => x.DisplayId, new {@class = "hidden"})
+    @if ((string) ViewData["Type"] == "Edit")
+    {
+        <div class="form-group">
+            @Html.LabelFor(x => x.DisplayId)
+            @Html.TextBoxFor(x => x.DisplayId, new {@class = "form-control", type = "text", required = "required"})
+        </div>
+    }
+    else
+    {
+        @Html.TextBoxFor(x => x.DisplayId, new {@class = "hidden"})
+    }
 
     <div class="form-group">
         @Html.LabelFor(x => x.Fullname)

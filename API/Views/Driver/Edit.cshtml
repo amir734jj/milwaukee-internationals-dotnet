@@ -7,7 +7,7 @@
 
 @using (Html.BeginForm("EditHandler", "Driver", FormMethod.Post, new {ng_controller = "driverEditCtrl"}))
 {
-    @Html.Partial("DriverContent", Model)
+    @Html.Partial("DriverContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}})
 
     <input class="btn btn-primary" type="submit" value="Update"/>
 }

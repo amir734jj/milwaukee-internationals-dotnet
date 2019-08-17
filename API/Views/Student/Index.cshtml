@@ -1,14 +1,17 @@
-﻿@model IEnumerable<Models.Entities.Student>
+﻿@using API.Extensions
+@using Models.Enums
+@model IEnumerable<Models.Entities.Student>
 
 @{
     ViewBag.Title = "Students";
     Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
 }
 
 <div class="container" ng-controller="studentListCtrl">
     <div class="page-header">
         <h3>List of Students (@Model.Count())</h3>
-        
+
         <div class="row">
             <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
                 <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
@@ -16,22 +19,22 @@
             </div>
         </div>
     </div>
-    
-    <div class="table-responsive"> 
+
+    <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead>
-                <tr>
-                    <th>Fullname</th>
-                    <th>Country</th>
-                    <th>University</th>
-                    <th>Major</th>
-                    <th ng-show="showDetail">Interest</th>
-                    <th ng-show="showDetail">IsFamily</th>
-                    <th ng-show="showDetail">Email</th>
-                    <th ng-show="showDetail">Phone</th>
-                    <th>Kosher</th>
-                    <th class="hidden-xs" ng-show="showDetail">Action</th>
-                </tr>
+            <tr>
+                <th>Fullname</th>
+                <th>Country</th>
+                <th>University</th>
+                <th>Major</th>
+                <th ng-show="showDetail">Interest</th>
+                <th ng-show="showDetail">IsFamily</th>
+                <th ng-show="showDetail">Email</th>
+                <th ng-show="showDetail">Phone</th>
+                <th>Kosher</th>
+                <th class="hidden-xs" ng-show="showDetail">Action</th>
+            </tr>
             </thead>
             <tbody>
             @foreach (var student in Model)
@@ -47,7 +50,12 @@
                     <td ng-show="showDetail">@student.Phone</td>
                     <td>@student.KosherFood</td>
                     <td class="hidden-xs" ng-show="showDetail">
-                        <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
+                        <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
+
+                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                        {
+                            <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
+                        }
                     </td>
                 </tr>
             }
