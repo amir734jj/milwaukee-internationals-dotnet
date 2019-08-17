@@ -366,11 +366,17 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.attendanceFilter = "no";
         $scope.fullname = "";
         $scope.drivers = [];
-        
+        $scope.availableDriversBuckets = { };
+
         // Get All Drivers
         $scope.getAllDrivers = function () {
             $http.get("/api/driver/").then(function (response) {
-                $scope.drivers = response.data;
+                $scope.drivers = response.data.filter(function (value) { return value.role === 'Driver'; });
+                $scope.availableDriversBuckets = $scope.drivers.reduce(function(rv, x) {
+                    var key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                    (rv[key] = rv[key] || []).push(x);
+                    return rv;
+                }, {});
             });
         };
         
