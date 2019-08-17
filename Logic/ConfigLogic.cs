@@ -20,7 +20,7 @@ namespace Logic
             var retVal = new GlobalConfigViewModel
             {
                 Years = years,
-                UpdatedYear = YearContext.YearValue,
+                UpdatedYear = GlobalConfigs.YearValue,
                 EventFeature = GlobalConfigs.EventFeature
             };
             
@@ -29,10 +29,8 @@ namespace Logic
 
         public Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            YearContext.YearValue = globalConfigViewModel.UpdatedYear;
+            GlobalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
 
-            GlobalConfigs.EventFeature = globalConfigViewModel.EventFeature;
-            
             return Task.CompletedTask;
         }
     }

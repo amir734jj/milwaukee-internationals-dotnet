@@ -57,7 +57,7 @@ namespace Logic
         
         public override async Task<IEnumerable<Student>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
         }
     }
 }

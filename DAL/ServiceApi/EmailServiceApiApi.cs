@@ -44,11 +44,24 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task SendEmailAsync(string emailAddress, string emailSubject, string emailHtml)
         {
+            // Original GMail service
             // return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
+
             if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
             {
                 var task = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(async _ =>
                 {
+                    var emailList = new JArray
+                    {
+                        new JObject {{"Email", ApiConstants.WebSiteEmail}}
+                    };
+
+                    // If email test mode is not True, then add recipient
+                    if (!GlobalConfigs.EmailTestMode)
+                    {
+                        emailList.Add(new JObject {{"Email", emailAddress}});
+                    }
+
                     var request = new MailjetRequest {Resource = Send.Resource}
                         .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
                         .Property(Send.FromName, "Milwaukee-Internationals")
@@ -56,12 +69,7 @@ namespace DAL.ServiceApi
                         .Property(Send.HtmlPart, emailHtml)
                         // CC to ...
                         .Property(Send.Cc, ApiConstants.WebSiteEmail)
-                        .Property(Send.Recipients, new JArray
-                        {
-                            new JObject {{ "Email", emailAddress }},
-                            // Send to ...
-                            new JObject {{ "Email", ApiConstants.WebSiteEmail }}
-                        });
+                        .Property(Send.Recipients, emailList);
 
                     await _mailJetClient.PostAsync(request);
                 });

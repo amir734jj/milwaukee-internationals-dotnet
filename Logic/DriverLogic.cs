@@ -64,7 +64,7 @@ namespace Logic
 
         public override async Task<Driver> Update(int id, Driver instance)
         {
-            // If role is navigator then capaciy is 0
+            // If role is navigator then capacity is 0
             if (instance.Role == RolesEnum.Navigator)
             {
                 instance.Capacity = 0;
@@ -75,7 +75,7 @@ namespace Logic
 
         public override async Task<IEnumerable<Driver>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
         }
     }
 }

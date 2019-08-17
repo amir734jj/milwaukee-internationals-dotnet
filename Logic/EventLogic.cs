@@ -40,13 +40,13 @@ namespace Logic
 
         public override async Task<IEnumerable<Event>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
         }
 
         public override Task<Event> Save(Event instance)
         {
             // Set year context
-            instance.Year = YearContext.YearValue;
+            instance.Year = GlobalConfigs.YearValue;
             
             return base.Save(instance);
         }
