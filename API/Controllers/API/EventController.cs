@@ -3,7 +3,6 @@ using API.Abstracts;
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Models.Entities;
 using Models.Enums;
 using Models.ViewModels;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Models.ViewModels.Config;
 
 namespace Models.Constants

@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
-using Microsoft.EntityFrameworkCore.Internal;
-using Models;
 using Models.Constants;
 using Models.Entities;
 using Models.ViewModels;
