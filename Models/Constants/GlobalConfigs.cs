@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Models.ViewModels.Config;
 
 namespace Models.Constants
@@ -16,6 +17,16 @@ namespace Models.Constants
             YearValue = globalConfigViewModel.UpdatedYear;
             EventFeature = globalConfigViewModel.EventFeature;
             EmailTestMode = globalConfigViewModel.EmailTestMode;
+        }
+
+        public static object ToAnonymousObject()
+        {
+            return new
+            {
+                EventFeature,
+                YearValue,
+                EmailTestMode
+            };
         }
     }
 }
