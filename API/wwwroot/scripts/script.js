@@ -605,8 +605,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getAllDrivers = function () {
             return $http.get("/api/driver").then(function (response) {
-                $scope.drivers = response.data;
-                $scope.allDrivers = response.data;
+                $scope.drivers = response.data.filter(function (value) { return value.role === 'Driver'; });
+                $scope.allDrivers = response.data.filter(function (value) { return value.role === 'Driver'; });
 
                 $scope.updateTable();
             });
