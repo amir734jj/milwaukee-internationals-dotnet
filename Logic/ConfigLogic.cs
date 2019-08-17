@@ -21,7 +21,8 @@ namespace Logic
             {
                 Years = years,
                 UpdatedYear = GlobalConfigs.YearValue,
-                EventFeature = GlobalConfigs.EventFeature
+                EventFeature = GlobalConfigs.EventFeature,
+                EmailTestMode = GlobalConfigs.EmailTestMode
             };
             
             return await Task.FromResult(retVal);
