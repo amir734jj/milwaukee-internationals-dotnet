@@ -363,7 +363,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.allStudents = [];
         
         $scope.country = "All Countries";
-        $scope.attendanceFilter = "all";
+        $scope.attendanceFilter = "no";
         $scope.fullname = "";
         $scope.drivers = [];
         
