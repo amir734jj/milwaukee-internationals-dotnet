@@ -363,14 +363,20 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.allStudents = [];
         
         $scope.country = "All Countries";
-        $scope.attendanceFilter = "all";
+        $scope.attendanceFilter = "no";
         $scope.fullname = "";
         $scope.drivers = [];
-        
+        $scope.availableDriversBuckets = { };
+
         // Get All Drivers
         $scope.getAllDrivers = function () {
             $http.get("/api/driver/").then(function (response) {
-                $scope.drivers = response.data;
+                $scope.drivers = response.data.filter(function (value) { return value.role === 'Driver'; });
+                $scope.availableDriversBuckets = $scope.drivers.reduce(function(rv, x) {
+                    var key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                    (rv[key] = rv[key] || []).push(x);
+                    return rv;
+                }, {});
             });
         };
         
@@ -605,8 +611,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getAllDrivers = function () {
             return $http.get("/api/driver").then(function (response) {
-                $scope.drivers = response.data;
-                $scope.allDrivers = response.data;
+                $scope.drivers = response.data.filter(function (value) { return value.role === 'Driver'; });
+                $scope.allDrivers = response.data.filter(function (value) { return value.role === 'Driver'; });
 
                 $scope.updateTable();
             });

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Logic.Interfaces;
-using Models.Constants;
-using Models.ViewModels;
 using Models.ViewModels.Config;
+using static Models.Constants.GlobalConfigs;
 
 namespace Logic
 {
@@ -20,8 +18,9 @@ namespace Logic
             var retVal = new GlobalConfigViewModel
             {
                 Years = years,
-                UpdatedYear = YearContext.YearValue,
-                EventFeature = GlobalConfigs.EventFeature
+                UpdatedYear = YearValue,
+                EventFeature = EventFeature,
+                EmailTestMode = EmailTestMode
             };
             
             return await Task.FromResult(retVal);
@@ -29,10 +28,8 @@ namespace Logic
 
         public Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            YearContext.YearValue = globalConfigViewModel.UpdatedYear;
+            UpdateGlobalConfigs(globalConfigViewModel);
 
-            GlobalConfigs.EventFeature = globalConfigViewModel.EventFeature;
-            
             return Task.CompletedTask;
         }
     }

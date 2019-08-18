@@ -11,5 +11,8 @@ namespace Models.ViewModels.Config
         
         [Display(Name = "AD-HOC Event Feature")]
         public bool EventFeature { get; set; }
+
+        [Display(Name = "Email Test Mode")]
+        public bool EmailTestMode { get; set; } = false;
     }
 }

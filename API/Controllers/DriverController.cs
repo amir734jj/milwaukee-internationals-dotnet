@@ -4,7 +4,6 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 using Models.Enums;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {

@@ -9,6 +9,7 @@ namespace Models.Profiles
         public StudentProfile()
         {
             Map(x => x.Email)
+                .Then(x => x.DisplayId)
                 .Then(x => x.Phone)
                 .Then(x => x.Fullname)
                 .Then(x => x.IsPresent)

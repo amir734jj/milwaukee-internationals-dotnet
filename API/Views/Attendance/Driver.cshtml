@@ -55,7 +55,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="driver in drivers" ts-repeat="ts-repeat">
-                <td>{{driver.fullname}}</td>
+                <td>{{driver.fullname}} ({{ driver.displayId }})</td>
                 <td>{{driver.capacity}}</td>
                 <td class="col-xs-4 col-sm-2">
                     <toggle ng-model="driver.isPresent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>

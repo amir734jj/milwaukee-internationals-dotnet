@@ -42,7 +42,7 @@ namespace Logic
         
         public override async Task<IEnumerable<Host>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == YearContext.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
         }
     }
 }

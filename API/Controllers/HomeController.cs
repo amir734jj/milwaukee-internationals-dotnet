@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using API.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {

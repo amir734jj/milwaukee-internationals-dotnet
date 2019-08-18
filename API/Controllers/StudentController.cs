@@ -2,8 +2,8 @@
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Models.Enums;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
@@ -44,6 +44,34 @@ namespace API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _studentLogic.Delete(id);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// Edit a student
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Edit/{id}")]
+        public async Task<IActionResult> EditView(int id)
+        {
+            var student = await _studentLogic.Get(id);
+
+            return View("Edit", student);
+        }
+        
+        /// <summary>
+        /// Edit a student
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Edit")]
+        public async Task<IActionResult> EditHandler(Student student)
+        {
+            await _studentLogic.Update(student.Id, student);
 
             return RedirectToAction("Index");
         }

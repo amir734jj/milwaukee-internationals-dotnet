@@ -35,7 +35,7 @@
                 <label for="text">Filter by attendance:</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show All
+                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()"/>Show All
                     </label>
                 </div>
                 <div class="radio">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent
+                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show Absent
                     </label>
                 </div>
             </div>
@@ -74,9 +74,12 @@
                     <div class="row">
                         <div class="col-sm-8">
                             <select class="form-control" ng-model="student.driverId">
-                                <option value="{{driver.id}}" ng-repeat="driver in drivers">
-                                    {{driver.fullname}} [{{driver.students && driver.students.length ? driver.students.length : 0}}/{{ driver.capacity }}]
-                                </option>
+                                <optgroup label="{{hostFullname}}" ng-repeat="(hostFullname, drivers) in availableDriversBuckets">
+                                    <option value="{{driver.id}}" ng-repeat="driver in drivers">
+                                        {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }} / {{ driver.capacity }}]
+                                    </option>
+                                </optgroup>
+                                
                             </select>
                         </div>
                         <div class="col-sm-3">
