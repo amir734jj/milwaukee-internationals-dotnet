@@ -1,5 +1,4 @@
-﻿
-using EntityUpdater.Abstracts;
+﻿using EntityUpdater.Abstracts;
 using Models.Entities;
 
 namespace Models.Profiles
