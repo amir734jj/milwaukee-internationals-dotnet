@@ -1,8 +1,7 @@
 using System;
-using System.Reflection;
 using API.Attributes;
 using API.Extensions;
-using AutoMapper;
+using API.Middlewares;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
@@ -11,16 +10,18 @@ using Mailjet.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Models.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
+using OwaspHeaders.Core.Extensions;
+using OwaspHeaders.Core.Models;
 using StructureMap;
 using Swashbuckle.AspNetCore.Swagger;
 using WebMarkupMin.AspNetCore2;
@@ -44,6 +45,7 @@ namespace API
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                .AddJsonFile("secureHeaderSettings.json", true, true)
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
@@ -57,9 +59,16 @@ namespace API
         /// <returns></returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            // Add framework services
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            // Add our Config object so it can be injected
+            services.Configure<SecureHeadersMiddlewareConfiguration>(_configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
+            
             services.AddLogging();
             
-            //Add MailKit
+            // Add MailKit
             services.AddMailKit(optionBuilder =>
             {
                 var emailSection = _configuration.GetSection("Email");
@@ -103,6 +112,8 @@ namespace API
 
             services.AddMvc(x =>
             {
+                x.Filters.Add<JavaScriptSanitizer>();
+
                 // Authorize
                 x.Filters.Add<AuthorizeActionFilter>();
 
@@ -124,7 +135,10 @@ namespace API
             {
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
-            }).AddRazorPagesOptions(x => { x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
+            }).AddRazorPagesOptions(x =>
+            {
+                // x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+            });
             
             services.AddWebMarkupMin(opt =>
                 {
@@ -150,12 +164,6 @@ namespace API
                     _.Assembly("DAL");
                     _.WithDefaultConventions();
                 });
-                
-                // All the other service configuration.
-                services.AddAutoMapper(x =>
-                {
-
-                }, Assembly.Load("Models"));
                 
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())
@@ -188,8 +196,14 @@ namespace API
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
-        public void Configure(IApplicationBuilder app)
+        /// <param name="secureHeaderSettings"></param>
+        public void Configure(IApplicationBuilder app, IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
         {
+            // Add SecureHeadersMiddleware to the pipeline
+            app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
+            
+            app.UseEnableRequestRewind();
+
             app.UseDatabaseErrorPage();
 
             app.UseDeveloperExceptionPage();
@@ -207,7 +221,7 @@ namespace API
             {
                 app.UseWebMarkupMin();
             }
-            
+ 
             // Use wwwroot folder as default static path
             app.UseDefaultFiles();
             
@@ -220,7 +234,7 @@ namespace API
             
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
-            Console.WriteLine("Application Started!");
+            Console.WriteLine("Application Started!");            
         }
 
         /// <summary>

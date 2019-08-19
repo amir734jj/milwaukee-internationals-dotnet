@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +10,7 @@ using Models.Interfaces;
 namespace DAL.Abstracts
 {
     public abstract class BasicCrudDalAbstract<T> : IBasicCrudDal<T> where T : class, IBasicModel
-    {
-        /// <summary>
-        /// Abstract to get IMapper
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IMapper GetMapper();
-        
+    {   
         /// <summary>
         /// Abstract to get database context
         /// </summary>

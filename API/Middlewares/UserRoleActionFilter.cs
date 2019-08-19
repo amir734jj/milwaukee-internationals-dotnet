@@ -1,23 +1,22 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
+using API.Attributes;
 using API.Extensions;
+using Flurl;
 using Logic.Interfaces;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace API.Attributes
+namespace API.Middlewares
 {
     public class UserRoleActionFilter : IAsyncActionFilter
     {
         private readonly IIdentityLogic _identityLogic;
-        private readonly IHostingEnvironment _env;
 
-        public UserRoleActionFilter(IIdentityLogic identityLogic, IHostingEnvironment env)
+        public UserRoleActionFilter(IIdentityLogic identityLogic)
         {
             _identityLogic = identityLogic;
-            _env = env;
         }
         
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -41,10 +40,10 @@ namespace API.Attributes
                 return next();
             }
             
-            var websiteUrl = context.HttpContext.Request.Host;
+            var url = Url.Combine(context.HttpContext.Request.Host.Value, "/Identity/NotAuthorized");
 
             // Redirect to not-authenticated
-            context.HttpContext.Response.Redirect($"{websiteUrl}/Identity/NotAuthorized");
+            context.HttpContext.Response.Redirect(url);
 
             return Task.CompletedTask;
         }

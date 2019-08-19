@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using DAL.Abstracts;
 using DAL.Interfaces;
 using DAL.Utilities;
@@ -13,26 +12,14 @@ namespace DAL
     public class EventDal : BasicCrudDalAbstract<Event>, IEventDal
     {
         private readonly EntityDbContext _dbContext;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="dbContext"></param>
-        /// <param name="mapper"></param>
-        public EventDal(EntityDbContext dbContext, IMapper mapper)
+        public EventDal(EntityDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Returns IMapper
-        /// </summary>
-        /// <returns></returns>
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
         }
 
         /// <summary>
