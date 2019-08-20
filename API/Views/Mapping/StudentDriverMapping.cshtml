@@ -1,0 +1,104 @@
+﻿@using API.Extensions
+@using Models.Enums
+@model object
+
+@{
+    ViewBag.Title = "Student-Driver Mapping";
+    Layout = "_Layout";
+
+    var userInfo = Context.Session.GetUserInfo();
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>Student-Driver Mapping</h3>
+    </div>
+
+    <div ng-controller="studentDriverMappingCtrl" class="row">
+
+        <div class="row">
+            <div class="pull-right col-md-4 clearfix">
+                <toggle ng-model="showPresentOnly" ng-change="togglePressentStudents(showPresentOnly)" on="Show present" off="Show all" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                <a ng-click="getAllDriverMappingPDF()" class="btn btn-default btn-space">Download pdf</a>
+                
+                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                {
+                    <a ng-click="sendMailToDrivers($event)" class="btn btn-primary btn-space">Send Mapping</a>
+                }
+            </div>
+        </div>
+
+        <br/>
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Drivers and Assigned Students</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div ng-repeat="driver in mappedDrivers" class="panel panel-default info-card col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4 class="panel-heading info-card-header">
+                                            {{driver.fullname}} ({{driver.displayId}})
+                                            <div class="small">(capacity = {{driver.capacity}})</div>
+                                        </h4>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="list-group">
+                                            <div ng-repeat="student in driver.students" ng-class="student.isPresent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
+                                                <div class="pull-left vcenter">{{student.fullname}} {{ student.isFamily ? "[+" + student.familySize + "]" : "" }}</div>
+                                                <span class="pull-right">
+                                                    <a ng-click="unmap(student.id, driver.id)" class="btn btn-danger pull-right">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div ng-show="!driver.students.length" class="list-group-item list-group-item-warning">This driver does not have any students</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Student without Drivers</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div ng-repeat="student in availableStudents" ng-class="student.isPresent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
+
+                                    <label>{{student.fullname}} ({{student.country}}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }} </label>
+
+                                    <div class="pull-right">
+                                        <div class="form-group form-inline">
+                                            <label>Select driver: &nbsp;&nbsp;</label>
+                                            <select ng-model="student.driverId" class="form-control">
+                                                <optgroup label="{{hostFullname}}" ng-repeat="(hostFullname, drivers) in availableDriversBuckets">
+                                                    <option value="{{driver.id}}" ng-repeat="driver in drivers">
+                                                        {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }} / {{ driver.capacity }}]
+                                                    </option>
+                                                </optgroup>
+                                            </select>
+                                            <a ng-click="map(student.id, student.driverId)" class="btn btn-success">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

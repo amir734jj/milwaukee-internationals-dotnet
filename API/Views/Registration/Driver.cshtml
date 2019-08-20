@@ -1,0 +1,25 @@
+﻿@model Models.Entities.Driver
+
+@{
+    ViewBag.Title = "Edit Driver";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <img class="img-responsive" src="~/images/tour-header.jpg" alt="background" />
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <h3>Driver - Navigator Registration</h3>
+    </div>
+    
+    <br />
+    
+    @using (Html.BeginForm("RegisterDriver", "Registration", FormMethod.Post, new { ng_controller = "driverRegistrationCtrl" }))
+    {
+        @Html.Partial("DriverContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}})
+        
+        <input class="btn btn-primary" type="submit" value="Register" />
+    }
+</div>

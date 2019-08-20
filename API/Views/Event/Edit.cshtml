@@ -1,0 +1,21 @@
+@model Models.Entities.Event
+
+@{
+    ViewBag.Title = "Edit Event";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h4>Edit Event</h4>
+    </div>
+    
+    <br />
+    
+    @using (Html.BeginForm("EditHandler", "Event", FormMethod.Post))
+    {
+        @Html.Partial("EventContent", Model)
+        
+        <input class="btn btn-primary" type="submit" value="Update" />
+    }
+</div>
