@@ -1,0 +1,74 @@
+@using Logic.Extensions
+@using Models.ViewModels
+@model EmailFormViewModel
+
+@{
+    ViewBag.Title = "Email AdHoc Utility";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    
+    @if (Model.Status)
+    {
+        <div class="alert alert-success autoclose">
+            Successfully sent the email
+        </div>
+    }
+
+    <div class="page-header">
+        <h3>Email Utility Service</h3>
+    </div>
+
+    @using (Html.BeginForm("AdHocEmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl"}))
+    {
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Admin)
+                            @Model.PropName(x => x.Admin)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Students)
+                            @Model.PropName(x => x.Students)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Drivers)
+                            @Model.PropName(x => x.Drivers)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Hosts)
+                            @Model.PropName(x => x.Hosts)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Users)
+                            @Model.PropName(x => x.Users)
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Subject)
+            @Html.TextBoxFor(x => x.Subject, new {@class = "form-control", type = "text", placeholder = "Enter subject"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Message)
+            @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control summernote", rows = "10"})
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Send email</button>
+        </div>
+    }
+</div>
+

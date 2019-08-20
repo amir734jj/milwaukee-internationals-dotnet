@@ -1,0 +1,95 @@
+﻿@using API.Extensions
+@using Models.Enums
+@model IEnumerable<Models.Entities.User>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
+
+    var adminRole = UserRoleEnum.Admin.ToString();
+    var basicRole = UserRoleEnum.Basic.ToString();
+}
+
+<div class="container" ng-controller="userListCtrl">
+    <div class="page-header">
+        <h3>List of Users (@Model.Count())</h3>
+        
+        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+        {
+            <div class="row">
+                <div class="pull-right col-md-2 col-sm-2 clearfix">
+                    <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Username</th>
+            <th>Role</th>
+            
+            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+            {
+                <th class="hidden-xs" ng-show="showDetail">Action</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            var disabled = userInfo.Username == user.Username;
+
+            <tr>
+                <td>@user.Fullname</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@user.Username</td>
+                <td>@user.UserRoleEnum</td>
+
+                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                {
+                    <td class="hidden-xs" ng-show="showDetail">
+                        @if (disabled)
+                        {
+                            switch (user.UserRoleEnum)
+                            {
+                                case UserRoleEnum.Basic:
+                                    <a href="" class="btn btn-primary disabled">Set Admin</a>
+                                    break;
+                                case UserRoleEnum.Admin:
+                                    <a href="" class="btn btn-primary disabled">Set Basic</a>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            <a href="" class="btn btn-danger disabled">Delete</a>
+                        }
+                        else
+                        {
+                            switch (user.UserRoleEnum)
+                            {
+                                case UserRoleEnum.Basic:
+                                    <a href="~/User/updateUserRole/@user.Id/@adminRole" class="btn btn-primary">Set Admin</a>
+                                    break;
+                                case UserRoleEnum.Admin:
+                                    <a href="~/User/updateUserRole/@user.Id/@basicRole" class="btn btn-primary">Set Basic</a>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            <a href="~/User/delete/@user.Id" class="btn btn-danger">Delete</a>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>

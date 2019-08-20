@@ -1,0 +1,25 @@
+﻿@model Models.Entities.Host
+
+@{
+    ViewBag.Title = "Host Registration";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <img class="img-responsive" src="~/images/tour-header.jpg" alt="background" />
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <h3>Host Registration</h3>
+    </div>
+    
+    <br />
+    
+    @using (Html.BeginForm("RegisterHost", "Registration", FormMethod.Post, new { ng_controller = "hostRegistrationCtrl" }))
+    {
+        @Html.Partial("HostContent", Model)
+        
+        <input class="btn btn-primary" type="submit" value="Register" />
+    }
+</div>

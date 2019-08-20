@@ -1,0 +1,60 @@
+﻿@using API.Extensions
+@using Models.Enums
+@model IEnumerable<Models.Entities.Driver>
+
+@{
+    ViewBag.Title = "Drivers";
+    Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
+}
+
+<div class="container" ng-controller="driverListCtrl">
+    <div class="page-header">
+        <h3>List of Drivers (@Model.Count())</h3>
+
+        <div class="row">
+            <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
+                <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                <button class="btn btn-default pull-right" ng-click="getAllDriversPDF()">Download PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>DisplayId</th>
+                    <th>Fullname</th>
+                    <th>Capacity</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Navigator</th>
+                    <th>Have Child Seat</th>
+                    <th class="hidden-xs" ng-show="showDetail">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var driver in Model)
+            {
+                <tr>
+                    <td>@driver.DisplayId</td>
+                    <td>@driver.Fullname</td>
+                    <td>@driver.Capacity</td>
+                    <td>@driver.Email</td>
+                    <td>@driver.Phone</td>
+                    <td>@driver.Navigator</td>
+                    <td>@driver.HaveChildSeat</td>
+                    <td class="hidden-xs" ng-show="showDetail">
+                        <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
+                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                        {
+                            <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

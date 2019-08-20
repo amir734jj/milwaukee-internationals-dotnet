@@ -1,0 +1,68 @@
+﻿@using API.Extensions
+@using Models.Enums
+@{
+    ViewBag.Title = "Student Attendance";
+    Layout = "_Layout";
+    var userInfo = Context.Session.GetUserInfo();
+}
+
+<div class="container" ng-controller="driverAttendanceCtrl">
+    <div class="page-header">
+        <h3>Driver Attendance</h3>
+        
+        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+        {
+            <div class="clearfix">
+                <button class="btn btn-primary pull-right" ng-click="checkInViaEmail()">Send Check-In via email</button>
+            </div>
+        }
+    </div>
+
+    <div>
+        <form>
+            <div class="form-group">
+                <label for="fullname">Fullname:</label>
+                <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="text">Filter by attendance:</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show All
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent
+                    </label>
+                </div>
+            </div>
+        </form>
+        <hr/>
+        <table ts-wrapper="ts-wrapper" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th ts-criteria="fullname" ts-default="ts-default">Fullname</th>
+                <th ts-criteria="capacity">Capacity</th>
+                <th ts-criteria="attendance">Checked-in</th>
+                <th>Host</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="driver in drivers" ts-repeat="ts-repeat">
+                <td>{{driver.fullname}} ({{ driver.displayId }})</td>
+                <td>{{driver.capacity}}</td>
+                <td class="col-xs-4 col-sm-2">
+                    <toggle ng-model="driver.isPresent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                </td>
+                <td>{{driver.host ? driver.host.fullname : ""}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
