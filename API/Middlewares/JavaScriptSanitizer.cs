@@ -8,6 +8,9 @@ namespace API.Middlewares
 {
     public class JavaScriptSanitizer : IAsyncActionFilter
     {
+        /// <summary>
+        ///     Regex to match XML tags
+        /// </summary>
         private static readonly Regex Regex = new Regex(@"<([^\s]+)(\s[^>]*?)?(?<!\/)>");
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
