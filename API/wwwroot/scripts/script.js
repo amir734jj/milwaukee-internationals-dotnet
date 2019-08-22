@@ -249,6 +249,18 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
 
         $scope.showPresentOnly = false;
+        
+        $scope.resolvePassengers = function(driver) {
+            if (driver.students && driver.students.length) {
+                var cnt = driver.students.map(function (student) { 
+                    return 1 + student.familySize;
+                }).reduce(function (previousValue, currentValue) { return previousValue + currentValue }, 0);
+                
+                return cnt;
+            } else {
+                return 0;
+            }
+        };
 
         $scope.togglePressentStudents = function(flag) {
             if (flag) {
@@ -489,16 +501,29 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     }])
     .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
 
+        $scope.resolvePassengers = function(driver) {
+            if (driver.students && driver.students.length) {
+                var cnt = driver.students.map(function (student) {
+                    return 1 + student.familySize;
+                }).reduce(function (previousValue, currentValue) { return previousValue + currentValue }, 0);
+
+                return cnt;
+            } else {
+                return 0;
+            }
+        };
+        
         $scope.getHostInfo = function(host) {
             var hostCapacity = 0;
             var hostAssigned = 0;
 
             if (host.drivers) {
-                hostCapacity = host.drivers.map(function (driver) { return driver.capacity })
-                    .reduce(function (accumulator, currentValue) {  return accumulator + currentValue; });
+                hostCapacity = host.drivers.map(function (driver) { return driver.capacity; })
+                    .reduce(function (accumulator, currentValue) { return accumulator + currentValue; }, 0);
                 
-                hostAssigned = host.drivers.map(function (driver) { return driver.students ? driver.students.length : 0})
-                    .reduce(function (accumulator, currentValue) {  return accumulator + currentValue; });
+                hostAssigned = host.drivers.map(function (driver) {
+                    return $scope.resolvePassengers(driver);
+                }).reduce(function (accumulator, currentValue) { return accumulator + currentValue; }, 0);
             } 
             
             return {
