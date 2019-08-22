@@ -11,7 +11,7 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok(@"""
+            return Ok(@"
 
 Something went wrong!                          
 
