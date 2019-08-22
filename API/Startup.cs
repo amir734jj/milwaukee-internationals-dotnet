@@ -112,7 +112,7 @@ namespace API
 
             services.AddMvc(x =>
             {
-                x.Filters.Add<JavaScriptSanitizer>();
+                // x.Filters.Add<JavaScriptSanitizer>();
 
                 // Authorize
                 x.Filters.Add<AuthorizeActionFilter>();
