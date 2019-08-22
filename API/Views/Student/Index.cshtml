@@ -7,12 +7,12 @@
     Layout = "_Layout";
     var userInfo = Context.Session.GetUserInfo();
 
-    var totalPassengers = Model.Select(x => 1 + x.FamilySize).DefaultIfEmpty(0).Sum();
+    var(studentsCnt, passengersCnt) = (Model.Count(), Model.Select(x => 1 + x.FamilySize).DefaultIfEmpty(0).Sum());
 }
 
 <div class="container" ng-controller="studentListCtrl">
     <div class="page-header">
-        <h3>List of Students (@totalPassengers)</h3>
+        <h3>List of Students (@studentsCnt + @passengersCnt)</h3>
 
         <div class="row">
             <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
