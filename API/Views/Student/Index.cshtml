@@ -7,7 +7,7 @@
     Layout = "_Layout";
     var userInfo = Context.Session.GetUserInfo();
 
-    var(studentsCnt, passengersCnt) = (Model.Count(), Model.Select(x => x.FamilySize).DefaultIfEmpty(0).Sum());
+    var(studentsCnt, passengersCnt) = (Model.Count(), Model.Select(x => x.IsFamily ? x.FamilySize : 0).DefaultIfEmpty(0).Sum());
 }
 
 <div class="container" ng-controller="studentListCtrl">
