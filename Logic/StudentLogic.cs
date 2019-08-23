@@ -33,28 +33,53 @@ namespace Logic
             return _studentDal;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Make sure display ID is not null or empty
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="student"></param>
         /// <returns></returns>
-        public override async Task<Student> Save(Student instance)
+        public override async Task<Student> Save(Student student)
         {
-            instance.DisplayId = "Null";
+            student.DisplayId = "Null";
 
             // Set the year
-            instance.Year = DateTime.UtcNow.Year;
+            student.Year = DateTime.UtcNow.Year;
 
             var count = (await base.GetAll(DateTime.UtcNow.Year)).Count();
 
-            instance.DisplayId = GenerateDisplayId(instance, count);
+            student.DisplayId = GenerateDisplayId(student, count);
+
+            // If student is not a family then family size should be zero
+            if (!student.IsFamily)
+            {
+                student.FamilySize = 0;
+            }
             
             // Save student
-            var retVal = await base.Save(instance);
+            var retVal = await base.Save(student);
 
             return retVal;
         }
-        
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Edit student
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        public override Task<Student> Update(int id, Student student)
+        {
+            // If student is not a family then family size should be zero
+            if (!student.IsFamily)
+            {
+                student.FamilySize = 0;
+            }
+
+            return base.Update(id, student);
+        }
+
         public override async Task<IEnumerable<Student>> GetAll()
         {
             return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
