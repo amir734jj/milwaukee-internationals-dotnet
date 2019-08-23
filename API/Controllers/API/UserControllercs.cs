@@ -25,7 +25,7 @@ namespace API.Controllers.API
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<User> BasicCrudLogic()
+        protected override IBasicCrudLogic<User> BasicCrudLogic()
         {
             return _userLogic;
         }

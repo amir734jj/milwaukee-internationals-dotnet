@@ -16,6 +16,7 @@ namespace DAL.ServiceApi
         private readonly IEmailService _emailServiceApi;
 
         private readonly bool _connected;
+
         private readonly IMailjetClient _mailJetClient;
 
         public EmailServiceApi()
