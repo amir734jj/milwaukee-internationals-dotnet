@@ -380,6 +380,18 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.drivers = [];
         $scope.availableDriversBuckets = { };
 
+        $scope.resolvePassengers = function(driver) {
+            if (driver.students && driver.students.length) {
+                var cnt = driver.students.map(function (student) {
+                    return 1 + student.familySize;
+                }).reduce(function (previousValue, currentValue) { return previousValue + currentValue }, 0);
+
+                return cnt;
+            } else {
+                return 0;
+            }
+        };
+
         // Get All Drivers
         $scope.getAllDrivers = function () {
             $http.get("/api/driver/").then(function (response) {
