@@ -76,7 +76,7 @@
                             <select class="form-control" ng-model="student.driverId">
                                 <optgroup label="{{hostFullname}}" ng-repeat="(hostFullname, drivers) in availableDriversBuckets">
                                     <option value="{{driver.id}}" ng-repeat="driver in drivers">
-                                        {{driver.fullname}} [{{ driver.capacity - (driver.students && driver.students.length ? driver.students.length : 0) }} / {{ driver.capacity }}]
+                                        {{driver.fullname}} [ {{ resolvePassengers(driver) }} / {{ driver.capacity }} ]
                                     </option>
                                 </optgroup>
                                 
