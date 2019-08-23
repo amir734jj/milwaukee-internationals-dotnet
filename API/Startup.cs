@@ -2,6 +2,7 @@ using System;
 using API.Attributes;
 using API.Extensions;
 using API.Middlewares;
+using DAL.Extensions;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;

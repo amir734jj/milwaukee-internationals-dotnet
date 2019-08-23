@@ -34,7 +34,7 @@ namespace API.Controllers.API
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<Event> BasicCrudLogic()
+        protected override IBasicCrudLogic<Event> BasicCrudLogic()
         {
             return _eventLogic;
         }

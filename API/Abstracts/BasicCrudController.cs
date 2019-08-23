@@ -9,7 +9,7 @@ namespace API.Abstracts
     public abstract class BasicCrudController<T> : Controller
     {
         [NonAction]
-        public abstract IBasicCrudLogic<T> BasicCrudLogic();
+        protected abstract IBasicCrudLogic<T> BasicCrudLogic();
 
         [HttpGet]
         [Route("")]

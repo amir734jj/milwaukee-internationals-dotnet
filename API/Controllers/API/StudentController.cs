@@ -25,7 +25,7 @@ namespace API.Controllers.API
         /// Returns instance of logic
         /// </summary>
         /// <returns></returns>
-        public override IBasicCrudLogic<Student> BasicCrudLogic()
+        protected override IBasicCrudLogic<Student> BasicCrudLogic()
         {
             return _studentLogic;
         }
