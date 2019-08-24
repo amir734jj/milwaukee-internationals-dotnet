@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Models.Entities;
 using Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace Models.ViewModels
 {
@@ -9,7 +10,7 @@ namespace Models.ViewModels
     /// </summary>
     public class StudentDriverMappingViewModel : IViewModel
     {
-        public IEnumerable<Driver> AvailableDrivers { get; set; }
+        public List<KeyValuePair<Driver, bool>> AvailableDrivers { get; set; }
         
         public IEnumerable<Student> AvailableStudents { get; set; }
         

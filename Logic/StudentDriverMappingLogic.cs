@@ -78,7 +78,7 @@ namespace Logic
             return new StudentDriverMappingViewModel
             {
                 AvailableStudents = students.Where(x => x.Driver == null),
-                AvailableDrivers = drivers.Where(x =>
+                AvailableDrivers = drivers.ToDictionary(x => x, x => 
                 {
                     // Count = to 1 + FamilySize
                     var cnt = (x.Students ?? new List<Student>()).Select(st => 1 + st.FamilySize)
@@ -86,7 +86,7 @@ namespace Logic
                         .Sum();
 
                     return x.Capacity > cnt;
-                }),
+                }).ToList(),
                 MappedDrivers = drivers.Where(x => x.Students != null && x.Students.Any()),
                 MappedStudents = students.Where(x => x.Driver != null)
             };
