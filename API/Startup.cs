@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using API.Attributes;
 using API.Extensions;
 using API.Middlewares;
@@ -197,8 +198,7 @@ namespace API
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="secureHeaderSettings"></param>
-        public void Configure(IApplicationBuilder app, IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
+        public void Configure(IApplicationBuilder app)
         {
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
