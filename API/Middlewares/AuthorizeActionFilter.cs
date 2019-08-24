@@ -4,6 +4,7 @@ using API.Attributes;
 using API.Extensions;
 using Flurl;
 using Logic.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -39,7 +40,7 @@ namespace API.Middlewares
                 return next();
             }
             
-            var url = Url.Combine(context.HttpContext.Request.Host.Value, "/Identity/NotAuthenticated");
+            var url = Url.Combine(Url.GetRoot(context.HttpContext.Request.GetUri().ToString()), "/Identity/NotAuthenticated");
 
             // Redirect to not-authenticated
             context.HttpContext.Response.Redirect(url);
