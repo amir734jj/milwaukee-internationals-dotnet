@@ -344,7 +344,6 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 $scope.availableDriversTable = $scope.availableDrivers
                     .reduce(function(acc, cur) {
                         acc[cur.key.id] = cur.value;
-                        
                         return acc;
                     }, {});
 
