@@ -105,6 +105,22 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     }])
     .controller('studentListCtrl', ['$scope', '$http', function ($scope, $http) {
 
+        $scope.pdfDownloadTable = {
+            id: false,
+            displayId: false,
+            fullname: true,
+            major: false,
+            university: true,
+            email: false,
+            phone: true,
+            country: true,
+            isFamily: true,
+            familySize: false,
+            needCarSeat: true,
+            kosherFood: true,
+            isPresent: true
+        };
+        
         $scope.showDetail = false;
 
         $scope.toggleShowDetail = function () {
@@ -120,29 +136,41 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 });
 
                 doc.setFont('courier');
-
-                doc.setFontSize(10);
-
+                
                 var subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
-                        o[k] = obj[k];
+                        o[k] = String(obj[k]);
                         return o;
                     }, {});
                 };
 
                 var i, j, temparray, chunk = 25;
+                var attributes = Object.keys($scope.pdfDownloadTable).filter(function (value) { 
+                   return $scope.pdfDownloadTable[value]; 
+                });
+
+                var fontSize = 10;
+                if (attributes.length <= 7) {
+                    fontSize = 10;
+                } else if (attributes.length < 10) {
+                    fontSize = 8;
+                } else {
+                    fontSize = 6;
+                }
+                
+                doc.setFontSize(fontSize);
+
                 for (i = 0, j = students.length; i < j; i += chunk) {
                     temparray = students.slice(i, i + chunk);
 
                     var str = stringTable.create(temparray.map(function (student) {
-                        student.fullname = (student.fullname && student.fullname.substring(0, 30)) || '';
-                        return subsetAttr(["fullname", "country", "university", "kosherFood", "needCarSeat", "isFamily", "isPresent"], student);
+                        return subsetAttr(attributes, student);
                     }));
 
                     // Needed
                     str = str.replace(/’/g, "'");
 
-                    doc.text(20, 20, str);
+                    doc.text(15, 15, str);
 
                     if (i + chunk < j) {
                         doc.addPage();
