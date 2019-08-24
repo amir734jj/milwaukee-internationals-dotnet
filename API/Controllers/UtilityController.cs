@@ -75,10 +75,10 @@ namespace API.Controllers
             // ReSharper disable once SwitchStatementMissingSomeCases
             switch (type)
             {
-                case EntitiesEnum.Student when _studentLogic.GetByHashcode(hashcode) != null:
-                    return View(_studentLogic.GetByHashcode(hashcode));
-                case EntitiesEnum.Driver when _driverLogic.GetByHashcode(hashcode) != null:
-                    return View(_driverLogic.GetByHashcode(hashcode));
+                case EntitiesEnum.Student when await _studentLogic.GetByHashcode(hashcode) != null:
+                    return View(await _studentLogic.GetByHashcode(hashcode));
+                case EntitiesEnum.Driver when await _driverLogic.GetByHashcode(hashcode) != null:
+                    return View(await _driverLogic.GetByHashcode(hashcode));
                 default:
                     return Redirect("~/");
             }

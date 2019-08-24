@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Logic.Interfaces;
 
 namespace Logic.Extensions
@@ -12,9 +13,9 @@ namespace Logic.Extensions
         /// <param name="hashcode"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, int hashcode)
+        public static async Task<T> GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, int hashcode)
         {
-            return basicCrudLogic.GetAll().Result.FirstOrDefault(x => x.GetHashCode() == hashcode);
+            return (await basicCrudLogic.GetAll()).FirstOrDefault(x => x.GetHashCode() == hashcode);
         }
     }
 }
