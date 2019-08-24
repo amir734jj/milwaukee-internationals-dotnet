@@ -40,7 +40,7 @@ namespace API.Middlewares
                 return next();
             }
             
-            var url = Url.Combine(context.HttpContext.Request.Host.Value, "/Identity/NotAuthorized");
+            var url = Url.Combine(Url.GetRoot(context.HttpContext.Request.Host.Value), "/Identity/NotAuthenticated");
 
             // Redirect to not-authenticated
             context.HttpContext.Response.Redirect(url);
