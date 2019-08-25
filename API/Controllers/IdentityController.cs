@@ -15,11 +15,14 @@ namespace API.Controllers
         private readonly UserManager<User> _userManager;
         
         private readonly SignInManager<User> _signInManager;
+        
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public override UserManager<User> ResolveUserManager()
@@ -30,6 +33,11 @@ namespace API.Controllers
         public override SignInManager<User> ResolveSignInManager()
         {
             return _signInManager;
+        }
+
+        public override RoleManager<IdentityRole<int>> ResolveRoleManager()
+        {
+            return _roleManager;
         }
 
         /// <summary>
