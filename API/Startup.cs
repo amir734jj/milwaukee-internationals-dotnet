@@ -37,7 +37,7 @@ namespace API
 
         private readonly IHostingEnvironment _env;
 
-        private Container _container;
+        private IContainer _container;
 
         public Startup(IHostingEnvironment env)
         {
