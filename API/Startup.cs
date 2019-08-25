@@ -146,8 +146,14 @@ namespace API
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(x =>
+            {
+                x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+            });
 
             _container = new Container(config =>
             {
