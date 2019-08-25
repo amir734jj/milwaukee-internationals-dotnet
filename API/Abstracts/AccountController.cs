@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Models.Enums;
 using Models.ViewModels.Identities;
 
 namespace API.Abstracts
@@ -17,7 +19,7 @@ namespace API.Abstracts
 
         public abstract SignInManager<User> ResolveSignInManager();
 
-        public async Task<IdentityResult> Register(RegisterViewModel registerViewModel)
+        public async Task<bool> Register(RegisterViewModel registerViewModel)
         {
             var user = new User
             {
@@ -27,9 +29,12 @@ namespace API.Abstracts
                 PhoneNumber = registerViewModel.PhoneNumber
             };
 
-            var rslt = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
+            var rslt1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
 
-            return rslt;
+            var rslt2 = await ResolveUserManager().AddToRoleAsync(user,
+                ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString());
+
+            return rslt1.Succeeded && rslt2.Succeeded;
         }
 
         public async Task<bool> Login(LoginViewModel loginViewModel)

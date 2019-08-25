@@ -6,6 +6,5 @@ namespace Logic.Interfaces
 {
     public interface IUserLogic : IBasicCrudLogic<User>
     {
-        Task<User> UpdateUserRole(int id, UserRoleEnum userRoleEnum);
     }
 }

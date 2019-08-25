@@ -87,7 +87,7 @@ namespace API.Controllers
             // Save the user
             var rslt = await Register(registerViewModel);
 
-            if (rslt.Succeeded)
+            if (rslt)
             {
                 return RedirectToAction("Login");
             }
