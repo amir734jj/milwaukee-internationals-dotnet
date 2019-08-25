@@ -1,4 +1,5 @@
 ﻿using System;
+using Npgsql;
 
 namespace API.Utilities
 {
@@ -13,17 +14,19 @@ namespace API.Utilities
         {
             var isUrl = Uri.TryCreate(connectionStringUrl, UriKind.Absolute, out var url);
 
-            var connectionUrl =
-                $@"host={url.Host};
-                   username={url.UserInfo.Split(':')[0]};
-                   password={url.UserInfo.Split(':')[1]};
-                   database={url.LocalPath.Substring(1)};
-                   pooling=true;
-                   SSL Mode=Require;
-                   Trust Server Certificate=true;
-                ";
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder
+            {
+                Host = url.Host,
+                Username = url.UserInfo.Split(':')[0],
+                Password = url.UserInfo.Split(':')[1],
+                Database = url.LocalPath.Substring(1),
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true,
+                Pooling = true,
+                ApplicationName = "milwaukee-internationals"
+            };
             
-            return isUrl ? connectionUrl : string.Empty;
+            return isUrl ? connectionStringBuilder.ToString() : string.Empty;
         }
     }
 }
