@@ -21,15 +21,13 @@ namespace Models.Constants
 
         public static readonly string InviteCode = $"Tour{DateTime.UtcNow.Year}";
 
-        public const string WebSiteUrl = "http://www.milwaukeeinternationals.com";
+        public const string SiteUrl = "http://www.milwaukeeinternationals.com";
         
-        public const string WebSiteApiUrl = "http://www.milwaukeeinternationals.com/api";
-
         public static readonly string[] AdminEmail = {
             "amirhesamyan@gmail.com",
             "asherimtiaz@gmail.com"
         };
 
-        public const string WebSiteEmail = "tourofmilwaukee@gmail.com";
+        public const string SiteEmail = "tourofmilwaukee@gmail.com";
     }
 }
