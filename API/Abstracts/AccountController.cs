@@ -30,10 +30,10 @@ namespace API.Abstracts
                 Email = registerViewModel.Email,
                 PhoneNumber = registerViewModel.PhoneNumber
             };
+            
+            var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString();
 
             var rslt1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
-
-            var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString();
 
             if (!await ResolveRoleManager().RoleExistsAsync(role))
             {
