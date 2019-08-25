@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Models.Entities;
 using Models.Enums;
 
-namespace API.Extensions
+namespace API.Utilities
 {
     /// <summary>
     /// UserInfo Struct
@@ -59,7 +60,8 @@ namespace API.Extensions
         }
     }
     
-    public class HttpRequestUtilityBuilder
+    // ReSharper disable once UnusedMember.Global
+    public class HttpRequestUtilityBuilder : IHttpRequestUtilityBuilder
     {
         private readonly UserManager<User> _userManager;
         

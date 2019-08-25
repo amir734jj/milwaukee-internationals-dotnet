@@ -23,7 +23,8 @@ namespace API.Abstracts
             {
                 Fullname = registerViewModel.Fullname,
                 UserName = registerViewModel.Username,
-                Email = registerViewModel.Email
+                Email = registerViewModel.Email,
+                PhoneNumber = registerViewModel.PhoneNumber
             };
 
             var rslt = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
@@ -46,9 +47,7 @@ namespace API.Abstracts
             // Generate and issue a JWT token
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, rslt.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, rslt.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(ClaimTypes.Name, rslt.Email)
             };
 
             var identity = new ClaimsIdentity(

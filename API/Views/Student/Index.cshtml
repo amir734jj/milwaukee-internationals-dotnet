@@ -1,7 +1,9 @@
 ﻿@using API.Extensions
+@using API.Interfaces
+@using API.Utilities
 @using Models.Enums
 @model IEnumerable<Models.Entities.Student>
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Students";

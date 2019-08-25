@@ -1,7 +1,7 @@
-﻿@using API.Extensions
+﻿@using API.Interfaces
 @using Models.Enums
 @model IEnumerable<Models.Entities.Event>
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Event List";

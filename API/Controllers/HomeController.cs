@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using API.Extensions;
+using API.Interfaces;
+using API.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -7,9 +9,9 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
-        private readonly HttpRequestUtilityBuilder _httpRequestUtilityBuilder;
+        private readonly IHttpRequestUtilityBuilder _httpRequestUtilityBuilder;
 
-        public HomeController(HttpRequestUtilityBuilder httpRequestUtilityBuilder)
+        public HomeController(IHttpRequestUtilityBuilder httpRequestUtilityBuilder)
         {
             _httpRequestUtilityBuilder = httpRequestUtilityBuilder;
         }
