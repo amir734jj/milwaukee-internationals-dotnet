@@ -2,15 +2,15 @@
 @using Models.Constants
 @using Models.Enums
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
-    var userInfo = Context.Session.GetUserInfo();
+    var utility = RequestUtilityBuilder.For(Context);
+    var userInfo = await utility.GetUserInfo();
     var dateTimeNow = DateTime.UtcNow;
     var cacheBustingSuffix = dateTimeNow.Day;
-    var currentYear = dateTimeNow.Year;
     var yearContext = GlobalConfigs.YearValue;
 }
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +77,7 @@
                 <span class="icon-bar"></span>                        
             </button>
             <a class="navbar-brand" href="~/">Milwaukee Internationals
-                 @if (Context.Session.IsAuthenticated())
+                 @if (utility.IsAuthenticated())
                  {
                      <sub><span class="badge">@yearContext</span></sub>
                  }
@@ -89,7 +89,7 @@
                     <a href="/">Register for Tour</a>
                 </li>
                 
-                @if (Context.Session.IsAuthenticated())
+                @if (utility.IsAuthenticated())
                 {
                     <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("User", "Student", "Driver", "Host", "Event") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listing <span class="caret"></span></a>
@@ -137,7 +137,7 @@
             </ul>
             
             <ul class="nav navbar-nav navbar-right">
-                @if (!Context.Session.IsAuthenticated())
+                @if (!utility.IsAuthenticated())
                 {
                     <li><a href="~/Identity/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 }

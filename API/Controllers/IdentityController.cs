@@ -1,30 +1,39 @@
 ﻿using System.Threading.Tasks;
-using API.Extensions;
-using Logic.Interfaces;
-using Microsoft.AspNetCore.Http;
+using API.Abstracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Models.Constants;
 using Models.Entities;
+using Models.ViewModels.Identities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
-//    [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
-    public class IdentityController : Controller
-    {
-        private readonly IIdentityLogic _identityLogic;
+    public class IdentityController : AbstractAccountController
+    {        
+        private readonly UserManager<User> _userManager;
         
-        private readonly IUserLogic _userLogic;
+        private readonly SignInManager<User> _signInManager;
 
-        public IdentityController(IIdentityLogic identityLogic, IUserLogic userLogic)
+        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _identityLogic = identityLogic;
-            _userLogic = userLogic;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
+        public override UserManager<User> ResolveUserManager()
+        {
+            return _userManager;
+        }
+
+        public override SignInManager<User> ResolveSignInManager()
+        {
+            return _signInManager;
         }
 
         /// <summary>
-        /// View page to login
+        ///     View page to login
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -32,11 +41,30 @@ namespace API.Controllers
         [SwaggerOperation("Login")]
         public async Task<IActionResult> Login()
         {
-            return View(new User());
+            return View();
         }
         
         /// <summary>
-        /// View page to register
+        ///     Handles login the user
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("LoginHandler")]
+        [SwaggerOperation("LoginHandler")]
+        public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
+        {
+            var rslt = await base.Login(loginViewModel);
+
+            if (rslt)
+            {
+                return Redirect(Url.Content("~/"));
+            }
+
+            return RedirectToAction("NotAuthenticated");
+        }
+        
+        /// <summary>
+        ///     View page to register
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -44,71 +72,31 @@ namespace API.Controllers
         [SwaggerOperation("Register")]
         public async Task<IActionResult> Register()
         {
-            return View(new User());
+            return View();
         }
         
         /// <summary>
-        /// Login the user
+        ///     Register the user
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("LoginAction")]
-        [SwaggerOperation("LoginAction")]
-        public async Task<IActionResult> LoginAction(User user)
-        {
-            _identityLogic.TryLogin(user.Username, user.Password, out var userRoleEnum, out var result);
-
-            // Set session values
-            if (result)
-            {
-                HttpContext.Session.SetString(ApiConstants.Username, user.Username);
-                HttpContext.Session.SetString(ApiConstants.Password, user.Password);
-                HttpContext.Session.SetString(ApiConstants.UserRole, userRoleEnum.ToString());
-                HttpContext.Session.SetString(ApiConstants.Authenticated.Key, ApiConstants.Authenticated.Value);
-            }
-            
-            return result ? (IActionResult) Redirect(Url.Content("~/")) : RedirectToAction("NotAuthenticated");
-        }
-        
-        /// <summary>
-        /// Register the user
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("RegisterAction")]
-        [SwaggerOperation("RegisterAction")]
-        public async Task<IActionResult> RegisterAction(User user)
+        [Route("RegisterHandler")]
+        [SwaggerOperation("RegisterHandler")]
+        public async Task<IActionResult> RegisterHandler(RegisterViewModel registerViewModel)
         {
             // Save the user
-            var result = await _userLogic.Save(user);
+            var rslt = await Register(registerViewModel);
 
-            return result != null ? RedirectToAction("Login") : RedirectToAction("RegisterAction");
-        }
-
-        /// <summary>
-        /// Login the user
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("LogoutAction")]
-        [SwaggerOperation("LogoutAction")]
-        public async Task<IActionResult> LogoutAction()
-        {
-            var userInfo = HttpContext.Session.GetUserInfo();
-            
-            _identityLogic.TryLogout(userInfo.Username, userInfo.Password, out var result);
-            
-            // Remove session values
-            if (result)
+            if (rslt.Succeeded)
             {
-                HttpContext.Session.Clear();
+                return RedirectToAction("Login");
             }
 
-            return result ? (IActionResult) Redirect(Url.Content("~/")) : RedirectToAction("NotAuthenticated");
+            return RedirectToAction("Register");
         }
         
         /// <summary>
-        /// Not authenticated view
+        ///     Not authenticated view
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -120,15 +108,17 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Not authorized view
+        ///     Not authorized view
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("NotAuthorized")]
-        [SwaggerOperation("NotAuthorized")]
-        public async Task<IActionResult> NotAuthorized()
+        [Route("Logout")]
+        [SwaggerOperation("Logout")]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await base.Logout();
+
+            return RedirectToAction("Login");
         }
     }
 }

@@ -1,23 +1,22 @@
 using System;
-using System.Linq;
-using API.Attributes;
 using API.Extensions;
-using API.Middlewares;
-using DAL.Extensions;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using Logic.Interfaces;
 using Mailjet.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Models.Constants;
+using Models.Entities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NETCore.MailKit.Extensions;
@@ -61,8 +60,6 @@ namespace API
         /// <returns></returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add framework services
-            // Add functionality to inject IOptions<T>
             services.AddOptions();
 
             // Add our Config object so it can be injected
@@ -114,14 +111,6 @@ namespace API
 
             services.AddMvc(x =>
             {
-                // x.Filters.Add<JavaScriptSanitizer>();
-
-                // Authorize
-                x.Filters.Add<AuthorizeActionFilter>();
-
-                // Role
-                x.Filters.Add<UserRoleActionFilter>();
-
                 x.ModelValidatorProviders.Clear();
 
                 // Not need to have https
@@ -150,14 +139,24 @@ namespace API
                 .AddHtmlMinification()
                 .AddHttpCompression();
             
-            var entityDbContextResolve = new Func<EntityDbContext>(() => ResolveEntityDbContext(_env, _configuration));
+            services.AddDbContext<EntityDbContext>(opt => ResolveEntityDbContext(_env, _configuration)(opt));
+            
+            services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
+                .AddEntityFrameworkStores<EntityDbContext>()
+                .AddRoles<IdentityRole<int>>()
+                .AddDefaultTokenProviders();
+            
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(x =>
+            {
+                x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+            });
 
             _container = new Container(config =>
-            {
-                config.For<EntityDbContext>().Use(() => entityDbContextResolve());
-
-                services.AddSingleton(entityDbContextResolve());
-                
+            {                
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
@@ -228,6 +227,15 @@ namespace API
             
             // Serve static files
             app.UseStaticFiles();
+            
+            // Not necessary for this workshop but useful when running behind kubernetes
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                // Read and use headers coming from reverse proxy: X-Forwarded-For X-Forwarded-Proto
+                // This is particularly important so that HttpContet.Request.Scheme will be correct behind a SSL terminating proxy
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                                   ForwardedHeaders.XForwardedProto
+            });
 
             app.UseCookiePolicy();
             
@@ -244,9 +252,9 @@ namespace API
         /// <param name="env"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        private static EntityDbContext ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
+        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
         {
-            return new EntityDbContext(builder =>
+            return builder =>
             {
                 if (env.IsLocalhost())
                 {
@@ -258,7 +266,7 @@ namespace API
                         ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
                         ?? throw new Exception("DATABASE_URL is null"));
                 }
-            });
+            };
         }
     }
 }

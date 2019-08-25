@@ -52,10 +52,10 @@ namespace DAL
             var entity = await Get(id);
 
             entity.Fullname = dto.Fullname;
-            entity.Password = dto.Password;
-            entity.Username = dto.Username;
+            entity.PasswordHash = dto.PasswordHash;
+            entity.UserName = dto.UserName;
             entity.UserRoleEnum = dto.UserRoleEnum;
-            entity.Phone = dto.Phone;
+            entity.PhoneNumber = dto.PhoneNumber;
             entity.Email = dto.Email;
             
             return await base.Update(id, entity);

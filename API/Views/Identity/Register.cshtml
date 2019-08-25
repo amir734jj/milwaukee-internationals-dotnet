@@ -1,5 +1,5 @@
 ﻿@using Models.Constants
-@model Models.Entities.User
+@model Models.ViewModels.Identities.RegisterViewModel
 
 @{
     ViewBag.Title = "Register user";
@@ -15,10 +15,8 @@
         <p>Invalid invitation code!</p>
     </div>
     
-    @using (Html.BeginForm("RegisterAction", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit="validateInvitationCode($event)" }))
-    {        
-        @Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
-        
+    @using (Html.BeginForm("RegisterHandler", "Identity", FormMethod.Post, new { @class = "form-horizontal", ng_submit="validateInvitationCode($event)" }))
+    {                
         <div class="form-group">
             @Html.LabelFor(x => x.Email, new { @class = "control-label col-sm-2" })
         
@@ -36,10 +34,10 @@
         </div>
         
         <div class="form-group">
-            @Html.LabelFor(x => x.Phone, new { @class = "control-label col-sm-2" })
+            @Html.LabelFor(x => x.PhoneNumber, new { @class = "control-label col-sm-2" })
         
             <div class="col-sm-10">
-                @Html.TextBoxFor(x => x.Phone, new { type = "tel", placeholder = "Enter phone number", @class = "form-control", required = "required" })
+                @Html.TextBoxFor(x => x.PhoneNumber, new { type = "tel", placeholder = "Enter phone number", @class = "form-control", required = "required" })
             </div>
         </div>
         
