@@ -13,6 +13,6 @@ namespace Models.ViewModels.Config
         public bool EventFeature { get; set; }
 
         [Display(Name = "Email Test Mode")]
-        public bool EmailTestMode { get; set; } = false;
+        public bool EmailTestMode { get; set; }
     }
 }

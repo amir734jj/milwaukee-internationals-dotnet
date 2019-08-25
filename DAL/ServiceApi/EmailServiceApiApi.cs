@@ -54,7 +54,7 @@ namespace DAL.ServiceApi
                 {
                     var emailList = new JArray
                     {
-                        new JObject {{"Email", ApiConstants.WebSiteEmail}}
+                        new JObject {{"Email", ApiConstants.SiteEmail}}
                     };
 
                     // If email test mode is not True, then add recipient
@@ -69,7 +69,7 @@ namespace DAL.ServiceApi
                         .Property(Send.Subject, emailSubject)
                         .Property(Send.HtmlPart, emailHtml)
                         // CC to ...
-                        .Property(Send.Cc, ApiConstants.WebSiteEmail)
+                        .Property(Send.Cc, ApiConstants.SiteEmail)
                         .Property(Send.Recipients, emailList);
 
                     await _mailJetClient.PostAsync(request);

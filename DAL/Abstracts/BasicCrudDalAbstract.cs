@@ -113,14 +113,12 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {            
-            var entity = GetDbSet().FirstOrDefaultCache(x => x.Id == id);
+            var entity = await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
                 
             if (entity != null)
             {
                 // Update
                 modifyAction(entity);
-
-                // GetDbSet().Persist(GetMapper());
 
                 GetDbSet().Update(entity);
                 
