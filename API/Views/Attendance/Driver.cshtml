@@ -1,6 +1,8 @@
 ﻿@using API.Extensions
+@using API.Interfaces
+@using API.Utilities
 @using Models.Enums
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Student Attendance";

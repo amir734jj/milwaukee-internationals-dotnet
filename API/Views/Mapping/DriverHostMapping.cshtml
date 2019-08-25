@@ -1,7 +1,8 @@
 ﻿@using API.Extensions
+@using API.Interfaces
+@using API.Utilities
 @using Models.Enums
-@model object
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Driver-Host Mapping";

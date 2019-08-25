@@ -63,10 +63,11 @@ namespace API
             services.AddOptions();
 
             // Add our Config object so it can be injected
-            services.Configure<SecureHeadersMiddlewareConfiguration>(_configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
-            
+            services.Configure<SecureHeadersMiddlewareConfiguration>(
+                _configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
+
             services.AddLogging();
-            
+
             // Add MailKit
             services.AddMailKit(optionBuilder =>
             {
@@ -121,7 +122,6 @@ namespace API
                 {
                     x.Filters.Add<AllowAnonymousFilter>();
                 }
-
             }).AddJsonOptions(x =>
             {
                 x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -138,40 +138,35 @@ namespace API
                 })
                 .AddHtmlMinification()
                 .AddHttpCompression();
-            
+
             services.AddDbContext<EntityDbContext>(opt => ResolveEntityDbContext(_env, _configuration)(opt));
-            
+
             services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
-            
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(x =>
-            {
-                x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
-            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
             _container = new Container(config =>
-            {                
+            {
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
                     _.AssemblyContainingType(typeof(Startup));
+                    _.Assembly("API");
                     _.Assembly("Logic");
                     _.Assembly("DAL");
                     _.WithDefaultConventions();
                 });
-                
+
                 // If environment is localhost then use mock email service
                 if (_env.IsLocalhost())
                 {
                     config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
                 }
-                
+
                 // It has to be a singleton
                 config.For<IIdentityDictionary>().Singleton();
 
@@ -183,7 +178,7 @@ namespace API
                     Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
                     Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
                 ).Singleton();
-                
+
                 // Populate the container using the service collection
                 config.Populate(services);
             });
@@ -201,13 +196,15 @@ namespace API
         {
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
-            
+
             app.UseEnableRequestRewind();
 
             app.UseDatabaseErrorPage();
 
             app.UseDeveloperExceptionPage();
-            
+
+            app.UseAuthentication();
+
             if (_env.IsLocalhost())
             {
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -221,13 +218,13 @@ namespace API
             {
                 app.UseWebMarkupMin();
             }
- 
+
             // Use wwwroot folder as default static path
             app.UseDefaultFiles();
-            
+
             // Serve static files
             app.UseStaticFiles();
-            
+
             // Not necessary for this workshop but useful when running behind kubernetes
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -238,12 +235,12 @@ namespace API
             });
 
             app.UseCookiePolicy();
-            
+
             app.UseSession();
-            
+
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
-            Console.WriteLine("Application Started!");            
+            Console.WriteLine("Application Started!");
         }
 
         /// <summary>
@@ -252,7 +249,8 @@ namespace API
         /// <param name="env"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
+        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IHostingEnvironment env,
+            IConfiguration configuration)
         {
             return builder =>
             {

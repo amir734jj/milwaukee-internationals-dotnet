@@ -1,7 +1,7 @@
-﻿@using API.Extensions
+﻿@using API.Interfaces
 @using Models.Enums
 @model IEnumerable<Models.Entities.Host>
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Hosts";

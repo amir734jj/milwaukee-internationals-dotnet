@@ -1,8 +1,9 @@
 ﻿@using API.Extensions
+@using API.Interfaces
 @using Models.Constants
 @using Models.Enums
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
-@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     var utility = RequestUtilityBuilder.For(Context);
