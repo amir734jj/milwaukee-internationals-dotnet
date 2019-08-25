@@ -42,11 +42,23 @@ namespace API.Utilities
         {
             var user = await _userManager.GetUserAsync(_ctx.User);
 
+            if (user == null)
+            {
+                return new UserInfo
+                {
+                    Username = null,
+                    Password = null,
+                    UserRoleEnum = UserRoleEnum.Basic
+                };
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+                
             return new UserInfo
             {
-                Username = user?.UserName,
-                Password = user?.PasswordHash,
-                UserRoleEnum = UserRoleEnum.Admin
+                Username = user.UserName,
+                Password = user.PasswordHash,
+                UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString()) ? UserRoleEnum.Admin : UserRoleEnum.Basic
             };
         }
 
