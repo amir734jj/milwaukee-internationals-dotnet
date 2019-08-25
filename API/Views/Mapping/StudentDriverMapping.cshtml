@@ -1,12 +1,13 @@
 ﻿@using API.Extensions
 @using Models.Enums
 @model object
+@inject HttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Student-Driver Mapping";
     Layout = "_Layout";
 
-    var userInfo = Context.Session.GetUserInfo();
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
 }
 
 <div class="container">

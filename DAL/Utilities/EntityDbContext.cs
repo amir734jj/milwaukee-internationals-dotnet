@@ -1,37 +1,31 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
-using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace DAL.Utilities
 {
-    public sealed class EntityDbContext: DbContext
+    public sealed class EntityDbContext: IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Student> Students { get; set; }
-        
-        public DbSet<User> Users { get; set; }
-        
+                
         public DbSet<Driver> Drivers { get; set; }
         
         public DbSet<Host> Hosts { get; set; }
         
         public DbSet<Event> Events { get; set; }
 
-        private readonly Action<DbContextOptionsBuilder> _onConfiguring;
-
         /// <inheritdoc />
         /// <summary>
         /// Constructor that will be called by startup.cs
         /// </summary>
-        /// <param name="dbContextOptionsBuilderAction"></param>
-        public EntityDbContext(Action<DbContextOptionsBuilder> dbContextOptionsBuilderAction)
+        /// <param name="optionsBuilderOptions"></param>
+        // ReSharper disable once SuggestBaseTypeForParameter
+        public EntityDbContext(DbContextOptions<EntityDbContext> optionsBuilderOptions) : base(optionsBuilderOptions)
         {
-            _onConfiguring = dbContextOptionsBuilderAction;
-            
             Database.EnsureCreated();
-            Database.Migrate();
         }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventStudentRelationship>()
@@ -48,11 +42,6 @@ namespace DAL.Utilities
                 .HasForeignKey(pt => pt.EventId);
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            _onConfiguring(optionsBuilder);
         }
     }
 }

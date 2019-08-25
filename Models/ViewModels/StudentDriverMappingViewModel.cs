@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Models.Entities;
 using Models.Interfaces;
-using Newtonsoft.Json;
 
 namespace Models.ViewModels
 {

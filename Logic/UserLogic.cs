@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Entities;
 using Models.Enums;
-using static Logic.Utilities.HashingUtility;
 
 namespace Logic
 {
@@ -30,31 +28,7 @@ namespace Logic
         {
             return _userDal;
         }
-
-        /// <summary>
-        /// Override
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public override async Task<User> Save(User instance)
-        {
-            var existingUsers = (await GetAll()).ToList();
-            
-            // Make sure username is not duplicate
-            if (existingUsers.Any(x => x.Username == instance.Username))
-            {
-                return null;
-            }
-
-            // First user is Admin user
-            instance.UserRoleEnum = existingUsers.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
-            
-            // Do not store the plain-text password
-            instance.Password = SecureHashPassword(instance.Password);
-            
-            return await base.Save(instance);
-        }
-
+        
         /// <summary>
         /// Updates user role
         /// </summary>
