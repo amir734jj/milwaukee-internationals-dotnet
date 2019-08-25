@@ -19,6 +19,8 @@ namespace API.Abstracts
 
         public abstract SignInManager<User> ResolveSignInManager();
 
+        public abstract RoleManager<IdentityRole<int>> ResolveRoleManager();
+
         public async Task<bool> Register(RegisterViewModel registerViewModel)
         {
             var user = new User
@@ -31,8 +33,14 @@ namespace API.Abstracts
 
             var rslt1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
 
-            var rslt2 = await ResolveUserManager().AddToRoleAsync(user,
-                ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString());
+            var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString();
+
+            if (!await ResolveRoleManager().RoleExistsAsync(role))
+            {
+                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role));
+            }
+            
+            var rslt2 = await ResolveUserManager().AddToRoleAsync(user, role);
 
             return rslt1.Succeeded && rslt2.Succeeded;
         }
