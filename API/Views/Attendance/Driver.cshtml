@@ -51,6 +51,7 @@
                 <th ts-criteria="capacity">Capacity</th>
                 <th ts-criteria="attendance">Checked-in</th>
                 <th>Host</th>
+                <th>Navigator</th>
             </tr>
             </thead>
             <tbody>
@@ -61,6 +62,7 @@
                     <toggle ng-model="driver.isPresent" ng-change="changeAttendance(driver)" on="Present" off="Absent" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
                 </td>
                 <td>{{driver.host ? driver.host.fullname : ""}}</td>
+                <td>{{driver.navigator ? driver.navigator : "No Navigator"}}</td>
             </tr>
             </tbody>
         </table>
