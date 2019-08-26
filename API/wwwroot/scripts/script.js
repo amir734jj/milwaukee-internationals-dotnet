@@ -210,7 +210,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                         // Set the navigator for the PDF
                         driver.navigator = (driver.navigator || driver.navigator === "null") ?
-                            (driver.navigator.length > 10 ? driver.navigator.substring(0, 10) + " ..." : driver.navigator) : "-";
+                            (driver.navigator.length > 20 ? driver.navigator.substring(0, 20) + " ..." : driver.navigator) : "-";
 
                         return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
                     }));
