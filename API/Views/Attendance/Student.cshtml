@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label for="text">Country:</label>
                 <select id="country" name="country" ng-change="updateTable()" ng-model="country" class="form-control">
-                    <option value="{{country}} ({{ countryCount[country] }})" ng-repeat="country in countries">{{country}}</option>
+                    <option value="{{country}}" ng-repeat="country in countries">{{country}} ({{ getCountryCount(country) }})</option>
                 </select>
             </div>
             <div class="form-group">
