@@ -416,6 +416,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.countries = ["All Countries"];
         $scope.students = [];
         $scope.allStudents = [];
+        $scope.countryCount = {};
 
         $scope.country = "All Countries";
         $scope.attendanceFilter = "no";
@@ -482,12 +483,17 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             return $http.get("/api/student").then(function (response) {
                 $scope.students = response.data;
                 $scope.allStudents = response.data;
-
+                
                 $scope.students.forEach(function (student) {
                     if (!$scope.countries.includes(student.country)) {
                         $scope.countries.push(student.country);
+                        $scope.countryCount[student.country] = 1 + $scope.countryCount[student.country];
+                    } else {
+                        $scope.countryCount[student.country] = 1;
                     }
                 });
+
+                $scope.countryCount["All Countries"] = $scope.allStudents.length;
 
                 // Filter
                 var countries = $scope.countries.filter(function (value) {
