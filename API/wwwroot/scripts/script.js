@@ -478,6 +478,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 });
             }
         };
+        
+        $scope.getCountryCount = function(country) {
+            if (country in $scope.countryCount) {
+                return $scope.countryCount[country];
+            } else {
+                return 0;
+            }
+        };
 
         $scope.getAllStudents = function () {
             return $http.get("/api/student").then(function (response) {
@@ -487,6 +495,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 $scope.students.forEach(function (student) {
                     if (!$scope.countries.includes(student.country)) {
                         $scope.countries.push(student.country);
+                    }
+                    
+                    if (student.country in $scope.countryCount) {
                         $scope.countryCount[student.country] = 1 + $scope.countryCount[student.country];
                     } else {
                         $scope.countryCount[student.country] = 1;
