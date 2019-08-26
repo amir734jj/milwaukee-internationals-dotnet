@@ -12,6 +12,7 @@ using Mailjet.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -139,7 +140,7 @@ namespace API
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x =>
             {
-                // x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
             });
             
             services.AddWebMarkupMin(opt =>
