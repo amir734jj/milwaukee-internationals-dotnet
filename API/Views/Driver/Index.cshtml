@@ -38,7 +38,7 @@
             <tbody>
             @foreach (var driver in Model)
             {
-                <tr class="@(driver.Role == RolesEnum.Navigator ? "active" : "")">
+                <tr class="@(driver.Role == RolesEnum.Navigator ? "warning" : "")">
                     <td>@driver.DisplayId</td>
                     <td>@driver.Fullname</td>
                     <td>@driver.Role.ToString()</td>
