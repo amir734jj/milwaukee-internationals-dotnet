@@ -150,15 +150,23 @@ namespace API
                 })
                 .AddHtmlMinification()
                 .AddHttpCompression();
-            
-            var entityDbContextResolve = new Func<EntityDbContext>(() => ResolveEntityDbContext(_env, _configuration));
 
+            services.AddDbContext<EntityDbContext>(builder =>
+            {
+                if (_env.IsLocalhost())
+                {
+                    builder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
+                }
+                else
+                {
+                    builder.UseNpgsql(
+                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                        ?? throw new Exception("DATABASE_URL is null"));
+                }
+            });
+            
             _container = new Container(config =>
             {
-                config.For<EntityDbContext>().Use(() => entityDbContextResolve());
-
-                services.AddSingleton(entityDbContextResolve());
-                
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
@@ -237,29 +245,6 @@ namespace API
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
 
             Console.WriteLine("Application Started!");            
-        }
-
-        /// <summary>
-        /// Resolve EntityDbContext
-        /// </summary>
-        /// <param name="env"></param>
-        /// <param name="configuration"></param>
-        /// <returns></returns>
-        private static EntityDbContext ResolveEntityDbContext(IHostingEnvironment env, IConfiguration configuration)
-        {
-            return new EntityDbContext(builder =>
-            {
-                if (env.IsLocalhost())
-                {
-                    builder.UseSqlite(configuration.GetValue<string>("ConnectionStrings:Sqlite"));
-                }
-                else
-                {
-                    builder.UseNpgsql(
-                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
-                        ?? throw new Exception("DATABASE_URL is null"));
-                }
-            });
         }
     }
 }

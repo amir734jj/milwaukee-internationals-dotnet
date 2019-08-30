@@ -17,19 +17,15 @@ namespace DAL.Utilities
         
         public DbSet<Event> Events { get; set; }
 
-        private readonly Action<DbContextOptionsBuilder> _onConfiguring;
-
         /// <inheritdoc />
         /// <summary>
         /// Constructor that will be called by startup.cs
         /// </summary>
-        /// <param name="dbContextOptionsBuilderAction"></param>
-        public EntityDbContext(Action<DbContextOptionsBuilder> dbContextOptionsBuilderAction)
+        /// <param name="optionsBuilderOptions"></param>
+        // ReSharper disable once SuggestBaseTypeForParameter
+        public EntityDbContext(DbContextOptions<EntityDbContext> optionsBuilderOptions) : base(optionsBuilderOptions)
         {
-            _onConfiguring = dbContextOptionsBuilderAction;
-            
             Database.EnsureCreated();
-            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,11 +44,6 @@ namespace DAL.Utilities
                 .HasForeignKey(pt => pt.EventId);
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            _onConfiguring(optionsBuilder);
         }
     }
 }
