@@ -58,7 +58,7 @@
                         @foreach (var student in driver.Students)
                         {
                             <li class="list-group-item clearfix">
-                                <label class="pull-left">@student.Fullname (@student.Country)</label>
+                                <label class="pull-left">@student.Fullname (@student.Country) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
                             </li>
                         }
                     </ul>
