@@ -57,7 +57,7 @@
                     <ul class="list-group">
                         @foreach (var student in driver.Students)
                         {
-                            <li class="list-group-item clearfix" style="background-color: #E4DBBF; border: 1px solid black;">
+                            <li class="list-group-item clearfix" style="background-color: #E4DBBF; border: 1px solid black; color: #DC5B21;">
                                 <label class="pull-left">@student.Fullname (@student.Country) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
                             </li>
                         }
