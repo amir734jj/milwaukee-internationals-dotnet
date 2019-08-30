@@ -29,13 +29,15 @@
                 <label class="pull-right">@driver.Capacity</label>
             </li>
             <li class="list-group-item clearfix">
+                <h4>Host Info</h4>
+                
                 <ul class="list-group">
                     <li class="list-group-item clearfix">
-                        <label class="pull-left">Host Name</label>
-                        <label class="pull-right">@driver?.Host?.Fullname</label>
+                        <label class="pull-left">Name</label>
+                        <label class="pull-right">@driver.Host?.Fullname</label>
                     </li>
                     <li class="list-group-item clearfix">
-                        <label class="pull-left">Host Address</label>
+                        <label class="pull-left">Address</label>
                         <label class="pull-right">
                             @if (string.IsNullOrEmpty(driver.Host?.Address))
                             {
@@ -48,7 +50,7 @@
                         </label>
                     </li>
                     <li class="list-group-item clearfix">
-                        <label class="pull-left">Host Phone Number</label>
+                        <label class="pull-left">Phone Number</label>
                         <label class="pull-right">@driver?.Host?.Phone</label>
                     </li>
                 </ul>
