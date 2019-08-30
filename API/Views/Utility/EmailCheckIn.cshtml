@@ -98,6 +98,10 @@
                 <label class="pull-right">@student.Major</label>
             </li>
             <li class="list-group-item clearfix">
+                <label class="pull-left">Is Family</label>
+                <label class="pull-right">@(student.IsFamily ? $"True [+{student.FamilySize}]" : "False")</label>
+            </li>
+            <li class="list-group-item clearfix">
                 <label class="pull-left">Interests</label>
                 <label class="pull-right">@student.Interests</label>
             </li>
