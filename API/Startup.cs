@@ -160,7 +160,7 @@ namespace API
                 else
                 {
                     builder.UseNpgsql(
-                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("Amir"))
                         ?? throw new Exception("DATABASE_URL is null"));
                 }
             });
