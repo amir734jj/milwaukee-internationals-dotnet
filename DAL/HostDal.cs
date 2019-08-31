@@ -58,6 +58,7 @@ namespace DAL
         {
             return await GetDbSet()
                 .Include(x => x.Drivers)
+                .ThenInclude(x => x.Students)
                 .OrderBy(x => x.Fullname)
                 .ToListAsync();
         }
