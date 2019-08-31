@@ -47,7 +47,10 @@ namespace DAL
         /// <returns></returns>
         public override async Task<Host> Get(int id)
         {
-            return await GetDbSet().Include(x => x.Drivers).FirstOrDefaultAsync(x => x.Id == id);
+            return await GetDbSet()
+                .Include(x => x.Drivers)
+                .ThenInclude(x => x.Students)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
