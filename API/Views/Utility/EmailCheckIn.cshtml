@@ -11,35 +11,51 @@
 {
     case Driver driver:
         <div class="page-header">
-            <h3>Driver Info page</h3>
+            <h3>@driver.Fullname's Information</h3>
             <p>Please verify your information and check-in by toggling the attendance switch</p>
         </div>
         
         <ul class="list-group">
-            <li class="list-group-item clearfix">
+            <li class="list-group-item clearfix" style="background-color: #70AB8F;">
                 <label class="pull-left">Display ID</label>
                 <label class="pull-right">@driver.DisplayId</label>
             </li>
             <li class="list-group-item clearfix">
-                <label class="pull-left">Fullname</label>
-                <label class="pull-right">@driver.Fullname</label>
+                <label class="pull-left">Navigator</label>
+                <label class="pull-right">@(!string.IsNullOrEmpty(driver.Navigator) ? driver.Navigator : "Not Assigned")</label>
             </li>
             <li class="list-group-item clearfix">
                 <label class="pull-left">Capacity</label>
                 <label class="pull-right">@driver.Capacity</label>
             </li>
             <li class="list-group-item clearfix">
-                <label class="pull-left">Host Name</label>
-                <label class="pull-right">@driver?.Host?.Fullname</label>
+                <h4>Host Info</h4>
+                
+                <ul class="list-group">
+                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                        <label class="pull-left">Name</label>
+                        <label class="pull-right">@driver.Host?.Fullname</label>
+                    </li>
+                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                        <label class="pull-left">Address</label>
+                        <label class="pull-right">
+                            @if (string.IsNullOrEmpty(driver.Host?.Address))
+                            {
+                                @driver.Host?.Address
+                            }
+                            else
+                            {
+                                <a href="https://www.google.com/maps/place/@driver.Host?.Address" target="_blank">@driver.Host?.Address</a>
+                            }
+                        </label>
+                    </li>
+                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                        <label class="pull-left">Phone Number</label>
+                        <label class="pull-right">@driver?.Host?.Phone</label>
+                    </li>
+                </ul>
             </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Host Address</label>
-                <label class="pull-right">@driver?.Host?.Address</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Host Phone Number</label>
-                <label class="pull-right">@driver?.Host?.Phone</label>
-            </li>
+            
             @if (driver.Students != null && driver.Students.Any())
             {
                 <li class="list-group-item clearfix">
@@ -48,8 +64,8 @@
                     <ul class="list-group">
                         @foreach (var student in driver.Students)
                         {
-                            <li class="list-group-item clearfix">
-                                <label class="pull-left">@student.Fullname (@student.Country)</label>
+                            <li class="list-group-item clearfix" style="background-color: #E4DBBF; border: 1px solid black; color: #DC5B21;">
+                                <label class="pull-left">@student.Fullname (@student.Country) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
                             </li>
                         }
                     </ul>
@@ -87,6 +103,10 @@
             <li class="list-group-item clearfix">
                 <label class="pull-left">Major</label>
                 <label class="pull-right">@student.Major</label>
+            </li>
+            <li class="list-group-item clearfix">
+                <label class="pull-left">Is Family</label>
+                <label class="pull-right">@(student.IsFamily ? $"True [+{student.FamilySize}]" : "False")</label>
             </li>
             <li class="list-group-item clearfix">
                 <label class="pull-left">Interests</label>

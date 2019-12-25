@@ -210,7 +210,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                         // Set the navigator for the PDF
                         driver.navigator = (driver.navigator || driver.navigator === "null") ?
-                            (driver.navigator.length > 10 ? driver.navigator.substring(0, 10) + " ..." : driver.navigator) : "-";
+                            (driver.navigator.length > 20 ? driver.navigator.substring(0, 20) + " ..." : driver.navigator) : "-";
 
                         return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
                     }));
@@ -416,9 +416,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.countries = ["All Countries"];
         $scope.students = [];
         $scope.allStudents = [];
+        $scope.countryCount = {};
 
         $scope.country = "All Countries";
-        $scope.attendanceFilter = "no";
+        $scope.attendanceFilter = "all";
         $scope.fullname = "";
         $scope.drivers = [];
         $scope.availableDriversBuckets = {};
@@ -477,17 +478,33 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 });
             }
         };
+        
+        $scope.getCountryCount = function(country) {
+            if (country in $scope.countryCount) {
+                return $scope.countryCount[country];
+            } else {
+                return 0;
+            }
+        };
 
         $scope.getAllStudents = function () {
             return $http.get("/api/student").then(function (response) {
                 $scope.students = response.data;
                 $scope.allStudents = response.data;
-
+                
                 $scope.students.forEach(function (student) {
                     if (!$scope.countries.includes(student.country)) {
                         $scope.countries.push(student.country);
                     }
+                    
+                    if (student.country in $scope.countryCount) {
+                        $scope.countryCount[student.country] = 1 + $scope.countryCount[student.country];
+                    } else {
+                        $scope.countryCount[student.country] = 1;
+                    }
                 });
+
+                $scope.countryCount["All Countries"] = $scope.allStudents.length;
 
                 // Filter
                 var countries = $scope.countries.filter(function (value) {

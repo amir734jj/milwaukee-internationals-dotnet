@@ -17,7 +17,7 @@ namespace Models.Entities
         
         public string Address { get; set; }
         
-        public List<Driver> Drivers { get; set; } = new List<Driver>();
+        public HashSet<Driver> Drivers { get; set; } = new HashSet<Driver>();
         
         /// <summary>
         /// Indicates the year in which host attended the tour
