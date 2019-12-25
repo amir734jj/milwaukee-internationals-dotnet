@@ -81,7 +81,7 @@ namespace Logic
                 AvailableDrivers = drivers.ToDictionary(x => x, x => 
                 {
                     // Count = to 1 + FamilySize
-                    var cnt = (x.Students ?? new List<Student>()).Select(st => 1 + st.FamilySize)
+                    var cnt = (x.Students ?? new HashSet<Student>()).Select(st => 1 + st.FamilySize)
                         .DefaultIfEmpty(0)
                         .Sum();
 

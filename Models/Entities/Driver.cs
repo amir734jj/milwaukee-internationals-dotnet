@@ -40,7 +40,7 @@ namespace Models.Entities
         [Display(Name="Role")]
         public RolesEnum Role { get; set; }
         
-        public List<Student> Students { get; set; } = new List<Student>();
+        public HashSet<Student> Students { get; set; } = new HashSet<Student>();
         
         /// <summary>
         /// Optional

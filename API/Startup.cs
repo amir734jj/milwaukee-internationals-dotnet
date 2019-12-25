@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -128,7 +129,7 @@ namespace API
                 x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x =>
             {
-                // x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
             });
             
             services.AddWebMarkupMin(opt =>
@@ -138,7 +139,7 @@ namespace API
                 })
                 .AddHtmlMinification()
                 .AddHttpCompression();
-
+            
             services.AddDbContext<EntityDbContext>(opt => ResolveEntityDbContext(_env, _configuration)(opt));
 
             services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
@@ -150,7 +151,7 @@ namespace API
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
             });
-
+            
             _container = new Container(config =>
             {
                 // Register stuff in container, using the StructureMap APIs...

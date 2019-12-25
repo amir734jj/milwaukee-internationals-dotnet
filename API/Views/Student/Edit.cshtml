@@ -6,7 +6,7 @@
 
 <div class="container">
     
-    @using (Html.BeginForm("EditHandler", "Student", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl" }))
+    @using (Html.BeginForm("EditHandler", "Student", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl", novalidate = "true" }))
     {
         @Html.Partial("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}})
         
