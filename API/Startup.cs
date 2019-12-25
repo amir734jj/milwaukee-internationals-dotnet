@@ -232,7 +232,7 @@ namespace API
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 // Read and use headers coming from reverse proxy: X-Forwarded-For X-Forwarded-Proto
-                // This is particularly important so that HttpContet.Request.Scheme will be correct behind a SSL terminating proxy
+                // This is particularly important so that HttpContent.Request.Scheme will be correct behind a SSL terminating proxy
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
@@ -264,7 +264,7 @@ namespace API
                 else
                 {
                     builder.UseNpgsql(
-                        ConnectionStringUrlToResource(Environment.GetEnvironmentVariable("DATABASE_URL"))
+                        ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL"))
                         ?? throw new Exception("DATABASE_URL is null"));
                 }
             };
