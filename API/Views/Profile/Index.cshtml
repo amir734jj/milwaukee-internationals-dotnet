@@ -1,0 +1,9 @@
+@model Models.Entities.User
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    @Html.Partial("UserContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}})
+</div>
