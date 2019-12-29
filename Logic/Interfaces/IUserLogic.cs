@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Models.Entities;
-using Models.Enums;
+﻿using Models.Entities;
 
 namespace Logic.Interfaces
 {

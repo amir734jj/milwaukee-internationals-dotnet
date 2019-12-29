@@ -27,7 +27,7 @@ using OwaspHeaders.Core.Models;
 using StructureMap;
 using Swashbuckle.AspNetCore.Swagger;
 using WebMarkupMin.AspNetCore2;
-using static API.Utilities.ConnectionStringUtility;
+using static DAL.Utilities.ConnectionStringUtility;
 
 namespace API
 {

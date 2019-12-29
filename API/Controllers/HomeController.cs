@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using API.Extensions;
 using API.Interfaces;
-using API.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

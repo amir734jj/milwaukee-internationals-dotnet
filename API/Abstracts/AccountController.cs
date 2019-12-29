@@ -1,5 +1,4 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,24 +22,31 @@ namespace API.Abstracts
 
         public async Task<bool> Register(RegisterViewModel registerViewModel)
         {
+            var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
+
             var user = new User
             {
                 Fullname = registerViewModel.Fullname,
                 UserName = registerViewModel.Username,
                 Email = registerViewModel.Email,
-                PhoneNumber = registerViewModel.PhoneNumber
+                PhoneNumber = registerViewModel.PhoneNumber,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserRoleEnum = role
             };
-            
-            var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic.ToString() : UserRoleEnum.Admin.ToString();
 
             var rslt1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
 
-            if (!await ResolveRoleManager().RoleExistsAsync(role))
+            if (!rslt1.Succeeded)
             {
-                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role));
+                return false;
+            }
+
+            if (!await ResolveRoleManager().RoleExistsAsync(role.ToString()))
+            {
+                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role.ToString()));
             }
             
-            var rslt2 = await ResolveUserManager().AddToRoleAsync(user, role);
+            var rslt2 = await ResolveUserManager().AddToRoleAsync(user, role.ToString());
 
             return rslt1.Succeeded && rslt2.Succeeded;
         }
