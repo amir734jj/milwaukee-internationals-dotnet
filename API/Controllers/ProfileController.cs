@@ -24,7 +24,7 @@ namespace API.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _userManager.FindByEmailAsync(User.Identity.Name));
+                return View(await _userManager.FindByNameAsync(User.Identity.Name));
             }
 
             return new RedirectResult("~/");
