@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Models.Enums;
 
 namespace API.Attributes
 {
     public class UserRoleMiddlewareAttribute : AuthorizeAttribute
     {
-        private UserRoleEnum UserRoleEnum { get; }
-        
-        public UserRoleMiddlewareAttribute(UserRoleEnum userRoleEnum)
+        public UserRoleMiddlewareAttribute(params UserRoleEnum[] userRoleEnums)
         {
-            Roles = userRoleEnum.ToString();
-            
-            UserRoleEnum = userRoleEnum;
+            Roles = string.Join(',', userRoleEnums.Select(x => x.ToString()));
         }
     }
 }
