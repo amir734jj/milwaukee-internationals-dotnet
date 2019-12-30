@@ -13,3 +13,7 @@ Re-write of back-end using .NET core ^3.1
 
 Notes:
 - Make sure you have the .NET Core SDK installed ([Download](https://www.microsoft.com/net/learn/get-started))
+
+--- 
+
+This project started in 2017 to manage a annual tour of Milwaukee.
