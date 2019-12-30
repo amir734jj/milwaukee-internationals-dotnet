@@ -1,9 +1,11 @@
-﻿@using API.Extensions
+﻿@using API.Interfaces
 @using Models.Enums
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
+
 @{
     ViewBag.Title = "Student Attendance";
     Layout = "_Layout";
-    var userInfo = Context.Session.GetUserInfo();
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
 }
 
 <div class="container" ng-controller="studentAttendanceCtrl">

@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 using API.Attributes;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Models.Enums;
 
 namespace API.Controllers
@@ -12,14 +15,17 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IUserLogic _userLogic;
+        
+        private readonly UserManager<User> _userManager;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="userLogic"></param>
-        public UserController(IUserLogic userLogic)
+        public UserController(IUserLogic userLogic, UserManager<User> userManager)
         {
             _userLogic = userLogic;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -55,8 +61,22 @@ namespace API.Controllers
         [Route("UpdateUserRole/{id}/{userRoleEnum}")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
-            await _userLogic.UpdateUserRole(id, userRoleEnum);
-
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            
+            switch (userRoleEnum)
+            {
+                case UserRoleEnum.Basic:
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
+                    await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Admin.ToString());
+                    break;
+                case UserRoleEnum.Admin:
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Admin.ToString());
+                    await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Basic.ToString());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
+            }
+            
             return RedirectToAction("Index");
         }
     }

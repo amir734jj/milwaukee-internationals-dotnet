@@ -1,23 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Models.Enums;
 using Models.Interfaces;
 
 namespace Models.Entities
 {
-    public class User : IPerson
+    public class User : IdentityUser<int>, IPerson
     {
         [Key]
-        public int Id { get; set; }
-        
-        public string Email { get; set; }
-        
-        public string Phone { get; set; }
-        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override int Id { get; set; }
+
         public string Fullname { get; set; }
-        
-        public string Username { get; set; }
-        
-        public string Password { get; set; }
         
         [Display(Name = "User Role")]
         public UserRoleEnum UserRoleEnum { get; set; }

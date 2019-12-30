@@ -1,7 +1,7 @@
-﻿using System;
-using Npgsql;
+﻿using Npgsql;
+using static Models.Utilities.UrlUtility;
 
-namespace API.Utilities
+namespace DAL.Utilities
 {
     public static class ConnectionStringUtility
     {
@@ -12,21 +12,21 @@ namespace API.Utilities
         /// <returns></returns>
         public static string ConnectionStringUrlToResource(string connectionStringUrl)
         {
-            var isUrl = Uri.TryCreate(connectionStringUrl, UriKind.Absolute, out var url);
+            var table = UrlToResource(connectionStringUrl);
 
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
-                Host = url.Host,
-                Username = url.UserInfo.Split(':')[0],
-                Password = url.UserInfo.Split(':')[1],
-                Database = url.LocalPath.Substring(1),
+                Host = table["Host"],
+                Username = table["Username"],
+                Password = table["Password"],
+                Database = table["Database"],
+                ApplicationName = table["ApplicationName"],
                 SslMode = SslMode.Require,
                 TrustServerCertificate = true,
-                Pooling = true,
-                ApplicationName = "milwaukee-internationals"
+                Pooling = true
             };
-            
-            return isUrl ? connectionStringBuilder.ToString() : string.Empty;
+
+            return connectionStringBuilder.ToString();
         }
     }
 }

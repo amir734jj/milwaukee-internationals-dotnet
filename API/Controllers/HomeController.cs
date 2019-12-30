@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using API.Extensions;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -7,6 +7,13 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
+        private readonly IHttpRequestUtilityBuilder _httpRequestUtilityBuilder;
+
+        public HomeController(IHttpRequestUtilityBuilder httpRequestUtilityBuilder)
+        {
+            _httpRequestUtilityBuilder = httpRequestUtilityBuilder;
+        }
+        
         public async Task<IActionResult> Index()
         {
             return Redirect("~/Registration/Student".ToLower());
@@ -31,7 +38,7 @@ namespace API.Controllers
         [Route("Echo")]
         public async Task<IActionResult> Echo()
         {
-            return Ok(HttpContext.Session.GetUserInfo());
+            return Ok(await _httpRequestUtilityBuilder.For(HttpContext).GetUserInfo());
         }
     }
 }

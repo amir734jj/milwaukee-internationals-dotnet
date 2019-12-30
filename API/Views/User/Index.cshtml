@@ -1,11 +1,12 @@
-﻿@using API.Extensions
+﻿@using API.Interfaces
 @using Models.Enums
 @model IEnumerable<Models.Entities.User>
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Users";
     Layout = "_Layout";
-    var userInfo = Context.Session.GetUserInfo();
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
 
     var adminRole = UserRoleEnum.Admin.ToString();
     var basicRole = UserRoleEnum.Basic.ToString();
@@ -43,13 +44,13 @@
         <tbody>
         @foreach (var user in Model)
         {
-            var disabled = userInfo.Username == user.Username;
+            var disabled = userInfo.Username == user.UserName;
 
             <tr>
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
-                <td>@user.Phone</td>
-                <td>@user.Username</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.UserName</td>
                 <td>@user.UserRoleEnum</td>
 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
