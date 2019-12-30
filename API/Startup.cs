@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json.Serialization;
 using API.Extensions;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -22,6 +21,8 @@ using Models.Constants;
 using Models.Entities;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using StructureMap;
@@ -122,9 +123,10 @@ namespace API
                 {
                     x.Filters.Add<AllowAnonymousFilter>();
                 }
-            }).AddJsonOptions(x =>
+            }).AddNewtonsoftJson(x =>
             {
-                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                x.SerializerSettings.Converters.Add(new StringEnumConverter());
             }).AddRazorPagesOptions(x =>
             {
                 x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
