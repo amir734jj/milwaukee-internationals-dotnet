@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using API.Attributes;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Models.ViewModels;
 
 namespace API.Controllers
 {
@@ -13,9 +15,12 @@ namespace API.Controllers
     {
         private readonly UserManager<User> _userManager;
 
-        public ProfileController(UserManager<User> userManager)
+        private readonly IProfileLogic _profileLogic;
+
+        public ProfileController(UserManager<User> userManager, IProfileLogic profileLogic)
         {
             _userManager = userManager;
+            _profileLogic = profileLogic;
         }
 
         [HttpGet]
@@ -24,8 +29,17 @@ namespace API.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(await _userManager.FindByNameAsync(User.Identity.Name));
+                return View(_profileLogic.ResolveProfile(await _userManager.FindByNameAsync(User.Identity.Name)));
             }
+
+            return new RedirectResult("~/");
+        }
+        
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Update(ProfileViewModel profileViewModel)
+        {
+            await _profileLogic.UpdateUser(profileViewModel);
 
             return new RedirectResult("~/");
         }
