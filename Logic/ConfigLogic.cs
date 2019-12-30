@@ -20,7 +20,8 @@ namespace Logic
                 Years = years,
                 UpdatedYear = YearValue,
                 EventFeature = EventFeature,
-                EmailTestMode = EmailTestMode
+                EmailTestMode = EmailTestMode,
+                Theme = CurrentTheme
             };
             
             return await Task.FromResult(retVal);

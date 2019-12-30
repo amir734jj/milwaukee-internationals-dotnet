@@ -11,11 +11,17 @@ namespace Models.Constants
 
         public static bool EmailTestMode { get; private set; }
 
+        /// <summary>
+        ///  Current website theme
+        /// </summary>
+        public static string CurrentTheme = "default";
+
         public static void UpdateGlobalConfigs(GlobalConfigViewModel globalConfigViewModel)
         {
             YearValue = globalConfigViewModel.UpdatedYear;
             EventFeature = globalConfigViewModel.EventFeature;
             EmailTestMode = globalConfigViewModel.EmailTestMode;
+            CurrentTheme = globalConfigViewModel.Theme;
         }
 
         public static object ToAnonymousObject()
@@ -24,7 +30,8 @@ namespace Models.Constants
             {
                 EventFeature,
                 YearValue,
-                EmailTestMode
+                EmailTestMode,
+                CurrentTheme
             };
         }
     }
