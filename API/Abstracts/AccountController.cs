@@ -41,12 +41,12 @@ namespace API.Abstracts
                 return false;
             }
 
-            if (!await ResolveRoleManager().RoleExistsAsync(role.ToString()))
+            if (!await ResolveRoleManager().RoleExistsAsync(role.JoinToString()))
             {
-                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role.ToString()));
+                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role.JoinToString()));
             }
             
-            var result2 = await ResolveUserManager().AddToRoleAsync(user, role.ToString());
+            var result2 = await ResolveUserManager().AddToRoleAsync(user, role.JoinToString());
 
             return result1.Succeeded && result2.Succeeded;
         }

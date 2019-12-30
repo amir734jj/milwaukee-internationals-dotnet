@@ -8,7 +8,7 @@ namespace API.Attributes
     {
         public AuthorizeMiddlewareAttribute(params UserRoleEnum[] userRoleEnums)
         {
-            Roles = string.Join(',', userRoleEnums.Select(x => x.ToString()));
+            Roles = userRoleEnums.JoinToString();
         }
     }
 }
