@@ -11,6 +11,7 @@
     var dateTimeNow = DateTime.UtcNow;
     var cacheBustingSuffix = dateTimeNow.Day;
     var yearContext = GlobalConfigs.YearValue;
+    var themes = ApplicationConstants.Themes;
 }
 
 <!DOCTYPE html>
@@ -34,6 +35,11 @@
     <link href="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.js"></script>
     
+    @if (!string.IsNullOrEmpty(GlobalConfigs.CurrentTheme) && !"default".Equals(GlobalConfigs.CurrentTheme, StringComparison.CurrentCultureIgnoreCase))
+    {
+        <link rel="stylesheet" href="~/styles/themes/@(themes[GlobalConfigs.CurrentTheme])?@cacheBustingSuffix">
+    }
+
     @* angular select *@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.js"></script>

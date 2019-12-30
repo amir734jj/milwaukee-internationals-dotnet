@@ -8,5 +8,7 @@ namespace Logic.Interfaces
         Task<GlobalConfigViewModel> ResolveGlobalConfig();
 
         Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel);
+
+        Task Refresh();
     }
 }
