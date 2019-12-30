@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace API.Extensions
 {
@@ -9,7 +10,7 @@ namespace API.Extensions
         /// </summary>
         /// <param name="environment"></param>
         /// <returns></returns>
-        public static bool IsLocalhost(this IHostingEnvironment environment)
+        public static bool IsLocalhost(this IWebHostEnvironment environment)
         {
             return environment.IsEnvironment("Localhost");
         }
