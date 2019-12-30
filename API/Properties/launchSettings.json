@@ -9,7 +9,10 @@
         "MAIL_JET_KEY": "",
         "MAIL_JET_SECRET": "",
         "EMAIL_PASSWORD": "",
-        "DATABASE_URL_V2": ""
+        "DATABASE_URL_V2": "",
+        "CLOUDCUBE_ACCESS_KEY_ID": "",
+        "CLOUDCUBE_SECRET_ACCESS_KEY": "",
+        "CLOUDCUBE_URL": ""
       }
     }
   }
