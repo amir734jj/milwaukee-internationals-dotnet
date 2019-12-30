@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using API.Extensions;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -16,10 +17,9 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Models.Constants;
 using Models.Entities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using OwaspHeaders.Core.Extensions;
@@ -35,11 +35,11 @@ namespace API
     {
         private readonly IConfigurationRoot _configuration;
 
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
         private IContainer _container;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             _env = env;
 
@@ -108,7 +108,7 @@ namespace API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info {Title = "Milwaukee-Internationals-API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Milwaukee-Internationals-API", Version = "v1" });
             });
 
             services.AddMvc(x =>
@@ -125,8 +125,7 @@ namespace API
                 }
             }).AddJsonOptions(x =>
             {
-                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                x.SerializerSettings.Converters.Add(new StringEnumConverter());
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             }).AddRazorPagesOptions(x =>
             {
                 x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
@@ -200,16 +199,14 @@ namespace API
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
-            app.UseEnableRequestRewind();
 
-            app.UseDatabaseErrorPage();
-
-            app.UseDeveloperExceptionPage();
-
-            app.UseAuthentication();
+            app.UseCors("CorsPolicy")
+                .UseEnableRequestRewind();
 
             if (_env.IsLocalhost())
             {
+                app.UseDatabaseErrorPage();
+
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 
@@ -217,16 +214,6 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
-            else
-            {
-                app.UseWebMarkupMin();
-            }
-
-            // Use wwwroot folder as default static path
-            app.UseDefaultFiles();
-
-            // Serve static files
-            app.UseStaticFiles();
 
             // Not necessary for this workshop but useful when running behind kubernetes
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -237,11 +224,15 @@ namespace API
                                    ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCookiePolicy();
-
-            app.UseSession();
-
-            app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}"); });
+            // Use wwwroot folder as default static path
+            app.UseDefaultFiles()
+                .UseStaticFiles()
+                .UseCookiePolicy()
+                .UseSession()
+                .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseEndpoints(endpoints => endpoints.MapControllers());
 
             Console.WriteLine("Application Started!");
         }
@@ -252,7 +243,7 @@ namespace API
         /// <param name="env"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IHostingEnvironment env,
+        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IWebHostEnvironment env,
             IConfiguration configuration)
         {
             return builder =>

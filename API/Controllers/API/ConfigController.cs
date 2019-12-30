@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using API.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Models.Constants;
+using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers.API

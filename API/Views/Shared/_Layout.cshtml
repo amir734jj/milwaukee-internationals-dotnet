@@ -2,7 +2,7 @@
 @using API.Interfaces
 @using Models.Constants
 @using Models.Enums
-@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
@@ -56,7 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/angular-tablesort@1.6.1/js/angular-tablesort.min.js"></script>
     
     @* customs *@
-    @if (env.IsLocalhost())
+    @if (Env.IsLocalhost())
     {
         <script src="~/scripts/script.js?@cacheBustingSuffix"></script>
         <link rel="stylesheet" href="~/styles/style.css?@cacheBustingSuffix"> 
