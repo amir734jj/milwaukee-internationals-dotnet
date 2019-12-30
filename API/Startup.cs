@@ -25,7 +25,6 @@ using NETCore.MailKit.Infrastructure.Internal;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using StructureMap;
-using Swashbuckle.AspNetCore.Swagger;
 using WebMarkupMin.AspNetCore2;
 using static DAL.Utilities.ConnectionStringUtility;
 
@@ -198,7 +197,6 @@ namespace API
         {
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
-
 
             app.UseCors("CorsPolicy")
                 .UseEnableRequestRewind();

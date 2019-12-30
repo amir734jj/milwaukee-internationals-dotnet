@@ -13,7 +13,7 @@ namespace Models.Enums
 
     public static class UserRoleEnumExtension
     {
-        public static IReadOnlyList<UserRoleEnum> SubRoles(this UserRoleEnum userRoleEnum)
+        public static IEnumerable<UserRoleEnum> SubRoles(this UserRoleEnum userRoleEnum)
         {
             return userRoleEnum switch
             {

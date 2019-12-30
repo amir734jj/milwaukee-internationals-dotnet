@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using API.Attributes;
 using Logic.Interfaces;
@@ -71,7 +71,7 @@ namespace API.Controllers
                     break;
                 case UserRoleEnum.Admin:
                     await _userManager.AddToRoleAsync(user, UserRoleEnum.Admin.ToString());
-                    await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Basic.ToString());
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
