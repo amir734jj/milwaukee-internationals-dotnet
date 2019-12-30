@@ -34,21 +34,26 @@ namespace API.Abstracts
                 UserRoleEnum = role
             };
 
-            var result1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
+            var result1 = (await ResolveUserManager().CreateAsync(user, registerViewModel.Password)).Succeeded;
 
-            if (!result1.Succeeded)
+            if (!result1)
             {
                 return false;
             }
 
-            if (!await ResolveRoleManager().RoleExistsAsync(role.JoinToString()))
-            {
-                await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role.JoinToString()));
-            }
+            var result2 = true;
             
-            var result2 = await ResolveUserManager().AddToRoleAsync(user, role.JoinToString());
+            foreach (var subRole in role.SubRoles())
+            {
+                if (!await ResolveRoleManager().RoleExistsAsync(subRole.ToString()))
+                {
+                    await ResolveRoleManager().CreateAsync(new IdentityRole<int>(subRole.ToString()));
+                    
+                    result2 &= (await ResolveUserManager().AddToRoleAsync(user, subRole.ToString())).Succeeded;
+                }
+            }
 
-            return result1.Succeeded && result2.Succeeded;
+            return result2;
         }
 
         public async Task<bool> Login(LoginViewModel loginViewModel)
