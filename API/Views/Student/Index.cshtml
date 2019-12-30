@@ -1,11 +1,12 @@
-﻿@using API.Extensions
+﻿@using API.Interfaces
 @using Models.Enums
 @model IEnumerable<Models.Entities.Student>
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 
 @{
     ViewBag.Title = "Students";
     Layout = "_Layout";
-    var userInfo = Context.Session.GetUserInfo();
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
 
     var(studentsCnt, passengersCnt) = (Model.Count(), Model.Select(x => x.FamilySize).DefaultIfEmpty(0).Sum());
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace API.Attributes
 {
-    public class AuthorizeMiddlewareAttribute : Attribute
+    public class AuthorizeMiddlewareAttribute : AuthorizeAttribute
     {
         
     }
