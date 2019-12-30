@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace API.Middlewares
 {
@@ -22,7 +21,7 @@ namespace API.Middlewares
         // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
-            context.Request.EnableRewind();
+            context.Request.EnableBuffering();
 
             await _next(context);
         }

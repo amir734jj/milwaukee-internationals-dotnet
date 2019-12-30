@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Abstracts

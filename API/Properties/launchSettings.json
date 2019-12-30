@@ -5,11 +5,11 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Localhost",
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "MAIL_JET_KEY": "",
         "MAIL_JET_SECRET": "",
         "EMAIL_PASSWORD": "",
-        "DATABASE_URL_V2": ""
+        "DATABASE_URL_V2": "postgres://fnummmzz:Yv3OArFbR1ww6wvOePr_37SCJHKQh2z8@rajje.db.elephantsql.com:5432/fnummmzz"
       }
     }
   }
