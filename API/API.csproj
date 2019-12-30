@@ -22,4 +22,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\styles\fonts" />
+    <Folder Include="wwwroot\styles\themes" />
+  </ItemGroup>
 </Project>
