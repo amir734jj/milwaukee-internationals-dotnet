@@ -22,22 +22,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\themes\cerulean.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\cosmo.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\cyborg.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\darkly.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\flatly.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\journal.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\lumen.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\paper.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\readable.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\sandstone.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\simplex.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\slate.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\spacelab.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\superhero.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\united.bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\themes\yeti.bootstrap.min.css" />
-  </ItemGroup>
 </Project>
