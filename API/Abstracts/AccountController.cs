@@ -34,9 +34,9 @@ namespace API.Abstracts
                 UserRoleEnum = role
             };
 
-            var rslt1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
+            var result1 = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
 
-            if (!rslt1.Succeeded)
+            if (!result1.Succeeded)
             {
                 return false;
             }
@@ -46,27 +46,27 @@ namespace API.Abstracts
                 await ResolveRoleManager().CreateAsync(new IdentityRole<int>(role.ToString()));
             }
             
-            var rslt2 = await ResolveUserManager().AddToRoleAsync(user, role.ToString());
+            var result2 = await ResolveUserManager().AddToRoleAsync(user, role.ToString());
 
-            return rslt1.Succeeded && rslt2.Succeeded;
+            return result1.Succeeded && result2.Succeeded;
         }
 
         public async Task<bool> Login(LoginViewModel loginViewModel)
         {
             // Ensure the username and password is valid.
-            var rslt = await ResolveUserManager().FindByNameAsync(loginViewModel.Username);
+            var result = await ResolveUserManager().FindByNameAsync(loginViewModel.Username);
 
-            if (rslt == null || !await ResolveUserManager().CheckPasswordAsync(rslt, loginViewModel.Password))
+            if (result == null || !await ResolveUserManager().CheckPasswordAsync(result, loginViewModel.Password))
             {
                 return false;
             }
 
-            await ResolveSignInManager().SignInAsync(rslt, true);
+            await ResolveSignInManager().SignInAsync(result, true);
 
             // Generate and issue a JWT token
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, rslt.Email)
+                new Claim(ClaimTypes.Name, result.Email)
             };
 
             var identity = new ClaimsIdentity(
