@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [AllowAnonymous]
+    [Route("")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
