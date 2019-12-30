@@ -1,5 +1,9 @@
 using System;
+using Amazon;
+using Amazon.Runtime;
+using Amazon.S3;
 using API.Extensions;
+using Dal.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
@@ -154,6 +158,22 @@ namespace API
             
             _container = new Container(config =>
             {
+                var (accessKeyId, secretAccessKey, url) = (
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
+                );
+
+                var prefix = new Uri(url).Segments[1];
+                const string bucketName = "cloud-cube";
+
+                // Generally bad practice
+                var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+
+                // Create S3 client
+                config.For<IAmazonS3>().Use(() => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
+                config.For<S3ServiceConfig>().Use(new S3ServiceConfig(bucketName, prefix));
+
                 // Register stuff in container, using the StructureMap APIs...
                 config.Scan(_ =>
                 {
@@ -195,8 +215,12 @@ namespace API
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app"></param>
-        public void Configure(IApplicationBuilder app)
+        /// <param name="configLogic"></param>
+        public void Configure(IApplicationBuilder app, IConfigLogic configLogic)
         {
+            // Refresh global config
+            configLogic.Refresh();
+            
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
