@@ -30,7 +30,7 @@ namespace API.Controllers
         
         [HttpPost]
         [Route("")]
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> UpdateConfig(GlobalConfigViewModel globalConfigViewModel)
         {
             await _configLogic.SetGlobalConfig(globalConfigViewModel);

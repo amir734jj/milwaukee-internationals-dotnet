@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using API.Attributes;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     public class RegistrationController : Controller

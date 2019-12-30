@@ -37,8 +37,7 @@ namespace API.Controllers
         /// Returns email utility view
         /// </summary>
         /// <returns></returns>
-        [AuthorizeMiddleware]
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("AdHocEmail")]
         [SwaggerOperation("AdHocEmail")]
@@ -51,8 +50,7 @@ namespace API.Controllers
         /// Post action handler
         /// </summary>
         /// <returns></returns>
-        [AuthorizeMiddleware]
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpPost]
         [Route("AdHocEmailAction")]
         [SwaggerOperation("AdHocEmailAction")]

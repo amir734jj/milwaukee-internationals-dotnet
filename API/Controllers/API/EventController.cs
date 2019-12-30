@@ -11,8 +11,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers.API
 {
-    [UserRoleMiddleware(UserRoleEnum.Admin)]
-    [AuthorizeMiddleware]
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
     [Route("api/[controller]")]
     public class EventController : BasicCrudController<Event>
     {
@@ -90,9 +89,9 @@ namespace API.Controllers.API
         [Route("Email")]
         public async Task<IActionResult> EventEmail(EmailEventViewModel emailEventViewModel)
         {
-            var rslt = await _emailUtilityLogic.HandleEventEmail(emailEventViewModel);
+            var result = await _emailUtilityLogic.HandleEventEmail(emailEventViewModel);
 
-            return Ok(rslt);
+            return Ok(result);
         }
     }
 }

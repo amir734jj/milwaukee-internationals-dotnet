@@ -41,7 +41,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Delete/{id}")]
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _driverLogic.Delete(id);

@@ -67,7 +67,7 @@ namespace API.Controllers.API
         [HttpPost]
         [Route("EmailMappings")]
         [SwaggerOperation("EmailMappings")]
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> EmailMappings()
         {
             return Ok(await _driverHostMappingLogic.EmailMappings());

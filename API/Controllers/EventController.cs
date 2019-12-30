@@ -40,7 +40,7 @@ namespace API.Controllers
         /// Returns driver view
         /// </summary>
         /// <returns></returns>
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
@@ -54,7 +54,7 @@ namespace API.Controllers
         /// Returns edit event view
         /// </summary>
         /// <returns></returns>
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Edit/{id}")]
         public async Task<IActionResult> Edit([FromRoute] int id)
@@ -68,7 +68,7 @@ namespace API.Controllers
         /// Returns edit event view
         /// </summary>
         /// <returns></returns>
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpPost]
         [Route("Edit/{id}")]
         public async Task<IActionResult> EditHandler(Event @event)
@@ -82,7 +82,7 @@ namespace API.Controllers
         /// Returns event info
         /// </summary>
         /// <returns></returns>
-        [UserRoleMiddleware(UserRoleEnum.Admin)]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Info/{id}")]
         public async Task<IActionResult> Info([FromRoute] int id)
