@@ -15,7 +15,7 @@ Models/obj
 API/database\.sqlite
 
 *.min.js
-*.min.css
+style.min.css
 .DS_Store
 milwaukee-internationals-netcore\.sln\.DotSettings\.user
 
