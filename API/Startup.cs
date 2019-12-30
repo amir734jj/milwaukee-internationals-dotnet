@@ -264,7 +264,7 @@ namespace API
                 else
                 {
                     builder.UseNpgsql(
-                        ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL"))
+                        ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL_V2"))
                         ?? throw new Exception("DATABASE_URL is null"));
                 }
             };
