@@ -1,9 +1,14 @@
-@model Models.Entities.User
+@model Models.ViewModels.ProfileViewModel
 
 @{
     Layout = "_Layout";
 }
 
 <div class="container">
-    @Html.Partial("UserContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}})
+    @using (Html.BeginForm("Update", "Profile", FormMethod.Post, new {}))
+    {
+        @Html.Partial("UserContent", Model, new ViewDataDictionary(ViewData) {{"Type", "Edit"}})
+
+        <input class="btn btn-primary" type="submit" value="Update"/>
+    }
 </div>
