@@ -23,7 +23,8 @@
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\styles\fonts" />
-    <Folder Include="wwwroot\styles\themes" />
+    <Content Update="wwwroot\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
