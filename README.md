@@ -13,7 +13,8 @@ Re-write of back-end using .NET core ^3.1
 
 Notes:
 - Make sure you have the .NET Core SDK installed ([Download](https://www.microsoft.com/net/learn/get-started))
-- To view environment variables make sure to install `heroku cli` and then: `heroku config --json --app="milwaukee-internationals-core"`
+- To view environment variables make sure to install `heroku cli` and then
+  - `heroku config --json --app="milwaukee-internationals-core"`
 
 --- 
 
