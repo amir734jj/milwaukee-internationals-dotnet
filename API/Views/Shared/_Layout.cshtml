@@ -1,5 +1,7 @@
 ﻿@using API.Extensions
 @using API.Interfaces
+@using DAL.Extensions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Models.Constants
 @using Models.Enums
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
@@ -24,6 +26,8 @@
     
     @* jQuery*@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@@prestashop-core/jquery.live-polyfill@1/dist/jquery.live-polyfill.min.js"></script>
     
     @* angular *@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -73,6 +77,8 @@
         <script src="~/scripts/script.min.js?@cacheBustingSuffix"></script>
         <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingSuffix">
     }
+    
+
 </head>
 <body>
   
@@ -175,6 +181,14 @@
 </nav>
 
 <div class="container" ng-app="tourApp" ng-cloak>
+
+    @foreach (var errorMessage in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors).Select(x => x.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Error!</strong> @errorMessage
+        </div>
+    }
     
     @RenderBody()
 </div>

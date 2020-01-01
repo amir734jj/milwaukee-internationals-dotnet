@@ -1,3 +1,9 @@
+angular.element(document).ready(function() {
+    window.setTimeout(function () {
+        angular.element('.alert a').click();
+    }, 5000);
+});
+
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     .controller('eventInfoCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
