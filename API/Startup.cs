@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
@@ -29,6 +30,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
+using reCAPTCHA.AspNetCore;
 using StructureMap;
 using WebMarkupMin.AspNetCore2;
 using static DAL.Utilities.ConnectionStringUtility;
@@ -146,7 +148,10 @@ namespace API
             
             services.AddDbContext<EntityDbContext>(opt => ResolveEntityDbContext(_env, _configuration)(opt));
 
-            services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
+            services.AddIdentity<User, IdentityRole<int>>(x =>
+                {
+                    x.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
@@ -155,6 +160,9 @@ namespace API
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
             });
+            
+            services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
+            services.AddTransient<IRecaptchaService, RecaptchaService>();
             
             _container = new Container(config =>
             {

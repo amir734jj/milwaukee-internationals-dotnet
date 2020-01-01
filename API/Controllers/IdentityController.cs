@@ -2,10 +2,13 @@
 using API.Abstracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Routing;
 using Models.Entities;
 using Models.ViewModels.Identities;
+using reCAPTCHA.AspNetCore;
+using StructureMap.Query;
 using Swashbuckle.AspNetCore.Annotations;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace API.Controllers
 {
@@ -18,12 +21,15 @@ namespace API.Controllers
         private readonly SignInManager<User> _signInManager;
         
         private readonly RoleManager<IdentityRole<int>> _roleManager;
+        
+        private readonly IRecaptchaService _recaptcha;
 
-        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager)
+        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _recaptcha = recaptcha;
         }
 
         public override UserManager<User> ResolveUserManager()
@@ -50,6 +56,15 @@ namespace API.Controllers
         [SwaggerOperation("Login")]
         public async Task<IActionResult> Login()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                var prevError = (string) TempData["Error"];
+
+                ModelState.AddModelError("", prevError);
+                
+                TempData.Clear();
+            }
+            
             return View();
         }
         
@@ -62,9 +77,18 @@ namespace API.Controllers
         [SwaggerOperation("LoginHandler")]
         public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
         {
-            var rslt = await base.Login(loginViewModel);
+            var recaptcha = await _recaptcha.Validate(Request);
+            
+            if (!recaptcha.success)
+            {
+                TempData["Error"] = "There was an error validating recatpcha. Please try again!";
+                
+                return RedirectToAction("Login");
+            }
 
-            if (rslt)
+            var result = await base.Login(loginViewModel);
+
+            if (result)
             {
                 return Redirect(Url.Content("~/"));
             }
@@ -81,6 +105,15 @@ namespace API.Controllers
         [SwaggerOperation("Register")]
         public async Task<IActionResult> Register()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                var prevError = (string) TempData["Error"];
+
+                ModelState.AddModelError("", prevError);
+                
+                TempData.Clear();
+            }
+            
             return View();
         }
         
@@ -93,10 +126,19 @@ namespace API.Controllers
         [SwaggerOperation("RegisterHandler")]
         public async Task<IActionResult> RegisterHandler(RegisterViewModel registerViewModel)
         {
-            // Save the user
-            var rslt = await Register(registerViewModel);
+            var recaptcha = await _recaptcha.Validate(Request);
+            
+            if (!recaptcha.success)
+            {
+                TempData["Error"] = "There was an error validating recatpcha. Please try again!";
 
-            if (rslt)
+                return RedirectToAction("Register");
+            }
+            
+            // Save the user
+            var result = await Register(registerViewModel);
+
+            if (result)
             {
                 return RedirectToAction("Login");
             }
