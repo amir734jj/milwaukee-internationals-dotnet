@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using DAL.Extensions;
-using Dal.Interfaces;
+using DAL.Interfaces;
 using Logic.Interfaces;
 using Models.ViewModels.Config;
 using static Models.Constants.GlobalConfigs;
@@ -24,7 +24,7 @@ namespace Logic
         {
             var currentYear = DateTime.UtcNow.Year;
 
-            var years = new HashSet<int> {2018, 2019, currentYear};
+            var years = new HashSet<int> {2018, 2019, 2020, currentYear};
 
             var retVal = new GlobalConfigViewModel
             {

@@ -4,7 +4,7 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using API.Extensions;
-using Dal.Configs;
+using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;

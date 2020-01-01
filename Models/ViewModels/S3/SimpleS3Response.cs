@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Models.ViewModels.Services.S3
+namespace Models.ViewModels.S3
 {
     public class SimpleS3Response
     {

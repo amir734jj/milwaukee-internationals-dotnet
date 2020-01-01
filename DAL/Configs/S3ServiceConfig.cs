@@ -1,4 +1,4 @@
-namespace Dal.Configs
+namespace DAL.Configs
 {
     public class S3ServiceConfig
     {
