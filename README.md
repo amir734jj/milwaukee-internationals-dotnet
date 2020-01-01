@@ -2,11 +2,18 @@
 
 [Website Url](https://milwaukee-internationals-core.herokuapp.com)
 
-Re-write of back-end using .NET core ^2.1
+Re-write of back-end using .NET core ^3.1
 
 - Swagger UI for API documentation
-- Entity framework for Data Access Layer
-- SQLite for local environment and Postgres for the test environment
+- Entity Framework for Data Access Layer
+- SQLite for the local environment and Postgres for the production environment
+- AWS.S3 for storing of global configs
+- Mailjet for mass email
+- `Microsoft.AspNet.Identity.Core` for authentication and authorization
 
 Notes:
-- Make sure you have the .NET core SDK installed ([Download](https://www.microsoft.com/net/learn/get-started/windows))
+- Make sure you have the .NET Core SDK installed ([Download](https://www.microsoft.com/net/learn/get-started))
+
+--- 
+
+This project started in 2017 to manage a annual tour of Milwaukee.
