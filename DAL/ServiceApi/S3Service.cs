@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using Dal.Configs;
-using Dal.Interfaces;
+using DAL.Configs;
+using DAL.Interfaces;
 using Microsoft.Extensions.Logging;
-using Models.ViewModels.Services.S3;
+using Models.ViewModels.S3;
 
 namespace DAL.ServiceApi
 {

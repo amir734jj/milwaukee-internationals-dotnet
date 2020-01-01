@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace Models.ViewModels.Services.S3
+namespace Models.ViewModels.S3
 {
     public class DownloadS3Response : SimpleS3Response
     {

@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Models.ViewModels.Services.S3;
+using Models.ViewModels.S3;
 
-namespace Dal.Interfaces
+namespace DAL.Interfaces
 {
     public interface IS3Service
     {
