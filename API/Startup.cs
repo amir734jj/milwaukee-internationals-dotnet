@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;

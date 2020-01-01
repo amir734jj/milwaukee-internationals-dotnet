@@ -2,12 +2,9 @@
 using API.Abstracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Routing;
 using Models.Entities;
 using Models.ViewModels.Identities;
 using reCAPTCHA.AspNetCore;
-using StructureMap.Query;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
