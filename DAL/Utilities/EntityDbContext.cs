@@ -19,7 +19,7 @@ namespace DAL.Utilities
         public DbSet<Event> Events { get; set; }
 
         public EntityDbContext() { }
-        
+
         /// <inheritdoc />
         /// <summary>
         /// Constructor that will be called by startup.cs
@@ -33,6 +33,8 @@ namespace DAL.Utilities
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<EventStudentRelationship>()
                 .HasKey(t => new { t.StudentId, t.EventId });
 
@@ -45,10 +47,13 @@ namespace DAL.Utilities
                 .HasOne(pt => pt.Event)
                 .WithMany(t => t.Students)
                 .HasForeignKey(pt => pt.EventId);
-
-            base.OnModelCreating(modelBuilder);
         }
 
+        /// <summary>
+        ///     This is used for DB migration locally
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public EntityDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()

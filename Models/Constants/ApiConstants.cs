@@ -12,8 +12,8 @@ namespace Models.Constants
 
         public static readonly string[] AdminEmail =
         {
-            "amirhesamyan@gmail.com",
-            "asherimtiaz@gmail.com"
+            "asherimtiaz@gmail.com",
+            "amirhesamyan@gmail.com"
         };
 
         public const string SiteEmail = "tourofmilwaukee@gmail.com";

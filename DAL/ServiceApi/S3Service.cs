@@ -19,18 +19,25 @@ namespace DAL.ServiceApi
         private readonly IAmazonS3 _client;
         private readonly ILogger<S3Service> _logger;
         private readonly S3ServiceConfig _s3ServiceConfig;
-
+        private readonly bool _connected;
+        
+        public S3Service()
+        {
+            _connected = false;
+        }
+        
         /// <summary>
         /// Constructor that takes a S3Client and a prefix for all paths
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="client"></param>
         /// <param name="s3ServiceConfig"></param>
-        public S3Service(ILogger<S3Service> logger, IAmazonS3 client, S3ServiceConfig s3ServiceConfig)
+        public S3Service(ILogger<S3Service> logger, IAmazonS3 client, S3ServiceConfig s3ServiceConfig) : this()
         {
             _logger = logger;
             _client = client;
             _s3ServiceConfig = s3ServiceConfig;
+            _connected = true;
         }
 
         /// <summary>
@@ -42,6 +49,12 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task<SimpleS3Response> Upload(string fileKey, byte[] data, IDictionary<string, string> metadata)
         {
+            // Nothing needs to be done ...
+            if (!_connected)
+            {
+                return new SimpleS3Response(HttpStatusCode.BadRequest, "Not connected!");
+            }
+            
             try
             {
                 if (await _client.DoesS3BucketExistAsync(_s3ServiceConfig.BucketName))
@@ -92,6 +105,12 @@ namespace DAL.ServiceApi
         /// <returns></returns>
         public async Task<DownloadS3Response> Download(string keyName)
         {
+            // Nothing needs to be done ...
+            if (!_connected)
+            {
+                return new DownloadS3Response(HttpStatusCode.BadRequest, "Not connected!");
+            }
+
             try
             {
                 // Build the request with the bucket name and the keyName (name of the file)
@@ -132,6 +151,12 @@ namespace DAL.ServiceApi
 
         public async Task<List<string>> List()
         {
+            // Nothing needs to be done ...
+            if (!_connected)
+            {
+                return new List<string>();
+            }
+            
             var request = new ListObjectsV2Request
             {
                 BucketName = _s3ServiceConfig.BucketName,

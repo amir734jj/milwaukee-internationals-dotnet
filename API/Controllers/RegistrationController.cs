@@ -127,7 +127,7 @@ namespace API.Controllers
         {
             if (await _registrationLogic.RegisterEvent(@event))
             {
-                return View("Thankyou");   
+                return RedirectToAction("Index", "Event");
             }
 
             // TODO: use a proper 500 error page
