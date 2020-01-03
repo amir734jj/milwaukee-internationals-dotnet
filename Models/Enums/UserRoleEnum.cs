@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Models.Enums
@@ -14,22 +14,19 @@ namespace Models.Enums
     {
         public static IEnumerable<UserRoleEnum> SubRoles(this UserRoleEnum userRoleEnum)
         {
-            return userRoleEnum switch
+            return (userRoleEnum switch
             {
-                UserRoleEnum.Basic => new[] {UserRoleEnum.Basic},
-                UserRoleEnum.Admin => new[] {UserRoleEnum.Basic, UserRoleEnum.Admin},
-                _ => ArraySegment<UserRoleEnum>.Empty
-            };
+                UserRoleEnum.Basic => Enumerable.Empty<UserRoleEnum>(),
+                UserRoleEnum.Admin => ImmutableList.Create<UserRoleEnum>()
+                    .Add(UserRoleEnum.Basic),
+                _ => Enumerable.Empty<UserRoleEnum>()
+            }).Concat(new [] { userRoleEnum }).ToList();
         }
-        
-        public static string JoinToString(this UserRoleEnum userRoleEnums)
-        {
-            return JoinToString(new[] {userRoleEnums});
-        }
-        
+
         public static string JoinToString(this IEnumerable<UserRoleEnum> userRoleEnums)
         {
-            return string.Join(',', userRoleEnums.Concat(new[] {UserRoleEnum.Basic}).ToHashSet().Select(x => x.ToString()));
+            return string.Join(',',
+                userRoleEnums.Concat(new[] {UserRoleEnum.Basic}).ToHashSet().Select(x => x.ToString()));
         }
     }
 }

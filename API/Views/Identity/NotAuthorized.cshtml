@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Models.Constants
+@{
     ViewBag.Title = "Not authorized";
     Layout = "_Layout";
 }
@@ -8,4 +9,11 @@
         <h2>You are not authorized for this action, please try login (again!)</h2>
     </div>
     <p>If this problem persist, please contact the site administrator</p>
+
+    <ul>
+        @foreach (var email in ApiConstants.AdminEmail)
+        {
+            <li><a href="mailto:@email">@email</a></li>
+        }
+    </ul>
 </div>

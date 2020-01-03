@@ -195,6 +195,7 @@ namespace API
                 if (_env.IsLocalhost())
                 {
                     config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
+                    config.For<IS3Service>().Use(new S3Service()).Singleton();
                 }
 
                 // It has to be a singleton
@@ -287,7 +288,10 @@ namespace API
                 {
                     builder.UseNpgsql(
                         ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL_V2"))
-                        ?? throw new Exception("DATABASE_URL is null"));
+                        ?? throw new Exception("DATABASE_URL is null"), opt =>
+                        {
+                            // Further customizations ...
+                        });
                 }
             };
         }

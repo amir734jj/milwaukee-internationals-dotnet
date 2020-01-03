@@ -44,9 +44,9 @@ namespace Logic
                     return user;
                 });
 
-            var rslt = await Observable.When(fetchUserObrv);
+            var result = await Observable.When(fetchUserObrv);
 
-            return rslt;
+            return result;
         }
 
         public override async Task<IEnumerable<User>> GetAll()
@@ -64,9 +64,9 @@ namespace Logic
                     return user;
                 }));
 
-            var rslt = await Observable.When(fetchUsersObrv);
+            var result = await Observable.When(fetchUsersObrv);
 
-            return rslt;
+            return result;
         }
 
         /// <inheritdoc />

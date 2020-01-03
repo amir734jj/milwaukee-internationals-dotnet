@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Abstracts;
+using DAL.Extensions;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,19 @@ namespace DAL
                 .Include(x => x.Students)
                 .OrderBy(x => x.Name)
                 .ToListAsync();
+        }
+
+        public override async Task<Event> Update(int id, Event dto)
+        {
+            var entity = await Get(id);
+
+            entity.Address = dto.Address;
+            entity.Description = dto.Description;
+            entity.Name = dto.Name;
+            entity.DateTime = dto.DateTime;
+            entity.Students = entity.Students.IdAwareUpdate(dto.Students, x => x.Id);
+
+            return await base.Update(id, entity);
         }
     }
 }
