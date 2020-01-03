@@ -59,7 +59,7 @@ namespace Logic
             var @event = await Get(id);
 
             // Prevent potential null pointer exception
-            @event.Students = @event.Students ?? new List<EventStudentRelationship>();
+            @event.Students ??= new List<EventStudentRelationship>();
 
             return new EventManagementViewModel
             {
@@ -92,7 +92,7 @@ namespace Logic
             await _eventDal.Update(eventId, @event =>
             {
                 // Make sure it is not null or empty
-                @event.Students = @event.Students ?? new List<EventStudentRelationship>();
+                @event.Students ??= new List<EventStudentRelationship>();
                 
                 // Add student
                 @event.Students.Add(new EventStudentRelationship

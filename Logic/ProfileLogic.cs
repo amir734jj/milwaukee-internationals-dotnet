@@ -16,6 +16,12 @@ namespace Logic
         
         public ProfileViewModel ResolveProfile(User user)
         {
+            // Empty profile
+            if (user == null)
+            {
+                return new ProfileViewModel();
+            }
+            
             return new ProfileViewModel
             {
                 Id = user.Id,

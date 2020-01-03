@@ -15,21 +15,19 @@ namespace API.Middlewares
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            using (var stream = new StreamReader(context.HttpContext.Request.Body))
+            using var stream = new StreamReader(context.HttpContext.Request.Body);
+            var requestBodyStrEncoded = await stream.ReadToEndAsync();
+            var requestBodyStrDecoded = Url.Decode(requestBodyStrEncoded, false);
+
+            if (!Regex.Match(requestBodyStrDecoded).Success && !Regex.Match(requestBodyStrEncoded).Success)
             {
-                var requestBodyStrEncoded = await stream.ReadToEndAsync();
-                var requestBodyStrDecoded = Url.Decode(requestBodyStrEncoded, false);
+                await next();
+            }
+            else
+            {
+                var url = Url.Combine(context.HttpContext.Request.Host.Value, "/Error");
 
-                if (!Regex.Match(requestBodyStrDecoded).Success && !Regex.Match(requestBodyStrEncoded).Success)
-                {
-                    await next();
-                }
-                else
-                {
-                    var url = Url.Combine(context.HttpContext.Request.Host.Value, "/Error");
-
-                    context.HttpContext.Response.Redirect(url);
-                }
+                context.HttpContext.Response.Redirect(url);
             }
         }
     }
