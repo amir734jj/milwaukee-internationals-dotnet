@@ -66,7 +66,7 @@ namespace Logic
             }
             else
             {
-                throw new Exception("Failed to fetch the config from S3");
+                _logger.LogError("Failed to fetch the config from S3");
             }
         }
     }
