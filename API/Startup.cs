@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Models.Constants;
 using Models.Entities;
@@ -196,6 +197,14 @@ namespace API
                 {
                     config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
                     config.For<IS3Service>().Use(new S3Service()).Singleton();
+                }
+                else
+                {
+                    config.For<IS3Service>().Use(ctx => new S3Service(
+                        ctx.GetInstance<ILogger<S3Service>>(),
+                        ctx.GetInstance<IAmazonS3>(),
+                        ctx.GetInstance<S3ServiceConfig>()
+                    ));
                 }
 
                 // It has to be a singleton

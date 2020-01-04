@@ -14,7 +14,7 @@ namespace Models.Entities
         
         public string Description { get; set; }
         
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Today.AddDays(1);
         
         public string Address { get; set; }
         

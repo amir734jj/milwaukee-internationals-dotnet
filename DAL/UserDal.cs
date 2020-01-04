@@ -40,13 +40,6 @@ namespace DAL
             return _dbContext.Users;
         }
 
-        public override async Task<IEnumerable<User>> GetAll()
-        {
-            return await GetDbSet()
-                .OrderBy(x => x.Fullname)
-                .ToListAsync();
-        }
-        
         public override async Task<User> Update(int id, User dto)
         {
             var entity = await Get(id);
@@ -59,6 +52,12 @@ namespace DAL
             entity.Email = dto.Email;
             
             return await base.Update(id, entity);
+        }
+
+        protected override IQueryable<User> Intercept<TQueryable>(TQueryable queryable)
+        {
+            return queryable
+                .OrderBy(x => x.Fullname);
         }
     }
 }

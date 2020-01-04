@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Extensions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Interfaces;
@@ -29,7 +28,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await GetDbSet().ToListAsync();
+            return await Intercept(GetDbSet()).ToListAsync();
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Get(int id)
         {
-            return await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+            return await Intercept(GetDbSet()).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace DAL.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            var entity = GetDbSet().FirstOrDefault(x => x.Id == id);
+            var entity = await Get(id);
 
             if (entity != null)
             {
@@ -112,8 +111,8 @@ namespace DAL.Abstracts
         /// <param name="modifyAction"></param>
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
-        {            
-            var entity = await GetDbSet().FirstOrDefaultCacheAsync(x => x.Id == id);
+        {
+            var entity = await Get(id);
                 
             if (entity != null)
             {
@@ -132,5 +131,11 @@ namespace DAL.Abstracts
             // Not found
             return null;
         }
+        
+        /// <summary>
+        /// Intercept the IQueryable to include
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IQueryable<T> Intercept<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<T>;
     }
 }
