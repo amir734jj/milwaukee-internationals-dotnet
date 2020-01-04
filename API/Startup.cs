@@ -33,9 +33,11 @@ using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
+using StackExchange.Redis;
 using StructureMap;
 using WebMarkupMin.AspNetCore2;
 using static DAL.Utilities.ConnectionStringUtility;
+using static Models.Utilities.UrlUtility;
 
 namespace API
 {
@@ -109,7 +111,7 @@ namespace API
             }
             else
             {
-                services.AddDistributedRedisCache(x => x.Configuration = _configuration.GetValue<string>("REDISTOGO_URL"));
+                services.AddStackExchangeRedisCache(x => x.Configuration = _configuration.GetValue<string>("REDISTOGO_URL"));
             }
 
             services.AddSession(options =>
@@ -187,7 +189,12 @@ namespace API
             }
             else
             {
-                EntityFrameworkCache.Initialize(new RedisCache(_configuration.GetValue<string>("REDISTOGO_URL")));
+                var redisConfigurationOptions = ConfigurationOptions.Parse(_configuration.GetValue<string>("REDISTOGO_URL"));
+
+                // Important
+                redisConfigurationOptions.AbortOnConnectFail = false;
+                
+                EntityFrameworkCache.Initialize(new RedisCache(redisConfigurationOptions));
             }
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
@@ -195,6 +202,7 @@ namespace API
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
             });
             
+            // Re-Captcha config
             services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
             
