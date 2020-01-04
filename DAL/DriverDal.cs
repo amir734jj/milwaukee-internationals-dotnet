@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using DAL.Abstracts;
 using DAL.Interfaces;
@@ -39,31 +38,7 @@ namespace DAL
         {
             return _dbContext.Drivers;
         }
-
-        /// <summary>
-        /// Override to include related entity
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public override async Task<Driver> Get(int id)
-        {
-            return await GetDbSet().Include(x => x.Host).FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        /// <summary>
-        /// Override to include related entity
-        /// </summary>
-        /// <returns></returns>
-        public override async Task<IEnumerable<Driver>> GetAll()
-        {
-            return await GetDbSet()
-                .Include(x => x.Host)
-                .Include(x => x.Host.Drivers)
-                .Include(x => x.Students)
-                .OrderBy(x => x.Fullname)
-                .ToListAsync();
-        }
-
+        
         public override async Task<Driver> Update(int id, Driver dto)
         {
             var entity = await Get(id);
@@ -79,6 +54,15 @@ namespace DAL
             entity.HaveChildSeat = dto.HaveChildSeat;
             
             return await base.Update(id, entity);
+        }
+
+        protected override IQueryable<Driver> Intercept<TQueryable>(TQueryable queryable)
+        {
+            return queryable
+                .Include(x => x.Host)
+                .Include(x => x.Host.Drivers)
+                .Include(x => x.Students)
+                .OrderBy(x => x.Fullname);
         }
     }
 }

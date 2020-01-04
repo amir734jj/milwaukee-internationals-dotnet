@@ -41,14 +41,6 @@ namespace DAL
             return _dbContext.Events;
         }
 
-        public override async Task<IEnumerable<Event>> GetAll()
-        {
-            return await GetDbSet()
-                .Include(x => x.Students)
-                .OrderBy(x => x.Name)
-                .ToListAsync();
-        }
-
         public override async Task<Event> Update(int id, Event dto)
         {
             var entity = await Get(id);
@@ -60,6 +52,14 @@ namespace DAL
             entity.Students = entity.Students.IdAwareUpdate(dto.Students, x => x.Id);
 
             return await base.Update(id, entity);
+        }
+
+        protected override IQueryable<Event> Intercept<TQueryable>(TQueryable queryable)
+        {
+            return queryable
+                .Include(x => x.Students)
+                .ThenInclude(x => x.Student)
+                .OrderBy(x => x.Name);
         }
     }
 }

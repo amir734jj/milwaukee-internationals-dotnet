@@ -40,32 +40,6 @@ namespace DAL
             return _dbContext.Hosts;
         }
 
-        /// <summary>
-        /// Override to include related entity
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public override async Task<Host> Get(int id)
-        {
-            return await GetDbSet()
-                .Include(x => x.Drivers)
-                .ThenInclude(x => x.Students)
-                .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        /// <summary>
-        /// Override to include related entity
-        /// </summary>
-        /// <returns></returns>
-        public override async Task<IEnumerable<Host>> GetAll()
-        {
-            return await GetDbSet()
-                .Include(x => x.Drivers)
-                .ThenInclude(x => x.Students)
-                .OrderBy(x => x.Fullname)
-                .ToListAsync();
-        }
-
         public override async Task<Host> Update(int id, Host dto)
         {
             var entity = await Get(id);
@@ -76,6 +50,14 @@ namespace DAL
             entity.Address = dto.Address;
             
             return await base.Update(id, entity);
+        }
+
+        protected override IQueryable<Host> Intercept<TQueryable>(TQueryable queryable)
+        {
+            return queryable
+                .Include(x => x.Drivers)
+                .ThenInclude(x => x.Students)
+                .OrderBy(x => x.Fullname);
         }
     }
 }
