@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Microsoft.Extensions.Logging;
 using Models.ViewModels.Config;
 using static Models.Constants.GlobalConfigs;
 using static Models.Constants.ApplicationConstants;
@@ -15,9 +16,12 @@ namespace Logic
     {
         private readonly IS3Service _s3Service;
 
-        public ConfigLogic(IS3Service s3Service)
+        private readonly ILogger<ConfigLogic> _logger;
+
+        public ConfigLogic(IS3Service s3Service, ILogger<ConfigLogic> logger)
         {
             _s3Service = s3Service;
+            _logger = logger;
         }
 
         public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
@@ -54,9 +58,15 @@ namespace Logic
 
             if (response.Status == HttpStatusCode.OK)
             {
+                _logger.LogInformation("Successfully fetched the config from S3");
+                
                 var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>();
                 
                 UpdateGlobalConfigs(globalConfigViewModel);
+            }
+            else
+            {
+                _logger.LogError("Failed to fetch the config from S3");
             }
         }
     }
