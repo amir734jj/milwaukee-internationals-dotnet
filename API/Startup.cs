@@ -7,6 +7,7 @@ using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
+using EFCache.Redis;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,8 +19,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Models.Constants;
@@ -28,6 +31,7 @@ using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Npgsql;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
@@ -101,7 +105,14 @@ namespace API
 
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
-            services.AddDistributedMemoryCache();
+            if (_env.IsLocalhost())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                services.AddDistributedRedisCache(x => x.Configuration = _configuration.GetValue<string>("REDISTOGO_URL"));
+            }
 
             services.AddSession(options =>
             {
@@ -146,7 +157,22 @@ namespace API
                 .AddHtmlMinification()
                 .AddHttpCompression();
             
-            services.AddDbContext<EntityDbContext>(opt => ResolveEntityDbContext(_env, _configuration)(opt));
+            services.AddDbContext<EntityDbContext>(opt =>
+            {
+                if (_env.IsLocalhost())
+                {
+                    opt.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
+                }
+                else
+                {
+                    opt.UseNpgsql(
+                        ConnectionStringUrlToResource(_configuration.GetValue<string>("DATABASE_URL_V2"))
+                        ?? throw new Exception("DATABASE_URL is null"), _ =>
+                        {
+                            // Further customizations ...
+                        });
+                }
+            });
 
             services.AddIdentity<User, IdentityRole<int>>(x =>
                 {
@@ -276,33 +302,6 @@ namespace API
                 .UseEndpoints(endpoints => endpoints.MapControllers());
 
             Console.WriteLine("Application Started!");
-        }
-
-        /// <summary>
-        /// Resolve EntityDbContext
-        /// </summary>
-        /// <param name="env"></param>
-        /// <param name="configuration"></param>
-        /// <returns></returns>
-        private static Action<DbContextOptionsBuilder> ResolveEntityDbContext(IWebHostEnvironment env,
-            IConfiguration configuration)
-        {
-            return builder =>
-            {
-                if (env.IsLocalhost())
-                {
-                    builder.UseSqlite(configuration.GetValue<string>("ConnectionStrings:Sqlite"));
-                }
-                else
-                {
-                    builder.UseNpgsql(
-                        ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL_V2"))
-                        ?? throw new Exception("DATABASE_URL is null"), opt =>
-                        {
-                            // Further customizations ...
-                        });
-                }
-            };
         }
     }
 }

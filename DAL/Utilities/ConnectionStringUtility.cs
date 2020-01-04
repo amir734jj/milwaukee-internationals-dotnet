@@ -23,7 +23,9 @@ namespace DAL.Utilities
                 ApplicationName = table["ApplicationName"],
                 SslMode = SslMode.Require,
                 TrustServerCertificate = true,
-                Pooling = true
+                Pooling = true,
+                // Hard limit
+                MaxPoolSize = 5
             };
 
             return connectionStringBuilder.ToString();
