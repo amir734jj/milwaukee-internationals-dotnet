@@ -7,6 +7,8 @@ using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
+using EFCache;
+using EFCache.Redis;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -177,7 +179,17 @@ namespace API
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
-
+            
+            // L2 EF cache
+            if (_env.IsLocalhost())
+            {
+                EntityFrameworkCache.Initialize(new InMemoryCache());
+            }
+            else
+            {
+                EntityFrameworkCache.Initialize(new RedisCache(_configuration.GetValue<string>("REDISTOGO_URL")));
+            }
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
@@ -286,7 +298,7 @@ namespace API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
-
+            
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
                 .UseStaticFiles()
