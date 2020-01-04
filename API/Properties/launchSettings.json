@@ -14,7 +14,8 @@
         "CLOUDCUBE_SECRET_ACCESS_KEY": "",
         "CLOUDCUBE_URL": "",
         "RecaptchaSettings:SecretKey": "",
-        "RecaptchaSettings:SiteKey": ""
+        "RecaptchaSettings:SiteKey": "",
+        "REDISTOGO_URL": ""
       }
     }
   }
