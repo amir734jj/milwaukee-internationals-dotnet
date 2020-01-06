@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Models.Entities;
 using Models.Enums;
+using static Models.Enums.UserRoleEnumExtension;
 
 namespace API.Utilities
 {
@@ -52,13 +53,13 @@ namespace API.Utilities
                 };
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-                
+            var role = MostComprehensive(ParseRoles(await _userManager.GetRolesAsync(user)));
+
             return new UserInfo
             {
                 Username = user.UserName,
                 Password = user.PasswordHash,
-                UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString()) ? UserRoleEnum.Admin : UserRoleEnum.Basic
+                UserRoleEnum = role
             };
         }
 
