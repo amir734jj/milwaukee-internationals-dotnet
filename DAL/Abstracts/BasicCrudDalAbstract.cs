@@ -90,9 +90,6 @@ namespace DAL.Abstracts
         {
             if (entity != null)
             {
-                // Update
-                GetDbSet().Update(entity);
-                
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
 
@@ -119,8 +116,6 @@ namespace DAL.Abstracts
                 // Update
                 modifyAction(entity);
 
-                GetDbSet().Update(entity);
-                
                 // Save and dispose
                 await GetDbContext().SaveChangesAsync();
 
