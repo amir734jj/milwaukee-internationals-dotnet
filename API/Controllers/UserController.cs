@@ -22,6 +22,7 @@ namespace API.Controllers
         /// Constructor dependency injection
         /// </summary>
         /// <param name="userLogic"></param>
+        /// <param name="userManager"></param>
         public UserController(IUserLogic userLogic, UserManager<User> userManager)
         {
             _userLogic = userLogic;
@@ -62,12 +63,14 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            
+            await _userLogic.Update(id, x => x.UserRoleEnum = userRoleEnum);
+
             switch (userRoleEnum)
             {
                 case UserRoleEnum.Basic:
                     await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
                     await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Admin.ToString());
+
                     break;
                 case UserRoleEnum.Admin:
                     await _userManager.AddToRoleAsync(user, UserRoleEnum.Admin.ToString());
