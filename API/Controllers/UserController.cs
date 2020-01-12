@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Attributes;
 using Logic.Interfaces;
@@ -61,20 +62,18 @@ namespace API.Controllers
         [HttpGet]
         [Route("UpdateUserRole/{id}/{userRoleEnum}")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            await _userLogic.Update(id, x => x.UserRoleEnum = userRoleEnum);
+        {;
+            var userEntity = await _userLogic.Update(id, x => x.UserRoleEnum = userRoleEnum);
 
             switch (userRoleEnum)
             {
                 case UserRoleEnum.Basic:
-                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
-                    await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Admin.ToString());
-
+                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Basic.ToString());
+                    await _userManager.RemoveFromRoleAsync(userEntity, UserRoleEnum.Admin.ToString());
                     break;
                 case UserRoleEnum.Admin:
-                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Admin.ToString());
-                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
+                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Admin.ToString());
+                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Basic.ToString());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
