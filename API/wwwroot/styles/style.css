@@ -1,5 +1,6 @@
 .img-responsive {
     margin: 0 auto;
+    max-height: 30rem;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
