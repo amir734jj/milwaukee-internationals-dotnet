@@ -7,6 +7,10 @@
     display: none !important;
 }
 
-.navbar-brand { 
+.nav > li > a {
+    font-size: 90%;
+}
+
+.navbar-brand {
     font-size: 90%;
 }
