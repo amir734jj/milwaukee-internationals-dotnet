@@ -37,7 +37,6 @@ using StackExchange.Redis;
 using StructureMap;
 using WebMarkupMin.AspNetCore2;
 using static DAL.Utilities.ConnectionStringUtility;
-using static Models.Utilities.UrlUtility;
 
 namespace API
 {

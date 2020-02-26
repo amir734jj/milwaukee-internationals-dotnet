@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
-using InfoViaLinq;
+using System.Reflection;
 using Models.Interfaces;
 
 namespace Logic.Extensions
@@ -20,10 +19,30 @@ namespace Logic.Extensions
         /// <returns></returns>
         public static string PropName<T>(this T _, Expression<Func<T, object>> expression) where T : IViewModel
         {
-            var info = InfoViaLinq<T>.New()
-                .PropLambda(expression);
+            return MemberExpressionVisitor.ResolveMember(expression)?.Name;
+        }
+    }
+    
+    internal class MemberExpressionVisitor : ExpressionVisitor {
 
-            return info.GetAttribute<DisplayAttribute>()?.Name ?? info.GetPropertyName();
+        private PropertyInfo _member;
+
+        public static PropertyInfo ResolveMember(Expression expression)
+        {
+            var instance = new MemberExpressionVisitor();
+
+            instance.Visit(expression);
+
+            var result = instance._member;
+
+            return result;
+        }
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            _member = (PropertyInfo) node.Member;
+            
+            return base.VisitMember(node);
         }
     }
 }
