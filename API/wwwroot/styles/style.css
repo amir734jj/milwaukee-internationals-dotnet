@@ -7,6 +7,6 @@
     display: none !important;
 }
 
-.nav > li > a {
-    padding: 10px 10px;
+.navbar-brand { 
+    font-size: 90%;
 }
