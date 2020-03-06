@@ -49,11 +49,13 @@
                     <td>@driver.Navigator</td>
                     <td>@driver.HaveChildSeat</td>
                     <td class="hidden-xs" ng-show="showDetail">
+                        <div class="btn-group-vertical">
                         <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
                         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                         {
                             <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
                         }
+                        </div>
                     </td>
                 </tr>
             }

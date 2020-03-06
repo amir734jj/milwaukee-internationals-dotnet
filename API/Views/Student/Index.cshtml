@@ -53,12 +53,15 @@
                     <td ng-show="showDetail">@student.Phone</td>
                     <td>@student.KosherFood</td>
                     <td class="hidden-xs" ng-show="showDetail">
+                        <div class="btn-group-vertical">
+
                         <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
 
                         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                         {
                             <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
                         }
+                        </div>
                     </td>
                 </tr>
             }
