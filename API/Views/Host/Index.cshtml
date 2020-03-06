@@ -40,11 +40,13 @@
                 <td>@host.Phone</td>
                 <td>@host.Address</td>
                 <td class="hidden-xs" ng-show="showDetail">
+                    <div class="btn-group-vertical">
                     <a href="~/Host/edit/@host.Id" class="btn btn-primary">Edit</a>
                     @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
                         <a href="~/Host/delete/@host.Id" class="btn btn-danger">Delete</a>
                     }
+                    </div>
                 </td>
             </tr>
         }
