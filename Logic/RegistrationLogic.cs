@@ -25,6 +25,7 @@ namespace Logic
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
         /// <param name="hostLogic"></param>
+        /// <param name="eventLogic"></param>
         /// <param name="emailServiceApiApi"></param>
         public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi)
         {

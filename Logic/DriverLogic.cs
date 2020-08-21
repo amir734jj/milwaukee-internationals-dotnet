@@ -15,14 +15,18 @@ namespace Logic
     public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
     {
         private readonly IDriverDal _driverDal;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="driverDal"></param>
-        public DriverLogic(IDriverDal driverDal)
+        /// <param name="globalConfigs"></param>
+        public DriverLogic(IDriverDal driverDal, GlobalConfigs globalConfigs)
         {
             _driverDal = driverDal;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace Logic
 
         public override async Task<IEnumerable<Driver>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
         }
     }
 }

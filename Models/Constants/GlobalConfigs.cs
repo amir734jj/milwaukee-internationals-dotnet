@@ -3,20 +3,22 @@ using Models.ViewModels.Config;
 
 namespace Models.Constants
 {
-    public static class GlobalConfigs
+    public class GlobalConfigs
     {
-        public static bool EventFeature { get; private set; }
+        public DateTimeOffset LastModified { get; set; }
         
-        public static int YearValue { get; private set; } = DateTime.UtcNow.Year;
+        public  bool EventFeature { get; private set; }
+        
+        public  int YearValue { get; set; } = DateTime.UtcNow.Year;
 
-        public static bool EmailTestMode { get; private set; }
+        public  bool EmailTestMode { get; private set; }
 
         /// <summary>
         ///  Current website theme
         /// </summary>
-        public static string CurrentTheme = "default";
-
-        public static void UpdateGlobalConfigs(GlobalConfigViewModel globalConfigViewModel)
+        public string CurrentTheme = "default";
+        
+        public void UpdateGlobalConfigs(GlobalConfigViewModel globalConfigViewModel)
         {
             YearValue = globalConfigViewModel.UpdatedYear;
             EventFeature = globalConfigViewModel.EventFeature;
@@ -24,7 +26,7 @@ namespace Models.Constants
             CurrentTheme = globalConfigViewModel.Theme;
         }
 
-        public static object ToAnonymousObject()
+        public  object ToAnonymousObject()
         {
             return new
             {
