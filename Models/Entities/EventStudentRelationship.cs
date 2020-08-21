@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Models.Interfaces;
 
 namespace Models.Entities
 {
-    public class EventStudentRelationship
+    public class EventStudentRelationship : IEntity
     {
         [Key]
         public int Id { get; set; }
