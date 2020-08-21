@@ -13,7 +13,7 @@ babelify.configure({
 });
 
 gulp.task('scripts', function () {
-    return browserify({entries: 'Api/wwwroot/scripts/script.js', extensions: ['.js'], debug: false})
+    return browserify({entries: 'API/wwwroot/scripts/script.js', extensions: ['.js'], debug: false})
         .transform(babelify)
         .bundle()
         .pipe(source('script.js'))
@@ -25,7 +25,7 @@ gulp.task('scripts', function () {
 });
 
 gulp.task("styles", function () {
-    return gulp.src('Api/wwwroot/styles/style.css')
+    return gulp.src('API/wwwroot/styles/style.css')
         .pipe(cleanCSS())
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
         .pipe(gulp.dest('client-build/styles/'));
