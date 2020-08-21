@@ -131,6 +131,13 @@ namespace API.Controllers
 
                 return RedirectToAction("Register");
             }
+
+            if (registerViewModel.Password != registerViewModel.ConfirmPassword)
+            {
+                TempData["Error"] = "Password and Password Confirmation do not match. Please try again!";
+
+                return RedirectToAction("Register");
+            }
             
             // Save the user
             var result = await Register(registerViewModel);

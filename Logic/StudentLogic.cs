@@ -14,14 +14,18 @@ namespace Logic
     public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     {
         private readonly IStudentDal _studentDal;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="studentDal"></param>
-        public StudentLogic(IStudentDal studentDal)
+        /// <param name="globalConfigs"></param>
+        public StudentLogic(IStudentDal studentDal, GlobalConfigs globalConfigs)
         {
             _studentDal = studentDal;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -82,7 +86,7 @@ namespace Logic
 
         public override async Task<IEnumerable<Student>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
         }
     }
 }

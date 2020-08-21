@@ -11,31 +11,38 @@
 <div class="container">
     <div class="page-header">
         <h3>Please login</h3>
+
     </div>
-    
-    @using (Html.BeginForm("LoginHandler", "Identity", FormMethod.Post, new { @class = "form-horizontal" }))
-    {        
+
+    @using (Html.BeginForm("LoginHandler", "Identity", FormMethod.Post, new {@class = "form-horizontal"}))
+    {
         <div class="form-group">
-            @Html.LabelFor(x => x.Username, new { @class = "control-label col-sm-2" })
-        
+            @Html.LabelFor(x => x.Username, new {@class = "control-label col-sm-2"})
+
             <div class="col-sm-10">
-                @Html.TextBoxFor(x => x.Username, new { type = "text", placeholder = "Enter username", @class = "form-control", required = "required" })
+                @Html.TextBoxFor(x => x.Username, new {type = "text", placeholder = "Enter username", @class = "form-control", required = "required"})
+
+                @Html.ValidationMessageFor(m => m.Username)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(x => x.Password, new { @class = "control-label col-sm-2" })
+            @Html.LabelFor(x => x.Password, new {@class = "control-label col-sm-2"})
 
             <div class="col-sm-10">
-                @Html.TextBoxFor(x => x.Password, new { type = "password", placeholder = "Enter password", @class = "form-control", required = "required" })
+                @Html.TextBoxFor(x => x.Password, new {type = "password", placeholder = "Enter password", @class = "form-control", required = "required"})
+
+                @Html.ValidationMessageFor(m => m.Password)
             </div>
         </div>
-        
+
         @Html.Recaptcha(RecaptchaSettings.Value)
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">Login</button>
+
+                <a class="btn btn-danger" href="~/PasswordReset"> Reset Password </a>
             </div>
         </div>
     }
