@@ -31,7 +31,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns registration page for drivers
+        /// Returns registration pages
         /// </summary>
         /// <returns></returns>
         [HttpGet]
