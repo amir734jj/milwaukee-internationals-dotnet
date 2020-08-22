@@ -1,7 +1,8 @@
-﻿using Npgsql;
-using static Models.Utilities.UrlUtility;
+﻿using Dal.Extensions;
+using Models.Utilities;
+using Npgsql;
 
-namespace DAL.Utilities
+namespace Dal.Utilities
 {
     public static class ConnectionStringUtility
     {
@@ -10,9 +11,14 @@ namespace DAL.Utilities
         /// </summary>
         /// <param name="connectionStringUrl"></param>
         /// <returns></returns>
-        public static string ConnectionStringUrlToResource(string connectionStringUrl)
+        public static string ConnectionStringUrlToPgResource(string connectionStringUrl)
         {
-            var table = UrlToResource(connectionStringUrl);
+            var (_, table) = UrlUtility.UrlToResource(connectionStringUrl);
+
+            if (!table.ContainKeys("Host", "Username", "Password", "Database", "ApplicationName"))
+            {
+                return string.Empty;
+            }
 
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
@@ -25,7 +31,8 @@ namespace DAL.Utilities
                 TrustServerCertificate = true,
                 Pooling = true,
                 // Hard limit
-                MaxPoolSize = 5
+                MaxPoolSize = 5,
+                Port = int.Parse(table["Port"])
             };
 
             return connectionStringBuilder.ToString();

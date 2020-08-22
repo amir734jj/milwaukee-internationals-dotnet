@@ -8,9 +8,9 @@ using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
-using EFCache;
-using EFCache.Redis;
+using EasyCaching.Core.Configurations;
 using EfCoreRepository.Extensions;
+using EFCoreSecondLevelCacheInterceptor;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -24,10 +24,12 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Models.Constants;
 using Models.Entities;
+using Models.Utilities;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using Newtonsoft.Json;
@@ -35,10 +37,9 @@ using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
-using StackExchange.Redis;
 using StructureMap;
 using WebMarkupMin.AspNetCore2;
-using static DAL.Utilities.ConnectionStringUtility;
+using static Dal.Utilities.ConnectionStringUtility;
 
 namespace API
 {
@@ -106,15 +107,8 @@ namespace API
 
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
-            if (_env.IsLocalhost())
-            {
-                services.AddDistributedMemoryCache();
-            }
-            else
-            {
-                services.AddStackExchangeRedisCache(x => x.Configuration = _configuration.GetValue<string>("REDISTOGO_URL"));
-            }
-
+            services.AddDistributedMemoryCache();
+            
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -137,7 +131,7 @@ namespace API
                     x.RequireHttpsPermanent = false;
 
                     // Allow anonymous for localhost
-                    if (_env.IsLocalhost())
+                    if (_env.IsDevelopment())
                     {
                         x.Filters.Add<AllowAnonymousFilter>();
                     }
@@ -165,20 +159,18 @@ namespace API
             
             services.AddDbContext<EntityDbContext>(opt =>
             {
-                if (_env.IsLocalhost())
+                if (_env.IsDevelopment())
                 {
                     opt.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
                 }
                 else
                 {
-                    opt.UseNpgsql(
-                        ConnectionStringUrlToResource(_configuration.GetValue<string>("DATABASE_URL_V2"))
-                        ?? throw new Exception("DATABASE_URL is null"), _ =>
-                        {
-                            // Further customizations ...
-                        });
+                    var postgresConnectionString =
+                        ConnectionStringUrlToPgResource(_configuration.GetValue<string>("DATABASE_URL")
+                                                        ?? throw new Exception("DATABASE_URL is null"));
+                    opt.UseNpgsql(postgresConnectionString);
                 }
-            });
+            }, ServiceLifetime.Transient);
 
             services.AddIdentity<User, IdentityRole<int>>(x =>
                 {
@@ -189,18 +181,33 @@ namespace API
                 .AddDefaultTokenProviders();
             
             // L2 EF cache
-            if (_env.IsLocalhost())
+            if (_env.IsDevelopment())
             {
-                EntityFrameworkCache.Initialize(new InMemoryCache());
+                services.AddEFSecondLevelCache(options =>
+                    options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
+                );
+
+                services.AddEasyCaching(options => options.UseInMemory("memory"));
+
             }
             else
             {
-                var redisConfigurationOptions = ConfigurationOptions.Parse(_configuration.GetValue<string>("REDISTOGO_URL"));
+                services.AddEFSecondLevelCache(options =>
+                    options.UseEasyCachingCoreProvider("redis").DisableLogging(true));
 
-                // Important
-                redisConfigurationOptions.AbortOnConnectFail = false;
-                
-                EntityFrameworkCache.Initialize(new RedisCache(redisConfigurationOptions));
+                services.AddEasyCaching(options =>
+                {
+                    var (_, dictionary) = UrlUtility.UrlToResource(_configuration.GetValue<string>("REDISTOGO_URL"));
+
+                    // use memory cache with your own configuration
+                    options.UseRedis(x =>
+                    {
+                        x.DBConfig.Endpoints.Add(new ServerEndPoint(dictionary["Host"], int.Parse(dictionary["Port"])));
+                        x.DBConfig.Username = dictionary["Username"];
+                        x.DBConfig.Password = dictionary["Password"];
+                        x.DBConfig.AbortOnConnectFail = false;
+                    });
+                });
             }
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
@@ -245,7 +252,7 @@ namespace API
                 });
 
                 // If environment is localhost then use mock email service
-                if (_env.IsLocalhost())
+                if (_env.IsDevelopment())
                 {
                     config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
                     config.For<IS3Service>().Use(new S3Service()).Singleton();
@@ -298,7 +305,7 @@ namespace API
             app.UseCors("CorsPolicy")
                 .UseEnableRequestRewind();
 
-            if (_env.IsLocalhost())
+            if (_env.IsDevelopment())
             {
                 app.UseDatabaseErrorPage();
 
