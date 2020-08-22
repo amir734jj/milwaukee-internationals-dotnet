@@ -7,24 +7,11 @@ namespace API.Controllers
     [Route("[controller]")]
     public class ErrorController : Controller
     {
-        [Route("")]
+        [Route("{statusCode?}")]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int statusCode = 400)
         {
-            return Ok(@"
-
-Something went wrong!                          
-
-                  
- ,adPPYba,   ,adPPYba,  8b,dPPYba,  ,adPPYba,  
-a8""     ""8a a8""     ""8a 88P'    ""8a I8[    """"  
-8b       d8 8b       d8 88       d8  `""Y8ba,   
-""8a,   ,a8"" ""8a,   ,a8"" 88b,   ,a8"" aa    ]8I  
- `""YbbdP""'   `""YbbdP""'  88`YbbdP""'  `""YbbdP""'  
-                        88                     
-                        88                     
-
-");
+            return View(statusCode);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -12,7 +12,7 @@ namespace Logic
 {
     public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
     {
-        private readonly IEventDal _eventDal;
+        private readonly IBasicCrudType<Event, int> _eventDal;
         
         private readonly IStudentLogic _studentLogic;
         
@@ -21,12 +21,12 @@ namespace Logic
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="eventDal"></param>
+        /// <param name="repository"></param>
         /// <param name="studentLogic"></param>
         /// <param name="globalConfigs"></param>
-        public EventLogic(IEventDal eventDal, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
+        public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
         {
-            _eventDal = eventDal;
+            _eventDal = repository.For<Event, int>();
             _studentLogic = studentLogic;
             _globalConfigs = globalConfigs;
         }
@@ -35,7 +35,7 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Event> GetBasicCrudDal()
+        protected override IBasicCrudType<Event, int> GetBasicCrudDal()
         {
             return _eventDal;
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -14,24 +14,24 @@ namespace Logic
 {
     public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
     {
-        private readonly IUserDal _userDal;
+        private readonly IBasicCrudType<User, int> _userDal;
 
         private readonly UserManager<User> _userManager;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="userDal"></param>
+        /// <param name="repository"></param>
         /// <param name="userManager"></param>
-        public UserLogic(IUserDal userDal, UserManager<User> userManager)
+        public UserLogic(IEfRepository repository, UserManager<User> userManager)
         {
-            _userDal = userDal;
+            _userDal = repository.For<User, int>();
             _userManager = userManager;
         }
 
         public override async Task<User> Get(int id)
         {
-            var fetchUserObrv = base.Get(id)
+            var fetchUserObservable = base.Get(id)
                 .ToObservable()
                 .Then(user =>
                 {
@@ -44,14 +44,14 @@ namespace Logic
                     return user;
                 });
 
-            var result = await Observable.When(fetchUserObrv);
+            var result = await Observable.When(fetchUserObservable);
 
             return result;
         }
 
         public override async Task<IEnumerable<User>> GetAll()
         {
-            var fetchUsersObrv = base.GetAll()
+            var fetchUsersObservable = base.GetAll()
                 .ToObservable()
                 .Then(users => users.Select(user =>
                 {
@@ -64,7 +64,7 @@ namespace Logic
                     return user;
                 }));
 
-            var result = await Observable.When(fetchUsersObrv);
+            var result = await Observable.When(fetchUsersObservable);
 
             return result;
         }
@@ -74,7 +74,7 @@ namespace Logic
         /// Returns instance of user DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<User> GetBasicCrudDal()
+        protected override IBasicCrudType<User, int> GetBasicCrudDal()
         {
             return _userDal;
         }

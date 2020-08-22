@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -14,18 +14,18 @@ namespace Logic
 {
     public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
     {
-        private readonly IDriverDal _driverDal;
+        private readonly IBasicCrudType<Driver, int> _driverDal;
         
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="driverDal"></param>
+        /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public DriverLogic(IDriverDal driverDal, GlobalConfigs globalConfigs)
+        public DriverLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _driverDal = driverDal;
+            _driverDal = repository.For<Driver, int>();
             _globalConfigs = globalConfigs;
         }
 
@@ -33,7 +33,7 @@ namespace Logic
         /// Returns instance of driver DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Driver> GetBasicCrudDal()
+        protected override IBasicCrudType<Driver, int> GetBasicCrudDal()
         {
             return _driverDal;
         }
@@ -45,7 +45,7 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Driver> Save(Driver instance)
         {
-            // If role is navigator then capaciy is 0
+            // If role is navigator then capacity is 0
             if (instance.Role == RolesEnum.Navigator)
             {
                 instance.Capacity = 0;
