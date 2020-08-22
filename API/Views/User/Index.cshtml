@@ -52,7 +52,7 @@
                 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
-                    <td class="hidden-xs">
+                    <td class="hidden-xs" ng-show="showDetail">
                         @if (disabled)
                         {
                             switch (user.UserRoleEnum)
