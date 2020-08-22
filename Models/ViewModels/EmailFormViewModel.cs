@@ -22,5 +22,15 @@ namespace Models.ViewModels
         public string Message { get; set; }
 
         public bool Status { get; set; } = true;
+        
+        public int AdminCount { get; set; }
+        
+        public int UserCount { get; set; }
+        
+        public int StudentCount { get; set;  }
+        
+        public int DriverCount { get; set; }
+        
+        public int HostCount { get; set; }
     }
 }
