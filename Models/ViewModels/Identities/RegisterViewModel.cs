@@ -7,10 +7,12 @@ namespace Models.ViewModels.Identities
     /// </summary>
     public class RegisterViewModel
     {
+        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
 
         [Required]
+        [MinLength(4)]
         public string Fullname { get; set; }
 
         [Required]
