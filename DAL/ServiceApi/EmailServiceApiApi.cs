@@ -18,6 +18,8 @@ namespace DAL.ServiceApi
         private readonly bool _connected;
 
         private readonly IMailjetClient _mailJetClient;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
         public EmailServiceApi()
         {
@@ -29,11 +31,13 @@ namespace DAL.ServiceApi
         /// </summary>
         /// <param name="emailServiceApi"></param>
         /// <param name="mailJetClient"></param>
-        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient)
+        /// <param name="globalConfigs"></param>
+        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient, GlobalConfigs globalConfigs)
         {
             _connected = true;
             _emailServiceApi = emailServiceApi;
             _mailJetClient = mailJetClient;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -58,7 +62,7 @@ namespace DAL.ServiceApi
                     };
 
                     // If email test mode is not True, then add recipient
-                    if (!GlobalConfigs.EmailTestMode)
+                    if (!_globalConfigs.EmailTestMode)
                     {
                         emailList.Add(new JObject {{"Email", emailAddress}});
                     }

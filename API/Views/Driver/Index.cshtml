@@ -53,7 +53,7 @@
                         <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
                         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                         {
-                            <a href="~/Driver/delete/@driver.Id" class="btn btn-danger">Delete</a>
+                            <a href="~/Driver/delete/@driver.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this driver?">Delete</a>
                         }
                         </div>
                     </td>

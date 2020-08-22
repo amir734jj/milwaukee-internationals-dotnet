@@ -5,6 +5,18 @@ angular.element(document).ready(function() {
 });
 
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+    .directive('validateBeforeGoing', ["$window", function ($window) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                angular.element(element).on("click", (e) => {
+                    if (!$window.confirm(attrs.message)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        }
+    }])
     .controller('eventInfoCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
         $scope.mapStudent = function ($event) {

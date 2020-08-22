@@ -13,14 +13,18 @@ namespace Logic
     public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
     {
         private readonly IHostDal _hostDal;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="hostDal"></param>
-        public HostLogic(IHostDal hostDal)
+        /// <param name="globalConfigs"></param>
+        public HostLogic(IHostDal hostDal, GlobalConfigs globalConfigs)
         {
             _hostDal = hostDal;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace Logic
         
         public override async Task<IEnumerable<Host>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
         }
     }
 }
