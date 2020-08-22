@@ -181,14 +181,13 @@ namespace API
                 .AddDefaultTokenProviders();
             
             // L2 EF cache
-            if (_env.IsDevelopment())
+            if (true || _env.IsDevelopment())
             {
                 services.AddEFSecondLevelCache(options =>
                     options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
                 );
 
                 services.AddEasyCaching(options => options.UseInMemory("memory"));
-
             }
             else
             {
