@@ -20,7 +20,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title></title>
     <title> @(!string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title : ApplicationName) </title>
     
     <meta charset="utf-8">
@@ -207,7 +206,7 @@
     @foreach (var errorMessage in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors).Select(x => x.ErrorMessage))
     {
         <div class="alert alert-danger alert-dismissible fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
             <strong>Error!</strong> @errorMessage
         </div>
     }
