@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
@@ -15,7 +14,7 @@ namespace Logic.Abstracts
         /// Returns instance of basic DAL
         /// </summary>
         /// <returns></returns>
-        protected abstract IBasicCrudDal<T> GetBasicCrudDal();
+        protected abstract IBasicCrudType<T, int> GetBasicCrudDal();
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {

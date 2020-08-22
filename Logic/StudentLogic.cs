@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -13,18 +13,18 @@ namespace Logic
 {
     public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     {
-        private readonly IStudentDal _studentDal;
+        private readonly IBasicCrudType<Student, int> _studentDal;
         
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="studentDal"></param>
+        /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public StudentLogic(IStudentDal studentDal, GlobalConfigs globalConfigs)
+        public StudentLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _studentDal = studentDal;
+            _studentDal = repository.For<Student, int>();
             _globalConfigs = globalConfigs;
         }
 
@@ -32,7 +32,7 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudDal<Student> GetBasicCrudDal()
+        protected override IBasicCrudType<Student, int> GetBasicCrudDal()
         {
             return _studentDal;
         }

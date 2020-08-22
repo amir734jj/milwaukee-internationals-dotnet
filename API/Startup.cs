@@ -319,6 +319,18 @@ namespace API
                                    ForwardedHeaders.XForwardedProto
             });
             
+            app.Use(async (context, next) =>
+            {
+                await next();
+                
+                if (context.Response.IsFailure())
+                {
+                    context.Request.Path = $"/Error/{context.Response.StatusCode}";
+                    await next();
+                }
+            });
+
+            
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
                 .UseStaticFiles()
