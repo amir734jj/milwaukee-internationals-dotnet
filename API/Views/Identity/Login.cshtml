@@ -1,5 +1,6 @@
 ﻿@using Microsoft.Extensions.Options
 @using reCAPTCHA.AspNetCore
+@using reCAPTCHA.AspNetCore.Templates
 @model Models.ViewModels.Identities.LoginViewModel
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 
@@ -36,7 +37,7 @@
             </div>
         </div>
 
-        @Html.Recaptcha(RecaptchaSettings.Value)
+        @(Html.Recaptcha<RecaptchaV2Invisible>(RecaptchaSettings.Value))
 
         <div class="form-group">
             <div class="col-sm-2"></div>
