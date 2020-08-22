@@ -2,6 +2,7 @@
 using API.Abstracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Models.ViewModels.Identities;
 using reCAPTCHA.AspNetCore;
@@ -20,13 +21,16 @@ namespace API.Controllers
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         
         private readonly IRecaptchaService _recaptcha;
+        
+        private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha)
+        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha, ILogger<IdentityController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _recaptcha = recaptcha;
+            _logger = logger;
         }
 
         public override UserManager<User> ResolveUserManager()
@@ -78,6 +82,8 @@ namespace API.Controllers
 
             if (!recaptcha.success)
             {
+                _logger.LogError("Captcha failed: " + recaptcha.score);
+
                 TempData["Error"] = "There was an error validating recatpcha. Please try again!";
                 
                 return RedirectToAction("Login");
@@ -127,6 +133,8 @@ namespace API.Controllers
             
             if (!recaptcha.success)
             {
+                _logger.LogError("Captcha failed: " + recaptcha.score);
+
                 TempData["Error"] = "There was an error validating recatpcha. Please try again!";
 
                 return RedirectToAction("Register");
