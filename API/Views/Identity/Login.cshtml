@@ -39,10 +39,19 @@
         @Html.Recaptcha(RecaptchaSettings.Value)
 
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
                 <button type="submit" class="btn btn-primary">Login</button>
+            </div>
 
-                <a class="btn btn-danger" href="~/PasswordReset"> Reset Password </a>
+            <div class="col-sm-4"> </div>
+
+            <div class="col-sm-4">
+                <div class="pull-right">
+                    <a class="btn btn-info" href="~/Identity/Register"> Register </a>
+                    
+                    <a class="btn btn-danger" href="~/PasswordReset"> Reset Password </a>
+                </div>
             </div>
         </div>
     }

@@ -7,6 +7,8 @@ namespace Models.ViewModels.Identities
     /// </summary>
     public class LoginViewModel
     {
+        [Required]
+        [MinLength(6)]
         public string Username { get; set; }
         
         [Required]
