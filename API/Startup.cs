@@ -181,7 +181,7 @@ namespace API
                 .AddDefaultTokenProviders();
             
             // L2 EF cache
-            if (true || _env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 services.AddEFSecondLevelCache(options =>
                     options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
@@ -205,7 +205,7 @@ namespace API
                         x.DBConfig.Username = dictionary["Username"];
                         x.DBConfig.Password = dictionary["Password"];
                         x.DBConfig.AbortOnConnectFail = false;
-                    });
+                    }, "redis");
                 });
             }
             
