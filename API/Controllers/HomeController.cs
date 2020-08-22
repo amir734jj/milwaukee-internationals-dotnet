@@ -19,7 +19,8 @@ namespace API.Controllers
         
         public async Task<IActionResult> Index()
         {
-            return Redirect("~/Registration/Student".ToLower());
+            // return RedirectToAction("Student", "Registration");
+            return RedirectToAction("Index", "AdHocRegistration");
         }
 
         /// <summary>
