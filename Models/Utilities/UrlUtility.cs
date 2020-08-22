@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Models.Utilities
 {
@@ -10,20 +11,26 @@ namespace Models.Utilities
         /// </summary>
         /// <param name="connectionStringUrl"></param>
         /// <returns></returns>
-        public static IReadOnlyDictionary<string, string> UrlToResource(string connectionStringUrl)
+        public static (Uri, IReadOnlyDictionary<string, string>) UrlToResource(string connectionStringUrl)
         {
             var isUrl = Uri.TryCreate(connectionStringUrl, UriKind.Absolute, out var url);
 
+            if (!isUrl)
+            {
+                return (default, ImmutableDictionary.Create<string, string>());
+            }
+
             var connectionStringBuilder = new Dictionary<string, string>
             {
+                ["Port"] = url.Port.ToString(),
                 ["Host"] = url.Host,
-                ["Username"] = url.UserInfo.Split(':')[0],
-                ["Password"] = url.UserInfo.Split(':')[1],
+                ["Username"] = url.UserInfo.Split(':').GetValue(0)?.ToString(),
+                ["Password"] = url.UserInfo.Split(':').GetValue(1)?.ToString(),
                 ["Database"] = url.LocalPath.Substring(1),
                 ["ApplicationName"] = "milwaukee-internationals"
             };
 
-            return connectionStringBuilder;
+            return (url, connectionStringBuilder);
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Models.Entities;
-using static DAL.Utilities.ConnectionStringUtility;
+using static Dal.Utilities.ConnectionStringUtility;
 
 namespace DAL.Utilities
 {
@@ -61,7 +61,7 @@ namespace DAL.Utilities
                 .Build();
 
             var options = new DbContextOptionsBuilder<EntityDbContext>()
-                .UseNpgsql(ConnectionStringUrlToResource(configuration.GetValue<string>("DATABASE_URL")))
+                .UseNpgsql(ConnectionStringUrlToPgResource(configuration.GetValue<string>("DATABASE_URL")))
                 .Options;
 
             return new EntityDbContext(options);
