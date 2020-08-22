@@ -73,7 +73,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         // Start the text editor
-        angular.element('.summernote').summernote();
+        angular.element('.summernote').summernote({ height: 150 });
 
     }])
     .controller('userListCtrl', ['$scope', '$http', function ($scope, $http) {
@@ -87,7 +87,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         }, 2000);
 
         // Start the text editor
-        angular.element('.summernote').summernote();
+        angular.element('.summernote').summernote({ height: 150 });
     }])
     .controller("emailCheckInCtrl", ['$scope', '$http', function ($scope, $http) {
         $scope.changeAttendance = function (type, id, value) {

@@ -12,27 +12,49 @@ namespace Logic
 {
     public class EmailUtilityLogic :  IEmailUtilityLogic
     {
+        private readonly GlobalConfigs _globalConfigs;
+
         private readonly IUserLogic _userLogic;
+        
         private readonly IEmailServiceApi _emailServiceApiApi;
+
         private readonly IStudentLogic _studentLogic;
+        
         private readonly IHostLogic _hostLogic;
+        
         private readonly IDriverLogic _driverLogic;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
+        /// <param name="globalConfigs"></param>
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
         /// <param name="hostLogic"></param>
         /// <param name="userLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public EmailUtilityLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IUserLogic userLogic, IEmailServiceApi emailServiceApiApi)
+        public EmailUtilityLogic(GlobalConfigs globalConfigs, IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IUserLogic userLogic, IEmailServiceApi emailServiceApiApi)
         {
+            _globalConfigs = globalConfigs;
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
             _userLogic = userLogic;
             _emailServiceApiApi = emailServiceApiApi;
+        }
+
+        public async Task<EmailFormViewModel> GetEmailForm()
+        {
+            var year = _globalConfigs.YearValue;
+            
+            return new EmailFormViewModel
+            {
+                AdminCount = ApiConstants.AdminEmail.Length,
+                StudentCount = (await _studentLogic.GetAll(year)).Count(),
+                DriverCount = (await _driverLogic.GetAll(year)).Count(),
+                HostCount = (await _hostLogic.GetAll(year)).Count(),
+                UserCount = (await _userLogic.GetAll(year)).Count()
+            };
         }
 
         public async Task<bool> HandleEventEmail(EmailEventViewModel emailEventViewModel)
@@ -50,6 +72,8 @@ namespace Logic
         /// <returns></returns>
         public async Task<bool> HandleAdHocEmail(EmailFormViewModel emailFormViewModel)
         {
+            var year = _globalConfigs.YearValue;
+            
             var emailAddresses = new List<string>();
 
             // Add admin email
@@ -61,21 +85,21 @@ namespace Logic
             // Add student emails
             if (emailFormViewModel.Students)
             {
-                var students = await _studentLogic.GetAll(DateTime.UtcNow.Year);
+                var students = await _studentLogic.GetAll(year);
                 emailAddresses.AddRange(students.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
 
             // Add driver emails
             if (emailFormViewModel.Drivers)
             {
-                var drivers = await _driverLogic.GetAll(DateTime.UtcNow.Year);
+                var drivers = await _driverLogic.GetAll(year);
                 emailAddresses.AddRange(drivers.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             
             // Add host emails
             if (emailFormViewModel.Hosts)
             {
-                var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
+                var hosts = await _hostLogic.GetAll(year);
                 emailAddresses.AddRange(hosts.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
             }
             

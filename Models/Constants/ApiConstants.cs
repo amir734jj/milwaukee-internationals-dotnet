@@ -17,5 +17,7 @@ namespace Models.Constants
         };
 
         public const string SiteEmail = "tourofmilwaukee@gmail.com";
+
+        public const string ApplicationName = "Milwaukee Internationals";
     }
 }

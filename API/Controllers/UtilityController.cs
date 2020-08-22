@@ -42,7 +42,11 @@ namespace API.Controllers
         [SwaggerOperation("AdHocEmail")]
         public async Task<IActionResult> AdHocEmail(bool status = false)
         {
-            return View(new EmailFormViewModel { Status = status });
+            var viewModel = await _emailUtilityLogic.GetEmailForm();
+
+            viewModel.Status = status;
+            
+            return View(viewModel);
         }
 
         /// <summary>

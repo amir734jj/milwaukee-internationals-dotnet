@@ -7,11 +7,11 @@
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 @inject CacheBustingUtility CacheBustingUtility;
 @inject GlobalConfigs GlobalConfigs;
+@using static Models.Constants.ApiConstants
 
 @{
     var utility = RequestUtilityBuilder.For(Context);
     var userInfo = await utility.GetUserInfo();
-    var dateTimeNow = DateTime.UtcNow;
     var cacheBustingKey = CacheBustingUtility.CacheBustingKey();
     var yearContext = GlobalConfigs.YearValue;
     var themes = ApplicationConstants.Themes;
@@ -20,7 +20,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Milwaukee Internationals</title>
+    <title></title>
+    <title> @(!string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title : ApplicationName) </title>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -87,7 +89,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="~/">
-                Milwaukee Internationals
+                @ApplicationName
+                
                 @if (utility.IsAuthenticated())
                 {
                     <sub>

@@ -1,6 +1,8 @@
 @using Logic.Extensions
+@using Models.Constants
 @using Models.ViewModels
 @model EmailFormViewModel
+@inject GlobalConfigs GlobalConfigs
 
 @{
     ViewBag.Title = "Email AdHoc Utility";
@@ -8,7 +10,7 @@
 }
 
 <div class="container">
-    
+
     @if (Model.Status)
     {
         <div class="alert alert-success autoclose">
@@ -18,6 +20,17 @@
 
     <div class="page-header">
         <h3>Email Utility Service</h3>
+
+        <p>
+            Note that students, drivers, hosts are all the ones for selected year context. If you wish to send an email to those
+            for prior years then change the year context. Current year context is <strong>@(GlobalConfigs.YearValue)</strong>.
+        </p>
+        
+        <p>
+            <strong> Email test mode </strong> is currently <strong> @(GlobalConfigs.EmailTestMode ? "Active" : "Inactive") </strong>.
+            So the email <strong> @(GlobalConfigs.EmailTestMode ? "WILL NOT" : "WILL") </strong> be sent to the users.
+        </p>
+        
     </div>
 
     @using (Html.BeginForm("AdHocEmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl"}))
@@ -28,47 +41,49 @@
                     <div class="checkbox">
                         <label>
                             @Html.CheckBoxFor(x => x.Admin)
-                            @Model.PropName(x => x.Admin)
+                            @Model.PropName(x => x.Admin) (@Model.AdminCount)
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             @Html.CheckBoxFor(x => x.Students)
-                            @Model.PropName(x => x.Students)
+                            @Model.PropName(x => x.Students) (@Model.StudentCount)
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             @Html.CheckBoxFor(x => x.Drivers)
-                            @Model.PropName(x => x.Drivers)
+                            @Model.PropName(x => x.Drivers) (@Model.DriverCount)
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             @Html.CheckBoxFor(x => x.Hosts)
-                            @Model.PropName(x => x.Hosts)
+                            @Model.PropName(x => x.Hosts) (@Model.HostCount)
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             @Html.CheckBoxFor(x => x.Users)
-                            @Model.PropName(x => x.Users)
+                            @Model.PropName(x => x.Users) (@Model.UserCount)
                         </label>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             @Html.LabelFor(x => x.Subject)
             @Html.TextBoxFor(x => x.Subject, new {@class = "form-control", type = "text", placeholder = "Enter subject"})
         </div>
+
         <div class="form-group">
             @Html.LabelFor(x => x.Message)
             @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control summernote", rows = "10"})
         </div>
+
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Send email</button>
         </div>
     }
 </div>
-
