@@ -59,7 +59,7 @@
 
                         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                         {
-                            <a href="~/Student/delete/@student.Id" class="btn btn-danger">Delete</a>
+                            <a href="~/Student/delete/@student.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this student?">Delete</a>
                         }
                         </div>
                     </td>

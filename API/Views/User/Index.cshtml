@@ -7,15 +7,12 @@
     ViewBag.Title = "Users";
     Layout = "_Layout";
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
-
-    var adminRole = UserRoleEnum.Admin.ToString();
-    var basicRole = UserRoleEnum.Basic.ToString();
 }
 
 <div class="container" ng-controller="userListCtrl">
     <div class="page-header">
         <h3>List of Users <small>(@Model.Count())</small></h3>
-        
+
         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
         {
             <div class="row">
@@ -25,16 +22,16 @@
             </div>
         }
     </div>
-    
+
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
             <th>Fullname</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Username</th>
-            <th>Role</th>
-            
+            <th class="hidden-sm hidden-xs">Username</th>
+            <th class="hidden-sm hidden-xs">Role</th>
+
             @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
             {
                 <th class="hidden-xs" ng-show="showDetail">Action</th>
@@ -50,12 +47,43 @@
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
-                <td>@user.UserName</td>
-                <td>@user.UserRoleEnum</td>
-
+                <td class="hidden-sm hidden-xs">@user.UserName</td>
+                <td class="hidden-sm hidden-xs">@user.UserRoleEnum</td>
+                
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
-                    
+                    <td class="hidden-xs">
+                        @if (disabled)
+                        {
+                            switch (user.UserRoleEnum)
+                            {
+                                case UserRoleEnum.Basic:
+                                    <a href="" class="btn btn-primary btn-sm disabled">Set Admin</a>
+                                    break;
+                                case UserRoleEnum.Admin:
+                                    <a href="" class="btn btn-primary btn-sm disabled">Set Basic</a>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            <a href="" class="btn btn-danger btn-sm disabled">Delete</a>
+                        }
+                        else
+                        {
+                            switch (user.UserRoleEnum)
+                            {
+                                case UserRoleEnum.Basic:
+                                    <a href="~/User/updateUserRole/@user.Id/@UserRoleEnum.Admin" class="btn btn-primary btn-sm">Set Admin</a>
+                                    break;
+                                case UserRoleEnum.Admin:
+                                    <a href="~/User/UpdateUserRole/@user.Id/@UserRoleEnum.Basic" class="btn btn-primary btn-sm">Set Basic</a>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            <a href="~/User/delete/@user.Id" class="btn btn-danger btn-sm" validate-before-going data-message="Are you sure to delete this user?">Delete</a>
+                        }
+                    </td>
                 }
             </tr>
         }

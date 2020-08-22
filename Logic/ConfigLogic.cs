@@ -6,6 +6,7 @@ using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Microsoft.Extensions.Logging;
+using Models.Constants;
 using Models.ViewModels.Config;
 using static Models.Constants.GlobalConfigs;
 using static Models.Constants.ApplicationConstants;
@@ -17,11 +18,14 @@ namespace Logic
         private readonly IS3Service _s3Service;
 
         private readonly ILogger<ConfigLogic> _logger;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
-        public ConfigLogic(IS3Service s3Service, ILogger<ConfigLogic> logger)
+        public ConfigLogic(IS3Service s3Service, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs)
         {
             _s3Service = s3Service;
             _logger = logger;
+            _globalConfigs = globalConfigs;
         }
 
         public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
@@ -33,10 +37,10 @@ namespace Logic
             var retVal = new GlobalConfigViewModel
             {
                 Years = years,
-                UpdatedYear = YearValue,
-                EventFeature = EventFeature,
-                EmailTestMode = EmailTestMode,
-                Theme = CurrentTheme
+                UpdatedYear = _globalConfigs.YearValue,
+                EventFeature = _globalConfigs.EventFeature,
+                EmailTestMode = _globalConfigs.EmailTestMode,
+                Theme = _globalConfigs.CurrentTheme
             };
 
             return await Task.FromResult(retVal);
@@ -44,7 +48,7 @@ namespace Logic
 
         public async Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            UpdateGlobalConfigs(globalConfigViewModel);
+            _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
 
             await _s3Service.Upload(ConfigFile, globalConfigViewModel.ToByteArray(), new Dictionary<string, string>
             {
@@ -62,7 +66,7 @@ namespace Logic
                 
                 var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>();
                 
-                UpdateGlobalConfigs(globalConfigViewModel);
+                _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
             }
             else
             {

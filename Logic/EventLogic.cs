@@ -15,16 +15,20 @@ namespace Logic
         private readonly IEventDal _eventDal;
         
         private readonly IStudentLogic _studentLogic;
+        
+        private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="eventDal"></param>
         /// <param name="studentLogic"></param>
-        public EventLogic(IEventDal eventDal, IStudentLogic studentLogic)
+        /// <param name="globalConfigs"></param>
+        public EventLogic(IEventDal eventDal, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
         {
             _eventDal = eventDal;
             _studentLogic = studentLogic;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -38,13 +42,13 @@ namespace Logic
 
         public override async Task<IEnumerable<Event>> GetAll()
         {
-            return (await base.GetAll()).Where(x => x.Year == GlobalConfigs.YearValue);
+            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
         }
 
         public override Task<Event> Save(Event instance)
         {
             // Set year context
-            instance.Year = GlobalConfigs.YearValue;
+            instance.Year = _globalConfigs.YearValue;
             
             return base.Save(instance);
         }

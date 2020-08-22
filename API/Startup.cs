@@ -130,25 +130,30 @@ namespace API
             });
 
             services.AddMvc(x =>
-            {
-                x.ModelValidatorProviders.Clear();
-
-                // Not need to have https
-                x.RequireHttpsPermanent = false;
-
-                // Allow anonymous for localhost
-                if (_env.IsLocalhost())
                 {
-                    x.Filters.Add<AllowAnonymousFilter>();
-                }
-            }).AddNewtonsoftJson(x =>
-            {
-                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                x.SerializerSettings.Converters.Add(new StringEnumConverter());
-            }).AddRazorPagesOptions(x =>
-            {
-                x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-            });
+                    x.ModelValidatorProviders.Clear();
+
+                    // Not need to have https
+                    x.RequireHttpsPermanent = false;
+
+                    // Allow anonymous for localhost
+                    if (_env.IsLocalhost())
+                    {
+                        x.Filters.Add<AllowAnonymousFilter>();
+                    }
+                })
+                .AddViewOptions(x =>
+                {
+                    x.HtmlHelperOptions.ClientValidationEnabled = true;
+                })
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    x.SerializerSettings.Converters.Add(new StringEnumConverter());
+                }).AddRazorPagesOptions(x =>
+                {
+                    x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                });
             
             services.AddWebMarkupMin(opt =>
                 {
@@ -201,6 +206,8 @@ namespace API
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+                x.LoginPath = new PathString("/Identity/login");
+                x.LogoutPath = new PathString("/Identity/logout");
             });
             
             // Re-Captcha config
@@ -258,6 +265,8 @@ namespace API
                 // Singleton to handle identities
                 config.For<IIdentityLogic>().Singleton();
 
+                config.For<GlobalConfigs>().Singleton();
+                
                 // Initialize the email jet client
                 config.For<IMailjetClient>().Use(new MailjetClient(
                     Environment.GetEnvironmentVariable("MAIL_JET_KEY"),

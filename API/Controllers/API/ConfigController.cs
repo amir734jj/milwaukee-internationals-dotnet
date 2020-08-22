@@ -10,12 +10,19 @@ namespace API.Controllers.API
     [Route("api/[controller]")]
     public class ConfigController : Controller
     {
+        private readonly GlobalConfigs _globalConfigs;
+
+        public ConfigController(GlobalConfigs globalConfigs)
+        {
+            _globalConfigs = globalConfigs;
+        }
+        
         [HttpGet]
         [Route("Status")]
         [SwaggerOperation("Status")]
         public async Task<IActionResult> Status()
         {
-            var config = GlobalConfigs.ToAnonymousObject();
+            var config = _globalConfigs.ToAnonymousObject();
             
             return Ok(config);
         }

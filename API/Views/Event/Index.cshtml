@@ -49,7 +49,7 @@
                         <div class="btn-group-vertical">
                         <a href="~/Event/Info/@eventModel.Id" class="btn btn-primary">Preview</a>
                         <a href="~/Event/Edit/@eventModel.Id" class="btn btn-warning">Edit</a>
-                        <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger">Delete</a>
+                        <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this event?">Delete</a>
                         </div>
                     </td>
                 }
