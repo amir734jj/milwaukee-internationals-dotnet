@@ -37,7 +37,11 @@
             </div>
         </div>
 
-        @(Html.Recaptcha<RecaptchaV3HiddenInput>(RecaptchaSettings?.Value))
+        <div class="form-group">
+            <div class="col-sm-2 col-sm-offset-2">
+                @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings?.Value))
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-sm-2"></div>

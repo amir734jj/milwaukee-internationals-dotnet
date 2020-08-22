@@ -75,7 +75,7 @@ namespace API.Controllers
         public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
         {
             var recaptcha = await _recaptcha.Validate(Request);
-            
+
             if (!recaptcha.success)
             {
                 TempData["Error"] = "There was an error validating recatpcha. Please try again!";
