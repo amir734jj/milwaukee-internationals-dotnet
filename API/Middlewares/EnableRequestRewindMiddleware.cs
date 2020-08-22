@@ -6,8 +6,7 @@ namespace API.Middlewares
     public class EnableRequestRewindMiddleware
     {
         private readonly RequestDelegate _next;
-
-        ///<inheritdoc/>
+        
         public EnableRequestRewindMiddleware(RequestDelegate next)
         {
             _next = next;

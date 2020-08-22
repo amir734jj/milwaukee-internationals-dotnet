@@ -4,6 +4,7 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using API.Extensions;
+using API.Middlewares;
 using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -135,6 +136,8 @@ namespace API
                     {
                         x.Filters.Add<AllowAnonymousFilter>();
                     }
+
+                    x.Filters.Add<PreventAuthenticatedActionFilter>();
                 })
                 .AddViewOptions(x =>
                 {
