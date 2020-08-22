@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using API.Abstracts;
+using API.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -55,6 +57,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Login")]
         [SwaggerOperation("Login")]
+        [DisallowAuthenticated]
         public async Task<IActionResult> Login()
         {
             if (TempData.ContainsKey("Error"))
@@ -76,8 +79,11 @@ namespace API.Controllers
         [HttpPost]
         [Route("LoginHandler")]
         [SwaggerOperation("LoginHandler")]
+        [DisallowAuthenticated]
         public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
         {
+            TempData.Clear();
+            
             var recaptcha = await _recaptcha.Validate(Request);
 
             if (!recaptcha.success)
@@ -93,7 +99,7 @@ namespace API.Controllers
 
             if (result)
             {
-                return Redirect(Url.Content("~/"));
+                return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("NotAuthenticated");
@@ -106,6 +112,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Register")]
         [SwaggerOperation("Register")]
+        [DisallowAuthenticated]
         public async Task<IActionResult> Register()
         {
             if (TempData.ContainsKey("Error"))
@@ -127,8 +134,11 @@ namespace API.Controllers
         [HttpPost]
         [Route("RegisterHandler")]
         [SwaggerOperation("RegisterHandler")]
+        [DisallowAuthenticated]
         public async Task<IActionResult> RegisterHandler(RegisterViewModel registerViewModel)
         {
+            TempData.Clear();
+            
             var recaptcha = await _recaptcha.Validate(Request);
             
             if (!recaptcha.success)
@@ -177,6 +187,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("Logout")]
         [SwaggerOperation("Logout")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await base.Logout();
