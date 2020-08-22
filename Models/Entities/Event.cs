@@ -5,7 +5,7 @@ using Models.Interfaces;
 
 namespace Models.Entities
 {
-    public class Event : IBasicModel
+    public class Event : IEntity
     {
         [Key]
         public int Id { get; set; }

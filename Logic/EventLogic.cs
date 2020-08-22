@@ -93,7 +93,7 @@ namespace Logic
             }
 
             // Update the event
-            await _eventDal.Update(eventId, @event =>
+            await Update(eventId, @event =>
             {
                 // Make sure it is not null or empty
                 @event.Students ??= new List<EventStudentRelationship>();
@@ -128,7 +128,7 @@ namespace Logic
             }
             
             // Update the event
-            await _eventDal.Update(eventId, @event =>
+            await Update(eventId, @event =>
             {
                 var item = @event.Students.FirstOrDefault(x => x.StudentId == studentId);
 

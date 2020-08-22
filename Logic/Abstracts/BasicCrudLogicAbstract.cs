@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
 
 namespace Logic.Abstracts
 {
-    public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T>
+    public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity<int>
     {
         /// <summary>
         /// Returns instance of basic DAL
@@ -18,21 +19,16 @@ namespace Logic.Abstracts
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {
-            var rslt = await GetAll();
-            
-            switch (rslt)
+            var result = (await GetAll()).ToList();
+
+            return result switch
             {
-                case IEnumerable<Driver> drivers:
-                    return drivers.Where(x => x.Year == year).Cast<T>();
-                case IEnumerable<Host> hosts:
-                    return hosts.Where(x => x.Year == year).Cast<T>();
-                case IEnumerable<Student> students:
-                    return students.Where(x => x.Year == year).Cast<T>();
-                case IEnumerable<User> users:
-                    return users.Cast<T>();
-                default:
-                    return rslt;
-            }            
+                List<Driver> drivers => drivers.Where(x => x.Year == year).Cast<T>(),
+                List<Host> hosts => hosts.Where(x => x.Year == year).Cast<T>(),
+                List<Student> students => students.Where(x => x.Year == year).Cast<T>(),
+                List<User> users => users.Cast<T>(),
+                _ => result
+            };
         }
 
         /// <summary>
@@ -94,7 +90,13 @@ namespace Logic.Abstracts
         /// <exception cref="NotImplementedException"></exception>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            return await GetBasicCrudDal().Update(id, modifyAction);
+            await using var session = GetBasicCrudDal().Session();
+            
+            var entity = await session.Get(id);
+
+            modifyAction(entity);
+
+            return await session.Update(id, entity);
         }
     }
 }

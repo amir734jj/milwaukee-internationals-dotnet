@@ -1,4 +1,5 @@
-﻿using Models.Entities;
+﻿using EfCoreRepository.Interfaces;
+using Models.Entities;
 
 namespace DAL.Interfaces
 {

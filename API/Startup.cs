@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
@@ -9,6 +10,7 @@ using DAL.ServiceApi;
 using DAL.Utilities;
 using EFCache;
 using EFCache.Redis;
+using EfCoreRepository.Extensions;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -211,6 +213,8 @@ namespace API
             // Re-Captcha config
             services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
+
+            services.AddEfRepository<EntityDbContext>(c => c.Profiles(Assembly.Load("DAL")));
             
             _container = new Container(config =>
             {
