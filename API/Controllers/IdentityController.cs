@@ -86,7 +86,7 @@ namespace API.Controllers
             
             var recaptcha = await _recaptcha.Validate(Request);
 
-            if (!recaptcha.success)
+            if (false && !recaptcha.success)
             {
                 _logger.LogError("Captcha failed: " + recaptcha.score);
 
@@ -141,7 +141,7 @@ namespace API.Controllers
             
             var recaptcha = await _recaptcha.Validate(Request);
             
-            if (!recaptcha.success)
+            if (false && !recaptcha.success)
             {
                 _logger.LogError("Captcha failed: " + recaptcha.score);
 
