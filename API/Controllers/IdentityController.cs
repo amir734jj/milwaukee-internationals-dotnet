@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Models.ViewModels.Identities;
 using reCAPTCHA.AspNetCore;
+using reCAPTCHA.AspNetCore.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
@@ -86,14 +87,14 @@ namespace API.Controllers
             
             var recaptcha = await _recaptcha.Validate(Request);
 
-            if (false && !recaptcha.success)
+            /*if (!recaptcha.success)
             {
                 _logger.LogError("Captcha failed: " + recaptcha.score);
 
                 TempData["Error"] = "There was an error validating recatpcha. Please try again!";
-                
+
                 return RedirectToAction("Login");
-            }
+            }*/
 
             var result = await base.Login(loginViewModel);
 
@@ -141,14 +142,14 @@ namespace API.Controllers
             
             var recaptcha = await _recaptcha.Validate(Request);
             
-            if (false && !recaptcha.success)
+            /*if (!recaptcha.success)
             {
                 _logger.LogError("Captcha failed: " + recaptcha.score);
 
-                TempData["Error"] = "There was an error validating recatpcha. Please try again!";
+                TempData["Error"] = "There was an error validating recaptcha. Please try again!";
 
                 return RedirectToAction("Register");
-            }
+            }*/
 
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {

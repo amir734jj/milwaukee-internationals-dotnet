@@ -39,7 +39,7 @@ using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
 using StructureMap;
-using WebMarkupMin.AspNetCore2;
+using WebMarkupMin.AspNetCore3;
 using static Dal.Utilities.ConnectionStringUtility;
 
 namespace API
@@ -302,7 +302,7 @@ namespace API
             configLogic.Refresh();
             
             // Add SecureHeadersMiddleware to the pipeline
-            // app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
+            app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
             app.UseCors("CorsPolicy");
 
@@ -319,7 +319,7 @@ namespace API
             }
             else
             {
-                // app.UseWebMarkupMin();
+                app.UseWebMarkupMin();
             }
 
             // Not necessary for this workshop but useful when running behind kubernetes
