@@ -318,6 +318,10 @@ namespace API
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             }
+            else
+            {
+                app.UseWebMarkupMin();
+            }
 
             // Not necessary for this workshop but useful when running behind kubernetes
             app.UseForwardedHeaders(new ForwardedHeadersOptions
