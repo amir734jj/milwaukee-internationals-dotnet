@@ -14,9 +14,7 @@ namespace API.Utilities
     public struct UserInfo
     {
         public string Username { get; set; }
-        
-        public string Password { get; set; }
-        
+
         public UserRoleEnum UserRoleEnum { get; set; }
     }
     
@@ -48,7 +46,6 @@ namespace API.Utilities
                 return new UserInfo
                 {
                     Username = null,
-                    Password = null,
                     UserRoleEnum = UserRoleEnum.Basic
                 };
             }
@@ -58,7 +55,6 @@ namespace API.Utilities
             return new UserInfo
             {
                 Username = user.UserName,
-                Password = user.PasswordHash,
                 UserRoleEnum = role
             };
         }
