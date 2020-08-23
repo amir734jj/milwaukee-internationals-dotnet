@@ -18,7 +18,7 @@
     
     @using (Html.BeginForm("RegisterDriver", "Registration", FormMethod.Post, new { ng_controller = "driverRegistrationCtrl" }))
     {
-        @Html.Partial("DriverContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}})
+        @(Html.PartialAsync("DriverContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}}))
         
         <input class="btn btn-primary" type="submit" value="Register" />
     }

@@ -8,7 +8,7 @@
 
 @using (Html.BeginForm("EditHandler", "Host", FormMethod.Post, new {ng_controller = "hostEditCtrl"}))
 {
-    @Html.Partial("HostContent", Model)
+    @await Html.PartialAsync("HostContent", Model)
 
     <input class="btn btn-primary" type="submit" value="Update"/>
 }
