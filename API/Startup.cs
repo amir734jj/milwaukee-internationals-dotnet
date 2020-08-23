@@ -319,7 +319,7 @@ namespace API
             }
             else
             {
-                app.UseWebMarkupMin();
+                // app.UseWebMarkupMin();
             }
 
             // Not necessary for this workshop but useful when running behind kubernetes
