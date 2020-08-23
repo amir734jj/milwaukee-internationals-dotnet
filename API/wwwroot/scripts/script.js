@@ -5,6 +5,7 @@ angular.element(document).ready(function() {
 });
 
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+    .constant("jsPDF", (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ["$window", function ($window) {
         return {
             restrict: 'A',
@@ -22,8 +23,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.mapStudent = function ($event) {
             $event.preventDefault();
 
-            var eventId = $scope.eventId;
-            var studentId = $scope.studentId;
+            const eventId = $scope.eventId;
+            const studentId = $scope.studentId;
 
             if (eventId && studentId) {
                 $http.post("/api/event/map/" + eventId + "/" + studentId).then(function () {
@@ -35,7 +36,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.unMapStudent = function ($event, studentId) {
             $event.preventDefault();
 
-            var eventId = $scope.eventId;
+            const eventId = $scope.eventId;
 
             if (eventId && studentId) {
                 $http.post("/api/event/unmap/" + eventId + "/" + studentId).then(function () {
@@ -47,9 +48,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         $scope.sendAdHocEmail = function ($event) {
             $event.preventDefault();
 
-            var eventId = $scope.eventId;
-            var emailSubject = $scope.emailSubject;
-            var emailBody = angular.element('.summernote').eq(0).summernote("code");
+            const eventId = $scope.eventId;
+            const emailSubject = $scope.emailSubject;
+            const emailBody = angular.element('.summernote').eq(0).summernote("code");
 
             if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
                 $http.post("/api/event/email", {
@@ -66,7 +67,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.fetchInfo = function () {
             $http.get('/api/event/info/' + $scope.eventId).then(function (response) {
-                var data = response.data;
+                const data = response.data;
                 $scope.event = data.event;
                 $scope.availableStudents = data.availableStudents;
             });
@@ -121,7 +122,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             }
         }
     }])
-    .controller('studentListCtrl', ['$scope', '$http', function ($scope, $http) {
+    .controller('studentListCtrl', ['$scope', '$http', 'jsPDF', function ($scope, $http, jsPDF) {
 
         $scope.pdfDownloadTable = {
             id: false,
@@ -146,28 +147,29 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getAllStudentsPDF = function () {
             $http.get("/api/student").then(function (response) {
-                var students = response.data;
+                let students = response.data;
 
-                var doc = new jsPDF({
+                const doc = new jsPDF({
                     orientation: "l",
                     lineHeight: 1.5
                 });
 
                 doc.setFont('courier');
-                
-                var subsetAttr = function (attrList, obj) {
+
+                const subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
                         o[k] = String(obj[k]);
                         return o;
                     }, {});
                 };
 
-                var i, j, temparray, chunk = 25;
-                var attributes = Object.keys($scope.pdfDownloadTable).filter(function (value) { 
-                   return $scope.pdfDownloadTable[value]; 
+                let i, j, temparray;
+                const chunk = 25;
+                const attributes = Object.keys($scope.pdfDownloadTable).filter(function (value) {
+                    return $scope.pdfDownloadTable[value];
                 });
 
-                var fontSize = 10;
+                let fontSize = 10;
                 if (attributes.length <= 7) {
                     fontSize = 10;
                 } else if (attributes.length < 10) {
@@ -181,7 +183,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 for (i = 0, j = students.length; i < j; i += chunk) {
                     temparray = students.slice(i, i + chunk);
 
-                    var str = stringTable.create(temparray.map(function (student) {
+                    let str = stringTable.create(temparray.map(function (student) {
                         return subsetAttr(attributes, student);
                     }));
 
@@ -199,12 +201,12 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
-    .controller("driverListCtrl", ['$scope', '$http', function ($scope, $http) {
+    .controller("driverListCtrl", ['$scope', '$http', "jsPDF", function ($scope, $http, jsPDF) {
         $scope.getAllDriversPDF = function () {
             $http.get("/api/driver").then(function (response) {
-                var drivers = response.data;
+                const drivers = response.data;
 
-                var doc = new jsPDF({
+                const doc = new jsPDF({
                     orientation: "l",
                     lineHeight: 1.5
                 });
@@ -213,18 +215,19 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                 doc.setFontSize(10);
 
-                var subsetAttr = function (attrList, obj) {
+                const subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
                         o[k] = obj[k];
                         return o;
                     }, {});
                 };
 
-                var i, j, temparray, chunk = 25;
+                let i, j, temparray;
+                const chunk = 25;
                 for (i = 0, j = drivers.length; i < j; i += chunk) {
                     temparray = drivers.slice(i, i + chunk);
 
-                    var str = stringTable.create(temparray.map(function (driver) {
+                    let str = stringTable.create(temparray.map(function (driver) {
 
                         // Set the navigator for the PDF
                         driver.navigator = (driver.navigator || driver.navigator === "null") ?
@@ -251,12 +254,12 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
-    .controller("hostListCtrl", ["$scope", "$http", function ($scope, $http) {
+    .controller("hostListCtrl", ["$scope", "$http", "jsPDF", function ($scope, $http, jsPDF) {
         $scope.getAllHostPDF = function () {
             $http.get("/api/host").then(function (response) {
-                var hosts = response.data;
+                const hosts = response.data;
 
-                var doc = new jsPDF({
+                const doc = new jsPDF({
                     orientation: "l",
                     lineHeight: 1.5
                 });
@@ -265,18 +268,19 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                 doc.setFontSize(10);
 
-                var subsetAttr = function (attrList, obj) {
+                const subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
                         o[k] = obj[k];
                         return o;
                     }, {});
                 };
 
-                var i, j, temparray, chunk = 25;
+                let i, j, temparray;
+                const chunk = 25;
                 for (i = 0, j = hosts.length; i < j; i += chunk) {
                     temparray = hosts.slice(i, i + chunk);
 
-                    var str = stringTable.create(temparray.map(function (host) {
+                    let str = stringTable.create(temparray.map(function (host) {
                         return subsetAttr(["fullname", "email", "phone", "address"], host);
                     }));
 
@@ -295,19 +299,17 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         };
     }])
-    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
+    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", "jsPDF", function ($scope, $http, $window, jsPDF) {
 
         $scope.showPresentOnly = false;
 
         $scope.resolvePassengers = function (driver) {
             if (driver.students && driver.students.length) {
-                var cnt = driver.students.map(function (student) {
+                return driver.students.map(function (student) {
                     return 1 + student.familySize;
                 }).reduce(function (previousValue, currentValue) {
                     return previousValue + currentValue
                 }, 0);
-
-                return cnt;
             } else {
                 return 0;
             }
@@ -325,9 +327,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getAllDriverMappingPDF = function () {
             $http.get("/api/studentDriverMapping/status").then(function (response) {
-                var driverBucket = response.data.mappedDrivers;
+                const driverBucket = response.data.mappedDrivers;
 
-                var doc = new jsPDF({
+                const doc = new jsPDF({
                     orientation: "l",
                     lineHeight: 1.5
                 });
@@ -336,7 +338,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                 doc.setFontSize(11);
 
-                var subsetAttr = function (attrList, obj) {
+                const subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
                         o[k] = obj[k];
                         return o;
@@ -344,7 +346,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 };
 
                 driverBucket.map(function (driver, index) {
-                    var str = "";
+                    let str = "";
 
                     if (driver) {
                         str += "Driver Name: " + driver.fullname + "\n";
@@ -382,7 +384,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getStatus = function () {
             return $http.get("/api/studentDriverMapping/status").then(function (response) {
-                var data = response.data;
+                const data = response.data;
                 $scope.availableDrivers = data.availableDrivers;
                 $scope.availableStudents = data.availableStudents;
                 $scope.rawAvailableStudents = $scope.availableStudents;
@@ -398,7 +400,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                         return value.key;
                     })
                     .reduce(function (rv, x) {
-                        var key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                        const key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
                         (rv[key] = rv[key] || []).push(x);
                         return rv;
                     }, {});
@@ -444,7 +446,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.resolvePassengers = function (driver) {
             if (driver.students && driver.students.length) {
-                var cnt = driver.students.map(function (student) {
+                const cnt = driver.students.map(function (student) {
                     return 1 + student.familySize;
                 }).reduce(function (previousValue, currentValue) {
                     return previousValue + currentValue
@@ -470,7 +472,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                     }, {});
 
                 $scope.availableDriversBuckets = $scope.drivers.reduce(function (rv, x) {
-                    var key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                    const key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
                     (rv[key] = rv[key] || []).push(x);
                     return rv;
                 }, {});
@@ -525,7 +527,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 $scope.countryCount["All Countries"] = $scope.allStudents.length;
 
                 // Filter
-                var countries = $scope.countries.filter(function (value) {
+                const countries = $scope.countries.filter(function (value) {
                     return value !== "All Countries"
                 });
 
@@ -548,9 +550,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         $scope.updateTable = function () {
-            var students = $scope.allStudents;
+            let students = $scope.allStudents;
 
-            var filteredStudents = {
+            const filteredStudents = {
                 "country": [],
                 "attendance": [],
                 "fullname": []
@@ -602,11 +604,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.init();
     }])
-    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", function ($scope, $http, $window) {
+    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", "jsPDF", function ($scope, $http, $window, jsPDF) {
 
         $scope.resolvePassengers = function (driver) {
             if (driver.students && driver.students.length) {
-                var cnt = driver.students.map(function (student) {
+                const cnt = driver.students.map(function (student) {
                     return 1 + student.familySize;
                 }).reduce(function (previousValue, currentValue) {
                     return previousValue + currentValue
@@ -619,8 +621,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         $scope.getHostInfo = function (host) {
-            var hostCapacity = 0;
-            var hostAssigned = 0;
+            let hostCapacity = 0;
+            let hostAssigned = 0;
 
             if (host.drivers) {
                 hostCapacity = host.drivers.map(function (driver) {
@@ -645,9 +647,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getAllDriverMappingPDF = function () {
             $http.get("/api/driverHostMapping/status").then(function (response) {
-                var hostBucket = response.data.mappedHosts;
+                const hostBucket = response.data.mappedHosts;
 
-                var doc = new jsPDF({
+                const doc = new jsPDF({
                     orientation: "l",
                     lineHeight: 1.5
                 });
@@ -656,7 +658,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
                 doc.setFontSize(11);
 
-                var subsetAttr = function (attrList, obj) {
+                const subsetAttr = function (attrList, obj) {
                     return attrList.reduce(function (o, k) {
                         o[k] = obj[k];
                         return o;
@@ -664,7 +666,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
                 };
 
                 hostBucket.map(function (host, index) {
-                    var str = "";
+                    let str = "";
 
                     if (host) {
                         str += "Host Name: " + host.fullname + "\n";
@@ -698,7 +700,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.getStatus = function () {
             return $http.get("/api/driverHostMapping/status").then(function (response) {
-                var data = response.data;
+                const data = response.data;
                 $scope.availableDrivers = data.availableDrivers;
                 $scope.availableHosts = data.availableHosts;
                 $scope.mappedHosts = data.mappedHosts;
@@ -768,9 +770,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
         };
 
         $scope.updateTable = function () {
-            var drivers = $scope.allDrivers;
+            let drivers = $scope.allDrivers;
 
-            var filteredDrivers = {
+            const filteredDrivers = {
                 "attendance": [],
                 "fullname": []
             };
