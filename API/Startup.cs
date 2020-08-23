@@ -304,8 +304,7 @@ namespace API
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
-            app.UseCors("CorsPolicy")
-                .UseEnableRequestRewind();
+            app.UseCors("CorsPolicy");
 
             if (_env.IsDevelopment())
             {
