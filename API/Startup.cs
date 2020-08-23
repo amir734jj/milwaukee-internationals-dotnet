@@ -302,7 +302,7 @@ namespace API
             configLogic.Refresh();
             
             // Add SecureHeadersMiddleware to the pipeline
-            app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
+            // app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
             app.UseCors("CorsPolicy");
 
