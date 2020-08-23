@@ -18,8 +18,8 @@
     
     @using (Html.BeginForm("RegisterHost", "Registration", FormMethod.Post, new { ng_controller = "hostRegistrationCtrl" }))
     {
-        @Html.Partial("HostContent", Model)
-        
+        @await Html.PartialAsync("HostContent", Model)
+
         <input class="btn btn-primary" type="submit" value="Register" />
     }
 </div>
