@@ -22,7 +22,7 @@
 
     @using (Html.BeginForm("RegisterStudent", "Registration", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl" }))
     {
-        @Html.Partial("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}})
+        @(Html.PartialAsync("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}}))
         
         <input class="btn btn-primary" type="submit" value="Register For Tour" />
     }

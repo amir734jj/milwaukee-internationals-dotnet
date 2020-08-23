@@ -8,7 +8,7 @@
     
     @using (Html.BeginForm("EditHandler", "Student", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl", novalidate = "true" }))
     {
-        @Html.Partial("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}})
+        @(Html.PartialAsync("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}}))
         
         <input class="btn btn-primary" type="submit" value="Update" />
     }

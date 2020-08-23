@@ -14,8 +14,8 @@
     
     @using (Html.BeginForm("RegisterEvent", "Registration", FormMethod.Post))
     {
-        @Html.Partial("EventContent", Model)
-        
+        @await Html.PartialAsync("EventContent", Model)
+
         <input class="btn btn-primary" type="submit" value="Register" />
     }
 </div>

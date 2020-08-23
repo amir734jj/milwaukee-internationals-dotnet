@@ -7,7 +7,7 @@
 <div class="container">
     @using (Html.BeginForm("Update", "Profile", FormMethod.Post, new {}))
     {
-        @Html.Partial("UserContent", Model, new ViewDataDictionary(ViewData) {{"Type", "Edit"}})
+        @(await Html.PartialAsync("UserContent", Model, new ViewDataDictionary(ViewData) {{"Type", "Edit"}}))
 
         <input class="btn btn-primary" type="submit" value="Update"/>
     }
