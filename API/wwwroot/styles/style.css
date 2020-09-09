@@ -18,3 +18,7 @@
 .form-group {
     margin-top: 2.5rem;
 }
+
+body {
+    font-family: Roboto-Regular,Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif !important;
+}
