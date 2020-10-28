@@ -20,7 +20,7 @@
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.5.1" />
-    <PackageReference Include="WebMarkupMin.AspNetCore3" Version="2.8.9" />
+    <PackageReference Include="WebMarkupMin.AspNetCore3" Version="2.8.11" />
   </ItemGroup>
   
   <ItemGroup>
