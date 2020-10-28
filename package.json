@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "14.8.0"
+    "node": "14.15.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.5"
