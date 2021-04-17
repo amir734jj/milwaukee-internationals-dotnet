@@ -10,6 +10,7 @@ namespace Models.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [PersonalData]
         public override int Id { get; set; }
 
         public string Fullname { get; set; }
