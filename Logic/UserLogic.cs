@@ -14,7 +14,7 @@ namespace Logic
 {
     public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
     {
-        private readonly IBasicCrudType<User, int> _userDal;
+        private readonly IBasicCrud<User> _userDal;
 
         private readonly UserManager<User> _userManager;
 
@@ -25,7 +25,7 @@ namespace Logic
         /// <param name="userManager"></param>
         public UserLogic(IEfRepository repository, UserManager<User> userManager)
         {
-            _userDal = repository.For<User, int>();
+            _userDal = repository.For<User>();
             _userManager = userManager;
         }
 
@@ -74,7 +74,7 @@ namespace Logic
         /// Returns instance of user DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudType<User, int> GetBasicCrudDal()
+        protected override IBasicCrud<User> GetBasicCrudDal()
         {
             return _userDal;
         }

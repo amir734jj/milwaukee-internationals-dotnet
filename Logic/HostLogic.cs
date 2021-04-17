@@ -12,7 +12,7 @@ namespace Logic
 {
     public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
     {
-        private readonly IBasicCrudType<Host, int> _hostDal;
+        private readonly IBasicCrud<Host> _hostDal;
         
         private readonly GlobalConfigs _globalConfigs;
 
@@ -23,7 +23,7 @@ namespace Logic
         /// <param name="globalConfigs"></param>
         public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _hostDal = repository.For<Host, int>();
+            _hostDal = repository.For<Host>();
             _globalConfigs = globalConfigs;
         }
 
@@ -31,7 +31,7 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudType<Host, int> GetBasicCrudDal()
+        protected override IBasicCrud<Host> GetBasicCrudDal()
         {
             return _hostDal;
         }

@@ -5,9 +5,9 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class StudentProfile : IEntityProfile<Student, int>
+    public class StudentProfile : IEntityProfile<Student>
     {
-        public Student Update(Student entity, Student dto)
+        public void Update(Student entity, Student dto)
         {
             entity.DisplayId = dto.DisplayId;
             entity.Fullname = dto.Fullname;
@@ -21,8 +21,6 @@ namespace DAL.Profiles
             entity.NeedCarSeat = dto.NeedCarSeat;
             entity.KosherFood = dto.KosherFood;
             entity.FamilySize = dto.FamilySize;
-
-            return entity;
         }
 
         public IQueryable<Student> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Student>

@@ -12,7 +12,7 @@ namespace Logic
 {
     public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
     {
-        private readonly IBasicCrudType<Event, int> _eventDal;
+        private readonly IBasicCrud<Event> _eventDal;
         
         private readonly IStudentLogic _studentLogic;
         
@@ -26,7 +26,7 @@ namespace Logic
         /// <param name="globalConfigs"></param>
         public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
         {
-            _eventDal = repository.For<Event, int>();
+            _eventDal = repository.For<Event>();
             _studentLogic = studentLogic;
             _globalConfigs = globalConfigs;
         }
@@ -35,7 +35,7 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudType<Event, int> GetBasicCrudDal()
+        protected override IBasicCrud<Event> GetBasicCrudDal()
         {
             return _eventDal;
         }

@@ -5,16 +5,14 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class HostProfile : IEntityProfile<Host, int>
+    public class HostProfile : IEntityProfile<Host>
     {
-        public Host Update(Host entity, Host dto)
+        public void Update(Host entity, Host dto)
         {
             entity.Fullname = dto.Fullname;
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;
             entity.Address = dto.Address;
-
-            return entity;
         }
 
         public IQueryable<Host> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Host>

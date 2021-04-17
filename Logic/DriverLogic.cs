@@ -14,7 +14,7 @@ namespace Logic
 {
     public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
     {
-        private readonly IBasicCrudType<Driver, int> _driverDal;
+        private readonly IBasicCrud<Driver> _driverDal;
         
         private readonly GlobalConfigs _globalConfigs;
 
@@ -25,7 +25,7 @@ namespace Logic
         /// <param name="globalConfigs"></param>
         public DriverLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _driverDal = repository.For<Driver, int>();
+            _driverDal = repository.For<Driver>();
             _globalConfigs = globalConfigs;
         }
 
@@ -33,7 +33,7 @@ namespace Logic
         /// Returns instance of driver DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudType<Driver, int> GetBasicCrudDal()
+        protected override IBasicCrud<Driver> GetBasicCrudDal()
         {
             return _driverDal;
         }

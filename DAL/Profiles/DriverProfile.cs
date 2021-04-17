@@ -5,9 +5,9 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class DriverProfile : IEntityProfile<Driver, int>
+    public class DriverProfile : IEntityProfile<Driver>
     {
-        public Driver Update(Driver entity, Driver dto)
+        public void Update(Driver entity, Driver dto)
         {
             entity.Fullname = dto.Fullname;
             entity.Role = dto.Role;
@@ -18,8 +18,6 @@ namespace DAL.Profiles
             entity.DisplayId = dto.DisplayId;
             entity.RequireNavigator = dto.RequireNavigator;
             entity.HaveChildSeat = dto.HaveChildSeat;
-
-            return entity;
         }
 
         public IQueryable<Driver> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Driver>

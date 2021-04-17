@@ -223,7 +223,7 @@ namespace API
             services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
 
-            services.AddEfRepository<EntityDbContext>(c => c.Profiles(Assembly.Load("DAL")));
+            services.AddEfRepository<EntityDbContext>(c => c.Profile(Assembly.Load("DAL")));
             
             _container = new Container(config =>
             {
