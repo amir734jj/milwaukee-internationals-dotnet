@@ -14,6 +14,11 @@ namespace Logic
 {
     public class ConfigLogic : IConfigLogic
     {
+        /// <summary>
+        /// This is the year when milwaukee-internationals started
+        /// </summary>
+        private const int StartYear = 2018;
+
         private readonly IS3Service _s3Service;
 
         private readonly ILogger<ConfigLogic> _logger;
@@ -29,9 +34,13 @@ namespace Logic
 
         public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
         {
-            var currentYear = DateTime.UtcNow.Year;
-
-            var years = new HashSet<int> {2018, 2019, 2020, currentYear};
+            var years = new HashSet<int>();
+            var currentYear = StartYear;
+            
+            while (currentYear <= DateTime.UtcNow.Year)
+            {
+                years.Add(currentYear++);
+            }
 
             var retVal = new GlobalConfigViewModel
             {
