@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
+using Models.Interfaces;
 
 namespace Logic.Abstracts
 {
-    public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity<int>
+    public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity
     {
         /// <summary>
         /// Returns instance of basic DAL
         /// </summary>
         /// <returns></returns>
-        protected abstract IBasicCrudType<T, int> GetBasicCrudDal();
+        protected abstract IBasicCrud<T> GetBasicCrudDal();
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {
@@ -89,7 +90,7 @@ namespace Logic.Abstracts
         /// <exception cref="NotImplementedException"></exception>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            await using var session = GetBasicCrudDal().Session();
+            await using var session = GetBasicCrudDal();
             
             var entity = await session.Get(id);
 

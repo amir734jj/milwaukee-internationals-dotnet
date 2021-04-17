@@ -13,7 +13,7 @@ namespace Logic
 {
     public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     {
-        private readonly IBasicCrudType<Student, int> _studentDal;
+        private readonly IBasicCrud<Student> _studentDal;
         
         private readonly GlobalConfigs _globalConfigs;
 
@@ -24,7 +24,7 @@ namespace Logic
         /// <param name="globalConfigs"></param>
         public StudentLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _studentDal = repository.For<Student, int>();
+            _studentDal = repository.For<Student>();
             _globalConfigs = globalConfigs;
         }
 
@@ -32,7 +32,7 @@ namespace Logic
         /// Returns instance of student DAL
         /// </summary>
         /// <returns></returns>
-        protected override IBasicCrudType<Student, int> GetBasicCrudDal()
+        protected override IBasicCrud<Student> GetBasicCrudDal()
         {
             return _studentDal;
         }

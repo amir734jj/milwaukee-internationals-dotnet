@@ -5,7 +5,7 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class EventProfile : IEntityProfile<Event, int>
+    public class EventProfile : IEntityProfile<Event>
     {
         private readonly IEntityProfileAuxiliary _auxiliary;
 
@@ -14,15 +14,13 @@ namespace DAL.Profiles
             _auxiliary = auxiliary;
         }
         
-        public Event Update(Event entity, Event dto)
+        public void Update(Event entity, Event dto)
         {
             entity.Address = dto.Address;
             entity.Description = dto.Description;
             entity.Name = dto.Name;
             entity.DateTime = dto.DateTime;
-            entity.Students = _auxiliary.ModifyList<EventStudentRelationship, int>(entity.Students, dto.Students);
-
-            return entity;
+            entity.Students = _auxiliary.ModifyList<EventStudentRelationship, int>(entity.Students, dto.Students).ToList();
         }
 
         public IQueryable<Event> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Event>
