@@ -61,8 +61,8 @@ namespace Logic
                     <p> Display Id: {driver.DisplayId}</p>
                     <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
                     <br>
-                    <p> 2019 Tour of Milwaukee</p>
-                    <p> Date: August 31, 2019</p>
+                    <p> {DateTime.Now.Year} Tour of Milwaukee</p>
+                    <p> Date: August 31, {DateTime.Now.Year}</p>
                     <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
@@ -82,8 +82,8 @@ namespace Logic
                     <p> Phone: {driver.Phone}</p>
                     <p> Display Id: {driver.DisplayId}</p>
                     <br>
-                    <p> 2019 Tour of Milwaukee</p>
-                    <p> Date: August 31, 2019</p>
+                    <p> {DateTime.Now.Year} Tour of Milwaukee</p>
+                    <p> Date: August 31, {DateTime.Now.Year}</p>
                     <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
@@ -123,8 +123,8 @@ namespace Logic
                     <hr>
                     <p>See you at the Tour of Milwaukee</p>
                     <br>
-                    <p> 2019 Tour of Milwaukee Registration</p>
-                    <p> Date: August 31, 2019</p>
+                    <p> {DateTime.Now.Year} Tour of Milwaukee Registration</p>
+                    <p> Date: August 31, {DateTime.Now.Year}</p>
                     <p> Time: 12:00 noon</p>
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
@@ -157,7 +157,7 @@ namespace Logic
                     <hr>
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
                     <br>
-                    <p> Date: August 31, 2019</p>
+                    <p> Date: August 31, {DateTime.Now.Year}</p>
                     <p> Time: 5:00 pm</p>
                     <p> We will send you more details once we have them.</p>
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
