@@ -169,7 +169,7 @@ namespace API
                 else
                 {
                     var postgresConnectionString =
-                        ConnectionStringUrlToPgResource(_configuration.GetValue<string>("DATABASE_URL_V2")
+                        ConnectionStringUrlToPgResource(_configuration.GetValue<string>("DATABASE_URL")
                                                         ?? throw new Exception("DATABASE_URL is null"));
                     opt.UseNpgsql(postgresConnectionString);
                 }
