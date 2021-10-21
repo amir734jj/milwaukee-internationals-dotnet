@@ -20,7 +20,7 @@ namespace Dal.Utilities
                 return string.Empty;
             }
 
-            if (!int.TryParse(table["Port"], out var port))
+            if (!int.TryParse(table["Port"], out var port) || port <= 0)
             {
                 port = 5432;
             }
