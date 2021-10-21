@@ -20,6 +20,11 @@ namespace Dal.Utilities
                 return string.Empty;
             }
 
+            if (!int.TryParse(table["Port"], out var port))
+            {
+                port = 5432;
+            }
+            
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder
             {
                 Host = table["Host"],
@@ -32,7 +37,7 @@ namespace Dal.Utilities
                 Pooling = true,
                 // Hard limit
                 MaxPoolSize = 5,
-                Port = int.Parse(table["Port"])
+                Port = port
             };
 
             return connectionStringBuilder.ToString();
