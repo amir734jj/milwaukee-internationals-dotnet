@@ -1,6 +1,8 @@
-﻿using System.IO;
-using Microsoft.AspNetCore;
+﻿using System;
+using System.IO;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace API
@@ -15,22 +17,34 @@ namespace API
             // This can be reviewed on Azure's application insights
             System.Diagnostics.Trace.TraceInformation("Application server starting");
 
-            var host = WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    var port = Environment.GetEnvironmentVariable("PORT");
+                    if (string.IsNullOrEmpty(port))
+                    {
+                        port = "5000";
+                    }
+                    
+                    webBuilder
+                        .UseKestrel()
+                        .UseIISIntegration()
+                        .UseStartup<Startup>()
+                        .UseUrls("http://*:" + port);
+                })
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Error))
-                .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
                     logging.AddDebug();
                     logging.AddEventSourceLogger();
-                })
-                .Build();
-            
-            host.Run();
-        }
+                });
     }
 }
