@@ -5,6 +5,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using API.Extensions;
 using API.Middlewares;
+using Autofac;
 using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -38,7 +39,6 @@ using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
-using StructureMap;
 using WebMarkupMin.AspNetCore3;
 using static Dal.Utilities.ConnectionStringUtility;
 
@@ -49,8 +49,6 @@ namespace API
         private readonly IConfigurationRoot _configuration;
 
         private readonly IWebHostEnvironment _env;
-
-        private IContainer _container;
 
         public Startup(IWebHostEnvironment env)
         {
@@ -66,13 +64,59 @@ namespace API
             _configuration = builder.Build();
         }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            
+            var (accessKeyId, secretAccessKey, url) = (
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
+            );
+
+            var prefix = new Uri(url).Segments[1];
+            const string bucketName = "cloud-cube";
+
+            // Generally bad practice
+            var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+
+            // Create S3 client
+            builder.Register(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1)).As<IAmazonS3>();
+            builder.RegisterInstance(new S3ServiceConfig(bucketName, prefix)).As<S3ServiceConfig>();
+
+            builder.RegisterAssemblyTypes(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
+                .AsImplementedInterfaces();
+            
+            // If environment is localhost then use mock email service
+            if (_env.IsDevelopment())
+            {
+                builder.RegisterInstance(new EmailServiceApi()).As<IEmailServiceApi>();
+                builder.RegisterInstance(new S3Service()).As<IS3Service>();
+            }
+            else
+            {
+                builder.Register(ctx => new S3Service(
+                    ctx.Resolve<ILogger<S3Service>>(),
+                    ctx.Resolve<IAmazonS3>(),
+                    ctx.Resolve<S3ServiceConfig>()
+                )).As<IS3Service>();
+            }
+
+            builder.RegisterType<GlobalConfigs>().SingleInstance();
+
+            // Initialize the email jet client
+            builder.Register(ctx => new MailjetClient(
+                Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
+                Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
+            ).As<IMailjetClient>();
+        }
+
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
 
@@ -109,7 +153,7 @@ namespace API
             services.AddRouting(options => { options.LowercaseUrls = true; });
 
             services.AddDistributedMemoryCache();
-            
+
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -139,19 +183,13 @@ namespace API
 
                     x.Filters.Add<PreventAuthenticatedActionFilter>();
                 })
-                .AddViewOptions(x =>
-                {
-                    x.HtmlHelperOptions.ClientValidationEnabled = true;
-                })
+                .AddViewOptions(x => { x.HtmlHelperOptions.ClientValidationEnabled = true; })
                 .AddNewtonsoftJson(x =>
                 {
                     x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     x.SerializerSettings.Converters.Add(new StringEnumConverter());
-                }).AddRazorPagesOptions(x =>
-                {
-                    x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-                });
-            
+                }).AddRazorPagesOptions(x => { x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
+
             services.AddWebMarkupMin(opt =>
                 {
                     opt.AllowMinificationInDevelopmentEnvironment = true;
@@ -159,7 +197,7 @@ namespace API
                 })
                 .AddHtmlMinification()
                 .AddHttpCompression();
-            
+
             services.AddDbContext<EntityDbContext>(opt =>
             {
                 if (_env.IsDevelopment())
@@ -175,14 +213,11 @@ namespace API
                 }
             }, ServiceLifetime.Transient);
 
-            services.AddIdentity<User, IdentityRole<int>>(x =>
-                {
-                    x.User.RequireUniqueEmail = true;
-                })
+            services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
-            
+
             // L2 EF cache
             if (_env.IsDevelopment())
             {
@@ -211,84 +246,19 @@ namespace API
                     }, "redis");
                 });
             }
-            
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
                 x.LoginPath = new PathString("/Identity/login");
                 x.LogoutPath = new PathString("/Identity/logout");
             });
-            
+
             // Re-Captcha config
             services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
 
             services.AddEfRepository<EntityDbContext>(c => c.Profile(Assembly.Load("DAL")));
-            
-            _container = new Container(config =>
-            {
-                var (accessKeyId, secretAccessKey, url) = (
-                    _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
-                    _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
-                    _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
-                );
-
-                var prefix = new Uri(url).Segments[1];
-                const string bucketName = "cloud-cube";
-
-                // Generally bad practice
-                var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-
-                // Create S3 client
-                config.For<IAmazonS3>().Use(() => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
-                config.For<S3ServiceConfig>().Use(new S3ServiceConfig(bucketName, prefix));
-
-                // Register stuff in container, using the StructureMap APIs...
-                config.Scan(_ =>
-                {
-                    _.AssemblyContainingType(typeof(Startup));
-                    _.Assembly("API");
-                    _.Assembly("Logic");
-                    _.Assembly("DAL");
-                    _.WithDefaultConventions();
-                });
-
-                // If environment is localhost then use mock email service
-                if (_env.IsDevelopment())
-                {
-                    config.For<IEmailServiceApi>().Use(new EmailServiceApi()).Singleton();
-                    config.For<IS3Service>().Use(new S3Service()).Singleton();
-                }
-                else
-                {
-                    config.For<IS3Service>().Use(ctx => new S3Service(
-                        ctx.GetInstance<ILogger<S3Service>>(),
-                        ctx.GetInstance<IAmazonS3>(),
-                        ctx.GetInstance<S3ServiceConfig>()
-                    ));
-                }
-
-                // It has to be a singleton
-                config.For<IIdentityDictionary>().Singleton();
-
-                // Singleton to handle identities
-                config.For<IIdentityLogic>().Singleton();
-
-                config.For<GlobalConfigs>().Singleton();
-                
-                // Initialize the email jet client
-                config.For<IMailjetClient>().Use(new MailjetClient(
-                    Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
-                    Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
-                ).Singleton();
-
-                // Populate the container using the service collection
-                config.Populate(services);
-            });
-
-            _container.AssertConfigurationIsValid();
-
-            return _container.GetInstance<IServiceProvider>();
         }
 
         /// <summary>
@@ -300,7 +270,7 @@ namespace API
         {
             // Refresh global config
             configLogic.Refresh();
-            
+
             // Add SecureHeadersMiddleware to the pipeline
             app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 
@@ -330,11 +300,11 @@ namespace API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
-            
+
             app.Use(async (context, next) =>
             {
                 await next();
-                
+
                 if (context.Response.IsFailure())
                 {
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
@@ -342,7 +312,7 @@ namespace API
                 }
             });
 
-            
+
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
                 .UseStaticFiles()
