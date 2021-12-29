@@ -5,6 +5,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using API.Extensions;
 using API.Middlewares;
+using Api.Utilities;
 using Autofac;
 using DAL.Configs;
 using DAL.Interfaces;
@@ -83,6 +84,8 @@ namespace API
             builder.Register(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1)).As<IAmazonS3>();
             builder.RegisterInstance(new S3ServiceConfig(bucketName, prefix)).As<S3ServiceConfig>();
 
+            builder.RegisterType<CacheBustingUtility>().AsSelf();
+            
             builder.RegisterAssemblyTypes(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
                 .AsImplementedInterfaces();
             
