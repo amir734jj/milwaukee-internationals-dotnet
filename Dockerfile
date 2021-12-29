@@ -21,5 +21,4 @@ ARG MAIN_PROJECT
 
 WORKDIR /app
 COPY --from=build-env "/app/$MAIN_PROJECT/out" .
-ENTRYPOINT ["/usr/bin/env"]
-RUN ["dotnet", "${MAIN_PROJECT}.dll"]
+ENTRYPOINT ["dotnet", "${MAIN_PROJECT}.dll"]
