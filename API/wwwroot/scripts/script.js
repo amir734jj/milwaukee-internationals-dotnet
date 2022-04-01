@@ -114,7 +114,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
     }])
     .controller('userRegistrationCtrl', ['$scope', function ($scope) {
         $scope.validateInvitationCode = function ($event) {
-            if ($scope.invitation_code !== $scope.invitation_code_value) {
+            if (!$scope.invitation_code || $scope.invitation_code.toLowerCase() !== $scope.invitation_code_value.toLowerCase()) {
                 $scope.error = true;
                 $event.preventDefault();
             } else {
