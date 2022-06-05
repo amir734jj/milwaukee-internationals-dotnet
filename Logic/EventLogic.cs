@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EfCoreRepository.Interfaces;
@@ -48,7 +49,7 @@ namespace Logic
         public override Task<Event> Save(Event instance)
         {
             // Set year context
-            instance.Year = _globalConfigs.YearValue;
+            instance.Year = DateTime.UtcNow.Year;
             
             return base.Save(instance);
         }
