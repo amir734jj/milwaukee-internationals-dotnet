@@ -1,12 +1,12 @@
 using System.Linq;
-using EfCoreRepository.Interfaces;
+using EfCoreRepository;
 using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class UserProfile : IEntityProfile<User>
+    public class UserProfile : EntityProfile<User>
     {
-        public void Update(User entity, User dto)
+        public override void Update(User entity, User dto)
         {
             entity.Fullname = dto.Fullname;
             entity.PasswordHash = dto.PasswordHash;
@@ -16,7 +16,7 @@ namespace DAL.Profiles
             entity.Email = dto.Email;
         }
 
-        public IQueryable<User> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<User>
+        public override IQueryable<User> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .OrderBy(x => x.Fullname);

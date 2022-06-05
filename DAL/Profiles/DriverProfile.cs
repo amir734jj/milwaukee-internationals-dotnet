@@ -1,13 +1,13 @@
 using System.Linq;
-using EfCoreRepository.Interfaces;
+using EfCoreRepository;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class DriverProfile : IEntityProfile<Driver>
+    public class DriverProfile : EntityProfile<Driver>
     {
-        public void Update(Driver entity, Driver dto)
+        public override void Update(Driver entity, Driver dto)
         {
             entity.Fullname = dto.Fullname;
             entity.Role = dto.Role;
@@ -20,7 +20,7 @@ namespace DAL.Profiles
             entity.HaveChildSeat = dto.HaveChildSeat;
         }
 
-        public IQueryable<Driver> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Driver>
+        public override IQueryable<Driver> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .Include(x => x.Host)

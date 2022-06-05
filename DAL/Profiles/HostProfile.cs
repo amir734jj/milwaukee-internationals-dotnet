@@ -1,13 +1,13 @@
 using System.Linq;
-using EfCoreRepository.Interfaces;
+using EfCoreRepository;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class HostProfile : IEntityProfile<Host>
+    public class HostProfile : EntityProfile<Host>
     {
-        public void Update(Host entity, Host dto)
+        public override void Update(Host entity, Host dto)
         {
             entity.Fullname = dto.Fullname;
             entity.Email = dto.Email;
@@ -15,7 +15,7 @@ namespace DAL.Profiles
             entity.Address = dto.Address;
         }
 
-        public IQueryable<Host> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<Host>
+        public override IQueryable<Host> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .Include(x => x.Drivers)
