@@ -1,16 +1,13 @@
 {
-  "name": "side-project-client",
+  "name": "milwaukee-internationals-assets",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "14.15.0"
-  },
   "dependencies": {
     "@babel/runtime": "^7.10.5"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.1",
+    "@babel/cli": "^7.17.10",
     "@babel/core": "7.12.3",
     "@babel/node": "7.12.1",
     "@babel/plugin-proposal-class-properties": "7.12.1",
@@ -19,8 +16,8 @@
     "@babel/register": "7.12.1",
     "babelify": "10.0.0",
     "browserify": "17.0.0",
-    "gulp": "4.0.2",
-    "gulp-autoprefixer": "7.0.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
     "gulp-clean-css": "4.3.0",
     "gulp-cli": "2.3.0",
     "gulp-sourcemaps": "2.6.5",

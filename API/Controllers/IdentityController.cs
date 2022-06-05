@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Models.ViewModels.Identities;
 using reCAPTCHA.AspNetCore;
-using reCAPTCHA.AspNetCore.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
