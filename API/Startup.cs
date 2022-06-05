@@ -206,6 +206,8 @@ namespace API
                 if (_env.IsDevelopment())
                 {
                     opt.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
+                    opt.EnableDetailedErrors();
+                    opt.EnableSensitiveDataLogging();
                 }
                 else
                 {
@@ -214,7 +216,7 @@ namespace API
                                                         ?? throw new Exception("DATABASE_URL is null"));
                     opt.UseNpgsql(postgresConnectionString);
                 }
-            }, ServiceLifetime.Transient);
+            });
 
             services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
                 .AddEntityFrameworkStores<EntityDbContext>()
@@ -281,8 +283,6 @@ namespace API
 
             if (_env.IsDevelopment())
             {
-                app.UseDatabaseErrorPage();
-
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 

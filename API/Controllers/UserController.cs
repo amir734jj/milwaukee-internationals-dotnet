@@ -62,7 +62,7 @@ namespace API.Controllers
         [Route("UpdateUserRole/{id}/{userRoleEnum}")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
-            var userEntity = await _userLogic.Update(id, x => x.UserRoleEnum = userRoleEnum);
+            var userEntity = await _userLogic.Get(id);
 
             switch (userRoleEnum)
             {
@@ -77,8 +77,10 @@ namespace API.Controllers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
             }
-
-            return RedirectToAction("Index", "Home");
+            
+            await _userLogic.Update(id, x => x.UserRoleEnum = userRoleEnum);
+            
+            return RedirectToAction("Index");
         }
     }
 }
