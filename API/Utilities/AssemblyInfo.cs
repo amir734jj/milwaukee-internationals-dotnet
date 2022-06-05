@@ -1,5 +1,5 @@
 using System.Reflection;
-using Microsoft.DotNet.PlatformAbstractions;
+using System.Runtime.InteropServices;
 
 namespace Api.Utilities
 {
