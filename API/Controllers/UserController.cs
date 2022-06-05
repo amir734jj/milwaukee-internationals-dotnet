@@ -77,8 +77,8 @@ namespace API.Controllers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
             }
-            
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
