@@ -1,9 +1,19 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using DAL.Interfaces;
+using Flurl;
 using Logic.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Models.Constants;
 using Models.Entities;
 using Models.Enums;
+using Net.Codecrete.QrCodeGenerator;
+using Svg;
 
 namespace Logic
 {
@@ -14,9 +24,9 @@ namespace Logic
         private readonly IDriverLogic _driverLogic;
 
         private readonly IHostLogic _hostLogic;
-        
+
         private readonly IEventLogic _eventLogic;
-        
+
         private readonly IEmailServiceApi _emailServiceApiApi;
 
         /// <summary>
@@ -27,7 +37,8 @@ namespace Logic
         /// <param name="hostLogic"></param>
         /// <param name="eventLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi)
+        public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic,
+            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
@@ -51,7 +62,8 @@ namespace Logic
                 switch (driver.Role)
                 {
                     case RolesEnum.Driver:
-                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
+                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
+                            $@"
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
@@ -74,7 +86,8 @@ namespace Logic
                 ");
                         break;
                     case RolesEnum.Navigator:
-                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration", $@"
+                        await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
+                            $@"
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
@@ -114,7 +127,27 @@ namespace Logic
             // If save was successful
             if (result != null)
             {
-                await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation", $@"
+                var rootUrl = ApiConstants.SiteUrl;
+                var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GetHashCode().ToString());
+
+                var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
+                var svg = qr.ToSvgString(4);
+
+                var doc = new XmlDocument();
+                doc.LoadXml(svg);
+
+                var svgDocument = SvgDocument.Open(doc);
+                using var smallBitmap = svgDocument.Draw();
+
+                using var bitmap = svgDocument.Draw(400, 400);
+                var ms = new MemoryStream();
+                bitmap.Save(ms, ImageFormat.Png);
+
+                var sigBase64 = Convert.ToBase64String(ms.ToArray());
+                var qrUri = $"data:image/png;base64,{sigBase64}";
+
+                await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation",
+                    $@"
                     <p>Name: {student.Fullname}</p>
                     <p>Email: {student.Email}</p>
                     <p>University: {student.University}</p>
@@ -130,6 +163,9 @@ namespace Logic
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Prayag (646-226-4330) on campus.</p>
+                    <br>
+                    <br>
+                    <img src=""{qrUri}"" alt=""QR code"" />
                 ");
             }
 
