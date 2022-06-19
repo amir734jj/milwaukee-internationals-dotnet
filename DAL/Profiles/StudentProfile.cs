@@ -20,6 +20,7 @@ namespace DAL.Profiles
             entity.Interests = dto.Interests;
             entity.NeedCarSeat = dto.NeedCarSeat;
             entity.KosherFood = dto.KosherFood;
+            entity.IsPresent = dto.IsPresent;
             entity.FamilySize = dto.FamilySize;
         }
 

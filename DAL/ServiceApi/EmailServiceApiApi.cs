@@ -58,16 +58,13 @@ namespace DAL.ServiceApi
                 {
                     var emailList = new JArray
                     {
-                        new JObject {{"Email", ApiConstants.SiteEmail}}
+                        // If email test mode is not True, then add recipient
+                        _globalConfigs.EmailTestMode
+                            ? new JObject { { "Email", ApiConstants.SiteEmail } }
+                            : new JObject { { "Email", emailAddress } }
                     };
 
-                    // If email test mode is not True, then add recipient
-                    if (!_globalConfigs.EmailTestMode)
-                    {
-                        emailList.Add(new JObject {{"Email", emailAddress}});
-                    }
-
-                    var request = new MailjetRequest {Resource = Send.Resource}
+                    var request = new MailjetRequest { Resource = Send.Resource }
                         .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
                         .Property(Send.FromName, "Milwaukee-Internationals")
                         .Property(Send.Subject, emailSubject)

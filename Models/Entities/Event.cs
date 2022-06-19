@@ -21,7 +21,7 @@ namespace Models.Entities
         /// <summary>
         /// List of Event Student Relationships
         /// </summary>
-        public List<EventStudentRelationship> Students { get; set; } = new List<EventStudentRelationship>();
+        public List<EventStudentRelationship> Students { get; set; } = new();
         
         /// <summary>
         /// Indicates the year in which driver attended the tour

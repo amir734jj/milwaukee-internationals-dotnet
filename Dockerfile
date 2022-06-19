@@ -15,6 +15,9 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
+RUN apk add bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ zlib && \
+    apk add libgdiplus --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+
 WORKDIR /app
 COPY --from=build-env "/app/API/out" .
 ENTRYPOINT ["dotnet", "API.dll"]
