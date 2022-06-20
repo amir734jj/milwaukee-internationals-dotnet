@@ -87,11 +87,10 @@ namespace Logic.Abstracts
         /// <param name="id"></param>
         /// <param name="modifyAction"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
             await using var session = GetBasicCrudDal();
-            
+
             var entity = await session.Get(id);
 
             modifyAction(entity);
