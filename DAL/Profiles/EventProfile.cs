@@ -1,22 +1,23 @@
 using System.Linq;
-using EfCoreRepository;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
+
 namespace DAL.Profiles
 {
-    public class EventProfile :  EntityProfile<Event>
+    public class EventProfile :   IEntityProfile<Event>
     {
-        public override void Update(Event entity, Event dto)
+        public  void Update(Event entity, Event dto)
         {
             entity.Address = dto.Address;
             entity.Description = dto.Description;
             entity.Name = dto.Name;
             entity.DateTime = dto.DateTime;
-            ModifyList(entity.Students, dto.Students, x => x.Id);
+            ((IEntityProfile<Event>)this).ModifyList(entity.Students, dto.Students, x => x.Id);
         }
 
-        public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)
+        public IQueryable<Event> Include(IQueryable<Event> queryable)
         {
             return queryable
                 .Include(x => x.Students)

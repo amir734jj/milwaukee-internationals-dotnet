@@ -3,7 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using EfCoreRepository.Interfaces;
+using DAL.Interfaces;
+using DAL.Profiles;
+using DAL.Utilities;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -14,18 +16,17 @@ namespace Logic
 {
     public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
     {
-        private readonly IBasicCrud<User> _userDal;
-
+        private readonly EntityDbContext _dbContext;
         private readonly UserManager<User> _userManager;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="repository"></param>
+        /// <param name="dbContext"></param>
         /// <param name="userManager"></param>
-        public UserLogic(IEfRepository repository, UserManager<User> userManager)
+        public UserLogic(EntityDbContext dbContext, UserManager<User> userManager)
         {
-            _userDal = repository.For<User>();
+            _dbContext = dbContext;
             _userManager = userManager;
         }
 
@@ -49,6 +50,16 @@ namespace Logic
             return result;
         }
 
+        protected override EntityDbContext GetDbContext()
+        {
+            return _dbContext;
+        }
+
+        protected override IEntityProfile<User> Profile()
+        {
+            return new UserProfile();
+        }
+
         public override async Task<IEnumerable<User>> GetAll()
         {
             var fetchUsersObservable = base.GetAll()
@@ -67,16 +78,6 @@ namespace Logic
             var result = await Observable.When(fetchUsersObservable);
 
             return result;
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Returns instance of user DAL
-        /// </summary>
-        /// <returns></returns>
-        protected override IBasicCrud<User> GetBasicCrudDal()
-        {
-            return _userDal;
         }
     }
 }

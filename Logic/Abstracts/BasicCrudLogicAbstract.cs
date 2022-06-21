@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using EfCoreRepository.Interfaces;
+using DAL.Interfaces;
+using DAL.Utilities;
 using Logic.Interfaces;
 using Models.Entities;
 using Models.Interfaces;
@@ -15,7 +17,9 @@ namespace Logic.Abstracts
         /// Returns instance of basic DAL
         /// </summary>
         /// <returns></returns>
-        protected abstract IBasicCrud<T> GetBasicCrudDal();
+        protected abstract EntityDbContext GetDbContext();
+        
+        protected abstract IEntityProfile<T> Profile();
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {
@@ -37,7 +41,7 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await GetBasicCrudDal().GetAll();
+            return await Profile().Include(GetDbContext().Set<T>().AsNoTracking()).ToListAsync();
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Get(int id)
         {
-            return await GetBasicCrudDal().Get(id);
+            return await Profile().Include(GetDbContext().Set<T>().AsNoTracking()).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
@@ -57,7 +61,13 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Save(T instance)
         {
-            return await GetBasicCrudDal().Save(instance);
+            var dbSet = GetDbContext().Set<T>();
+            
+            dbSet.Add(instance);
+
+            await GetDbContext().SaveChangesAsync();
+
+            return instance;
         }
 
         /// <summary>
@@ -67,7 +77,15 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            return await GetBasicCrudDal().Delete(id);
+            var dbSet = GetDbContext().Set<T>();
+
+            var entity = await dbSet.FirstAsync(x => x.Id == id);
+
+            dbSet.Remove(entity);
+
+            await GetDbContext().SaveChangesAsync();
+
+            return entity;
         }
 
         /// <summary>
@@ -78,7 +96,15 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, T updatedInstance)
         {
-            return await GetBasicCrudDal().Update(id, updatedInstance);
+            var dbSet = GetDbContext().Set<T>();
+
+            var entity = await dbSet.FirstAsync(x => x.Id == id);
+            
+            Profile().Update(entity, updatedInstance);
+
+            await GetDbContext().SaveChangesAsync();
+
+            return entity;
         }
 
         /// <summary>
@@ -89,13 +115,15 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            await using var session = GetBasicCrudDal();
+            var dbSet = GetDbContext().Set<T>();
 
-            var entity = await session.Get(id);
+            var entity = await dbSet.FirstAsync(x => x.Id == id);
 
             modifyAction(entity);
 
-            return await session.Update(id, entity);
+            await GetDbContext().SaveChangesAsync();
+
+            return entity;
         }
     }
 }

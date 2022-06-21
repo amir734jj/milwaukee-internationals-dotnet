@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EfCoreRepository.Interfaces;
+using DAL.Interfaces;
+using DAL.Profiles;
+using DAL.Utilities;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -12,28 +14,18 @@ namespace Logic
 {
     public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
     {
-        private readonly IBasicCrud<Host> _hostDal;
-        
+        private readonly EntityDbContext _dbContext;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="repository"></param>
+        /// <param name="dbContext"></param>
         /// <param name="globalConfigs"></param>
-        public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs)
+        public HostLogic(EntityDbContext dbContext, GlobalConfigs globalConfigs)
         {
-            _hostDal = repository.For<Host>();
+            _dbContext = dbContext;
             _globalConfigs = globalConfigs;
-        }
-
-        /// <summary>
-        /// Returns instance of student DAL
-        /// </summary>
-        /// <returns></returns>
-        protected override IBasicCrud<Host> GetBasicCrudDal()
-        {
-            return _hostDal;
         }
 
         public override Task<Host> Save(Host instance)
@@ -44,6 +36,16 @@ namespace Logic
             return base.Save(instance);
         }
         
+        protected override EntityDbContext GetDbContext()
+        {
+            return _dbContext;
+        }
+
+        protected override IEntityProfile<Host> Profile()
+        {
+            return new HostProfile();
+        }
+
         public override async Task<IEnumerable<Host>> GetAll()
         {
             return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);

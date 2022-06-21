@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using EfCoreRepository.Interfaces;
+using DAL.Interfaces;
+using DAL.Profiles;
+using DAL.Utilities;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -13,29 +16,20 @@ namespace Logic
 {
     public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     {
-        private readonly IBasicCrud<Student> _studentDal;
-        
+        private readonly EntityDbContext _dbContext;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="repository"></param>
+        /// <param name="dbContext"></param>
         /// <param name="globalConfigs"></param>
-        public StudentLogic(IEfRepository repository, GlobalConfigs globalConfigs)
+        public StudentLogic(EntityDbContext dbContext, GlobalConfigs globalConfigs)
         {
-            _studentDal = repository.For<Student>();
+            _dbContext = dbContext;
             _globalConfigs = globalConfigs;
         }
-
-        /// <summary>
-        /// Returns instance of student DAL
-        /// </summary>
-        /// <returns></returns>
-        protected override IBasicCrud<Student> GetBasicCrudDal()
-        {
-            return _studentDal;
-        }
+        
 
         /// <inheritdoc />
         /// <summary>
@@ -82,6 +76,16 @@ namespace Logic
             }
 
             return base.Update(id, student);
+        }
+
+        protected override EntityDbContext GetDbContext()
+        {
+            return _dbContext;
+        }
+
+        protected override IEntityProfile<Student> Profile()
+        {
+            return new StudentProfile();
         }
 
         public override async Task<IEnumerable<Student>> GetAll()

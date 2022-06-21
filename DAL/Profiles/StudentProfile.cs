@@ -1,13 +1,13 @@
 using System.Linq;
-using EfCoreRepository;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class StudentProfile : EntityProfile<Student>
+    public class StudentProfile : IEntityProfile<Student>
     {
-        public override void Update(Student entity, Student dto)
+        public  void Update(Student entity, Student dto)
         {
             entity.DisplayId = dto.DisplayId;
             entity.Fullname = dto.Fullname;
@@ -24,7 +24,7 @@ namespace DAL.Profiles
             entity.FamilySize = dto.FamilySize;
         }
 
-        public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
+        public IQueryable<Student> Include(IQueryable<Student> queryable)
         {
             return queryable
                 .Include(x => x.Events)

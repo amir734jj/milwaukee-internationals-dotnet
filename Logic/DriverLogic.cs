@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EfCoreRepository.Interfaces;
+using DAL.Interfaces;
+using DAL.Profiles;
+using DAL.Utilities;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -14,28 +16,19 @@ namespace Logic
 {
     public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
     {
-        private readonly IBasicCrud<Driver> _driverDal;
-        
+        private readonly EntityDbContext _dbContext;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="repository"></param>
+        /// <param name="{"></param>
+        /// <param name="dbContext"></param>
         /// <param name="globalConfigs"></param>
-        public DriverLogic(IEfRepository repository, GlobalConfigs globalConfigs)
+        public DriverLogic(EntityDbContext dbContext, GlobalConfigs globalConfigs)
         {
-            _driverDal = repository.For<Driver>();
+            _dbContext = dbContext;
             _globalConfigs = globalConfigs;
-        }
-
-        /// <summary>
-        /// Returns instance of driver DAL
-        /// </summary>
-        /// <returns></returns>
-        protected override IBasicCrud<Driver> GetBasicCrudDal()
-        {
-            return _driverDal;
         }
 
         /// <summary>
@@ -75,6 +68,16 @@ namespace Logic
             }
 
             return await base.Update(id, instance);
+        }
+
+        protected override EntityDbContext GetDbContext()
+        {
+            return _dbContext;
+        }
+
+        protected override IEntityProfile<Driver> Profile()
+        {
+            return new DriverProfile();
         }
 
         public override async Task<IEnumerable<Driver>> GetAll()
