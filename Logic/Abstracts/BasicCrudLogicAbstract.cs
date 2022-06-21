@@ -18,7 +18,7 @@ namespace Logic.Abstracts
         /// </summary>
         /// <returns></returns>
         protected abstract EntityDbContext GetDbContext();
-        
+
         protected abstract IEntityProfile<T> Profile();
 
         public async Task<IEnumerable<T>> GetAll(int year)
@@ -62,7 +62,7 @@ namespace Logic.Abstracts
         public virtual async Task<T> Save(T instance)
         {
             var dbSet = GetDbContext().Set<T>();
-            
+
             dbSet.Add(instance);
 
             await GetDbContext().SaveChangesAsync();
@@ -99,7 +99,7 @@ namespace Logic.Abstracts
             var dbSet = GetDbContext().Set<T>();
 
             var entity = await dbSet.FirstAsync(x => x.Id == id);
-            
+
             Profile().Update(entity, updatedInstance);
 
             await GetDbContext().SaveChangesAsync();
@@ -115,15 +115,23 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            var dbSet = GetDbContext().Set<T>();
+            try
+            {
+                var dbSet = GetDbContext().Set<T>();
 
-            var entity = await dbSet.FirstAsync(x => x.Id == id);
+                var entity = await dbSet.FirstAsync(x => x.Id == id);
 
-            modifyAction(entity);
+                modifyAction(entity);
 
-            await GetDbContext().SaveChangesAsync();
+                await GetDbContext().SaveChangesAsync();
 
-            return entity;
+                return entity;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
