@@ -6,7 +6,6 @@ using Amazon.S3;
 using API.Extensions;
 using API.Middlewares;
 using Api.Utilities;
-using Autofac;
 using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -40,6 +39,7 @@ using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
+using Scrutor;
 using WebMarkupMin.AspNetCore3;
 using static Dal.Utilities.ConnectionStringUtility;
 
@@ -63,54 +63,6 @@ namespace API
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
-        }
-
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            
-            var (accessKeyId, secretAccessKey, url) = (
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
-            );
-
-            var prefix = new Uri(url).Segments[1];
-            const string bucketName = "cloud-cube";
-
-            // Generally bad practice
-            var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-
-            // Create S3 client
-            builder.Register(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1)).As<IAmazonS3>();
-            builder.RegisterInstance(new S3ServiceConfig(bucketName, prefix)).As<S3ServiceConfig>();
-
-            builder.RegisterType<CacheBustingUtility>().AsSelf();
-            
-            builder.RegisterAssemblyTypes(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
-                .AsImplementedInterfaces();
-            
-            // If environment is localhost then use mock email service
-            if (_env.IsDevelopment())
-            {
-                builder.RegisterInstance(new EmailServiceApi()).As<IEmailServiceApi>();
-                builder.RegisterInstance(new S3Service()).As<IS3Service>();
-            }
-            else
-            {
-                builder.Register(ctx => new S3Service(
-                    ctx.Resolve<ILogger<S3Service>>(),
-                    ctx.Resolve<IAmazonS3>(),
-                    ctx.Resolve<S3ServiceConfig>()
-                )).As<IS3Service>();
-            }
-
-            builder.RegisterType<GlobalConfigs>().SingleInstance();
-
-            // Initialize the email jet client
-            builder.Register(ctx => new MailjetClient(
-                Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
-                Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
-            ).As<IMailjetClient>();
         }
 
         /// <summary>
@@ -201,13 +153,62 @@ namespace API
                 .AddHtmlMinification()
                 .AddHttpCompression();
 
+            var (accessKeyId, secretAccessKey, url) = (
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
+                _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
+            );
+
+            var prefix = new Uri(url).Segments[1];
+            const string bucketName = "cloud-cube";
+
+            // Generally bad practice
+            var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+
+            services.Scan(scan => scan
+                .FromAssemblies(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
+                .AddClasses() //    to register
+                .UsingRegistrationStrategy(RegistrationStrategy.Skip) // 2. Define how to handle duplicates
+                .AsImplementedInterfaces() // 2. Specify which services they are registered as
+                .WithTransientLifetime()); // 3. Set the lifetime for the services
+
+            // Create S3 client
+            services.AddSingleton<IAmazonS3>(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
+            services.AddSingleton(new S3ServiceConfig(bucketName, prefix));
+
+            services.AddSingleton<CacheBustingUtility>();
+
+            // If environment is localhost then use mock email service
+            if (_env.IsDevelopment())
+            {
+                services.AddSingleton<IEmailServiceApi>(new EmailServiceApi());
+                services.AddSingleton<IS3Service>(new S3Service());
+            }
+            else
+            {
+                services.AddTransient<IS3Service>(ctx => new S3Service(
+                    ctx.GetRequiredService<ILogger<S3Service>>(),
+                    ctx.GetRequiredService<IAmazonS3>(),
+                    ctx.GetRequiredService<S3ServiceConfig>()
+                ));
+            }
+
+            services.AddSingleton<GlobalConfigs>();
+
+            // Initialize the email jet client
+            services.AddTransient<IMailjetClient>(ctx => new MailjetClient(
+                Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
+                Environment.GetEnvironmentVariable("MAIL_JET_SECRET"))
+            );
+
             services.AddDbContext<EntityDbContext>(opt =>
             {
                 if (_env.IsDevelopment())
                 {
-                    opt.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
                     opt.EnableDetailedErrors();
                     opt.EnableSensitiveDataLogging();
+
+                    opt.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:Sqlite"));
                 }
                 else
                 {
