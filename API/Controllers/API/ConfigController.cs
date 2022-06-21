@@ -20,7 +20,7 @@ namespace API.Controllers.API
         [HttpGet]
         [Route("Status")]
         [SwaggerOperation("Status")]
-        public async Task<IActionResult> Status()
+        public IActionResult Status()
         {
             var config = _globalConfigs.ToAnonymousObject();
             

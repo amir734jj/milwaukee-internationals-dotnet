@@ -25,7 +25,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -36,7 +36,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Driver")]
-        public async Task<IActionResult> Driver()
+        public IActionResult Driver()
         {
             return View(new Driver());
         }
@@ -60,7 +60,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("Student")]
-        public async Task<IActionResult> Student()
+        public IActionResult Student()
         {
             return View(new Student());
         }
@@ -85,7 +85,7 @@ namespace API.Controllers
         [AuthorizeMiddleware]
         [HttpGet]
         [Route("Host")]
-        public async Task<IActionResult> Host()
+        public IActionResult Host()
         {
             return View(new Host());
         }
@@ -111,7 +111,7 @@ namespace API.Controllers
         [AuthorizeMiddleware]
         [HttpGet]
         [Route("Event")]
-        public async Task<IActionResult> Event()
+        public IActionResult Event()
         {
             return View(new Event());
         }

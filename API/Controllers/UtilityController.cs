@@ -96,7 +96,7 @@ namespace API.Controllers
         public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
             [FromQuery] bool present)
         {
-            var result = _emailUtilityLogic.HandleEmailCheckIn(type, id, present);
+            var result = await _emailUtilityLogic.HandleEmailCheckIn(type, id, present);
 
             // Redirect to home page
             return Ok(result);
