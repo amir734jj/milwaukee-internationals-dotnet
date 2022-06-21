@@ -115,23 +115,15 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            try
-            {
-                var dbSet = GetDbContext().Set<T>();
+            var dbSet = GetDbContext().Set<T>();
 
-                var entity = await dbSet.FirstAsync(x => x.Id == id);
+            var entity = await dbSet.FirstAsync(x => x.Id == id);
 
-                modifyAction(entity);
+            modifyAction(entity);
 
-                await GetDbContext().SaveChangesAsync();
+            await GetDbContext().SaveChangesAsync();
 
-                return entity;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return entity;
         }
     }
 }
