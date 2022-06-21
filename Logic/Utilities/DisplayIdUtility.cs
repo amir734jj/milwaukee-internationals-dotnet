@@ -16,7 +16,7 @@ namespace Logic.Utilities
             return (string.Join(string.Empty, person.Fullname.Split(" ")
                        .Select(x => x.Trim())
                        .Where(x => !string.IsNullOrWhiteSpace(x))
-                       .Select(x => x.Substring(0, 1))) + "-" + ++count).ToUpper();
+                       .Select(x => x[..1])) + "-" + ++count).ToUpper();
         }
     }
 }

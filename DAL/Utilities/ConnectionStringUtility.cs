@@ -37,7 +37,8 @@ namespace Dal.Utilities
                 Pooling = true,
                 // Hard limit
                 MaxPoolSize = 5,
-                Port = port
+                Port = port,
+                CommandTimeout = 0
             };
 
             return connectionStringBuilder.ToString();
