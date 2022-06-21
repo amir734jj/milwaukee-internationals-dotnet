@@ -11,7 +11,7 @@ namespace API.Controllers
     {
         // GET
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -19,7 +19,7 @@ namespace API.Controllers
         // GET
         [HttpGet]
         [Route("Student")]
-        public async Task<IActionResult> Student()
+        public IActionResult Student()
         {
             return View();
         }
@@ -27,7 +27,7 @@ namespace API.Controllers
         // GET
         [HttpGet]
         [Route("Driver")]
-        public async Task<IActionResult> Driver()
+        public IActionResult Driver()
         {
             return View();
         }

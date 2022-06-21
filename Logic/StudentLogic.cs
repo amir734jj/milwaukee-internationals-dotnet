@@ -67,7 +67,7 @@ namespace Logic
         /// <param name="id"></param>
         /// <param name="student"></param>
         /// <returns></returns>
-        public override Task<Student> Update(int id, Student student)
+        public override async Task<Student> Update(int id, Student student)
         {
             // If student is not a family then family size should be zero
             if (!student.IsFamily)
@@ -75,7 +75,7 @@ namespace Logic
                 student.FamilySize = 0;
             }
 
-            return base.Update(id, student);
+            return await base.Update(id, student);
         }
 
         protected override EntityDbContext GetDbContext()

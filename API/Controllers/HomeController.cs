@@ -17,7 +17,7 @@ namespace API.Controllers
             _httpRequestUtilityBuilder = httpRequestUtilityBuilder;
         }
         
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return RedirectToAction("Student", "Registration");
             // return RedirectToAction("Index", "AdHocRegistration");
@@ -29,7 +29,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Register")]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return Redirect("~/Identity/Register".ToLower());
         }

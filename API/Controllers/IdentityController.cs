@@ -58,7 +58,7 @@ namespace API.Controllers
         [Route("Login")]
         [SwaggerOperation("Login")]
         [DisallowAuthenticated]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             if (TempData.ContainsKey("Error"))
             {
@@ -113,7 +113,7 @@ namespace API.Controllers
         [Route("Register")]
         [SwaggerOperation("Register")]
         [DisallowAuthenticated]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             if (TempData.ContainsKey("Error"))
             {
@@ -175,7 +175,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("NotAuthenticated")]
         [SwaggerOperation("NotAuthenticated")]
-        public async Task<IActionResult> NotAuthenticated()
+        public IActionResult NotAuthenticated()
         {
             return View();
         }
@@ -188,9 +188,9 @@ namespace API.Controllers
         [Route("Logout")]
         [SwaggerOperation("Logout")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> LogoutHandler()
         {
-            await base.Logout();
+            await Logout();
 
             return RedirectToAction("Login");
         }

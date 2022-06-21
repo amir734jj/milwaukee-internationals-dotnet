@@ -12,6 +12,6 @@ namespace Logic.Interfaces
         
         Task<bool> HandleAdHocEmail(EmailFormViewModel emailFormViewModel);
 
-        bool HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present);
+        Task<bool> HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present);
     }
 }

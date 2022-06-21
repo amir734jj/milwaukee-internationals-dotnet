@@ -126,19 +126,19 @@ namespace Logic
         /// <param name="id"></param>
         /// <param name="present"></param>
         /// <returns></returns>
-        public bool HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present)
+        public async Task<bool> HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present)
         {
             switch (entitiesEnum)
             {
                 case EntitiesEnum.Student:
-                    _studentLogic.Update(id, student =>
+                    await _studentLogic.Update(id, student =>
                     {
                         // Checked-in
                         student.IsPresent = present;
                     });
                     break;
                 case EntitiesEnum.Driver:
-                    _driverLogic.Update(id, driver =>
+                    await _driverLogic.Update(id, driver =>
                     {
                         // Checked-in
                         driver.IsPresent = present;

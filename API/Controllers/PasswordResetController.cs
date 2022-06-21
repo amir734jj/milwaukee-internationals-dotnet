@@ -30,7 +30,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> PasswordResetRequest()
+        public IActionResult PasswordResetRequest()
         {
             if (TempData.ContainsKey("Error"))
             {

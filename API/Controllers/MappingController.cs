@@ -11,7 +11,7 @@ namespace API.Controllers
     {
         // GET the view
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -22,7 +22,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("StudentDriverMapping")]
-        public async Task<IActionResult> StudentDriverMapping()
+        public IActionResult StudentDriverMapping()
         {
             return View();
         }
@@ -33,7 +33,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DriverHostMapping")]
-        public async Task<IActionResult> DriverHostMapping()
+        public IActionResult DriverHostMapping()
         {
             return View();
         }

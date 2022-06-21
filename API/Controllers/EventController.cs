@@ -85,7 +85,7 @@ namespace API.Controllers
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
         [Route("Info/{id}")]
-        public async Task<IActionResult> Info([FromRoute] int id)
+        public IActionResult Info([FromRoute] int id)
         {
             return View(id);
         }
