@@ -138,7 +138,9 @@ namespace Logic
 
                 using var bitmap = svgDocument.Draw(400, 400);
                 var ms = new MemoryStream();
+#pragma warning disable CA1416
                 bitmap.Save(ms, ImageFormat.Png);
+#pragma warning restore CA1416
 
                 var sigBase64 = Convert.ToBase64String(ms.ToArray());
                 var qrUri = $"data:image/png;base64,{sigBase64}";
