@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using DAL.Interfaces;
 using Flurl;
 using Logic.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Models.Constants;
 using Models.Entities;
 using Models.Enums;
