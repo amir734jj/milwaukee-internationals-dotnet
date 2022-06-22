@@ -239,7 +239,7 @@ namespace API
 
                 services.AddEasyCaching(options =>
                 {
-                    var (_, dictionary) = UrlUtility.UrlToResource(_configuration.GetValue<string>("REDISTOGO_URL"));
+                    var (_, dictionary) = UrlUtility.UrlToResource(_configuration.GetValue<string>("REDISCLOUD_URL"));
 
                     // use memory cache with your own configuration
                     options.UseRedis(x =>
