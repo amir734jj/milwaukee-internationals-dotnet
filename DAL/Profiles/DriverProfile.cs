@@ -24,7 +24,6 @@ namespace DAL.Profiles
         {
             return queryable
                 .Include(x => x.Host)
-                .ThenInclude(x => x.Drivers)
                 .Include(x => x.Students)
                 .OrderBy(x => x.Fullname);
         }
