@@ -29,7 +29,7 @@ namespace DAL.Profiles
             return queryable
                 .Include(x => x.Events)
                 .Include(x => x.Driver)
-                .Include(x => x.Driver.Host)
+                .ThenInclude(x => x.Host)
                 .OrderBy(x => x.Fullname);
         }
     }
