@@ -98,8 +98,8 @@ namespace Logic
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <br>
-                    <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>
-                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <p> Thank you for helping with the tour this year.</p>
+                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
                     <p> Blessings, </p>
                 ");
@@ -161,10 +161,10 @@ namespace Logic
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
-                    <p> If you need any sort of help (furniture, moving, etc.), please contact Asher Imtiaz (414-499-5360) or Prayag (646-226-4330) on campus.</p>
+                    <p> If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
                     <br>
-                    <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the Day of Tour of Milwaukee.
+                    <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the day of the Tour of Milwaukee.
                     <img src=""{qrUri}"" alt=""QR code"" />
                 ");
             }
@@ -196,7 +196,7 @@ namespace Logic
                     <p> Date: September 3, {DateTime.Now.Year}</p>
                     <p> Time: 5:00 pm</p>
                     <p> We will send you more details once we have them.</p>
-                    <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
                     <p> Blessings,</p>
                 ");
             }
