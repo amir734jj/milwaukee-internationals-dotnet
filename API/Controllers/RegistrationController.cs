@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using API.Attributes;
+using API.Extensions;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,8 @@ namespace API.Controllers
         {
             if (await _registrationLogic.RegisterDriver(driver))
             {
+                ModelState.ClearModelStateErrors();
+                
                 return View("Thankyou");   
             }
 
@@ -75,6 +78,8 @@ namespace API.Controllers
         {
             if (await _registrationLogic.RegisterStudent(student))
             {
+                ModelState.ClearModelStateErrors();
+
                 return View("Thankyou");   
             }
 
@@ -101,6 +106,8 @@ namespace API.Controllers
         {
             if (await _registrationLogic.RegisterHost(host))
             {
+                ModelState.ClearModelStateErrors();
+
                 return View("Thankyou");   
             }
 
@@ -127,6 +134,8 @@ namespace API.Controllers
         {
             if (await _registrationLogic.RegisterEvent(@event))
             {
+                ModelState.ClearModelStateErrors();
+
                 return RedirectToAction("Index", "Event");
             }
 
