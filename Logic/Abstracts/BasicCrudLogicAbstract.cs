@@ -85,11 +85,7 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            var entity = await Repository().Get(id);
-
-            modifyAction(entity);
-
-            return entity;
+            return await Repository().Update(id, modifyAction);;
         }
     }
 }
