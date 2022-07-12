@@ -7,7 +7,7 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class EventProfile : EntityProfile<Event>, IEntityProfile<Event> 
+    public class EventProfile : EntityProfile<Event>
     {
         public  override void Update(Event entity, Event dto)
         {
@@ -15,7 +15,7 @@ namespace DAL.Profiles
             entity.Description = dto.Description;
             entity.Name = dto.Name;
             entity.DateTime = dto.DateTime;
-            ((IEntityProfile<Event>)this).ModifyList(entity.Students, dto.Students, x => x.Id);
+            ModifyList(entity.Students, dto.Students, x => x.Id);
         }
 
         public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)
