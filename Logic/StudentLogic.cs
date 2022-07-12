@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
-using DAL.Profiles;
-using DAL.Utilities;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -16,17 +13,17 @@ namespace Logic
 {
     public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     {
-        private readonly EntityDbContext _dbContext;
+        private readonly IBasicCrud<Student> _dal;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="dbContext"></param>
+        /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public StudentLogic(EntityDbContext dbContext, GlobalConfigs globalConfigs)
+        public StudentLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _dbContext = dbContext;
+            _dal = repository.For<Student>();
             _globalConfigs = globalConfigs;
         }
         
@@ -78,14 +75,9 @@ namespace Logic
             return await base.Update(id, student);
         }
 
-        protected override EntityDbContext GetDbContext()
+        protected override IBasicCrud<Student> Repository()
         {
-            return _dbContext;
-        }
-
-        protected override IEntityProfile<Student> Profile()
-        {
-            return new StudentProfile();
+            return _dal;
         }
 
         public override async Task<IEnumerable<Student>> GetAll()

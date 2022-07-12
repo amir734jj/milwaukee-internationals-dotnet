@@ -8,7 +8,7 @@ public interface IEntityProfile<T> where T: class
 {
     public void Update(T entity, T dto);
 
-    public IQueryable<T> Include(IQueryable<T> queryable);
+    public IQueryable<T> Include<TQueryable>(TQueryable queryable) where TQueryable : IQueryable<T>;
     
     /// <summary>
     /// Utility that applies addition/deletion to the list

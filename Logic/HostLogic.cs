@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
-using DAL.Profiles;
-using DAL.Utilities;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -14,17 +12,17 @@ namespace Logic
 {
     public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
     {
-        private readonly EntityDbContext _dbContext;
+        private readonly IBasicCrud<Host> _dal;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="dbContext"></param>
+        /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public HostLogic(EntityDbContext dbContext, GlobalConfigs globalConfigs)
+        public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs)
         {
-            _dbContext = dbContext;
+            _dal = repository.For<Host>();
             _globalConfigs = globalConfigs;
         }
 
@@ -35,15 +33,10 @@ namespace Logic
             
             return base.Save(instance);
         }
-        
-        protected override EntityDbContext GetDbContext()
-        {
-            return _dbContext;
-        }
 
-        protected override IEntityProfile<Host> Profile()
+        protected override IBasicCrud<Host> Repository()
         {
-            return new HostProfile();
+            return _dal;
         }
 
         public override async Task<IEnumerable<Host>> GetAll()
