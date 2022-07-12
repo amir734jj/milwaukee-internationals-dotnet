@@ -6,7 +6,7 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class HostProfile : EntityProfile<Host>, IEntityProfile<Host> 
+    public class HostProfile : EntityProfile<Host>
     {
         public override void Update(Host entity, Host dto)
         {

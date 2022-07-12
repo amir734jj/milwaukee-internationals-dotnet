@@ -6,7 +6,7 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class StudentProfile : EntityProfile<Student>, IEntityProfile<Student>
+    public class StudentProfile : EntityProfile<Student>
     {
         public override void Update(Student entity, Student dto)
         {

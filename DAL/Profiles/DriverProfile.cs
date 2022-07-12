@@ -6,7 +6,7 @@ using Models.Entities;
 
 namespace DAL.Profiles
 {
-    public class DriverProfile : EntityProfile<Driver>, IEntityProfile<Driver> 
+    public class DriverProfile : EntityProfile<Driver>
     {
         public override void Update(Driver entity, Driver dto)
         {
