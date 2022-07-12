@@ -109,7 +109,7 @@ namespace Logic
                             ") ?? new List<string> { "<li>No student assigned to this driver yet.</li>"})}
                         </ul>
                     </li>
-                "))}
+                ")!)}
             </ul>
         " : "<p>No driver is assigned to your home.</p>")}
         <br />                                                                     

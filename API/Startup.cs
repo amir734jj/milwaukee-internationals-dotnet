@@ -11,6 +11,7 @@ using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using EasyCaching.Core.Configurations;
+using EfCoreRepository.Extensions;
 using EFCoreSecondLevelCacheInterceptor;
 using Logic.Interfaces;
 using Mailjet.Client;
@@ -262,6 +263,8 @@ namespace API
             // Re-Captcha config
             services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
+
+            services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
         }
 
         /// <summary>
