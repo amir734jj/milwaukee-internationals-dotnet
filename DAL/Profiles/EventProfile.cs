@@ -1,14 +1,15 @@
 using System.Linq;
 using DAL.Interfaces;
+using EfCoreRepository;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
 
 namespace DAL.Profiles
 {
-    public class EventProfile :   IEntityProfile<Event>
+    public class EventProfile : EntityProfile<Event>, IEntityProfile<Event> 
     {
-        public  void Update(Event entity, Event dto)
+        public  override void Update(Event entity, Event dto)
         {
             entity.Address = dto.Address;
             entity.Description = dto.Description;
@@ -17,7 +18,7 @@ namespace DAL.Profiles
             ((IEntityProfile<Event>)this).ModifyList(entity.Students, dto.Students, x => x.Id);
         }
 
-        public IQueryable<Event> Include(IQueryable<Event> queryable)
+        public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .Include(x => x.Students)

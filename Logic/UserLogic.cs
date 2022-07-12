@@ -3,9 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using DAL.Interfaces;
-using DAL.Profiles;
-using DAL.Utilities;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,17 +14,17 @@ namespace Logic
 {
     public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
     {
-        private readonly EntityDbContext _dbContext;
+        private readonly IBasicCrud<User> _dal;
         private readonly UserManager<User> _userManager;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="dbContext"></param>
+        /// <param name="repository"></param>
         /// <param name="userManager"></param>
-        public UserLogic(EntityDbContext dbContext, UserManager<User> userManager)
+        public UserLogic(IEfRepository repository, UserManager<User> userManager)
         {
-            _dbContext = dbContext;
+            _dal = repository.For<User>();
             _userManager = userManager;
         }
 
@@ -50,14 +48,9 @@ namespace Logic
             return result;
         }
 
-        protected override EntityDbContext GetDbContext()
+        protected override IBasicCrud<User> Repository()
         {
-            return _dbContext;
-        }
-
-        protected override IEntityProfile<User> Profile()
-        {
-            return new UserProfile();
+            return _dal;
         }
 
         public override async Task<IEnumerable<User>> GetAll()

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Interfaces;
-using DAL.Profiles;
-using DAL.Utilities;
+using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
@@ -15,31 +13,26 @@ namespace Logic
 {
     public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
     {
-        private readonly EntityDbContext _dbContext;
+        private readonly IBasicCrud<Event> _dal;
         private readonly IStudentLogic _studentLogic;
         private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
-        /// <param name="dbContext"></param>
+        /// <param name="repository"></param>
         /// <param name="studentLogic"></param>
         /// <param name="globalConfigs"></param>
-        public EventLogic(EntityDbContext dbContext, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
+        public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
         {
-            _dbContext = dbContext;
+            _dal = repository.For<Event>();
             _studentLogic = studentLogic;
             _globalConfigs = globalConfigs;
         }
 
-        protected override EntityDbContext GetDbContext()
+        protected override IBasicCrud<Event> Repository()
         {
-            return _dbContext;
-        }
-
-        protected override IEntityProfile<Event> Profile()
-        {
-            return new EventProfile();
+            return _dal;
         }
 
         public override async Task<IEnumerable<Event>> GetAll()

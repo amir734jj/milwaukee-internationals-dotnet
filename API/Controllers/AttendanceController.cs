@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using API.Attributes;
+﻿using API.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
