@@ -22,6 +22,7 @@ namespace DAL.Profiles
             entity.KosherFood = dto.KosherFood;
             entity.IsPresent = dto.IsPresent;
             entity.FamilySize = dto.FamilySize;
+            entity.MaskPreferred = dto.MaskPreferred;
         }
 
         public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
