@@ -76,8 +76,8 @@
     </div>
 
     <div class="form-group" ng-init="maskPreferred = @Model.MaskPreferred.ToString().ToLower(); maskPreferred_val = maskPreferred" style="margin-top: 3rem">
-        @Html.LabelFor(x => x.KosherFood)
-        @Html.CheckBoxFor(x => x.KosherFood, new { @class = "form-control hidden", ng_model = "maskPreferred_val" })
+        @Html.LabelFor(x => x.MaskPreferred)
+        @Html.CheckBoxFor(x => x.MaskPreferred, new { @class = "form-control hidden", ng_model = "maskPreferred_val" })
         <toggle class="pull-right" ng-model="maskPreferred" on="Yes" off="No" onstyle="btn-success" offstyle="btn-default" ng-change="maskPreferred_val = maskPreferred"></toggle>
     </div>
 
