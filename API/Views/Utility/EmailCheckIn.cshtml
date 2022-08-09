@@ -7,119 +7,123 @@
 }
 
 <div class="container" ng-controller="emailCheckInCtrl">
-@switch (Model)
-{
-    case Driver driver:
-        <div class="page-header">
-            <h3>@driver.Fullname's Information</h3>
-            <p>Please verify your information and check-in by toggling the attendance switch</p>
-        </div>
-        
-        <ul class="list-group">
-            <li class="list-group-item clearfix" style="background-color: #70AB8F;">
-                <label class="pull-left">Display ID</label>
-                <label class="pull-right">@driver.DisplayId</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Navigator</label>
-                <label class="pull-right">@(!string.IsNullOrEmpty(driver.Navigator) ? driver.Navigator : "Not Assigned")</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Capacity</label>
-                <label class="pull-right">@driver.Capacity</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <h4>Host Info</h4>
-                
-                <ul class="list-group">
-                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
-                        <label class="pull-left">Name</label>
-                        <label class="pull-right">@driver.Host?.Fullname</label>
-                    </li>
-                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
-                        <label class="pull-left">Address</label>
-                        <label class="pull-right">
-                            @if (string.IsNullOrEmpty(driver.Host?.Address))
-                            {
-                                @driver.Host?.Address
-                            }
-                            else
-                            {
-                                <a href="https://www.google.com/maps/place/@driver.Host?.Address" target="_blank">@driver.Host?.Address</a>
-                            }
-                        </label>
-                    </li>
-                    <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
-                        <label class="pull-left">Phone Number</label>
-                        <label class="pull-right">@driver?.Host?.Phone</label>
-                    </li>
-                </ul>
-            </li>
-            
-            @if (driver.Students != null && driver.Students.Any())
-            {
+    @switch (Model)
+    {
+        case Driver driver:
+            <div class="page-header">
+                <h3>@driver.Fullname's Information</h3>
+                <p>Please verify your information and check-in by toggling the attendance switch</p>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item clearfix" style="background-color: #70AB8F;">
+                    <label class="pull-left">Display ID</label>
+                    <label class="pull-right">@driver.DisplayId</label>
+                </li>
                 <li class="list-group-item clearfix">
-                    <label>Assigned Students</label>
-                    
+                    <label class="pull-left">Navigator</label>
+                    <label class="pull-right">@(!string.IsNullOrEmpty(driver.Navigator) ? driver.Navigator : "Not Assigned")</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Capacity</label>
+                    <label class="pull-right">@driver.Capacity</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <h4>Host Info</h4>
+
                     <ul class="list-group">
-                        @foreach (var student in driver.Students)
-                        {
-                            <li class="list-group-item clearfix" style="background-color: #E4DBBF; border: 1px solid black; color: #DC5B21;">
-                                <label class="pull-left">@student.Fullname (@student.Country) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
-                            </li>
-                        }
+                        <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                            <label class="pull-left">Name</label>
+                            <label class="pull-right">@driver.Host?.Fullname</label>
+                        </li>
+                        <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                            <label class="pull-left">Address</label>
+                            <label class="pull-right">
+                                @if (string.IsNullOrEmpty(driver.Host?.Address))
+                                {
+                                    @driver.Host?.Address
+                                }
+                                else
+                                {
+                                    <a href="https://www.google.com/maps/place/@driver.Host?.Address" target="_blank">@driver.Host?.Address</a>
+                                }
+                            </label>
+                        </li>
+                        <li class="list-group-item clearfix" style="color: #383127; background-color: #E4DBBF;border: 1px solid black;">
+                            <label class="pull-left">Phone Number</label>
+                            <label class="pull-right">@driver?.Host?.Phone</label>
+                        </li>
                     </ul>
                 </li>
-            }
-            
-        </ul>
-        
-        <div class="row">
-            <div class="pull-right" ng-init="present = @driver.IsPresent.ToString().ToLower()">
-                <toggle ng-model="present" ng-change="changeAttendance('driver', '@driver.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+
+                @if (driver.Students != null && driver.Students.Any())
+                {
+                    <li class="list-group-item clearfix">
+                        <label>Assigned Students</label>
+
+                        <ul class="list-group">
+                            @foreach (var student in driver.Students)
+                            {
+                                <li class="list-group-item clearfix" style="background-color: #E4DBBF; border: 1px solid black; color: #DC5B21;">
+                                    <label class="pull-left">@student.Fullname (@student.Country) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+            </ul>
+
+            <div class="row">
+                <div class="pull-right" ng-init="present = @driver.IsPresent.ToString().ToLower()">
+                    <toggle ng-model="present" ng-change="changeAttendance('driver', '@driver.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                </div>
             </div>
-        </div>
-        break;
-        
-    case Student student:
-        <div class="page-header">
-            <h3>Student Info page</h3>
-            <p>Please verify your information and check-in by toggling the attendance switch</p>
-        </div>
-        
-        <ul class="list-group">
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Fullname</label>
-                <label class="pull-right">@student.Fullname</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Email</label>
-                <label class="pull-right">@student.Email</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Phone</label>
-                <label class="pull-right">@student.Phone</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Major</label>
-                <label class="pull-right">@student.Major</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Is Family</label>
-                <label class="pull-right">@(student.IsFamily ? $"True [+{student.FamilySize}]" : "False")</label>
-            </li>
-            <li class="list-group-item clearfix">
-                <label class="pull-left">Interests</label>
-                <label class="pull-right">@student.Interests</label>
-            </li>
-        </ul>
-        
-        <div class="row">
-            <div class="pull-right" ng-init="present = @student.IsPresent.ToString().ToLower()">
-                <toggle ng-model="present" ng-change="changeAttendance('student', '@student.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+            break;
+
+        case Student student:
+            <div class="page-header">
+                <h3>Student Info page</h3>
+                <p>Please verify your information and check-in by toggling the attendance switch</p>
             </div>
-        </div>
-        break;
-}
+
+            <ul class="list-group">
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Fullname</label>
+                    <label class="pull-right">@student.Fullname</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Email</label>
+                    <label class="pull-right">@student.Email</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Phone</label>
+                    <label class="pull-right">@student.Phone</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Major</label>
+                    <label class="pull-right">@student.Major</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Is Family</label>
+                    <label class="pull-right">@(student.IsFamily ? $"True [+{student.FamilySize}]" : "False")</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">Interests</label>
+                    <label class="pull-right">@student.Interests</label>
+                </li>
+                <li class="list-group-item clearfix">
+                    <label class="pull-left">MaskPreferred</label>
+                    <label class="pull-right">@student.MaskPreferred</label>
+                </li>
+            </ul>
+
+            <div class="row">
+                <div class="pull-right" ng-init="present = @student.IsPresent.ToString().ToLower()">
+                    <toggle ng-model="present" ng-change="changeAttendance('student', '@student.Id', present)" on="Present" off="Check-In" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                </div>
+            </div>
+            break;
+    }
 
 </div>
