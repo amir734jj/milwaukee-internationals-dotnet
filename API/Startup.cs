@@ -10,7 +10,6 @@ using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
-using EasyCaching.Core.Configurations;
 using EfCoreRepository.Extensions;
 using EFCoreSecondLevelCacheInterceptor;
 using Logic.Interfaces;
@@ -31,7 +30,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Models.Constants;
 using Models.Entities;
-using Models.Utilities;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using Newtonsoft.Json;
@@ -225,33 +223,11 @@ namespace API
                 .AddDefaultTokenProviders();
 
             // L2 EF cache
-            if (_env.IsDevelopment())
-            {
-                services.AddEFSecondLevelCache(options =>
-                    options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
-                );
+            services.AddEFSecondLevelCache(options =>
+                options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
+            );
 
-                services.AddEasyCaching(options => options.UseInMemory("memory"));
-            }
-            else
-            {
-                services.AddEFSecondLevelCache(options =>
-                    options.UseEasyCachingCoreProvider("redis").DisableLogging(true));
-
-                services.AddEasyCaching(options =>
-                {
-                    var (_, dictionary) = UrlUtility.UrlToResource(_configuration.GetValue<string>("REDISCLOUD_URL"));
-
-                    // use memory cache with your own configuration
-                    options.UseRedis(x =>
-                    {
-                        x.DBConfig.Endpoints.Add(new ServerEndPoint(dictionary["Host"], int.Parse(dictionary["Port"])));
-                        x.DBConfig.Username = dictionary["Username"];
-                        x.DBConfig.Password = dictionary["Password"];
-                        x.DBConfig.AbortOnConnectFail = false;
-                    }, "redis");
-                });
-            }
+            services.AddEasyCaching(options => options.UseInMemory("memory"));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
