@@ -57,12 +57,12 @@
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical">
 
-                        <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
+                            <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
 
-                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                        {
-                            <a href="~/Student/delete/@student.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this student?">Delete</a>
-                        }
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            {
+                                <a href="~/Student/delete/@student.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this student?">Delete</a>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -146,6 +146,11 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" ng-model="pdfDownloadTable['isPresent']"> IsPresent
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="pdfDownloadTable['maskPreferred']"> MaskPreferred
                             </label>
                         </div>
                     </div>
