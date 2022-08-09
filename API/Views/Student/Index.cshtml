@@ -31,6 +31,7 @@
                 <th>Country</th>
                 <th>University</th>
                 <th>Major</th>
+                <th ng-show="showDetail">MaskPreferred</th>
                 <th ng-show="showDetail">Interest</th>
                 <th ng-show="showDetail">IsFamily</th>
                 <th ng-show="showDetail">Email</th>
@@ -47,6 +48,7 @@
                     <td>@student.Country</td>
                     <td>@student.University</td>
                     <td>@student.Major</td>
+                    <td ng-show="showDetail">@student.MaskPreferred</td>
                     <td ng-show="showDetail">@student.Interests</td>
                     <td ng-show="showDetail">@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
                     <td ng-show="showDetail">@student.Email</td>
