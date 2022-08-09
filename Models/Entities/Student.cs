@@ -63,6 +63,9 @@ namespace Models.Entities
         /// </summary>
         public List<EventStudentRelationship> Events { get; set; } = new();
         
+        [Display(Name="Prefer your tour driver to wear mask?")]
+        public bool MaskPreferred { get; set; }
+        
         /// <summary>
         /// Override generate hashcode
         /// </summary>
