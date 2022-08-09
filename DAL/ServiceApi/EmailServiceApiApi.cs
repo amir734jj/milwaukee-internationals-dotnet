@@ -72,7 +72,7 @@ namespace DAL.ServiceApi
                     var response = await _mailJetClient.SendTransactionalEmailAsync(email);
                     
                     // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-                    _logger.LogInformation("Email send successfully {}", response?.ToString());
+                    _logger.LogInformation("Email sent successfully {}", response?.ToString());
                 });
 
                 await task;
