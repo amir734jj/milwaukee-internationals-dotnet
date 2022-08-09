@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Mailjet.Client;
-using Mailjet.Client.Resources;
+using Mailjet.Client.TransactionalEmails;
+using Microsoft.Extensions.Logging;
 using Models.Constants;
-using Newtonsoft.Json.Linq;
 using NETCore.MailKit.Core;
 
 namespace DAL.ServiceApi
@@ -20,6 +20,7 @@ namespace DAL.ServiceApi
         private readonly IMailjetClient _mailJetClient;
         
         private readonly GlobalConfigs _globalConfigs;
+        private readonly ILogger<EmailServiceApi> _logger;
 
         public EmailServiceApi()
         {
@@ -32,12 +33,14 @@ namespace DAL.ServiceApi
         /// <param name="emailServiceApi"></param>
         /// <param name="mailJetClient"></param>
         /// <param name="globalConfigs"></param>
-        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient, GlobalConfigs globalConfigs)
+        /// <param name="logger"></param>
+        public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient, GlobalConfigs globalConfigs, ILogger<EmailServiceApi> logger)
         {
             _connected = true;
             _emailServiceApi = emailServiceApi;
             _mailJetClient = mailJetClient;
             _globalConfigs = globalConfigs;
+            _logger = logger;
         }
 
         /// <summary>
@@ -56,24 +59,20 @@ namespace DAL.ServiceApi
             {
                 var task = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(async _ =>
                 {
-                    var emailList = new JArray
-                    {
-                        // If email test mode is not True, then add recipient
-                        _globalConfigs.EmailTestMode
-                            ? new JObject { { "Email", ApiConstants.SiteEmail } }
-                            : new JObject { { "Email", emailAddress } }
-                    };
+                    // construct your email with builder
+                    var email = new TransactionalEmailBuilder()
+                        .WithFrom(new SendContact(ApiConstants.SiteEmail))
+                        .WithSubject(emailSubject)
+                        .WithHtmlPart(emailHtml)
+                        .WithCc(new SendContact(ApiConstants.SiteEmail))
+                        .WithTo(new SendContact(_globalConfigs.EmailTestMode ? ApiConstants.SiteEmail : emailAddress))
+                        .Build();
 
-                    var request = new MailjetRequest { Resource = Send.Resource }
-                        .Property(Send.FromEmail, "tourofmilwaukee@gmail.com")
-                        .Property(Send.FromName, "Milwaukee-Internationals")
-                        .Property(Send.Subject, emailSubject)
-                        .Property(Send.HtmlPart, emailHtml)
-                        // CC to ...
-                        .Property(Send.Cc, ApiConstants.SiteEmail)
-                        .Property(Send.Recipients, emailList);
-
-                    await _mailJetClient.PostAsync(request);
+                    // invoke API to send email
+                    var response = await _mailJetClient.SendTransactionalEmailAsync(email);
+                    
+                    // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+                    _logger.LogInformation("Email send successfully {}", response?.ToString());
                 });
 
                 await task;
