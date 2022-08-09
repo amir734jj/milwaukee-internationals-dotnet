@@ -137,7 +137,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             familySize: false,
             needCarSeat: true,
             kosherFood: true,
-            isPresent: true
+            isPresent: true,
+            maskPreferred: false
         };
         
         $scope.showDetail = false;
