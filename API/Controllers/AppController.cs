@@ -13,7 +13,7 @@ namespace API.Controllers
     public class AppController : Controller
     {
         [HttpGet]
-        [Route("CheckIn/Student/{hashcode}")]
+        [Route("CheckIn/Student/{hashcode:int}")]
         public IActionResult StudentCheckIn([FromRoute] int hashcode)
         {
             return RedirectToAction("EmailCheckIn", "Utility", new
