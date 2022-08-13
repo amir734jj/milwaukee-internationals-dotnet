@@ -18,6 +18,7 @@ namespace DAL.Profiles
             entity.DisplayId = dto.DisplayId;
             entity.RequireNavigator = dto.RequireNavigator;
             entity.HaveChildSeat = dto.HaveChildSeat;
+            entity.HostRefId = dto.HostRefId;
         }
 
         public override IQueryable<Driver> Include<TQueryable>(TQueryable queryable)
