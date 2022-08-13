@@ -28,7 +28,7 @@ namespace DAL.Utilities
         // ReSharper disable once SuggestBaseTypeForParameter
         public EntityDbContext(DbContextOptions<EntityDbContext> optionsBuilderOptions) : base(optionsBuilderOptions)
         {
-            // Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
