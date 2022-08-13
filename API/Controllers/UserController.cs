@@ -62,17 +62,17 @@ namespace API.Controllers
         [Route("UpdateUserRole/{id:int}/{userRoleEnum}")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
-            var userEntity = await _userLogic.Get(id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             switch (userRoleEnum)
             {
                 case UserRoleEnum.Basic:
-                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Basic.ToString());
-                    await _userManager.RemoveFromRoleAsync(userEntity, UserRoleEnum.Admin.ToString());
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
+                    await _userManager.RemoveFromRoleAsync(user, UserRoleEnum.Admin.ToString());
                     break;
                 case UserRoleEnum.Admin:
-                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Admin.ToString());
-                    await _userManager.AddToRoleAsync(userEntity, UserRoleEnum.Basic.ToString());
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Admin.ToString());
+                    await _userManager.AddToRoleAsync(user, UserRoleEnum.Basic.ToString());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userRoleEnum), userRoleEnum, null);
