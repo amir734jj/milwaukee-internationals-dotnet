@@ -11,7 +11,7 @@
 
 <div class="container" ng-controller="driverListCtrl">
     <div class="page-header">
-        <h3>List of Drivers <small>(@Model.Count())</small></h3>
+        <h3>List of Drivers <small>(Count: @Model.Count(), Seats: @(Model.Select(x => x.Capacity).Sum())</small></h3>
 
         <div class="row">
             <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">

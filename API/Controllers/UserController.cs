@@ -59,7 +59,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("UpdateUserRole/{id}/{userRoleEnum}")]
+        [Route("UpdateUserRole/{id:int}/{userRoleEnum}")]
         public async Task<IActionResult> UpdateUserRole(int id, UserRoleEnum userRoleEnum)
         {
             var userEntity = await _userLogic.Get(id);
