@@ -47,7 +47,6 @@ namespace Models.Entities
         /// </summary>
         public int? DriverRefId { get; set; }
 
-        [ForeignKey("DriverRefId")]
         public Driver Driver { get; set; }
         
         [Display(Name = "Registering as a family?")]

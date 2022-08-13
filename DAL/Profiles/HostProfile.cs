@@ -13,6 +13,8 @@ namespace DAL.Profiles
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;
             entity.Address = dto.Address;
+            entity.Year = dto.Year;
+            ModifyList(entity.Drivers, dto.Drivers, x => x.Id);
         }
 
         public override IQueryable<Host> Include<TQueryable>(TQueryable queryable)

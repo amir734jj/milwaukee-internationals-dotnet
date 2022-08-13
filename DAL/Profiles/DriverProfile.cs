@@ -19,6 +19,9 @@ namespace DAL.Profiles
             entity.RequireNavigator = dto.RequireNavigator;
             entity.HaveChildSeat = dto.HaveChildSeat;
             entity.HostRefId = dto.HostRefId;
+            entity.IsPresent = dto.IsPresent;
+            entity.Year = dto.Year;
+            ModifyList(entity.Students, dto.Students, x => x.Id);
         }
 
         public override IQueryable<Driver> Include<TQueryable>(TQueryable queryable)

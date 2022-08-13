@@ -23,6 +23,8 @@ namespace DAL.Profiles
             entity.IsPresent = dto.IsPresent;
             entity.FamilySize = dto.FamilySize;
             entity.MaskPreferred = dto.MaskPreferred;
+            entity.Year = dto.Year;
+            entity.DriverRefId = dto.DriverRefId;
         }
 
         public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
