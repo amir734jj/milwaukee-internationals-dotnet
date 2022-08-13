@@ -27,10 +27,26 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th>Fullname</th>
-                <th>Country</th>
-                <th>University</th>
-                <th>Major</th>
+                <th>
+                    Fullname
+                    <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
+                <th>
+                    Country
+                    <a href="?sortBy=country&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=country&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
+                <th>
+                    University
+                    <a href="?sortBy=university&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=university&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
+                <th>
+                    Major
+                    <a href="?sortBy=major&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=major&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
                 <th ng-show="showDetail">MaskPreferred</th>
                 <th ng-show="showDetail">Interest</th>
                 <th ng-show="showDetail">IsFamily</th>

@@ -28,9 +28,9 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]string sortBy = null, bool? descending = null)
         {
-            return View(await _studentLogic.GetAll());
+            return View(await _studentLogic.GetAll(sortBy, descending));
         }
         
         /// <summary>

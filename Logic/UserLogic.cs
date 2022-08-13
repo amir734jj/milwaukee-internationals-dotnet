@@ -53,9 +53,9 @@ namespace Logic
             return _dal;
         }
 
-        public override async Task<IEnumerable<User>> GetAll()
+        public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null)
         {
-            var fetchUsersObservable = base.GetAll()
+            var fetchUsersObservable = base.GetAll(sortBy, descending)
                 .ToObservable()
                 .Then(users => users.Select(user =>
                 {

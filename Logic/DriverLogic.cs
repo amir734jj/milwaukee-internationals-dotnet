@@ -41,8 +41,9 @@ namespace Logic
                 instance.Capacity = 0;
             }
 
-            var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).OrderByDescending(x =>  x.Id).First().DisplayId;
-            var lastId = int.Parse(lastDisplayId.Split("-")[1]);
+            var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).MaxBy(x => x.Id)
+                ?.DisplayId;
+            var lastId = lastDisplayId != null ? int.Parse(lastDisplayId.Split("-")[1]) : 0;
 
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
@@ -71,9 +72,9 @@ namespace Logic
             return _dal;
         }
 
-        public override async Task<IEnumerable<Driver>> GetAll()
+        public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null)
         {
-            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
+            return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
         }
     }
 }

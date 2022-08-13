@@ -8,7 +8,7 @@ namespace Logic.Interfaces
     {
         Task<IEnumerable<T>> GetAll(int year);
         
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null);
 
         Task<T> Get(int id);
 
