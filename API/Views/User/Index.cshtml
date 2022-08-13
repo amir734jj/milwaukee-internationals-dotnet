@@ -26,7 +26,11 @@
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
-            <th>Fullname</th>
+            <th>
+                Fullname
+                <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+            </th>
             <th>Email</th>
             <th>Phone</th>
             <th class="hidden-sm hidden-xs">Username</th>
@@ -44,11 +48,7 @@
             var disabled = userInfo.Username == user.UserName;
 
             <tr>
-                <td>
-                    @user.Fullname
-                    <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </td>
+                <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
                 <td class="hidden-sm hidden-xs">@user.UserName</td>
