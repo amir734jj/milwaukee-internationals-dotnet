@@ -37,7 +37,7 @@
                     </th>
                     <th>Role</th>
                     <th>Capacity</th>
-                    <th>
+                    <th ng-show="showDetail">
                         Email
                         <a href="?sortBy=email&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                         <a href="?sortBy=email&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
@@ -56,7 +56,7 @@
                     <td>@driver.Fullname</td>
                     <td>@driver.Role.ToString()</td>
                     <td>@driver.Capacity</td>
-                    <td>@driver.Email</td>
+                    <td ng-show="showDetail">@driver.Email</td>
                     <td>@driver.Phone</td>
                     <td>@driver.Navigator</td>
                     <td>@driver.HaveChildSeat</td>
