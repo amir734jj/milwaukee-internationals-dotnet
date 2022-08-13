@@ -41,7 +41,7 @@ namespace Logic
             var host = await _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
             // Save changes to driver
-            return _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            return await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
             {
                 // Add map
                 x.Host = host;
