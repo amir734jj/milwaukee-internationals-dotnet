@@ -24,8 +24,16 @@
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
-            <th>Fullname</th>
-            <th>Email</th>
+            <th>
+                Fullname
+                <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+            </th>
+            <th>
+                Email
+                <a href="?sortBy=email&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                <a href="?sortBy=email&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+            </th>
             <th>Phone</th>
             <th>Address</th>
             <th class="hidden-xs" ng-show="showDetail">Action</th>

@@ -39,9 +39,9 @@ namespace Logic
             return _dal;
         }
 
-        public override async Task<IEnumerable<Host>> GetAll()
+        public override async Task<IEnumerable<Host>> GetAll(string sortBy = null, bool? descending = null)
         {
-            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
+            return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
         }
     }
 }

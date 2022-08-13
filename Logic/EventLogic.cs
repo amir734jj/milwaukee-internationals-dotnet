@@ -35,9 +35,9 @@ namespace Logic
             return _dal;
         }
 
-        public override async Task<IEnumerable<Event>> GetAll()
+        public override async Task<IEnumerable<Event>> GetAll(string sortBy = null, bool? descending = null)
         {
-            return (await base.GetAll()).Where(x => x.Year == _globalConfigs.YearValue);
+            return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
         }
 
         public override Task<Event> Save(Event instance)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
@@ -30,10 +32,44 @@ namespace Logic.Abstracts
         /// <summary>
         /// Call forwarding
         /// </summary>
+        /// <param name="sortBy"></param>
+        /// <param name="descending"></param>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null)
         {
-            return await Repository().GetAll();
+            var result = await Repository().GetAll();
+
+            if (string.IsNullOrEmpty(sortBy))
+            {
+                return result;
+            }
+
+            var property = typeof(T).GetProperties()
+                .Where(x => x.CanRead && x.CanWrite)
+                .FirstOrDefault(x => x.Name.Equals(sortBy, StringComparison.OrdinalIgnoreCase));
+
+            if (property == null)
+            {
+                return result;
+            }
+
+            var propertyAccessFunc = ToLambda(property).Compile();
+
+            if (!descending.HasValue || !descending.Value)
+            {
+                return result.OrderBy(propertyAccessFunc).ToList();
+            }
+
+            return result.OrderByDescending(propertyAccessFunc).ToList();
+        }
+        
+        private static Expression<Func<T, object>> ToLambda(PropertyInfo propertyInfo)
+        {
+            var parameter = Expression.Parameter(typeof(T));
+            var property = Expression.Property(parameter, propertyInfo);
+            var propAsObject = Expression.Convert(property, typeof(object));
+
+            return Expression.Lambda<Func<T, object>>(propAsObject, parameter);            
         }
 
         /// <summary>
