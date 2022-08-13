@@ -35,9 +35,9 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]string sortBy = null, [FromQuery]bool? descending = null)
         {
-            return View(await _userLogic.GetAll());
+            return View(await _userLogic.GetAll(sortBy, descending));
         }
 
         /// <summary>
