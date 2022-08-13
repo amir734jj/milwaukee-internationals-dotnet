@@ -124,7 +124,7 @@ namespace Logic
             // If save was successful
             if (result != null)
             {
-                var rootUrl = ApiConstants.SiteUrl;
+                const string rootUrl = ApiConstants.SiteUrl;
                 var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", result.GetHashCode().ToString());
 
                 var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
