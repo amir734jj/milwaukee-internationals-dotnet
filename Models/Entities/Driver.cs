@@ -40,14 +40,13 @@ namespace Models.Entities
         [Display(Name="Role")]
         public RolesEnum Role { get; set; }
         
-        public HashSet<Student> Students { get; set; } = new();
+        public List<Student> Students { get; set; } = new();
         
         /// <summary>
         /// Optional
         /// </summary>
         public int? HostRefId { get; set; }
 
-        [ForeignKey("HostRefId")]
         public Host Host { get; set; }
         
         public bool IsPresent { get; set; }

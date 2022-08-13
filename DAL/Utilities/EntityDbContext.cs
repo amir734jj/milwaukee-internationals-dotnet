@@ -28,25 +28,14 @@ namespace DAL.Utilities
         // ReSharper disable once SuggestBaseTypeForParameter
         public EntityDbContext(DbContextOptions<EntityDbContext> optionsBuilderOptions) : base(optionsBuilderOptions)
         {
-            Database.EnsureCreated();
+            // Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasKey(t => new { t.StudentId, t.EventId });
-
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasOne(pt => pt.Event)
-                .WithMany(p => p.Students)
-                .HasForeignKey(pt => pt.StudentId);
-
-            modelBuilder.Entity<EventStudentRelationship>()
-                .HasOne(pt => pt.Event)
-                .WithMany(t => t.Students)
-                .HasForeignKey(pt => pt.EventId);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EntityDbContext).Assembly);
         }
 
         /// <summary>

@@ -81,11 +81,11 @@ namespace Logic
                 AvailableDrivers = drivers.ToDictionary(x => x, x => 
                 {
                     // Count = to 1 + FamilySize
-                    var cnt = (x.Students ?? new HashSet<Student>()).Select(st => 1 + st.FamilySize)
+                    var count = (x.Students ?? new List<Student>()).Select(st => 1 + st.FamilySize)
                         .DefaultIfEmpty(0)
                         .Sum();
 
-                    return x.Capacity > cnt;
+                    return x.Capacity > count;
                 }).ToList(),
                 MappedDrivers = drivers.Where(x => x.Students != null && x.Students.Any()),
                 MappedStudents = students.Where(x => x.Driver != null)
