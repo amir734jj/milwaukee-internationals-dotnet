@@ -40,15 +40,14 @@ namespace Logic
             {
                 instance.Capacity = 0;
             }
-            
-            var count = (await base.GetAll(DateTime.UtcNow.Year)).Count();
-          
-            instance.DisplayId = "Null";
+
+            var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).OrderByDescending(x =>  x.Id).First().DisplayId;
+            var lastId = int.Parse(lastDisplayId.Split("-")[1]);
 
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
 
-            instance.DisplayId = GenerateDisplayId(instance, count);
+            instance.DisplayId = GenerateDisplayId(instance, lastId);
 
             // Save the instance
             var retVal = await base.Save(instance);
