@@ -292,7 +292,6 @@ namespace API
                 }
             });
 
-
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
                 .UseStaticFiles()
