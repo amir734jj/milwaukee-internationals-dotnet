@@ -72,7 +72,7 @@ namespace Logic
             {
                 _logger.LogInformation("Successfully fetched the config from storage service");
                 
-                var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>();
+                var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>() ?? new GlobalConfigViewModel();
                 
                 _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
             }
