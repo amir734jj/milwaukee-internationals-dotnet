@@ -20,7 +20,7 @@ public class AzureBlobService : IStorageService
     
     public async Task<SimpleStorageResponse> Upload(string fileKey, byte[] data, IDictionary<string, string> metadata)
     {
-        await _blobContainerClient.UploadBlobAsync(fileKey, new MemoryStream(data));
+        await _blobContainerClient.GetBlobClient(fileKey).UploadAsync(new MemoryStream(data), overwrite: true);
 
         await _blobContainerClient.GetBlobClient(fileKey).SetMetadataAsync(metadata);
 
