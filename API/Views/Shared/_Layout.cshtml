@@ -1,7 +1,6 @@
 ﻿@using API.Extensions
 @using API.Interfaces
 @using API.Utilities
-@using Microsoft.Extensions.Hosting
 @using Models.Constants
 @using Models.Enums
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
@@ -77,16 +76,8 @@
     <script src="https://cdn.jsdelivr.net/npm/angular-tablesort@1.6.1/js/angular-tablesort.min.js"></script>
 
     @* customs *@
-    @if (Env.IsProduction())
-    {
-        <script src="~/scripts/script.min.js?@cacheBustingKey"></script>
-        <link rel="stylesheet" href="~/styles/style.min.css?@cacheBustingKey">
-    }
-    else
-    {
-        <script src="~/scripts/script.js?@cacheBustingKey"></script>
-        <link rel="stylesheet" href="~/styles/style.css?@cacheBustingKey">
-    }
+    <script src="~/scripts/script.js?@cacheBustingKey"></script>
+    <link rel="stylesheet" href="~/styles/style.css?@cacheBustingKey">
 </head>
 <body>
 
