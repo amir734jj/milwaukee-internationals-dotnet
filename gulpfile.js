@@ -31,4 +31,4 @@ gulp.task("styles", function () {
         .pipe(gulp.dest('client-build/styles/'));
 });
 
-gulp.task('default', gulp.parallel('scripts', 'styles'));
+gulp.task('default', ['scripts', 'styles']);
