@@ -76,7 +76,7 @@ namespace Logic
                     <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
                     <p> Location: Lubar Hall (Business Building, UWM) </p>
                     <br>
-                    <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>
+                    <p> Thank you for helping with the tour this year.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
                     <br>
                     <p> Blessings, </p>
