@@ -8,7 +8,7 @@ namespace Models.Constants
 
         public static readonly string InviteCode = $"Tour{DateTime.UtcNow.Year}";
 
-        public const string SiteUrl = "http://www.milwaukeeinternationals.com";
+        public const string SiteUrl = "https://www.milwaukeeinternationals.com";
 
         public static readonly string[] AdminEmail =
         {

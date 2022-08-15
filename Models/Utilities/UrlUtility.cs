@@ -26,7 +26,7 @@ namespace Models.Utilities
                 ["Host"] = url.Host,
                 ["Username"] = url.UserInfo.Split(':').GetValue(0)?.ToString(),
                 ["Password"] = url.UserInfo.Split(':').GetValue(1)?.ToString(),
-                ["Database"] = url.LocalPath.Substring(1),
+                ["Database"] = url.LocalPath[1..],
                 ["ApplicationName"] = "milwaukee-internationals"
             };
 
