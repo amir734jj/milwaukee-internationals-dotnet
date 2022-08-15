@@ -70,7 +70,7 @@ namespace Logic
 
             if (response.Status == HttpStatusCode.OK)
             {
-                _logger.LogInformation("Successfully fetched the config from S3");
+                _logger.LogInformation("Successfully fetched the config from storage service");
                 
                 var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>();
                 
@@ -78,7 +78,7 @@ namespace Logic
             }
             else
             {
-                _logger.LogError("Failed to fetch the config from S3");
+                _logger.LogError("Failed to fetch the config from storage service");
             }
         }
     }
