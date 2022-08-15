@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Models.Entities;
-using static Dal.Utilities.ConnectionStringUtility;
+using static DAL.Utilities.ConnectionStringUtility;
 
 namespace DAL.Utilities
 {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Models.ViewModels.S3
+namespace Models.ViewModels.StorageService
 {
-    public class UriS3Response : SimpleS3Response
+    public class UriStorageResponse : SimpleStorageResponse
     {
         public Uri Uri { get; }
 
@@ -14,9 +14,9 @@ namespace Models.ViewModels.S3
         
         public string Name { get; }
         
-        public UriS3Response(HttpStatusCode status, string message) : base(status, message) { }
+        public UriStorageResponse(HttpStatusCode status, string message) : base(status, message) { }
 
-        public UriS3Response(HttpStatusCode status, string message, Uri uri, IReadOnlyDictionary<string, string> metaData, string contentType, string name) : base(status, message)
+        public UriStorageResponse(HttpStatusCode status, string message, Uri uri, IReadOnlyDictionary<string, string> metaData, string contentType, string name) : base(status, message)
         {
             Uri = uri;
             MetaData = metaData;

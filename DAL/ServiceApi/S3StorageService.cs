@@ -10,34 +10,27 @@ using Amazon.S3.Transfer;
 using DAL.Configs;
 using DAL.Interfaces;
 using Microsoft.Extensions.Logging;
-using Models.ViewModels.S3;
+using Models.ViewModels.StorageService;
 
 namespace DAL.ServiceApi
 {
-    public class S3Service : IS3Service
+    public class S3StorageService : IStorageService
     {
         private readonly IAmazonS3 _client;
-        private readonly ILogger<S3Service> _logger;
+        private readonly ILogger<S3StorageService> _logger;
         private readonly S3ServiceConfig _s3ServiceConfig;
-        private readonly bool _connected;
-        
-        public S3Service()
-        {
-            _connected = false;
-        }
-        
+
         /// <summary>
         /// Constructor that takes a S3Client and a prefix for all paths
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="client"></param>
         /// <param name="s3ServiceConfig"></param>
-        public S3Service(ILogger<S3Service> logger, IAmazonS3 client, S3ServiceConfig s3ServiceConfig) : this()
+        public S3StorageService(ILogger<S3StorageService> logger, IAmazonS3 client, S3ServiceConfig s3ServiceConfig)
         {
             _logger = logger;
             _client = client;
             _s3ServiceConfig = s3ServiceConfig;
-            _connected = true;
         }
 
         /// <summary>
@@ -47,14 +40,8 @@ namespace DAL.ServiceApi
         /// <param name="data"></param>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public async Task<SimpleS3Response> Upload(string fileKey, byte[] data, IDictionary<string, string> metadata)
+        public async Task<SimpleStorageResponse> Upload(string fileKey, byte[] data, IDictionary<string, string> metadata)
         {
-            // Nothing needs to be done ...
-            if (!_connected)
-            {
-                return new SimpleS3Response(HttpStatusCode.BadRequest, "Not connected!");
-            }
-            
             try
             {
                 if (await _client.DoesS3BucketExistAsync(_s3ServiceConfig.BucketName))
@@ -76,7 +63,7 @@ namespace DAL.ServiceApi
 
                     await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
 
-                    return new SimpleS3Response(HttpStatusCode.OK, "Successfully uploaded to S3");
+                    return new SimpleStorageResponse(HttpStatusCode.OK, "Successfully uploaded to S3");
                 }
 
                 // Bucket not found
@@ -85,16 +72,16 @@ namespace DAL.ServiceApi
             // Catch specific amazon errors
             catch (AmazonS3Exception e)
             {
-                _logger.LogError(e.AmazonId2, e);
+                _logger.LogError(e, "Failed to upload {}", fileKey);
                 
-                return new SimpleS3Response(e.StatusCode, e.Message);
+                return new SimpleStorageResponse(e.StatusCode, e.Message);
             }
             // Catch other errors
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, "Failed to upload {}", fileKey);
                 
-                return new SimpleS3Response(HttpStatusCode.BadRequest, e.Message);
+                return new SimpleStorageResponse(HttpStatusCode.BadRequest, e.Message);
             }
         }
 
@@ -103,14 +90,8 @@ namespace DAL.ServiceApi
         /// </summary>
         /// <param name="keyName"></param>
         /// <returns></returns>
-        public async Task<DownloadS3Response> Download(string keyName)
+        public async Task<DownloadStorageResponse> Download(string keyName)
         {
-            // Nothing needs to be done ...
-            if (!_connected)
-            {
-                return new DownloadS3Response(HttpStatusCode.BadRequest, "Not connected!");
-            }
-
             try
             {
                 // Build the request with the bucket name and the keyName (name of the file)
@@ -130,33 +111,27 @@ namespace DAL.ServiceApi
                 // Copy stream to another stream
                 await responseStream.CopyToAsync(memoryStream);
 
-                return new DownloadS3Response(HttpStatusCode.OK, "Successfully downloaded S3 object", memoryStream.ToArray(), metadata, contentType,
+                return new DownloadStorageResponse(HttpStatusCode.OK, "Successfully downloaded S3 object", memoryStream.ToArray(), metadata, contentType,
                     title);
             }
             // Catch specific amazon errors
             catch (AmazonS3Exception e)
             {
-                _logger.LogError(e.AmazonId2, e);
+                _logger.LogError(e, "Failed to download {}", keyName);
                 
-                return new DownloadS3Response(e.StatusCode, e.Message);
+                return new DownloadStorageResponse(e.StatusCode, e.Message);
             }
             // Catch other errors
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, "Failed to download {}", keyName);
                 
-                return new DownloadS3Response(HttpStatusCode.BadRequest, e.Message);
+                return new DownloadStorageResponse(HttpStatusCode.BadRequest, e.Message);
             }
         }
 
         public async Task<List<string>> List()
         {
-            // Nothing needs to be done ...
-            if (!_connected)
-            {
-                return new List<string>();
-            }
-            
             var request = new ListObjectsV2Request
             {
                 BucketName = _s3ServiceConfig.BucketName,

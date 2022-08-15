@@ -19,15 +19,15 @@ namespace Logic
         /// </summary>
         private const int StartYear = 2018; // DO-NOT CHANGE!
 
-        private readonly IS3Service _s3Service;
+        private readonly IStorageService _storageService;
 
         private readonly ILogger<ConfigLogic> _logger;
         
         private readonly GlobalConfigs _globalConfigs;
 
-        public ConfigLogic(IS3Service s3Service, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs)
+        public ConfigLogic(IStorageService storageService, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs)
         {
-            _s3Service = s3Service;
+            _storageService = storageService;
             _logger = logger;
             _globalConfigs = globalConfigs;
         }
@@ -58,7 +58,7 @@ namespace Logic
         {
             _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
 
-            await _s3Service.Upload(ConfigFile, globalConfigViewModel.ToByteArray(), new Dictionary<string, string>
+            await _storageService.Upload(ConfigFile, globalConfigViewModel.ToByteArray(), new Dictionary<string, string>
             {
                 ["Description"] = "Application config file"
             });
@@ -66,7 +66,7 @@ namespace Logic
 
         public async Task Refresh()
         {
-            var response = await _s3Service.Download(ConfigFile);
+            var response = await _storageService.Download(ConfigFile);
 
             if (response.Status == HttpStatusCode.OK)
             {
