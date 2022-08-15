@@ -12,6 +12,9 @@ WORKDIR "/app/API"
 RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
+RUN npm install && npm run build
+COPY client-build/* out/wwwwroot/
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 

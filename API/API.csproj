@@ -8,7 +8,6 @@
   <ItemGroup>
     <PackageReference Include="EasyCaching.InMemory" Version="1.6.0" />
     <PackageReference Include="EasyCaching.Redis" Version="1.6.0" />
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
@@ -31,16 +30,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Folder>
   </ItemGroup>
-
-  <Target Name="PrePublishTarget" BeforeTargets="PrepareForPublish" Condition="$(DOTNET_RUNNING_IN_CONTAINER) != 'true'">
-    <Exec Command="npm install" />
-    <Exec Command="BABEL_ENV=$ASPNETCORE_ENVIRONMENT npm run build" />
-    <Exec Command="echo $PWD" />
-    <Exec Command="echo $ASPNETCORE_ENVIRONMENT" />
-    <ItemGroup>
-      <Dist Include="../client-build/**" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Dist)" DestinationFolder="$(PublishDir)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-  </Target>
   
 </Project>
