@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Models.ViewModels.S3;
+using Models.ViewModels.StorageService;
 
 namespace DAL.Interfaces
 {
-    public interface IS3Service
+    public interface IStorageService
     {
-        Task<SimpleS3Response> Upload(string fileKey,
+        Task<SimpleStorageResponse> Upload(string fileKey,
             byte[] data,
             IDictionary<string, string> metadata);
 
-        Task<DownloadS3Response> Download(string keyName);
+        Task<DownloadStorageResponse> Download(string keyName);
 
         Task<List<string>> List();
     }

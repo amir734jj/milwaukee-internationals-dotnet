@@ -1,6 +1,6 @@
 using Models.Constants;
 
-namespace Api.Utilities
+namespace API.Utilities
 {
     public class CacheBustingUtility
     {

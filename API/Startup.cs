@@ -5,7 +5,8 @@ using Amazon.Runtime;
 using Amazon.S3;
 using API.Extensions;
 using API.Middlewares;
-using Api.Utilities;
+using API.Utilities;
+using Azure.Storage.Blobs;
 using DAL.Configs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -39,7 +40,7 @@ using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
 using Scrutor;
 using WebMarkupMin.AspNetCore3;
-using static Dal.Utilities.ConnectionStringUtility;
+using static DAL.Utilities.ConnectionStringUtility;
 
 namespace API
 {
@@ -151,18 +152,6 @@ namespace API
                 .AddHtmlMinification()
                 .AddHttpCompression();
 
-            var (accessKeyId, secretAccessKey, url) = (
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
-            );
-
-            var prefix = new Uri(url).Segments[1];
-            const string bucketName = "cloud-cube";
-
-            // Generally bad practice
-            var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-
             services.Scan(scan => scan
                 .FromAssemblies(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
                 .AddClasses() //    to register
@@ -170,25 +159,42 @@ namespace API
                 .AsImplementedInterfaces() // 2. Specify which services they are registered as
                 .WithTransientLifetime()); // 3. Set the lifetime for the services
 
-            // Create S3 client
-            services.AddSingleton<IAmazonS3>(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
-            services.AddSingleton(new S3ServiceConfig(bucketName, prefix));
-
             services.AddSingleton<CacheBustingUtility>();
 
             // If environment is localhost then use mock email service
             if (_env.IsDevelopment())
             {
                 services.AddSingleton<IEmailServiceApi>(new EmailServiceApi());
-                services.AddSingleton<IS3Service>(new S3Service());
             }
             else
             {
-                services.AddTransient<IS3Service>(ctx => new S3Service(
-                    ctx.GetRequiredService<ILogger<S3Service>>(),
+                /*
+                var (accessKeyId, secretAccessKey, url) = (
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
+                    _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
+                );
+
+                var prefix = new Uri(url).Segments[1];
+                const string bucketName = "cloud-cube";
+
+                // Generally bad practice
+                var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+                */
+
+                // Create S3 client
+                /*services.AddSingleton<IAmazonS3>(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
+                services.AddSingleton(new S3ServiceConfig(bucketName, prefix));
+
+                services.AddTransient<IStorageService>(ctx => new S3StorageService(
+                    ctx.GetRequiredService<ILogger<S3StorageService>>(),
                     ctx.GetRequiredService<IAmazonS3>(),
                     ctx.GetRequiredService<S3ServiceConfig>()
-                ));
+                ));*/
+                
+                services.AddSingleton(new BlobContainerClient(new Uri(Environment.GetEnvironmentVariable("AZURE_BLOB_CONFIG")!)));
+                
+                services.AddTransient<IStorageService, AzureBlobService>();
             }
 
             services.AddSingleton<GlobalConfigs>();

@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Api.Utilities
+namespace API.Utilities
 {
     public static class AssemblyInfo
     {

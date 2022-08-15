@@ -1,8 +1,8 @@
-﻿using Dal.Extensions;
+﻿using DAL.Extensions;
 using Models.Utilities;
 using Npgsql;
 
-namespace Dal.Utilities
+namespace DAL.Utilities
 {
     public static class ConnectionStringUtility
     {

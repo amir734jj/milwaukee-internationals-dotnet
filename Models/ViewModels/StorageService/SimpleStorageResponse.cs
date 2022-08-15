@@ -1,14 +1,14 @@
 using System.Net;
 
-namespace Models.ViewModels.S3
+namespace Models.ViewModels.StorageService
 {
-    public class SimpleS3Response
+    public class SimpleStorageResponse
     {
         public HttpStatusCode Status { get; }
         
         public string Message { get; }
 
-        public SimpleS3Response(HttpStatusCode status, string message)
+        public SimpleStorageResponse(HttpStatusCode status, string message)
         {
             Status = status;
             Message = message;
