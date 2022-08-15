@@ -6,18 +6,18 @@ namespace Models.Constants
     public class GlobalConfigs
     {
         public DateTimeOffset LastModified { get; set; }
-        
-        public  bool EventFeature { get; private set; }
-        
-        public  int YearValue { get; set; } = DateTime.UtcNow.Year;
 
-        public  bool EmailTestMode { get; private set; }
+        public bool EventFeature { get; private set; }
+
+        public int YearValue { get; set; } = DateTime.UtcNow.Year;
+
+        public bool EmailTestMode { get; private set; }
 
         /// <summary>
         ///  Current website theme
         /// </summary>
         public string CurrentTheme = "default";
-        
+
         public void UpdateGlobalConfigs(GlobalConfigViewModel globalConfigViewModel)
         {
             YearValue = globalConfigViewModel.UpdatedYear;
@@ -26,7 +26,7 @@ namespace Models.Constants
             CurrentTheme = globalConfigViewModel.Theme;
         }
 
-        public  object ToAnonymousObject()
+        public object ToAnonymousObject()
         {
             return new
             {
