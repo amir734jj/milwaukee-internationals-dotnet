@@ -24,7 +24,7 @@ public class AzureBlobService : IStorageService
 
         await _blobContainerClient.GetBlobClient(fileKey).SetMetadataAsync(metadata);
 
-        return new SimpleStorageResponse(HttpStatusCode.Accepted, $"Successfully uploaded blob {fileKey}");
+        return new SimpleStorageResponse(HttpStatusCode.OK, $"Successfully uploaded blob {fileKey}");
     }
 
     public async Task<DownloadStorageResponse> Download(string keyName)
@@ -37,7 +37,7 @@ public class AzureBlobService : IStorageService
         var stream = new MemoryStream();
         await response.Value.Content.CopyToAsync(stream);
 
-        return new DownloadStorageResponse(HttpStatusCode.Accepted, $"Successfully downloaded blob {keyName}",
+        return new DownloadStorageResponse(HttpStatusCode.OK, $"Successfully downloaded blob {keyName}",
             stream.ToArray(), properties.Value.Metadata, response.Value.ContentType, keyName);
     }
 
