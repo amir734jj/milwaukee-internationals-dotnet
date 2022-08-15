@@ -28,7 +28,7 @@
                 <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
             </div>
             <div class="form-group">
-                <label for="text">Country:</label>
+                <label for="country">Country:</label>
                 <select id="country" name="country" ng-change="updateTable()" ng-model="country" class="form-control">
                     <option value="{{country}}" ng-repeat="country in countries">{{country}} ({{ getCountryCount(country) }})</option>
                 </select>
@@ -37,17 +37,17 @@
                 <label for="text">Filter by attendance:</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()"/>Show All
+                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()"/>Show All ({{ getCountAllStudents() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present
+                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentStudents() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()" checked="true"/>Show Absent
+                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()" checked="checked"/>Show Absent ({{ getCountAbsentStudents() }})
                     </label>
                 </div>
             </div>
