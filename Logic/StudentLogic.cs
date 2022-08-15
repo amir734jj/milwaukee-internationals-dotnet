@@ -40,6 +40,7 @@ namespace Logic
 
             // Set the year
             student.Year = DateTime.UtcNow.Year;
+            student.RegisteredOn = DateTimeOffset.Now;
 
             var count = (await base.GetAll(DateTime.UtcNow.Year)).Count();
 

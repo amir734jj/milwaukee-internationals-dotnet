@@ -65,6 +65,8 @@ namespace Models.Entities
         [Display(Name="Prefer your tour driver to wear mask?")]
         public bool MaskPreferred { get; set; }
         
+        public DateTimeOffset RegisteredOn { get; set; }
+        
         /// <summary>
         /// Override generate hashcode
         /// </summary>

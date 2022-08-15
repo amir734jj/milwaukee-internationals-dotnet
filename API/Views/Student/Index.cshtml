@@ -52,6 +52,11 @@
                 <th ng-show="showDetail">IsFamily</th>
                 <th ng-show="showDetail">Email</th>
                 <th ng-show="showDetail">Phone</th>
+                <th ng-show="showDetail">
+                    RegisteredOn
+                    <a href="?sortBy=registeredOn&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=registeredOn&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
                 <th>
                     Kosher
                     <a href="?sortBy=kosherFood&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
@@ -73,6 +78,7 @@
                     <td ng-show="showDetail">@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
                     <td ng-show="showDetail">@student.Email</td>
                     <td ng-show="showDetail">@student.Phone</td>
+                    <td ng-show="showDetail">@student.RegisteredOn.ToLocalTime()</td>
                     <td>@student.KosherFood</td>
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical">
