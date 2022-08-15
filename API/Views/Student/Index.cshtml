@@ -78,7 +78,7 @@
                     <td ng-show="showDetail">@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
                     <td ng-show="showDetail">@student.Email</td>
                     <td ng-show="showDetail">@student.Phone</td>
-                    <td ng-show="showDetail">@student.RegisteredOn.Date.ToLongDateString()</td>
+                    <td ng-show="showDetail">@student.RegisteredOn.Date.ToString("dddd, dd MMMM")</td>
                     <td>@student.KosherFood</td>
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical">
