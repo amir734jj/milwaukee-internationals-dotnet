@@ -25,6 +25,7 @@ namespace DAL.Profiles
             entity.MaskPreferred = dto.MaskPreferred;
             entity.Year = dto.Year;
             entity.DriverRefId = dto.DriverRefId;
+            entity.RegisteredOn = dto.RegisteredOn;
         }
 
         public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
