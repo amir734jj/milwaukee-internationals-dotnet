@@ -41,10 +41,10 @@ public class AzureBlobService : IStorageService
             stream.ToArray(), properties.Value.Metadata, response.Value.ContentType, keyName);
     }
 
-    public async Task<List<string>> List()
+    public Task<List<string>> List()
     {
         var blobItems = _blobContainerClient.GetBlobs();
 
-        return blobItems.Select(x => x.Name).ToList();
+        return Task.FromResult(blobItems.Select(x => x.Name).ToList());
     }
 }
