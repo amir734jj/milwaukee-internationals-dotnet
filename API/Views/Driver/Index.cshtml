@@ -11,7 +11,16 @@
 
 <div class="container" ng-controller="driverListCtrl">
     <div class="page-header">
-        <h3>List of Drivers <small>(Count: @Model.Count(), Seats: @(Model.Select(x => x.Capacity).Sum()))</small></h3>
+        <h3>
+            List of Drivers
+            <small>
+                (
+                    Count: @Model.Count(),
+                    Assigned Seats: @(Model.SelectMany(x => x.Students).Count()),
+                    Total Seats: @(Model.Select(x => x.Capacity).Sum())
+                )
+            </small>
+        </h3>
 
         <div class="row">
             <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
@@ -20,45 +29,69 @@
             </div>
         </div>
     </div>
-    
+
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead>
-                <tr>
-                    <th>
-                        DisplayId
-                        <a href="?sortBy=displayId&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=displayId&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th>
-                        Fullname
-                        <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th>Role</th>
-                    <th>
-                        Capacity
-                        <a href="?sortBy=capacity&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=capacity&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th ng-show="showDetail">
-                        Email
-                        <a href="?sortBy=email&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=email&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th>Phone</th>
-                    <th>
-                        Navigator
-                        <a href="?sortBy=navigator&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=navigator&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th>
-                        Have Child Seat
-                        <a href="?sortBy=haveChildSeat&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                        <a href="?sortBy=haveChildSeat&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    </th>
-                    <th class="hidden-xs" ng-show="showDetail">Action</th>
-                </tr>
+            <tr>
+                <th>
+                    DisplayId
+                    <a href="?sortBy=displayId&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=displayId&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th>
+                    Fullname
+                    <a href="?sortBy=fullname&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=fullname&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th>Role</th>
+                <th>
+                    Capacity
+                    <a href="?sortBy=capacity&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=capacity&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th ng-show="showDetail">
+                    Email
+                    <a href="?sortBy=email&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=email&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th>Phone</th>
+                <th>
+                    Navigator
+                    <a href="?sortBy=navigator&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=navigator&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th>
+                    Have Child Seat
+                    <a href="?sortBy=haveChildSeat&descending=false">
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                    </a>
+                    <a href="?sortBy=haveChildSeat&descending=true">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                </th>
+                <th class="hidden-xs" ng-show="showDetail">Action</th>
+            </tr>
             </thead>
             <tbody>
             @foreach (var driver in Model)
@@ -74,11 +107,11 @@
                     <td>@driver.HaveChildSeat</td>
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical">
-                        <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
-                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                        {
-                            <a href="~/Driver/delete/@driver.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this driver?">Delete</a>
-                        }
+                            <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            {
+                                <a href="~/Driver/delete/@driver.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this driver?">Delete</a>
+                            }
                         </div>
                     </td>
                 </tr>
