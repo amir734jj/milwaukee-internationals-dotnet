@@ -569,9 +569,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
 
         $scope.resolvePassengers = driver => {
             if (driver.students && driver.students.length) {
-                const count = driver.students.map(student => 1 + student.familySize).reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-
-                return count;
+                return driver.students.map(student => 1 + student.familySize).reduce((previousValue, currentValue) => previousValue + currentValue, 0);
             } else {
                 return 0;
             }
