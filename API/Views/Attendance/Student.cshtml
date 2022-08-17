@@ -10,7 +10,10 @@
 
 <div class="container" ng-controller="studentAttendanceCtrl">
     <div class="page-header">
-        <h3>Student Attendance</h3>
+        <h3>
+            Student Attendance 
+            <small> (+{{ getCountPresentStudents() }}, -{{ getCountAbsentStudents() }}) </small>
+        </h3>
        
         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
         {
@@ -34,20 +37,20 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="text">Filter by attendance:</label>
+                <label>Filter by attendance:</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()"/>Show All ({{ getCountAllStudents() }})
+                        <input type="radio" name="opt-radio" value="all" ng-model="attendanceFilter" ng-change="updateTable()"/>Show All ({{ getCountAllStudents() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentStudents() }})
+                        <input type="radio" name="opt-radio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentStudents() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()" checked="checked"/>Show Absent ({{ getCountAbsentStudents() }})
+                        <input type="radio" name="opt-radio" value="no" ng-model="attendanceFilter" ng-change="updateTable()" checked="checked"/>Show Absent ({{ getCountAbsentStudents() }})
                     </label>
                 </div>
             </div>
