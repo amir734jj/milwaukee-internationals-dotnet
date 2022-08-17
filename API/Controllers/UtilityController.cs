@@ -91,7 +91,7 @@ namespace API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("EmailCheckInAction/{type}/{id}")]
+        [Route("EmailCheckInAction/{type}/{id:int}")]
         [SwaggerOperation("EmailCheckInAction")]
         public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
             [FromQuery] bool present)

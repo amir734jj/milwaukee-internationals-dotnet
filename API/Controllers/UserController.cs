@@ -46,7 +46,7 @@ namespace API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Delete/{id}")]
+        [Route("Delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _userLogic.Delete(id);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Models.Enums;
@@ -17,5 +18,7 @@ namespace Models.Entities
         
         [Display(Name = "User Role")]
         public UserRoleEnum UserRoleEnum { get; set; }
+
+        public DateTimeOffset LastLoggedInDate { get; set; }
     }
 }
