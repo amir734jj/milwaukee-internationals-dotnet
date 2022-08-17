@@ -34,7 +34,7 @@ using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
 using Scrutor;
-using WebMarkupMin.AspNetCore3;
+using WebMarkupMin.AspNetCore6;
 using static DAL.Utilities.ConnectionStringUtility;
 
 namespace API
@@ -69,6 +69,11 @@ namespace API
         {
             // https://stackoverflow.com/a/70304966/1834787
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            
+            services.AddWebMarkupMin()
+                .AddHtmlMinification()
+                .AddXmlMinification()
+                .AddHttpCompression();
 
             services.AddOptions();
 
