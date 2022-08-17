@@ -1,4 +1,7 @@
-﻿using API.Attributes;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using API.Attributes;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,6 +11,15 @@ namespace API.Controllers
     [Route("[controller]")]
     public class MappingController : Controller
     {
+        private readonly IStudentLogic _studentLogic;
+        private readonly IDriverLogic _driverLogic;
+
+        public MappingController(IStudentLogic studentLogic, IDriverLogic driverLogic)
+        {
+            _studentLogic = studentLogic;
+            _driverLogic = driverLogic;
+        }
+        
         // GET the view
         [HttpGet]
         public IActionResult Index()
@@ -21,9 +33,11 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("StudentDriverMapping")]
-        public IActionResult StudentDriverMapping()
+        public async Task<IActionResult> StudentDriverMapping()
         {
-            return View();
+            var students = (await _studentLogic.GetAll()).ToList();
+            
+            return View(students);
         }
 
         /// <summary>
@@ -32,9 +46,11 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DriverHostMapping")]
-        public IActionResult DriverHostMapping()
+        public async Task<IActionResult> DriverHostMapping()
         {
-            return View();
+            var drivers = (await _driverLogic.GetAll()).ToList();
+
+            return View(drivers);
         }
     }
 }

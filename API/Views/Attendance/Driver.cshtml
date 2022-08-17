@@ -10,7 +10,10 @@
 
 <div class="container" ng-controller="driverAttendanceCtrl">
     <div class="page-header">
-        <h3>Driver Attendance</h3>
+        <h3>
+            Driver Attendance 
+            <small> (+{{ getCountPresentDrivers() }}, -{{ getCountAbsentDrivers() }}) </small>
+        </h3>
         
         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
         {
@@ -27,20 +30,20 @@
                 <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
             </div>
             <div class="form-group">
-                <label for="text">Filter by attendance:</label>
+                <label>Filter by attendance:</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="checked"/>Show All ({{ getCountAllDrivers() }})
+                        <input type="radio" name="opt-radio" value="all" ng-model="attendanceFilter" ng-change="updateTable()" checked="checked"/>Show All ({{ getCountAllDrivers() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentDrivers() }})
+                        <input type="radio" name="opt-radio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentDrivers() }})
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optradio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent ({{ getCountAbsentDrivers() }})
+                        <input type="radio" name="opt-radio" value="no" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Absent ({{ getCountAbsentDrivers() }})
                     </label>
                 </div>
             </div>
