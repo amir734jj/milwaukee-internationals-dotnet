@@ -210,6 +210,13 @@
 
 <div class="container" ng-app="tourApp" ng-cloak>
 
+    @if (utility.IsAuthenticated() && GlobalConfigs.EmailTestMode)
+    {
+        <div class="alert alert-danger">
+            Email test mode is on! no email is getting sent.
+        </div>
+    }
+    
     @foreach (var errorMessage in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors).Select(x => x.ErrorMessage))
     {
         <div class="alert alert-danger alert-dismissible fade in">
