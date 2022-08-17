@@ -36,13 +36,22 @@ namespace Logic
         /// <returns></returns>
         public override async Task<Student> Save(Student student)
         {
+            var allStudents = (await GetAll(DateTime.UtcNow.Year)).ToList();
+
+            if (_globalConfigs.DisallowDuplicateStudents && allStudents.Any(x =>
+                    x.Fullname.Equals(student.Fullname, StringComparison.OrdinalIgnoreCase) &&
+                    x.Email.Equals(student.Email, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new Exception("Student already registered");
+            }
+            
             student.DisplayId = "Null";
 
             // Set the year
             student.Year = DateTime.UtcNow.Year;
             student.RegisteredOn = DateTimeOffset.Now;
 
-            var count = (await base.GetAll(DateTime.UtcNow.Year)).Count();
+            var count = allStudents.Count;
 
             student.DisplayId = GenerateDisplayId(student, count);
 

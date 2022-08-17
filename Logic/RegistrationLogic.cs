@@ -48,8 +48,9 @@ namespace Logic
         /// Register driver
         /// </summary>
         /// <param name="driver"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <returns></returns>
-        public async Task<bool> RegisterDriver(Driver driver)
+        public async Task RegisterDriver(Driver driver)
         {
             driver = await _driverLogic.Save(driver);
 
@@ -108,8 +109,6 @@ namespace Logic
                         throw new ArgumentOutOfRangeException();
                 }
             }
-
-            return true;
         }
 
         /// <summary>
@@ -117,7 +116,7 @@ namespace Logic
         /// </summary>
         /// <param name="student"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterStudent(Student student)
+        public async Task RegisterStudent(Student student)
         {
             var result = await _studentLogic.Save(student);
 
@@ -168,8 +167,6 @@ namespace Logic
                     <img src=""{qrUri}"" alt=""QR code"" />
                 ");
             }
-
-            return true;
         }
 
         /// <summary>
@@ -177,7 +174,7 @@ namespace Logic
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterHost(Host host)
+        public async Task RegisterHost(Host host)
         {
             var result = await _hostLogic.Save(host);
 
@@ -200,15 +197,11 @@ namespace Logic
                     <p> Blessings,</p>
                 ");
             }
-
-            return true;
         }
 
-        public async Task<bool> RegisterEvent(Event @event)
+        public async Task RegisterEvent(Event @event)
         {
-            var savedEvent = await _eventLogic.Save(@event);
-
-            return savedEvent != null;
+            await _eventLogic.Save(@event);
         }
     }
 }

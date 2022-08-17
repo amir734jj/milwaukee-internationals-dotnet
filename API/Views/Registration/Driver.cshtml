@@ -16,6 +16,8 @@
     
     <br />
     
+    @await Html.PartialAsync("SimpleAlertContent", ViewData)
+    
     @using (Html.BeginForm("RegisterDriver", "Registration", FormMethod.Post, new { ng_controller = "driverRegistrationCtrl" }))
     {
         @(await Html.PartialAsync("DriverContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}}))

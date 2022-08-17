@@ -12,6 +12,8 @@
     
     <br />
     
+    @await Html.PartialAsync("SimpleAlertContent", ViewData)
+    
     @using (Html.BeginForm("RegisterEvent", "Registration", FormMethod.Post))
     {
         @await Html.PartialAsync("EventContent", Model)

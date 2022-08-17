@@ -24,7 +24,10 @@ namespace Models.Constants
             EventFeature = globalConfigViewModel.EventFeature;
             EmailTestMode = globalConfigViewModel.EmailTestMode;
             CurrentTheme = globalConfigViewModel.Theme;
+            DisallowDuplicateStudents = globalConfigViewModel.DisallowDuplicateStudents;
         }
+
+        public bool DisallowDuplicateStudents { get; set; }
 
         public object ToAnonymousObject()
         {
@@ -33,7 +36,8 @@ namespace Models.Constants
                 EventFeature,
                 YearValue,
                 EmailTestMode,
-                CurrentTheme
+                CurrentTheme,
+                DisallowDuplicateStudents
             };
         }
     }

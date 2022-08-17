@@ -48,7 +48,8 @@ namespace Logic
                 UpdatedYear = _globalConfigs.YearValue,
                 EventFeature = _globalConfigs.EventFeature,
                 EmailTestMode = _globalConfigs.EmailTestMode,
-                Theme = _globalConfigs.CurrentTheme
+                Theme = _globalConfigs.CurrentTheme,
+                DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents
             };
 
             return await Task.FromResult(retVal);

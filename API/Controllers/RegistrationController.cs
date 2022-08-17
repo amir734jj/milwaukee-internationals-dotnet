@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using API.Attributes;
 using API.Extensions;
 using Logic.Interfaces;
@@ -39,6 +40,12 @@ namespace API.Controllers
         [Route("Driver")]
         public IActionResult Driver()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                ViewData["Error"] = TempData["Error"];
+                TempData.Clear();
+            }
+            
             return View(new Driver());
         }
         
@@ -50,21 +57,32 @@ namespace API.Controllers
         [Route("Driver/Register")]
         public async Task<IActionResult> RegisterDriver(Driver driver)
         {
-            if (await _registrationLogic.RegisterDriver(driver))
+            try
             {
-                ModelState.ClearModelStateErrors();
-                
-                return View("Thankyou");   
-            }
+                await _registrationLogic.RegisterDriver(driver);
 
-            // TODO: use a proper 500 error page
-            return Ok("Failed!");
+                ModelState.ClearModelStateErrors();
+
+                return View("Thankyou");
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = $"Failed to register driver. Please try again! {e.Message}";
+
+                return RedirectToAction("Driver");
+            }
         }
 
         [HttpGet]
         [Route("Student")]
         public IActionResult Student()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                ViewData["Error"] = TempData["Error"];
+                TempData.Clear();
+            }
+            
             return View(new Student());
         }
         
@@ -76,15 +94,20 @@ namespace API.Controllers
         [Route("Student/Register")]
         public async Task<IActionResult> RegisterStudent(Student student)
         {
-            if (await _registrationLogic.RegisterStudent(student))
+            try
             {
+                await _registrationLogic.RegisterStudent(student);
+
                 ModelState.ClearModelStateErrors();
 
-                return View("Thankyou");   
+                return View("Thankyou");
             }
+            catch (Exception e)
+            {
+                TempData["Error"] = $"Failed to register student. Please try again! {e.Message}";
 
-            // TODO: use a proper 500 error page
-            return Ok("Failed!");
+                return RedirectToAction("Student");
+            }
         }
         
         [AuthorizeMiddleware]
@@ -92,6 +115,12 @@ namespace API.Controllers
         [Route("Host")]
         public IActionResult Host()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                ViewData["Error"] = TempData["Error"];
+                TempData.Clear();
+            }
+            
             return View(new Host());
         }
         
@@ -104,15 +133,20 @@ namespace API.Controllers
         [Route("Host/Register")]
         public async Task<IActionResult> RegisterHost(Host host)
         {
-            if (await _registrationLogic.RegisterHost(host))
+            try
             {
+                await _registrationLogic.RegisterHost(host);
+
                 ModelState.ClearModelStateErrors();
 
-                return View("Thankyou");   
+                return View("Thankyou");
             }
+            catch (Exception e)
+            {
+                TempData["Error"] = $"Failed to register host. Please try again! {e.Message}";
 
-            // TODO: use a proper 500 error page
-            return Ok("Failed!");
+                return RedirectToAction("Host");
+            }
         }
         
         [AuthorizeMiddleware]
@@ -132,15 +166,20 @@ namespace API.Controllers
         [Route("Event/Register")]
         public async Task<IActionResult> RegisterEvent(Event @event)
         {
-            if (await _registrationLogic.RegisterEvent(@event))
+            try
             {
+                await _registrationLogic.RegisterEvent(@event);
+
                 ModelState.ClearModelStateErrors();
 
-                return RedirectToAction("Index", "Event");
+                return View("Thankyou");
             }
+            catch (Exception e)
+            {
+                TempData["Error"] = $"Failed to register event. Please try again! {e.Message}";
 
-            // TODO: use a proper 500 error page
-            return Ok("Failed!");
+                return RedirectToAction("Event");
+            }
         }
     }
 }
