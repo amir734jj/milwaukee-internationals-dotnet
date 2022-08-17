@@ -39,7 +39,7 @@ namespace API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Delete/{id}")]
+        [Route("Delete/{id:int}")]
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -54,7 +54,7 @@ namespace API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Edit/{id}")]
+        [Route("Edit/{id:int}")]
         public async Task<IActionResult> EditView(int id)
         {
             var student = await _studentLogic.Get(id);

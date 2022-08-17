@@ -67,6 +67,9 @@ namespace API
         /// <returns></returns>
         public void ConfigureServices(IServiceCollection services)
         {
+            // https://stackoverflow.com/a/70304966/1834787
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             services.AddOptions();
 
             // Add our Config object so it can be injected

@@ -35,6 +35,7 @@
             <th>Phone</th>
             <th class="hidden-sm hidden-xs">Username</th>
             <th class="hidden-sm hidden-xs">Role</th>
+            <th class="hidden-sm hidden-xs">LastLoggedInDate</th>
 
             @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
             {
@@ -53,6 +54,7 @@
                 <td>@user.PhoneNumber</td>
                 <td class="hidden-sm hidden-xs">@user.UserName</td>
                 <td class="hidden-sm hidden-xs">@user.UserRoleEnum</td>
+                <td class="hidden-sm hidden-xs">@user.LastLoggedInDate.ToString()</td>
                 
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {

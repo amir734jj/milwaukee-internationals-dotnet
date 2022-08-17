@@ -72,7 +72,7 @@ namespace API.Controllers.API
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("Info/{id}")]
+        [Route("Info/{id:int}")]
         public async Task<IActionResult> Info([FromRoute] int id)
         {
             var eventInfo = await _eventLogic.GetEventInfo(id);

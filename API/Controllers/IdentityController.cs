@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using API.Abstracts;
 using API.Attributes;
+using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,19 +18,23 @@ namespace API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     public class IdentityController : AbstractAccountController
-    {        
+    {
+        private readonly IUserLogic _userLogic;
         private readonly UserManager<User> _userManager;
-        
+
         private readonly SignInManager<User> _signInManager;
-        
+
         private readonly RoleManager<IdentityRole<int>> _roleManager;
-        
+
         private readonly IRecaptchaService _recaptcha;
-        
+
         private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha, ILogger<IdentityController> logger)
+        public IdentityController(IUserLogic userLogic, UserManager<User> userManager,
+            SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha,
+            ILogger<IdentityController> logger)
         {
+            _userLogic = userLogic;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -62,16 +69,16 @@ namespace API.Controllers
         {
             if (TempData.ContainsKey("Error"))
             {
-                var prevError = (string) TempData["Error"];
+                var prevError = (string)TempData["Error"];
 
                 ModelState.AddModelError("", prevError);
-                
+
                 TempData.Clear();
             }
-            
+
             return View();
         }
-        
+
         /// <summary>
         ///     Handles login the user
         /// </summary>
@@ -83,7 +90,7 @@ namespace API.Controllers
         public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
         {
             TempData.Clear();
-            
+
             var recaptcha = await _recaptcha.Validate(Request);
 
             /*if (!recaptcha.success)
@@ -99,12 +106,19 @@ namespace API.Controllers
 
             if (result)
             {
+                var user = (await _userLogic.GetAll()).First(x =>
+                    x.UserName.Equals(loginViewModel.Username, StringComparison.OrdinalIgnoreCase));
+
+                user.LastLoggedInDate = DateTimeOffset.Now;
+
+                await _userLogic.Update(user.Id, user);
+
                 return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("NotAuthenticated");
         }
-        
+
         /// <summary>
         ///     View page to register
         /// </summary>
@@ -117,16 +131,16 @@ namespace API.Controllers
         {
             if (TempData.ContainsKey("Error"))
             {
-                var prevError = (string) TempData["Error"];
+                var prevError = (string)TempData["Error"];
 
                 ModelState.AddModelError("", prevError);
-                
+
                 TempData.Clear();
             }
-            
+
             return View();
         }
-        
+
         /// <summary>
         ///     Register the user
         /// </summary>
@@ -138,9 +152,9 @@ namespace API.Controllers
         public async Task<IActionResult> RegisterHandler(RegisterViewModel registerViewModel)
         {
             TempData.Clear();
-            
+
             var recaptcha = await _recaptcha.Validate(Request);
-            
+
             /*if (!recaptcha.success)
             {
                 _logger.LogError("Captcha failed: " + recaptcha.score);
@@ -156,7 +170,7 @@ namespace API.Controllers
 
                 return RedirectToAction("Register");
             }
-            
+
             // Save the user
             var result = await Register(registerViewModel);
 
@@ -167,7 +181,7 @@ namespace API.Controllers
 
             return RedirectToAction("Register");
         }
-        
+
         /// <summary>
         ///     Not authenticated view
         /// </summary>

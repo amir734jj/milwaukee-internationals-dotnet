@@ -42,7 +42,7 @@ namespace API.Controllers
         /// <returns></returns>
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
-        [Route("Delete/{id}")]
+        [Route("Delete/{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _eventLogic.Delete(id);
@@ -56,7 +56,7 @@ namespace API.Controllers
         /// <returns></returns>
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
-        [Route("Edit/{id}")]
+        [Route("Edit/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
             var @event = await _eventLogic.Get(id);
@@ -70,10 +70,10 @@ namespace API.Controllers
         /// <returns></returns>
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpPost]
-        [Route("Edit/{id}")]
-        public async Task<IActionResult> EditHandler(Event @event)
+        [Route("Edit/{id:int}")]
+        public async Task<IActionResult> EditHandler([FromRoute]int id, [FromBody]Event @event)
         {
-            await _eventLogic.Update(@event.Id, @event);
+            await _eventLogic.Update(id, @event);
 
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ namespace API.Controllers
         /// <returns></returns>
         [AuthorizeMiddleware(UserRoleEnum.Admin)]
         [HttpGet]
-        [Route("Info/{id}")]
+        [Route("Info/{id:int}")]
         public IActionResult Info([FromRoute] int id)
         {
             return View(id);
