@@ -2,12 +2,13 @@
 
 [Website Url](https://milwaukee-internationals-core.herokuapp.com)
 
-Re-write of back-end using .NET core ^3.1
+Re-write of back-end using ~.NET core ^3.1~ .NET 6
 
 - Swagger UI for API documentation
 - Entity Framework for Data Access Layer
 - SQLite for the local environment and Postgres for the production environment
-- AWS.S3 for storing of global configs
+- ~AWS.S3 for storing of global configs~
+- Azure Blob for storing of global configs
 - Mailjet for mass email
 - `Microsoft.AspNet.Identity.Core` for authentication and authorization
 
