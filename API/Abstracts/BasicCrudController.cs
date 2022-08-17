@@ -21,7 +21,7 @@ namespace API.Abstracts
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:int}")]
         [SwaggerOperation("Get")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
@@ -29,7 +29,7 @@ namespace API.Abstracts
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         [SwaggerOperation("Update")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] T instance)
         {
@@ -37,7 +37,7 @@ namespace API.Abstracts
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         [SwaggerOperation("Delete")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

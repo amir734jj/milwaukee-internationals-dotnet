@@ -18,6 +18,8 @@
     </div>
 
     <br />
+    
+    @await Html.PartialAsync("SimpleAlertContent", ViewData)
 
     @using (Html.BeginForm("RegisterStudent", "Registration", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl" }))
     {

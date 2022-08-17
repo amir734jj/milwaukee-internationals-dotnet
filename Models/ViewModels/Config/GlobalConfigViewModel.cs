@@ -17,5 +17,8 @@ namespace Models.ViewModels.Config
         
         [Display(Name = "Website Theme")]
         public string Theme { get; set; }
+        
+        [Display(Name = "Disallow registration of duplicate students")]
+        public bool DisallowDuplicateStudents { get; set; }
     }
 }
