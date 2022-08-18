@@ -46,7 +46,7 @@
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
                     <td>
-                        <div class="btn-group-vertical">
+                        <div class="btn-group-vertical btn-group-sm">
                         <a href="~/Event/Info/@eventModel.Id" class="btn btn-primary">Preview</a>
                         <a href="~/Event/Edit/@eventModel.Id" class="btn btn-warning">Edit</a>
                         <a href="~/Event/Delete/@eventModel.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this event (@(eventModel.Name))?">Delete</a>
