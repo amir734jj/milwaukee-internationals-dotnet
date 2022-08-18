@@ -52,7 +52,7 @@
                     <a href="~/Host/edit/@host.Id" class="btn btn-primary">Edit</a>
                     @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <a href="~/Host/delete/@host.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this host?">Delete</a>
+                        <a href="~/Host/delete/@host.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this host (@(host.Fullname))?">Delete</a>
                     }
                     </div>
                 </td>
