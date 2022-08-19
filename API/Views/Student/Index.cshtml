@@ -1,4 +1,6 @@
-﻿@using API.Interfaces
+﻿@using System.Globalization
+@using API.Interfaces
+@using Logic.Extensions
 @using Models.Enums
 @model IEnumerable<Models.Entities.Student>
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
@@ -82,7 +84,7 @@
                     <td ng-show="showDetail">@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
                     <td ng-show="showDetail">@student.Email</td>
                     <td ng-show="showDetail">@student.Phone</td>
-                    <td ng-show="showDetail">@student.RegisteredOn.Date.ToString("dddd, dd MMMM")</td>
+                    <td ng-show="showDetail">@student.RegisteredOn.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)</td>
                     <td>@student.KosherFood</td>
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical btn-group-sm">
