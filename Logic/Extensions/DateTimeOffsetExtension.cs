@@ -1,6 +1,5 @@
 using System;
 using TimeZoneConverter;
-using TimeZoneNames;
 
 namespace Logic.Extensions;
 
