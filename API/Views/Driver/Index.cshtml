@@ -15,9 +15,9 @@
             List of Drivers
             <small>
                 (
-                    Count: @Model.Count(),
-                    Assigned Seats: @(Model.SelectMany(x => x.Students).Count()),
-                    Total Seats: @(Model.Select(x => x.Capacity).Sum())
+                    Count: @Model.Where(x => x.Role != RolesEnum.Navigator).Count(),
+                    Assigned Seats: @(Model.Where(x => x.Role != RolesEnum.Navigator).SelectMany(x => x.Students).Count()),
+                    Total Seats: @(Model.Where(x => x.Role != RolesEnum.Navigator).Select(x => x.Capacity).Sum())
                 )
             </small>
         </h3>
