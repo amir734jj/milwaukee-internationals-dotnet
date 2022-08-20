@@ -7,6 +7,7 @@
     ViewBag.Title = "Drivers";
     Layout = "_Layout";
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+    var driversOnly = Model.Where(x => x.Role == RolesEnum.Driver).ToList();
 }
 
 <div class="container" ng-controller="driverListCtrl">
@@ -15,9 +16,9 @@
             List of Drivers
             <small>
                 (
-                    Count: @Model.Where(x => x.Role != RolesEnum.Navigator).Count(),
-                    Assigned Seats: @(Model.Where(x => x.Role != RolesEnum.Navigator).SelectMany(x => x.Students).Count()),
-                    Total Seats: @(Model.Where(x => x.Role != RolesEnum.Navigator).Select(x => x.Capacity).Sum())
+                    Count: @(driversOnly.Count),
+                    Assigned Seats: @(driversOnly.SelectMany(x => x.Students).Count()),
+                    Total Seats: @(driversOnly.Select(x => x.Capacity).Sum())
                 )
             </small>
         </h3>
