@@ -7,6 +7,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
 using Models.Entities;
+using static Logic.Utilities.RegistrationUtility;
 
 namespace Logic
 {
@@ -30,6 +31,9 @@ namespace Logic
         {
             // Set the year
             instance.Year = DateTime.UtcNow.Year;
+            
+            // Normalize phone number
+            instance.Phone = NormalizePhoneNumber(instance.Phone);
             
             return base.Save(instance);
         }
