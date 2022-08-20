@@ -8,7 +8,7 @@ using Logic.Interfaces;
 using Models.Constants;
 using Models.Entities;
 using Models.Enums;
-using static Logic.Utilities.DisplayIdUtility;
+using static Logic.Utilities.RegistrationUtility;
 
 namespace Logic
 {
@@ -41,6 +41,9 @@ namespace Logic
                 instance.Capacity = 0;
             }
 
+            // Normalize phone number
+            instance.Phone = NormalizePhoneNumber(instance.Phone);
+            
             var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).MaxBy(x => x.Id)
                 ?.DisplayId;
             var lastId = lastDisplayId != null ? int.Parse(lastDisplayId.Split("-")[1]) : 0;

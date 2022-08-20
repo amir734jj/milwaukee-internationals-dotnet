@@ -7,7 +7,7 @@ using Logic.Abstracts;
 using Logic.Interfaces;
 using Models.Constants;
 using Models.Entities;
-using static Logic.Utilities.DisplayIdUtility;
+using static Logic.Utilities.RegistrationUtility;
 
 namespace Logic
 {
@@ -45,7 +45,8 @@ namespace Logic
                 throw new Exception("Student already registered");
             }
             
-            student.DisplayId = "Null";
+            // Normalize phone number
+            student.Phone = NormalizePhoneNumber(student.Phone);
 
             // Set the year
             student.Year = DateTime.UtcNow.Year;
