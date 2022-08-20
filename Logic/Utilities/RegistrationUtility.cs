@@ -23,9 +23,9 @@ namespace Logic.Utilities
             {
                 var phoneNumberUtil = PhoneNumberUtil.GetInstance();
 
-                var phoneNumber = phoneNumberUtil.Parse(phoneNumberRaw, "US");
+                var phoneNumber = phoneNumberUtil.Parse(phoneNumberRaw, "US" /* DEFAULT REGION */);
                 
-                // We have people registering with phone number from different country
+                // We have people registering with phone number from different country, we don't want to lose the country code
                 return phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL /* DO NOT CHANGE */);
             }
             catch (Exception)
