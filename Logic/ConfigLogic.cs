@@ -82,5 +82,15 @@ namespace Logic
                 _logger.LogError("Failed to fetch the config from storage service");
             }
         }
+
+        public IEnumerable<int> GetYears()
+        {
+            var currentYear = StartYear;
+            while (currentYear <= DateTime.Now.Year)
+            {
+                yield return currentYear;
+                currentYear++;
+            }
+        }
     }
 }
