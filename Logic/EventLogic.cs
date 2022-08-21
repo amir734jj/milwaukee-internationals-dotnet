@@ -136,5 +136,17 @@ namespace Logic
 
             return true;
         }
+
+        public override async Task<Event> Update(int id, Event @event)
+        {
+            return await base.Update(id, x =>
+            {
+                x.Name = @event.Name;
+                x.Address = @event.Address;
+                x.Description = @event.Description;
+                x.DateTime = @event.DateTime;
+                x.Year = @event.Year;
+            });
+        }
     }
 }
