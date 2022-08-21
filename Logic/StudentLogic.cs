@@ -82,8 +82,22 @@ namespace Logic
             {
                 student.FamilySize = 0;
             }
-
-            return await base.Update(id, student);
+            
+            // Update only subset of properties
+            return await base.Update(id, x =>
+            {
+                x.Fullname = student.Fullname;
+                x.DisplayId = student.DisplayId;
+                x.Email = student.Email;
+                x.Phone = student.Phone;
+                x.University = student.University;
+                x.Major = student.Major;
+                x.Country = student.Country;
+                x.Interests = student.Interests;
+                x.IsFamily = student.IsFamily;
+                x.KosherFood = student.KosherFood;
+                x.MaskPreferred = student.MaskPreferred;
+            });
         }
 
         protected override IBasicCrud<Student> Repository()

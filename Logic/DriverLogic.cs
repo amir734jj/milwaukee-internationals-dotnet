@@ -59,15 +59,27 @@ namespace Logic
             return retVal;
         }
 
-        public override async Task<Driver> Update(int id, Driver instance)
+        public override async Task<Driver> Update(int id, Driver driver)
         {
             // If role is navigator then capacity is 0
-            if (instance.Role == RolesEnum.Navigator)
+            if (driver.Role == RolesEnum.Navigator)
             {
-                instance.Capacity = 0;
+                driver.Capacity = 0;
             }
 
-            return await base.Update(id, instance);
+            // Update only subset of properties
+            return await base.Update(id, x =>
+            {
+                x.DisplayId = driver.DisplayId;
+                x.Fullname = driver.Fullname;
+                x.Email = driver.Email;
+                x.Phone = driver.Phone;
+                x.Role = driver.Role;
+                x.Capacity = driver.Capacity;
+                x.HaveChildSeat = driver.HaveChildSeat;
+                x.RequireNavigator = driver.RequireNavigator;
+                x.Navigator = driver.Navigator;
+            });
         }
 
         protected override IBasicCrud<Driver> Repository()
