@@ -30,6 +30,8 @@ public class StatsLogic : IStatsLogic
         
         foreach (var year in _configLogic.GetYears())
         {
+            var students = (await _studentDal.GetAll(x => x.Year == year)).ToList();
+            
             result.Add(new StatsViewModel
             {
                 Year = year,
@@ -37,7 +39,8 @@ public class StatsLogic : IStatsLogic
                 CountNavigators = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Navigator),
                 CountStudents = await _studentDal.Count(x => x.Year == year),
                 CountHosts = await _hostDal.Count(x => x.Year == year),
-                CountDependents = (await _studentDal.GetAll(x => x.Year == year)).Select(x => x.FamilySize).Sum()
+                CountDependents = students.Select(x => x.FamilySize).Sum(),
+                DistinctCountries = students.Select(x => x.Country.ToLower()).Distinct().Count()
             }); 
         }
 

@@ -13,4 +13,6 @@ public class StatsViewModel
     public int CountNavigators { get; set; }
     
     public int Year { get; set; }
+    
+    public int DistinctCountries { get; set; }
 }
