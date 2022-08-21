@@ -47,5 +47,17 @@ namespace Logic
         {
             return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
         }
+
+        public override Task<Host> Update(int id, Host host)
+        {
+            // Update only subset of properties
+            return base.Update(id, x =>
+            {
+                x.Fullname = host.Fullname;
+                x.Email = host.Email;
+                x.Phone = host.Phone;
+                x.Address = host.Address;
+            });
+        }
     }
 }
