@@ -14,5 +14,9 @@ public class StatsViewModel
     
     public int Year { get; set; }
     
-    public int DistinctCountries { get; set; }
+    public int CountDistinctCountries { get; set; }
+    
+    public bool CurrentYear { get; set; }
+    
+    public bool ActiveYear { get; set; }
 }
