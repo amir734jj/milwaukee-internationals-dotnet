@@ -17,7 +17,7 @@ namespace Logic
         /// <summary>
         /// This is the year when milwaukee-internationals started
         /// </summary>
-        private const int StartYear = 2018; // DO-NOT CHANGE!
+        private const int StartYear = 2017; // DO-NOT CHANGE!
 
         private readonly IStorageService _storageService;
 
