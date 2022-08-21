@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
@@ -35,7 +36,8 @@ public class StatsLogic : IStatsLogic
                 CountDrivers = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Driver),
                 CountNavigators = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Navigator),
                 CountStudents = await _studentDal.Count(x => x.Year == year),
-                CountHosts = await _hostDal.Count(x => x.Year == year)
+                CountHosts = await _hostDal.Count(x => x.Year == year),
+                CountDependents = (await _studentDal.GetAll(x => x.Year == year)).Select(x => x.FamilySize).Sum()
             }); 
         }
 

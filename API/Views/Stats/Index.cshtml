@@ -15,7 +15,7 @@
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
-            <th>Year</th>
+            <th class="success">Year</th>
             <th>Count Students</th>
             <th>Count Drivers</th>
             <th>Count Navigators</th>
@@ -27,7 +27,7 @@
         {
             <tr>
                 <td>@stat.Year</td>
-                <td>@stat.CountStudents</td>
+                <td>@stat.CountStudents + @stat.CountDependents</td>
                 <td>@stat.CountDrivers</td>
                 <td>@stat.CountNavigators</td>
                 <td>@stat.CountHosts</td>

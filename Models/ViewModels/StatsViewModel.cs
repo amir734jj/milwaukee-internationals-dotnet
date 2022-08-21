@@ -4,6 +4,8 @@ public class StatsViewModel
 {
     public int CountStudents { get; set; }
     
+    public int CountDependents { get; set; }
+    
     public int CountDrivers { get; set; }
     
     public int CountHosts { get; set; }
