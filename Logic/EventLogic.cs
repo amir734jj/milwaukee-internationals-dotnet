@@ -145,7 +145,6 @@ namespace Logic
                 x.Address = @event.Address;
                 x.Description = @event.Description;
                 x.DateTime = @event.DateTime;
-                x.Year = @event.Year;
             });
         }
     }
