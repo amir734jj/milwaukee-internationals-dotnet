@@ -26,4 +26,12 @@ public class StatsController : Controller
     {
         return View(await _statsLogic.GetStats());
     }
+
+    [HttpGet]
+    [Route("CountryDistribution")]
+    [SwaggerOperation("CountryDistribution")]
+    public async Task<IActionResult> GetCountryDistribution()
+    {
+        return Ok(await _statsLogic.GetCountryDistribution());
+    }
 }

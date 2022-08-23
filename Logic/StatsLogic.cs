@@ -58,4 +58,26 @@ public class StatsLogic : IStatsLogic
 
         return result;
     }
+
+    public async Task<Dictionary<string, Dictionary<string, int>>> GetCountryDistribution()
+    {
+        var result = new Dictionary<string, Dictionary<string, int>>();
+        
+        foreach (var year in _configLogic.GetYears())
+        {
+            var countryDistributionForYear = (await _studentDal.GetAll(x => x.Year == year))
+                .GroupBy(x => x.Country.ToLower())
+                .ToDictionary(x => x.Key, x => x.Count());
+
+            result[year.ToString()] = countryDistributionForYear;
+        }
+        
+        var countryDistributionForAllYears = (await _studentDal.GetAll())
+            .GroupBy(x => x.Country.ToLower())
+            .ToDictionary(x => x.Key, x => x.Count());
+
+        result["All"] = countryDistributionForAllYears;
+
+        return result;
+    }
 }

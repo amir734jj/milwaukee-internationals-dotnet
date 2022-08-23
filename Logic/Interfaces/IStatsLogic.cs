@@ -7,4 +7,6 @@ namespace Logic.Interfaces;
 public interface IStatsLogic
 {
     Task<List<StatsViewModel>> GetStats();
+    
+    Task<Dictionary<string, Dictionary<string, int>>> GetCountryDistribution();
 }

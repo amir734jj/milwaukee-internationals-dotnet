@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Models.ViewModels;
 
 public class StatsViewModel
@@ -19,4 +21,6 @@ public class StatsViewModel
     public bool CurrentYear { get; set; }
     
     public bool ActiveYear { get; set; }
+    
+    public Dictionary<string, int> CountryDistribution { get; set; }
 }
