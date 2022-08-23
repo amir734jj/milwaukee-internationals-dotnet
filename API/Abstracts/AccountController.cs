@@ -23,7 +23,8 @@ namespace API.Abstracts
         public async Task<bool> Register(RegisterViewModel registerViewModel)
         {
             var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
-
+            var enable = !ResolveUserManager().Users.Any();
+            
             var user = new User
             {
                 Fullname = registerViewModel.Fullname,
@@ -31,7 +32,8 @@ namespace API.Abstracts
                 Email = registerViewModel.Email,
                 PhoneNumber = registerViewModel.PhoneNumber,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserRoleEnum = role
+                UserRoleEnum = role,
+                Enable = enable
             };
 
             var result1 = (await ResolveUserManager().CreateAsync(user, registerViewModel.Password)).Succeeded;
@@ -61,7 +63,7 @@ namespace API.Abstracts
             // Ensure the username and password is valid.
             var result = await ResolveUserManager().FindByNameAsync(loginViewModel.Username);
 
-            if (result == null || !await ResolveUserManager().CheckPasswordAsync(result, loginViewModel.Password))
+            if (result == null || !await ResolveUserManager().CheckPasswordAsync(result, loginViewModel.Password) || !result.Enable)
             {
                 return false;
             }

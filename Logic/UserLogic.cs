@@ -48,6 +48,16 @@ namespace Logic
             return result;
         }
 
+        public async Task Disable(int id)
+        {
+            await _dal.Update(id, x => x.Enable = false);
+        }
+
+        public async Task Enable(int id)
+        {
+            await _dal.Update(id, x => x.Enable = true);
+        }
+
         protected override IBasicCrud<User> Repository()
         {
             return _dal;

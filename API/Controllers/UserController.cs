@@ -53,6 +53,34 @@ namespace API.Controllers
 
             return RedirectToAction("Index");
         }
+        
+        /// <summary>
+        /// Disable a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Disable/{id:int}")]
+        public async Task<IActionResult> Disable(int id)
+        {
+            await _userLogic.Disable(id);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// Enable a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Enable/{id:int}")]
+        public async Task<IActionResult> Enable(int id)
+        {
+            await _userLogic.Enable(id);
+
+            return RedirectToAction("Index");
+        }
          
         /// <summary>
         /// Update User Role
