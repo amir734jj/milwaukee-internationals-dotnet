@@ -10,11 +10,11 @@
 <div class="container">
     <div class="page-header">
         <h3>
-            Website Statistics 
+            Website Statistics
             <small>(@Model.Count total years, @Model.Count(x => x.ActiveYear) active years)</small>
         </h3>
     </div>
-    
+
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
@@ -38,5 +38,35 @@
         }
         </tbody>
     </table>
+
+    <div class="container" ng-controller="statsCtrl">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div ng-show="countryDistributionChartData.length">
+                        <canvas id="pie" class="chart chart-pie"
+                                chart-data="countryDistributionChartData" chart-labels="countryDistributionChartLabels">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            Year: {{ year }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="(year, _) in countryDistribution">
+                                <a href="#" ng-click="handleYearChange($event)" data-year="{{ year }}">{{ year }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 
 </div>

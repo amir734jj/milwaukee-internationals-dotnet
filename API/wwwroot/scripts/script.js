@@ -4,7 +4,7 @@ angular.element(document).ready(() => {
     }, 5000);
 });
 
-angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js'])
     .constant("jsPDF", (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ["$window", $window => ({
         restrict: 'A',
@@ -16,6 +16,37 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput'])
             });
         }
     })])
+    .controller("statsCtrl", ['$scope', '$http', ($scope, $http) => {
+        $scope.countryDistribution = {};
+        $scope.year = "All";
+        $scope.countryDistributionChartData = [];
+        $scope.countryDistributionChartLabels = [];
+        
+        $scope.getCountryDistribution = () => {
+            $http.get("/stats/countryDistribution").then((response) => {
+                $scope.countryDistribution = response.data;
+                $scope.refreshCountryDistributionChart();
+            });
+        };
+        
+        $scope.handleYearChange = ($event) => {
+            $event.preventDefault();
+            $scope.year = $event.target.getAttribute("data-year");
+            $scope.refreshCountryDistributionChart();
+        };
+        
+        $scope.refreshCountryDistributionChart = () => {
+            $scope.countryDistributionChartLabels = Object.keys($scope.countryDistribution[$scope.year]);
+            $scope.countryDistributionChartData = Object.values($scope.countryDistribution[$scope.year]);
+        };
+        
+        $scope.init = () => {
+            $scope.getCountryDistribution();
+        };
+
+        $scope.init();
+
+    }])
     .controller('eventInfoCtrl', ['$scope', '$http', '$window', ($scope, $http, $window) => {
 
         $scope.mapStudent = $event => {
