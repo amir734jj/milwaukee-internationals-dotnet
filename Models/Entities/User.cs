@@ -20,5 +20,7 @@ namespace Models.Entities
         public UserRoleEnum UserRoleEnum { get; set; }
 
         public DateTimeOffset LastLoggedInDate { get; set; }
+        
+        public bool Enable { get; set; }
     }
 }

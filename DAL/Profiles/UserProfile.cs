@@ -15,6 +15,7 @@ namespace DAL.Profiles
             entity.PhoneNumber = dto.PhoneNumber;
             entity.Email = dto.Email;
             entity.LastLoggedInDate = dto.LastLoggedInDate;
+            entity.Enable = dto.Enable;
         }
 
         public override IQueryable<User> Include<TQueryable>(TQueryable queryable)

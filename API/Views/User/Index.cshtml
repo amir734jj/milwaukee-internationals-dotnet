@@ -30,11 +30,16 @@
         <tr>
             <th>
                 Fullname
-                <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                <a href="?sortBy=fullname&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=fullname&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
             </th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Enable</th>
             <th class="hidden-sm hidden-xs">Username</th>
             <th class="hidden-sm hidden-xs">Role</th>
             <th class="hidden-sm hidden-xs">LastLoggedInDate</th>
@@ -54,43 +59,58 @@
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
+                <td>@user.Enable</td>
                 <td class="hidden-sm hidden-xs">@user.UserName</td>
                 <td class="hidden-sm hidden-xs">@user.UserRoleEnum</td>
                 <td class="hidden-sm hidden-xs">@user.LastLoggedInDate.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)</td>
-                
+
                 @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                 {
                     <td class="hidden-xs" ng-show="showDetail">
+                        <div class="btn-group-vertical btn-group-sm">
+                            
                         @if (disabled)
                         {
                             switch (user.UserRoleEnum)
                             {
                                 case UserRoleEnum.Basic:
-                                    <a href="" class="btn btn-primary btn-sm disabled">Set Admin</a>
+                                    <a href="" class="btn btn-primary disabled">Set Admin</a>
                                     break;
                                 case UserRoleEnum.Admin:
-                                    <a href="" class="btn btn-primary btn-sm disabled">Set Basic</a>
+                                    <a href="" class="btn btn-primary disabled">Set Basic</a>
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
                             }
-                            <a href="" class="btn btn-danger btn-sm disabled">Delete</a>
+                            <a href="" class="btn btn-warning disabled">Disable</a>
+                            <a href="" class="btn btn-danger disabled">Delete</a>
                         }
                         else
                         {
                             switch (user.UserRoleEnum)
                             {
                                 case UserRoleEnum.Basic:
-                                    <a href="~/User/updateUserRole/@user.Id/@UserRoleEnum.Admin" class="btn btn-primary btn-sm">Set Admin</a>
+                                    <a href="~/User/updateUserRole/@user.Id/@UserRoleEnum.Admin" class="btn btn-primary">Set Admin</a>
                                     break;
                                 case UserRoleEnum.Admin:
-                                    <a href="~/User/UpdateUserRole/@user.Id/@UserRoleEnum.Basic" class="btn btn-primary btn-sm">Set Basic</a>
+                                    <a href="~/User/UpdateUserRole/@user.Id/@UserRoleEnum.Basic" class="btn btn-primary">Set Basic</a>
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
                             }
-                            <a href="~/User/delete/@user.Id" class="btn btn-danger btn-sm" validate-before-going data-message="Are you sure to delete this user (@(user.Fullname))?">Delete</a>
+                            
+                            @if (user.Enable)
+                            {
+                                <a href="~/User/disable/@user.Id" class="btn btn-warning" validate-before-going data-message="Are you sure to disable this user (@(user.Fullname))?">Disable</a>
+                            }
+                            else
+                            {
+                                <a href="~/User/enable/@user.Id" class="btn btn-success" validate-before-going data-message="Are you sure to enable this user (@(user.Fullname))?">Enable</a>
+                            }
+                            
+                            <a href="~/User/delete/@user.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this user (@(user.Fullname))?">Delete</a>
                         }
+                        </div>
                     </td>
                 }
             </tr>
