@@ -68,48 +68,48 @@
                 {
                     <td class="hidden-xs" ng-show="showDetail">
                         <div class="btn-group-vertical btn-group-sm">
-                            
-                        @if (disabled)
-                        {
-                            switch (user.UserRoleEnum)
+
+                            @if (disabled)
                             {
-                                case UserRoleEnum.Basic:
-                                    <a href="" class="btn btn-primary disabled">Set Admin</a>
-                                    break;
-                                case UserRoleEnum.Admin:
-                                    <a href="" class="btn btn-primary disabled">Set Basic</a>
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                            <a href="" class="btn btn-warning disabled">Disable</a>
-                            <a href="" class="btn btn-danger disabled">Delete</a>
-                        }
-                        else
-                        {
-                            switch (user.UserRoleEnum)
-                            {
-                                case UserRoleEnum.Basic:
-                                    <a href="~/User/updateUserRole/@user.Id/@UserRoleEnum.Admin" class="btn btn-primary">Set Admin</a>
-                                    break;
-                                case UserRoleEnum.Admin:
-                                    <a href="~/User/UpdateUserRole/@user.Id/@UserRoleEnum.Basic" class="btn btn-primary">Set Basic</a>
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                            
-                            @if (user.Enable)
-                            {
-                                <a href="~/User/disable/@user.Id" class="btn btn-warning" validate-before-going data-message="Are you sure to disable this user (@(user.Fullname))?">Disable</a>
+                                switch (user.UserRoleEnum)
+                                {
+                                    case UserRoleEnum.Basic:
+                                        <a href="" class="btn btn-primary disabled">Set Admin</a>
+                                        break;
+                                    case UserRoleEnum.Admin:
+                                        <a href="" class="btn btn-primary disabled">Set Basic</a>
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+                                <a href="" class="btn btn-warning disabled">Disable</a>
+                                <a href="" class="btn btn-danger disabled">Delete</a>
                             }
                             else
                             {
-                                <a href="~/User/enable/@user.Id" class="btn btn-success" validate-before-going data-message="Are you sure to enable this user (@(user.Fullname))?">Enable</a>
+                                switch (user.UserRoleEnum)
+                                {
+                                    case UserRoleEnum.Basic:
+                                        <a href="~/User/updateUserRole/@user.Id/@UserRoleEnum.Admin" class="btn btn-primary" validate-before-going data-message="Are you sure to assign admin role to this user (@(user.Fullname))?">Set Admin</a>
+                                        break;
+                                    case UserRoleEnum.Admin:
+                                        <a href="~/User/UpdateUserRole/@user.Id/@UserRoleEnum.Basic" class="btn btn-primary" validate-before-going data-message="Are you sure to assign basic role to this user (@(user.Fullname))?">Set Basic</a>
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+
+                                @if (user.Enable)
+                                {
+                                    <a href="~/User/disable/@user.Id" class="btn btn-warning" validate-before-going data-message="Are you sure to disable this user (@(user.Fullname))?">Disable</a>
+                                }
+                                else
+                                {
+                                    <a href="~/User/enable/@user.Id" class="btn btn-success" validate-before-going data-message="Are you sure to enable this user (@(user.Fullname))?">Enable</a>
+                                }
+
+                                <a href="~/User/delete/@user.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this user (@(user.Fullname))?">Delete</a>
                             }
-                            
-                            <a href="~/User/delete/@user.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this user (@(user.Fullname))?">Delete</a>
-                        }
                         </div>
                     </td>
                 }
