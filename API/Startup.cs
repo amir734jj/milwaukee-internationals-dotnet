@@ -246,7 +246,11 @@ namespace API
             });
 
             // Re-Captcha config
-            services.Configure<RecaptchaSettings>(_configuration.GetSection("RecaptchaSettings"));
+            services.Configure<RecaptchaSettings>(x =>
+            {
+                x.SiteKey = Environment.GetEnvironmentVariable("RECAPTCHASETTINGS_SITEKEY");
+                x.SecretKey = Environment.GetEnvironmentVariable("RECAPTCHASETTINGS_SECRETKEY");
+            });
             services.AddTransient<IRecaptchaService, RecaptchaService>();
 
             services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
