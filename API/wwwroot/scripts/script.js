@@ -4,7 +4,7 @@ angular.element(document).ready(() => {
     }, 5000);
 });
 
-angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js'])
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize'])
     .constant("jsPDF", (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ["$window", $window => ({
         restrict: 'A',
@@ -16,30 +16,75 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js'])
             });
         }
     })])
+    .controller("apiEventsCtrl", ['$scope', '$http', '$sce', async ($scope, $http, $sce) => {
+
+        $scope.count = 0;
+        $scope.events = [];
+        $scope.eventsRawDump = "";
+
+        $scope.appendEvent = (evt) => {
+            $scope.events.unshift(evt);
+            $scope.eventsRawDump = $sce.trustAsHtml($scope.events.map(x => `${moment(x.recordedDate).local().format('YYYY-MM-DD HH:mm:ss')}\t${x.description}`).join('\n'));
+            $scope.$apply();
+        };
+
+        $scope.init = async () => {
+            const {data: events} = await $http.get("/apiEvents/latest");
+            const {data: {token}} = await $http.get("/identity/token");
+
+            events.sort((left, right) => moment.utc(left.recordedDate).diff(moment.utc(right.recordedDate))).forEach(evt => {
+                $scope.appendEvent(evt);
+            });
+
+            const options = {
+                transport: 4,
+                accessTokenFactory: () => token
+            };
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/hub", options)
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on('count', count => {
+                $scope.count = count;
+                $scope.$apply();
+            });
+
+            connection.on('events', evt => {
+                $scope.appendEvent(evt);
+            });
+
+            // Start the connection.
+            await connection.start();
+        };
+
+        await $scope.init();
+    }])
     .controller("statsCtrl", ['$scope', '$http', ($scope, $http) => {
         $scope.countryDistribution = {};
         $scope.year = "All";
         $scope.countryDistributionChartData = [];
         $scope.countryDistributionChartLabels = [];
-        
+
         $scope.getCountryDistribution = () => {
             $http.get("/stats/countryDistribution").then((response) => {
                 $scope.countryDistribution = response.data;
                 $scope.refreshCountryDistributionChart();
             });
         };
-        
+
         $scope.handleYearChange = ($event) => {
             $event.preventDefault();
             $scope.year = $event.target.getAttribute("data-year");
             $scope.refreshCountryDistributionChart();
         };
-        
+
         $scope.refreshCountryDistributionChart = () => {
             $scope.countryDistributionChartLabels = Object.keys($scope.countryDistribution[$scope.year]);
             $scope.countryDistributionChartData = Object.values($scope.countryDistribution[$scope.year]);
         };
-        
+
         $scope.init = () => {
             $scope.getCountryDistribution();
         };

@@ -1,14 +1,19 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using API.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Models.Entities;
 using Models.Enums;
 using Models.ViewModels.Identities;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace API.Abstracts
 {
@@ -19,6 +24,8 @@ namespace API.Abstracts
         public abstract SignInManager<User> ResolveSignInManager();
 
         public abstract RoleManager<IdentityRole<int>> ResolveRoleManager();
+        
+        public abstract JwtSettings ResolveJwtSettings();
 
         public async Task<bool> Register(RegisterViewModel registerViewModel)
         {
@@ -101,6 +108,40 @@ namespace API.Abstracts
             await ResolveSignInManager().SignOutAsync();
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        
+        /// <summary>
+        ///     Resolves a token given a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public string ResolveToken(User user)
+        {
+            var jwtSettings = ResolveJwtSettings();
+            
+            // Generate and issue a JWT token
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName),    // use username as name
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            
+            var expires = DateTime.Now.AddMinutes(jwtSettings.AccessTokenDurationInMinutes);
+
+            var token = new JwtSecurityToken(
+                jwtSettings.Issuer,
+                jwtSettings.Issuer,
+                claims,
+                expires: expires,
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Models.ViewModels.EventService;
 
 namespace Models.ViewModels;
 

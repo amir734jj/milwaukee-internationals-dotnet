@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Abstracts;
 using API.Attributes;
+using API.Utilities;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -29,11 +30,13 @@ namespace API.Controllers
 
         private readonly IRecaptchaService _recaptcha;
         private readonly IApiEventService _apiEventService;
+        private readonly JwtSettings _jwtSettings;
 
         private readonly ILogger<IdentityController> _logger;
 
         public IdentityController(IUserLogic userLogic, UserManager<User> userManager,
             SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha, IApiEventService apiEventService,
+            JwtSettings jwtSettings,
             ILogger<IdentityController> logger)
         {
             _userLogic = userLogic;
@@ -42,6 +45,7 @@ namespace API.Controllers
             _roleManager = roleManager;
             _recaptcha = recaptcha;
             _apiEventService = apiEventService;
+            _jwtSettings = jwtSettings;
             _logger = logger;
         }
 
@@ -58,6 +62,11 @@ namespace API.Controllers
         public override RoleManager<IdentityRole<int>> ResolveRoleManager()
         {
             return _roleManager;
+        }
+
+        public override JwtSettings ResolveJwtSettings()
+        {
+            return _jwtSettings;
         }
 
         /// <summary>
@@ -222,6 +231,19 @@ namespace API.Controllers
             await _apiEventService.RecordEvent($"User [{result.UserName}] successfully logged-out");
 
             return RedirectToAction("Login");
+        }
+        
+        [Authorize]
+        [HttpGet]
+        [Route("Token")]
+        [SwaggerOperation("Token")]
+        public async Task<IActionResult> Token()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity!.Name);
+                
+            var token = ResolveToken(user);
+
+            return Ok(new { token });
         }
     }
 }

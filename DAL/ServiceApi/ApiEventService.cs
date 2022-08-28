@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
 using DAL.Interfaces;
+using DAL.Utilities;
+using Microsoft.AspNetCore.SignalR;
 using Models.Constants;
 using Models.ViewModels.EventService;
 
@@ -13,29 +15,36 @@ public class ApiEventService : IApiEventService
 {
     private readonly TableServiceClient _tableServiceClient;
     private readonly GlobalConfigs _globalConfigs;
+    private readonly IHubContext<MessageHub> _hubContext;
 
     private const string TableName = "event";
 
     private const int QueryLimit = 30;
 
-    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs)
+    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs, IHubContext<MessageHub> hubContext)
     {
         _tableServiceClient = tableServiceClient;
         _globalConfigs = globalConfigs;
+        _hubContext = hubContext;
     }
 
     public async Task RecordEvent(string description)
     {
-        if (!_globalConfigs.RecordApiEvents) return;
-        
-        await _tableServiceClient.GetTableClient(TableName).AddEntityAsync(new ApiEvent
+        var entity = new ApiEvent
         {
             Description = description,
             RecordedDate = DateTimeOffset.Now,
             // This is needed to make sure events are added in reverse chronological order because azure blob storage doesn't have order by feature
             RowKey = (DateTime.MaxValue.Ticks - DateTimeOffset.Now.Ticks).ToString("d19"),
             PartitionKey = Guid.NewGuid().ToString()
-        });
+        };
+
+        await _hubContext.Clients.All.SendCoreAsync("events", new object[] { entity});
+
+        if (_globalConfigs.RecordApiEvents)
+        {
+            await _tableServiceClient.GetTableClient(TableName).AddEntityAsync(entity);
+        }
     }
 
     public async Task<IEnumerable<ApiEvent>> GetEvents()

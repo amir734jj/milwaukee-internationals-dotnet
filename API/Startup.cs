@@ -1,9 +1,10 @@
 using System;
 using System.Reflection;
+using System.Text;
 using API.Extensions;
 using API.Middlewares;
 using API.Utilities;
-using Azure;
+using Microsoft.AspNetCore.SignalR;
 using Azure.Data.Tables;
 using Azure.Storage.Blobs;
 using DAL.Interfaces;
@@ -25,7 +26,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MlkPwgen;
 using Models.Constants;
 using Models.Entities;
 using NETCore.MailKit.Extensions;
@@ -84,6 +87,8 @@ namespace API
                 _configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
 
             services.AddLogging();
+            
+            services.Configure<JwtSettings>(_configuration.GetSection("JwtSettings"));
 
             // Add MailKit
             services.AddMailKit(optionBuilder =>
@@ -240,11 +245,31 @@ namespace API
 
             services.AddEasyCaching(options => options.UseInMemory("memory"));
 
+            var jwtSetting = _configuration
+                .GetSection("JwtSettings")
+                .Get<JwtSettings>();
+
+            // Random JWT key
+            jwtSetting.Key = PasswordGenerator.Generate(length: 100, allowed: Sets.Alphanumerics);
+
+            services.AddSingleton(jwtSetting);
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
                 x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
                 x.LoginPath = new PathString("/Identity/login");
                 x.LogoutPath = new PathString("/Identity/logout");
+            }).AddJwtBearer(config =>
+            {
+                config.RequireHttpsMetadata = false;
+                config.SaveToken = true;
+
+                config.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = jwtSetting.Issuer,
+                    ValidAudience = jwtSetting.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Key))
+                };
             });
 
             // Re-Captcha config
@@ -258,6 +283,15 @@ namespace API
             services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
             
             services.AddSingleton(new TableServiceClient(new Uri(Environment.GetEnvironmentVariable("AZURE_TABLE_EVENTS")!)));
+            
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            
+            services.AddSignalR(config =>
+            {
+                config.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10 mega-bytes
+                config.StreamBufferCapacity = 50;
+                config.EnableDetailedErrors = true;
+            });
         }
 
         /// <summary>
@@ -317,7 +351,11 @@ namespace API
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => endpoints.MapControllers());
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    endpoints.MapHub<MessageHub>("/hub");
+                });
 
             Console.WriteLine("Application Started!");
         }

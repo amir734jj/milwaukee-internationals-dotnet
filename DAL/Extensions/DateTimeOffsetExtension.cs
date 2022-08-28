@@ -1,7 +1,7 @@
 using System;
 using TimeZoneConverter;
 
-namespace Logic.Extensions;
+namespace DAL.Extensions;
 
 public static class DateTimeOffsetExtension
 {
