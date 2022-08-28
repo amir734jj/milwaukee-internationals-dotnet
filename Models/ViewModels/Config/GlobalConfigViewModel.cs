@@ -20,5 +20,8 @@ namespace Models.ViewModels.Config
         
         [Display(Name = "Disallow registration of duplicate students")]
         public bool DisallowDuplicateStudents { get; set; }
+
+        [Display(Name = "Record API events")]
+        public bool RecordApiEvents { get; set; }
     }
 }

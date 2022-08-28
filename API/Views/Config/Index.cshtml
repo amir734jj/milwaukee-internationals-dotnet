@@ -34,6 +34,12 @@
         <toggle class="pull-right" ng-model="disallowDuplicateStudents" on="Enable" off="Disable" onstyle="btn-primary" offstyle="btn-default" ng-change="disallowDuplicateStudents_val = disallowDuplicateStudents"></toggle>
     </div>
     
+    <div class="form-group" ng-init="recordApiEvents = @Model.RecordApiEvents.ToString().ToLower(); recordApiEvents_val = recordApiEvents">
+        @Html.LabelFor(x => x.RecordApiEvents)
+        @Html.CheckBoxFor(x => x.RecordApiEvents, new { @class = "form-control hidden", ng_model = "recordApiEvents_val" })
+        <toggle class="pull-right" ng-model="recordApiEvents" on="Enable" off="Disable" onstyle="btn-primary" offstyle="btn-default" ng-change="recordApiEvents_val = recordApiEvents"></toggle>
+    </div>
+    
     <div class="form-group">
         @Html.LabelFor(x => x.Theme)
         @Html.DropDownListFor(x => x.Theme, ApplicationConstants.Themes.Select(x => new SelectListItem {Text = x.Key, Value = x.Key, Selected = x.Key == selectedTheme}), new {@class = "form-control"})

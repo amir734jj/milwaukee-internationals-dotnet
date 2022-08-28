@@ -8,5 +8,5 @@ public interface IApiEventService
 {
     Task RecordEvent(string description);
 
-    Task<IEnumerable<ApiEvent>> GetEvents(int limit = 20);
+    Task<IEnumerable<ApiEvent>> GetEvents();
 }

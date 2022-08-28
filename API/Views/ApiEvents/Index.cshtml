@@ -28,7 +28,7 @@
                 <td>
                     @apiEvent.RecordedDate.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)
                 </td>
-                <td>@apiEvent.Description[..300]</td>
+                <td>@(string.Join("", apiEvent.Description.Take(300)))</td>
             </tr>
         }
         </tbody>

@@ -51,7 +51,8 @@ namespace Logic
                 EventFeature = _globalConfigs.EventFeature,
                 EmailTestMode = _globalConfigs.EmailTestMode,
                 Theme = _globalConfigs.CurrentTheme,
-                DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents
+                DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents,
+                RecordApiEvents = _globalConfigs.RecordApiEvents
             };
 
             return await Task.FromResult(retVal);
@@ -66,13 +67,13 @@ namespace Logic
                 ["Description"] = "Application config file"
             });
 
-            await _apiEventService.RecordEvent("Handled updating of global config");
+            await _apiEventService.RecordEvent($"Handled updating of global config {_globalConfigs}");
         }
 
         public async Task Refresh()
         {
             var response = await _storageService.Download(ConfigFile);
-
+            
             if (response.Status == HttpStatusCode.OK)
             {
                 _logger.LogInformation("Successfully fetched the config from storage service");
@@ -80,6 +81,8 @@ namespace Logic
                 var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>() ?? new GlobalConfigViewModel();
                 
                 _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
+                
+                await _apiEventService.RecordEvent($"Refreshed global config {_globalConfigs}");
             }
             else
             {

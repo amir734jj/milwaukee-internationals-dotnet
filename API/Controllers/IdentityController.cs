@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Abstracts;
 using API.Attributes;
+using DAL.Interfaces;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,11 +28,12 @@ namespace API.Controllers
         private readonly RoleManager<IdentityRole<int>> _roleManager;
 
         private readonly IRecaptchaService _recaptcha;
+        private readonly IApiEventService _apiEventService;
 
         private readonly ILogger<IdentityController> _logger;
 
         public IdentityController(IUserLogic userLogic, UserManager<User> userManager,
-            SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha,
+            SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha, IApiEventService apiEventService,
             ILogger<IdentityController> logger)
         {
             _userLogic = userLogic;
@@ -39,6 +41,7 @@ namespace API.Controllers
             _signInManager = signInManager;
             _roleManager = roleManager;
             _recaptcha = recaptcha;
+            _apiEventService = apiEventService;
             _logger = logger;
         }
 
@@ -103,9 +106,11 @@ namespace API.Controllers
             }*/
 
             var result = await base.Login(loginViewModel);
-
+            
             if (result)
             {
+                await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] logged in successfully");
+
                 var user = (await _userLogic.GetAll()).First(x =>
                     x.UserName.Equals(loginViewModel.Username, StringComparison.OrdinalIgnoreCase));
 
@@ -115,6 +120,8 @@ namespace API.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+
+            await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login");
 
             return RedirectToAction("NotAuthenticated");
         }
@@ -176,8 +183,12 @@ namespace API.Controllers
 
             if (result)
             {
+                await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] successfully register");
+
                 return RedirectToAction("Login");
             }
+            
+            await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] failed to register");
 
             return RedirectToAction("Register");
         }
@@ -204,7 +215,11 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> LogoutHandler()
         {
+            var result = await ResolveUserManager().FindByNameAsync(User.Identity!.Name);
+            
             await Logout();
+            
+            await _apiEventService.RecordEvent($"User [{result.UserName}] successfully logged-out");
 
             return RedirectToAction("Login");
         }
