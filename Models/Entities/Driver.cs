@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Models.Enums;
 using Models.Interfaces;
+using Newtonsoft.Json;
 using HashCode = Invio.Hashing.HashCode;
 
 namespace Models.Entities
@@ -58,6 +59,7 @@ namespace Models.Entities
         /// </summary>
         public int Year { get; set; }
 
+
         /// <summary>
         /// Override generate hashcode
         /// </summary>
@@ -70,6 +72,11 @@ namespace Models.Entities
                 HashCode.FromSet(Phone),
                 HashCode.FromSet(Fullname)
             ));
+        }
+
+        public override string ToString()
+        {
+            return ((IEntity)this).ToJsonString();
         }
     }
 }

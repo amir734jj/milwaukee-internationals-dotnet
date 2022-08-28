@@ -24,12 +24,14 @@ namespace Logic
         private readonly ILogger<ConfigLogic> _logger;
         
         private readonly GlobalConfigs _globalConfigs;
+        private readonly IApiEventService _apiEventService;
 
-        public ConfigLogic(IStorageService storageService, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs)
+        public ConfigLogic(IStorageService storageService, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs, IApiEventService apiEventService)
         {
             _storageService = storageService;
             _logger = logger;
             _globalConfigs = globalConfigs;
+            _apiEventService = apiEventService;
         }
 
         public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
@@ -63,6 +65,8 @@ namespace Logic
             {
                 ["Description"] = "Application config file"
             });
+
+            await _apiEventService.RecordEvent("Handled updating of global config");
         }
 
         public async Task Refresh()

@@ -1,0 +1,37 @@
+@using System.Globalization
+@using Logic.Extensions
+@model IEnumerable<Models.ViewModels.EventService.ApiEvent>
+
+@{
+    ViewBag.Title = "API Events";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>
+            Api Events
+        </h3>
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var apiEvent in Model)
+        {
+            <tr>
+                <td>
+                    @apiEvent.RecordedDate.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)
+                </td>
+                <td>@apiEvent.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>

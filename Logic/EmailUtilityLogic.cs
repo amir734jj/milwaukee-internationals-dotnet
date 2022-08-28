@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
+using EnumsNET;
 using Logic.Interfaces;
 using Models.Constants;
 using Models.Enums;
@@ -17,6 +18,7 @@ namespace Logic
         private readonly IUserLogic _userLogic;
         
         private readonly IEmailServiceApi _emailServiceApiApi;
+        private readonly IApiEventService _apiEventService;
 
         private readonly IStudentLogic _studentLogic;
         
@@ -33,7 +35,8 @@ namespace Logic
         /// <param name="hostLogic"></param>
         /// <param name="userLogic"></param>
         /// <param name="emailServiceApiApi"></param>
-        public EmailUtilityLogic(GlobalConfigs globalConfigs, IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IUserLogic userLogic, IEmailServiceApi emailServiceApiApi)
+        /// <param name="apiEventService"></param>
+        public EmailUtilityLogic(GlobalConfigs globalConfigs, IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IUserLogic userLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService)
         {
             _globalConfigs = globalConfigs;
             _studentLogic = studentLogic;
@@ -41,6 +44,7 @@ namespace Logic
             _hostLogic = hostLogic;
             _userLogic = userLogic;
             _emailServiceApiApi = emailServiceApiApi;
+            _apiEventService = apiEventService;
         }
 
         public async Task<EmailFormViewModel> GetEmailForm()
@@ -61,6 +65,8 @@ namespace Logic
         {
             // Send the email
             await _emailServiceApiApi.SendEmailAsync(emailEventViewModel.Emails, emailEventViewModel.Subject, emailEventViewModel.Body);
+
+            await _apiEventService.RecordEvent($"Sent form email [{emailEventViewModel.Subject}] to {string.Join(',', emailEventViewModel.Emails)}");
 
             return true;
         }
@@ -116,6 +122,8 @@ namespace Logic
             // Send the email
             await _emailServiceApiApi.SendEmailAsync(emailAddresses, emailFormViewModel.Subject, emailFormViewModel.Message);
 
+            await _apiEventService.RecordEvent($"Sent ad-hoc email [{emailFormViewModel.Subject}] to {string.Join(',', emailAddresses)}");
+
             return true;
         }
 
@@ -147,6 +155,8 @@ namespace Logic
                 default:
                     throw new ArgumentOutOfRangeException(nameof(entitiesEnum), entitiesEnum, null);
             }
+            
+            await _apiEventService.RecordEvent($"Handled [{entitiesEnum.GetName()}] check-in email response with ID: {id}");
 
             return true;
         }

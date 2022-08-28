@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Interfaces;
 using Models.Entities;
@@ -14,6 +15,8 @@ namespace Logic.Abstracts
     public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity
     {
         protected abstract IBasicCrud<T> Repository();
+        
+        protected abstract IApiEventService ApiEventService();
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {
@@ -38,6 +41,8 @@ namespace Logic.Abstracts
         public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null)
         {
             var result = await Repository().GetAll();
+
+            await ApiEventService().RecordEvent($"Queried all {typeof(T).Name}");
 
             if (string.IsNullOrEmpty(sortBy))
             {
@@ -79,7 +84,11 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Get(int id)
         {
-            return await Repository().Get(id);
+            var result =  await Repository().Get(id);
+            
+            await ApiEventService().RecordEvent($"Queried ID: {id} of {typeof(T).Name}");
+
+            return result;
         }
 
         /// <summary>
@@ -89,7 +98,11 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Save(T instance)
         {
-            return await Repository().Save(instance);
+            var result = await Repository().Save(instance);
+         
+            await ApiEventService().RecordEvent($"Save new {typeof(T).Name} => {instance}");
+
+            return result;
         }
 
         /// <summary>
@@ -99,7 +112,11 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Delete(int id)
         {
-            return await Repository().Delete(id);
+            var result =await Repository().Delete(id);
+            
+            await ApiEventService().RecordEvent($"Delete {typeof(T).Name} with ID: {id}");
+
+            return result;
         }
 
         /// <summary>
@@ -110,7 +127,11 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, T updatedInstance)
         {
-            return await Repository().Update(id, updatedInstance);
+            var result = await Repository().Update(id, updatedInstance);
+            
+            await ApiEventService().RecordEvent($"Update {typeof(T).Name} with ID: {id} => {updatedInstance}");
+
+            return result;
         }
 
         /// <summary>
@@ -121,7 +142,11 @@ namespace Logic.Abstracts
         /// <returns></returns>
         public virtual async Task<T> Update(int id, Action<T> modifyAction)
         {
-            return await Repository().Update(id, modifyAction);;
+            var result = await Repository().Update(id, modifyAction);;
+            
+            await ApiEventService().RecordEvent($"Updated {typeof(T).Name} with ID: {id} => {result}");
+
+            return result;
         }
     }
 }

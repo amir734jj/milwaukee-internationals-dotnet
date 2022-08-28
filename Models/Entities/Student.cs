@@ -79,5 +79,10 @@ namespace Models.Entities
                 HashCode.FromSet(Fullname)
             ));
         }
+
+        public override string ToString()
+        {
+            return ((IEntity)this).ToJsonString();
+        }
     }
 }

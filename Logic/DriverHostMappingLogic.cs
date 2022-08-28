@@ -17,6 +17,7 @@ namespace Logic
         private readonly IHostLogic _hostLogic;
 
         private readonly IEmailServiceApi _emailServiceApi;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Driver-Host mapping logic
@@ -24,11 +25,13 @@ namespace Logic
         /// <param name="driverLogic"></param>
         /// <param name="hostLogic"></param>
         /// <param name="emailServiceApi"></param>
-        public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApi)
+        /// <param name="apiEventService"></param>
+        public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApi, IApiEventService apiEventService)
         {
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
             _emailServiceApi = emailServiceApi;
+            _apiEventService = apiEventService;
         }
 
         /// <summary>
@@ -41,12 +44,17 @@ namespace Logic
             var host = await _hostLogic.Get(newDriverHostMappingViewModel.HostId);
 
             // Save changes to driver
-            return await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
             {
                 // Add map
                 x.Host = host;
                 x.HostRefId = host.Id;
             }) != null;
+            
+            await _apiEventService.RecordEvent(
+                $"Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
+
+            return result;
         }
 
         /// <summary>
@@ -57,12 +65,17 @@ namespace Logic
         public async Task<bool> UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
         {
             // Save changes to driver
-            return await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
+            var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
             {
                 // Remove map
                 x.Host = null;
                 x.HostRefId = null;
             }) != null;
+            
+            await _apiEventService.RecordEvent(
+                $"Un-Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
+
+            return result;
         }
 
         /// <summary>
@@ -126,6 +139,8 @@ namespace Logic
                 .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
 
             await Task.WhenAll(tasks);
+            
+            await _apiEventService.RecordEvent("Sent driver-host mapping emails");
             
             // Return true
             return true;

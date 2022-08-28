@@ -21,10 +21,10 @@
 <html lang="en">
 <head>
     <title> @(!string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title : ApplicationName) </title>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     @* jQuery*@
@@ -69,13 +69,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.10/summernote.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.10/summernote.min.js"></script>
 
-    @* bar chart *@    
+    @* bar chart *@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/angular-chart.js@1.1.1/dist/angular-chart.js"></script>
-    
+
     @* string to table *@
     <script src="https://cdn.rawgit.com/dtao/string-table/master/stringTable.js"></script>
-    
+
     @* customs *@
     <script src="~/scripts/script.js?@cacheBustingKey"></script>
     <link rel="stylesheet" href="~/styles/style.css?@cacheBustingKey">
@@ -92,7 +92,7 @@
             </button>
             <a class="navbar-brand" href="~/">
                 @ApplicationName
-                
+
                 @if (utility.IsAuthenticated())
                 {
                     <sub>
@@ -189,9 +189,13 @@
                                 <li class="@(ViewContext.RouteData.Matches("Config") ? "active" : "")">
                                     <a href="~/Config">Configuration</a>
                                 </li>
-                                
+
                                 <li class="@(ViewContext.RouteData.Matches("Stats") ? "active" : "")">
                                     <a href="~/Stats">Statistics</a>
+                                </li>
+
+                                <li class="@(ViewContext.RouteData.Matches("ApiEvents") ? "active" : "")">
+                                    <a href="~/ApiEvents">ApiEvents</a>
                                 </li>
                             </ul>
                         </li>
@@ -221,7 +225,7 @@
             Email test mode is on! no email is getting sent.
         </div>
     }
-    
+
     @foreach (var errorMessage in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors).Select(x => x.ErrorMessage))
     {
         <div class="alert alert-danger alert-dismissible fade in">

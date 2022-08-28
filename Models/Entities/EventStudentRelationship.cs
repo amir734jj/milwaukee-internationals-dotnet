@@ -15,5 +15,10 @@ namespace Models.Entities
         public int EventId { get; set; }
         
         public Event Event { get; set; }
+
+        public override string ToString()
+        {
+            return ((IEntity)this).ToJsonString();
+        }
     }
 }

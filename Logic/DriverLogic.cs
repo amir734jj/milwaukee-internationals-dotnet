@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -16,16 +17,19 @@ namespace Logic
     {
         private readonly IBasicCrud<Driver> _dal;
         private readonly GlobalConfigs _globalConfigs;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public DriverLogic(IEfRepository repository, GlobalConfigs globalConfigs)
+        /// <param name="apiEventService"></param>
+        public DriverLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
         {
             _dal = repository.For<Driver>();
             _globalConfigs = globalConfigs;
+            _apiEventService = apiEventService;
         }
 
         /// <summary>
@@ -85,6 +89,11 @@ namespace Logic
         protected override IBasicCrud<Driver> Repository()
         {
             return _dal;
+        }
+
+        protected override IApiEventService ApiEventService()
+        {
+            return _apiEventService;
         }
 
         public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null)
