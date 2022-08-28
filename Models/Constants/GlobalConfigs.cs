@@ -1,5 +1,6 @@
 using System;
 using Models.ViewModels.Config;
+using Newtonsoft.Json;
 
 namespace Models.Constants
 {
@@ -25,9 +26,11 @@ namespace Models.Constants
             EmailTestMode = globalConfigViewModel.EmailTestMode;
             CurrentTheme = globalConfigViewModel.Theme;
             DisallowDuplicateStudents = globalConfigViewModel.DisallowDuplicateStudents;
+            RecordApiEvents = globalConfigViewModel.RecordApiEvents;
         }
 
         public bool DisallowDuplicateStudents { get; set; }
+        public bool RecordApiEvents { get; set; }
 
         public object ToAnonymousObject()
         {
@@ -37,8 +40,14 @@ namespace Models.Constants
                 YearValue,
                 EmailTestMode,
                 CurrentTheme,
-                DisallowDuplicateStudents
+                DisallowDuplicateStudents,
+                RecordApiEvents
             };
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(ToAnonymousObject());
         }
     }
 }

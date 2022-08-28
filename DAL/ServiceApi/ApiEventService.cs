@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
 using DAL.Interfaces;
+using Models.Constants;
 using Models.ViewModels.EventService;
 
 namespace DAL.ServiceApi;
@@ -11,16 +12,22 @@ namespace DAL.ServiceApi;
 public class ApiEventService : IApiEventService
 {
     private readonly TableServiceClient _tableServiceClient;
+    private readonly GlobalConfigs _globalConfigs;
 
     private const string TableName = "event";
 
-    public ApiEventService(TableServiceClient tableServiceClient)
+    private const int QueryLimit = 30;
+
+    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs)
     {
         _tableServiceClient = tableServiceClient;
+        _globalConfigs = globalConfigs;
     }
 
     public async Task RecordEvent(string description)
     {
+        if (!_globalConfigs.RecordApiEvents) return;
+        
         await _tableServiceClient.GetTableClient(TableName).AddEntityAsync(new ApiEvent
         {
             Description = description,
@@ -31,7 +38,12 @@ public class ApiEventService : IApiEventService
         });
     }
 
-    public async Task<IEnumerable<ApiEvent>> GetEvents(int limit = 20)
+    public async Task<IEnumerable<ApiEvent>> GetEvents()
+    {
+        return await GetEvents(limit: QueryLimit);
+    }
+
+    private async Task<IEnumerable<ApiEvent>> GetEvents(int limit)
     {
         var pages = _tableServiceClient.GetTableClient(TableName).QueryAsync<ApiEvent>(maxPerPage: limit);
         
