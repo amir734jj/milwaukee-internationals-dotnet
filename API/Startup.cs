@@ -299,7 +299,8 @@ namespace API
         /// </summary>
         /// <param name="app"></param>
         /// <param name="configLogic"></param>
-        public void Configure(IApplicationBuilder app, IConfigLogic configLogic)
+        /// <param name="apiEventService"></param>
+        public void Configure(IApplicationBuilder app, IConfigLogic configLogic, IApiEventService apiEventService)
         {
             // Refresh global config
             configLogic.Refresh();
@@ -338,6 +339,8 @@ namespace API
 
                 if (context.Response.IsFailure())
                 {
+                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode}");
+                    
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
                     await next();
                 }
