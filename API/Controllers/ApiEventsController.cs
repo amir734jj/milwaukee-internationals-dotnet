@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using API.Attributes;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -23,8 +22,16 @@ public class ApiEventsController : Controller
     [HttpGet]
     [Route("")]
     [SwaggerOperation("ApiEvents")]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        return View(await _apiEventService.GetEvents());
+        return View();
+    }
+    
+    [HttpGet]
+    [Route("latest")]
+    [SwaggerOperation("GetLatestApiEvents")]
+    public async Task<IActionResult> GetLatestApiEvents()
+    {
+        return Ok(await _apiEventService.GetEvents());
     }
 }

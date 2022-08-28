@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Models.Interfaces
+﻿namespace Models.Interfaces
 {
     public interface IPerson : IEntity
     {

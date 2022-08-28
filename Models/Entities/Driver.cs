@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Models.Enums;
 using Models.Interfaces;
-using Newtonsoft.Json;
 using HashCode = Invio.Hashing.HashCode;
 
 namespace Models.Entities

@@ -34,6 +34,7 @@
 
     @* angular *@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.min.js"></script>
 
     @* bootstrap *@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -72,7 +73,13 @@
     @* bar chart *@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/angular-chart.js@1.1.1/dist/angular-chart.js"></script>
-
+    
+    @* SignalR client *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.8/signalr.min.js"></script>
+    
+    @* Momentjs client *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+    
     @* string to table *@
     <script src="https://cdn.rawgit.com/dtao/string-table/master/stringTable.js"></script>
 
@@ -195,7 +202,7 @@
                                 </li>
 
                                 <li class="@(ViewContext.RouteData.Matches("ApiEvents") ? "active" : "")">
-                                    <a href="~/ApiEvents">ApiEvents</a>
+                                    <a href="~/ApiEvents">API Events</a>
                                 </li>
                             </ul>
                         </li>
