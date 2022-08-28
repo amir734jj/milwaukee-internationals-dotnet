@@ -15,6 +15,7 @@ namespace Logic
         private readonly IDriverLogic _driverLogic;
         
         private readonly IEmailServiceApi _emailServiceApi;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
@@ -22,11 +23,13 @@ namespace Logic
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
         /// <param name="emailServiceApi"></param>
-        public AttendanceLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApi)
+        /// <param name="apiEventService"></param>
+        public AttendanceLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApi, IApiEventService apiEventService)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _emailServiceApi = emailServiceApi;
+            _apiEventService = apiEventService;
         }
         
         /// <summary>
@@ -36,11 +39,14 @@ namespace Logic
         /// <returns></returns>
         public async Task<bool> StudentSetAttendance(AttendanceViewModel attendanceViewModel)
         {
-            await _studentLogic.Update(attendanceViewModel.Id, x =>
+            var student = await _studentLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
                 x.IsPresent = attendanceViewModel.Attendance;
             });
+
+            await _apiEventService.RecordEvent(
+                $"Update student [{student.Fullname}] with ID: {student.Id} attendance to {attendanceViewModel.Attendance}");
 
             return true;
         }
@@ -53,12 +59,15 @@ namespace Logic
         public async Task<bool> DriverSetAttendance(AttendanceViewModel attendanceViewModel)
         {
             // Set attendance
-            await _driverLogic.Update(attendanceViewModel.Id, x =>
+            var driver = await _driverLogic.Update(attendanceViewModel.Id, x =>
             {
                 // Set attendance
                 x.IsPresent = attendanceViewModel.Attendance;
             });
 
+            await _apiEventService.RecordEvent(
+                $"Update driver [{driver.Fullname}] with ID: {driver.Id} attendance to {attendanceViewModel.Attendance}");
+            
             return true;
         }
 
@@ -80,6 +89,8 @@ namespace Logic
                     <p>Thank you</p>
                 ");
             });
+            
+            await _apiEventService.RecordEvent("Sent student check-in emails");
             
             return true;
         }
@@ -106,6 +117,8 @@ namespace Logic
                     <p>Thank you</p>
                 ");
             });
+            
+            await _apiEventService.RecordEvent("Sent driver check-in emails");
 
             return true;
         }
