@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -15,16 +16,19 @@ namespace Logic
     {
         private readonly IBasicCrud<Host> _dal;
         private readonly GlobalConfigs _globalConfigs;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="globalConfigs"></param>
-        public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs)
+        /// <param name="apiEventService"></param>
+        public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
         {
             _dal = repository.For<Host>();
             _globalConfigs = globalConfigs;
+            _apiEventService = apiEventService;
         }
 
         public override Task<Host> Save(Host instance)
@@ -41,6 +45,11 @@ namespace Logic
         protected override IBasicCrud<Host> Repository()
         {
             return _dal;
+        }
+        
+        protected override IApiEventService ApiEventService()
+        {
+            return _apiEventService;
         }
 
         public override async Task<IEnumerable<Host>> GetAll(string sortBy = null, bool? descending = null)

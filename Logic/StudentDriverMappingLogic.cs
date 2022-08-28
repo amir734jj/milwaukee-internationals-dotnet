@@ -17,6 +17,7 @@ namespace Logic
         private readonly IDriverLogic _driverLogic;
         
         private readonly IEmailServiceApi _emailServiceApi;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Student-Driver mapping logic
@@ -24,11 +25,13 @@ namespace Logic
         /// <param name="studentLogic"></param>
         /// <param name="driverLogic"></param>
         /// <param name="emailServiceApi"></param>
-        public StudentDriverMappingLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApi)
+        /// <param name="apiEventService"></param>
+        public StudentDriverMappingLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IEmailServiceApi emailServiceApi, IApiEventService apiEventService)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _emailServiceApi = emailServiceApi;
+            _apiEventService = apiEventService;
         }
 
         /// <summary>
@@ -41,12 +44,17 @@ namespace Logic
             var driver = await _driverLogic.Get(newStudentDriverMappingViewModel.DriverId);
             
             // Save changes to driver
-            return await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            var result = await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
             {
                 // Add map
                 x.Driver = driver;
                 x.DriverRefId = driver.Id;
             }) != null;
+
+            await _apiEventService.RecordEvent(
+                $"Mapped student to driver {newStudentDriverMappingViewModel.StudentId} to {newStudentDriverMappingViewModel.DriverId}");
+
+            return result;
         }
 
         /// <summary>
@@ -57,12 +65,17 @@ namespace Logic
         public async Task<bool> UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel)
         {            
             // Save changes to driver
-            return await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
+            var result = await _studentLogic.Update(newStudentDriverMappingViewModel.StudentId, x =>
             {
                 // Remove map
                 x.Driver = null;
                 x.DriverRefId = null;
             }) != null;
+            
+            await _apiEventService.RecordEvent(
+                $"Un-Mapped student to driver {newStudentDriverMappingViewModel.StudentId} to {newStudentDriverMappingViewModel.DriverId}");
+
+            return result;
         }
 
         /// <summary>
@@ -133,6 +146,8 @@ namespace Logic
 
             await Task.WhenAll(tasks);
             
+            await _apiEventService.RecordEvent("Sent student-driver mapping emails");
+
             // Return true
             return true;
         }

@@ -1,7 +1,9 @@
-﻿namespace Models.Interfaces
+﻿using Newtonsoft.Json;
+
+namespace Models.Interfaces
 {
     public interface IPerson : IEntity
-    {   
+    {
         string Fullname { get; set; }
     }
 }

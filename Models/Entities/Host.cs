@@ -23,5 +23,10 @@ namespace Models.Entities
         /// Indicates the year in which host attended the tour
         /// </summary>
         public int Year { get; set; }
+
+        public override string ToString()
+        {
+            return ((IEntity)this).ToJsonString();
+        }
     }
 }

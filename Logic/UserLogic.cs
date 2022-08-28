@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -16,16 +17,19 @@ namespace Logic
     {
         private readonly IBasicCrud<User> _dal;
         private readonly UserManager<User> _userManager;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="userManager"></param>
-        public UserLogic(IEfRepository repository, UserManager<User> userManager)
+        /// <param name="apiEventService"></param>
+        public UserLogic(IEfRepository repository, UserManager<User> userManager, IApiEventService apiEventService)
         {
             _dal = repository.For<User>();
             _userManager = userManager;
+            _apiEventService = apiEventService;
         }
 
         public override async Task<User> Get(int id)
@@ -61,6 +65,11 @@ namespace Logic
         protected override IBasicCrud<User> Repository()
         {
             return _dal;
+        }
+        
+        protected override IApiEventService ApiEventService()
+        {
+            return _apiEventService;
         }
 
         public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null)

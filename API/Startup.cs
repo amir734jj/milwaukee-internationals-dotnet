@@ -3,6 +3,8 @@ using System.Reflection;
 using API.Extensions;
 using API.Middlewares;
 using API.Utilities;
+using Azure;
+using Azure.Data.Tables;
 using Azure.Storage.Blobs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
@@ -254,6 +256,8 @@ namespace API
             services.AddTransient<IRecaptchaService, RecaptchaService>();
 
             services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
+            
+            services.AddSingleton(new TableServiceClient(new Uri(Environment.GetEnvironmentVariable("AZURE_TABLE_EVENTS")!)));
         }
 
         /// <summary>

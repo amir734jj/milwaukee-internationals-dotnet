@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
@@ -16,6 +17,7 @@ namespace Logic
         private readonly IBasicCrud<Event> _dal;
         private readonly IStudentLogic _studentLogic;
         private readonly GlobalConfigs _globalConfigs;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
@@ -23,16 +25,23 @@ namespace Logic
         /// <param name="repository"></param>
         /// <param name="studentLogic"></param>
         /// <param name="globalConfigs"></param>
-        public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs)
+        /// <param name="apiEventService"></param>
+        public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs, IApiEventService apiEventService)
         {
             _dal = repository.For<Event>();
             _studentLogic = studentLogic;
             _globalConfigs = globalConfigs;
+            _apiEventService = apiEventService;
         }
 
         protected override IBasicCrud<Event> Repository()
         {
             return _dal;
+        }
+        
+        protected override IApiEventService ApiEventService()
+        {
+            return _apiEventService;
         }
 
         public override async Task<IEnumerable<Event>> GetAll(string sortBy = null, bool? descending = null)
