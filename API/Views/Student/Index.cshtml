@@ -29,6 +29,11 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
+                <th ng-show="showDetail">
+                    DisplayId
+                    <a href="?sortBy=displayId&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="?sortBy=displayId&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                </th>
                 <th>
                     Fullname
                     <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
@@ -75,6 +80,7 @@
             @foreach (var student in Model)
             {
                 <tr>
+                    <td ng-show="showDetail">@student.DisplayId</td>
                     <td>@student.Fullname</td>
                     <td>@student.Country</td>
                     <td>@student.University</td>
