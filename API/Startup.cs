@@ -16,6 +16,7 @@ using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -336,10 +337,13 @@ namespace API
             app.Use(async (context, next) =>
             {
                 await next();
-
+                
                 if (context.Response.IsFailure())
                 {
-                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode}");
+                    var exHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    var exception = exHandlerFeature?.Error;
+                 
+                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} => {exception?.Message}");
                     
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
                     await next();
