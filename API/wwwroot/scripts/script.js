@@ -16,22 +16,22 @@ angular.module('angular-async-await', [])
     }]);
 
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await'])
-    .constant("jsPDF", (jspdf || window.jspdf).jsPDF)
-    .directive('validateBeforeGoing', ["$window", $window => ({
+    .constant('jsPDF', (jspdf || window.jspdf).jsPDF)
+    .directive('validateBeforeGoing', ['$window', $window => ({
         restrict: 'A',
         link: (scope, element, attrs) => {
-            angular.element(element).on("click", (e) => {
+            angular.element(element).on('click', (e) => {
                 if (!$window.confirm(attrs.message)) {
                     e.preventDefault();
                 }
             });
         }
     })])
-    .controller("apiEventsCtrl", ['$scope', '$http', '$sce', '$async', async ($scope, $http, $sce, $async) => {
+    .controller('apiEventsCtrl', ['$scope', '$http', '$sce', '$async', async ($scope, $http, $sce, $async) => {
 
         $scope.count = 0;
         $scope.events = [];
-        $scope.eventsRawDump = "";
+        $scope.eventsRawDump = '';
 
         $scope.appendEvent = (evt) => {
             $scope.events.unshift(evt);
@@ -40,20 +40,20 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.init = async () => {
-            const {data: events} = await $async($http.get("/apiEvents/latest"));
-            const {data: {token}} = await $async($http.get("/identity/token"));
+            const {data: events} = await $async($http.get('/apiEvents/latest'));
+            const {data: {token}} = await $async($http.get('/identity/token'));
 
             events.sort((left, right) => moment.utc(left.recordedDate).diff(moment.utc(right.recordedDate))).forEach(evt => {
                 $scope.appendEvent(evt);
             });
 
             const options = {
-                transport: 4,
+                transport: signalR.HttpTransportType.LongPolling,
                 accessTokenFactory: () => token
             };
 
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/hub", options)
+                .withUrl('/hub', options)
                 .withAutomaticReconnect()
                 .build();
 
@@ -72,21 +72,21 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         await $async($scope.init());
     }])
-    .controller("statsCtrl", ['$scope', '$http', '$async', async ($scope, $http, $async) => {
+    .controller('statsCtrl', ['$scope', '$http', '$async', async ($scope, $http, $async) => {
         $scope.countryDistribution = {};
-        $scope.year = "All";
+        $scope.year = 'All';
         $scope.countryDistributionChartData = [];
         $scope.countryDistributionChartLabels = [];
 
         $scope.getCountryDistribution = async () => {
-            const {data} = await $async($http.get("/stats/countryDistribution"));
+            const {data} = await $async($http.get('/stats/countryDistribution'));
             $scope.countryDistribution = data;
             $scope.refreshCountryDistributionChart();
         };
 
         $scope.handleYearChange = ($event) => {
             $event.preventDefault();
-            $scope.year = $event.target.getAttribute("data-year");
+            $scope.year = $event.target.getAttribute('data-year');
             $scope.refreshCountryDistributionChart();
         };
 
@@ -131,15 +131,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
             const eventId = $scope.eventId;
             const emailSubject = $scope.emailSubject;
-            const emailBody = angular.element('.summernote').eq(0).summernote("code");
+            const emailBody = angular.element('.summernote').eq(0).summernote('code');
 
-            if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
-                await $async($http.post("/api/event/email", {
+            if (eventId && emailSubject && emailBody && $window.confirm('Are you sure to send an email to RSVPed students?')) {
+                await $async($http.post('/api/event/email', {
                     emails: $scope.event.students.map(x => x.student.email),
                     body: emailBody,
                     subject: emailSubject
                 }));
-                $window.alert("Successfully sent email!");
+                $window.alert('Successfully sent email!');
             }
         };
 
@@ -156,21 +156,21 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
     .controller('userListCtrl', ['$scope', '$http', ($scope, $http) => {
 
     }])
-    .controller('emailUtilityCtrl', ["$timeout", $timeout => {
+    .controller('emailUtilityCtrl', ['$timeout', $timeout => {
 
         // Hide the .autoclose
         $timeout(() => {
-            angular.element(".autoclose").fadeOut();
+            angular.element('.autoclose').fadeOut();
         }, 2000);
 
         // Start the text editor
         angular.element('.summernote').summernote({height: 150});
     }])
-    .controller("emailCheckInCtrl", ['$scope', '$http', '$async', async ($scope, $http, $async) => {
+    .controller('emailCheckInCtrl', ['$scope', '$http', '$async', async ($scope, $http, $async) => {
         $scope.changeAttendance = async (type, id, value) => {
             await $async($http.post(`/utility/emailCheckInAction/${type}/${id}?present=${value}`));
         };
-        console.log("Updated the attendance");
+        console.log('Updated the attendance');
     }])
     .controller('hostEditCtrl', ['$scope', $scope => {
 
@@ -184,7 +184,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
     .controller('driverRegistrationCtrl', ['$scope', $scope => {
 
     }])
-    .controller("studentRegistrationCtrl", ['$scope', $scope => {
+    .controller('studentRegistrationCtrl', ['$scope', $scope => {
 
     }])
     .controller('userRegistrationCtrl', ['$scope', $scope => {
@@ -222,10 +222,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getAllStudentsPDF = async () => {
-            const {data: students} = await $async($http.get("/api/student"));
+            const {data: students} = await $async($http.get('/api/student'));
 
             const doc = new jsPDF({
-                orientation: "l",
+                orientation: 'l',
                 lineHeight: 1.5
             });
 
@@ -266,15 +266,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             }
 
-            doc.save("student-list.pdf");
+            doc.save('student-list.pdf');
         };
     }])
-    .controller("driverListCtrl", ['$scope', '$http', "jsPDF", '$async', ($scope, $http, jsPDF, $async) => {
+    .controller('driverListCtrl', ['$scope', '$http', 'jsPDF', '$async', ($scope, $http, jsPDF, $async) => {
         $scope.getAllDriversPDF = async () => {
-            const {data: drivers} = await $async($http.get("/api/driver"));
+            const {data: drivers} = await $async($http.get('/api/driver'));
 
             const doc = new jsPDF({
-                orientation: "l",
+                orientation: 'l',
                 lineHeight: 1.5
             });
 
@@ -295,10 +295,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 let str = stringTable.create(temporary.map(driver => {
 
                     // Set the navigator for the PDF
-                    driver.navigator = (driver.navigator || driver.navigator === "null") ?
-                        (driver.navigator.length > 20 ? `${driver.navigator.substring(0, 20)} ...` : driver.navigator) : "-";
+                    driver.navigator = (driver.navigator || driver.navigator === 'null') ?
+                        (driver.navigator.length > 20 ? `${driver.navigator.substring(0, 20)} ...` : driver.navigator) : '-';
 
-                    return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
+                    return subsetAttr(['displayId', 'fullname', 'capacity', 'navigator', 'role', 'haveChildSeat'], driver);
                 }));
 
                 // Needed
@@ -315,15 +315,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             }
 
-            doc.save("driver-list.pdf");
+            doc.save('driver-list.pdf');
         };
     }])
-    .controller("hostListCtrl", ["$scope", "$http", "jsPDF", "$async", ($scope, $http, jsPDF, $async) => {
+    .controller('hostListCtrl', ['$scope', '$http', 'jsPDF', '$async', ($scope, $http, jsPDF, $async) => {
         $scope.getAllHostPDF = async () => {
-            const {data: hosts} = await $async($http.get("/api/host"));
+            const {data: hosts} = await $async($http.get('/api/host'));
 
             const doc = new jsPDF({
-                orientation: "l",
+                orientation: 'l',
                 lineHeight: 1.5
             });
 
@@ -341,7 +341,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             for (i = 0, j = hosts.length; i < j; i += chunk) {
                 temporary = hosts.slice(i, i + chunk);
 
-                let str = stringTable.create(temporary.map(host => subsetAttr(["fullname", "email", "phone", "address"], host)));
+                let str = stringTable.create(temporary.map(host => subsetAttr(['fullname', 'email', 'phone', 'address'], host)));
 
                 if (i === 0) {
                     str = `Host List ( count of hosts: ${hosts.length} )\n\n${str}`;
@@ -354,10 +354,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             }
 
-            doc.save("host-list.pdf");
+            doc.save('host-list.pdf');
         };
     }])
-    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", "jsPDF", "$async", async ($scope, $http, $window, jsPDF, $async) => {
+    .controller('studentDriverMappingCtrl', ['$scope', '$http', '$window', 'jsPDF', '$async', async ($scope, $http, $window, jsPDF, $async) => {
 
         $scope.showPresentOnly = false;
 
@@ -378,10 +378,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getAllDriverMappingPDF = async () => {
-            const {data: {mappedDrivers: driverBucket}} = await $async($http.get("/api/studentDriverMapping/status"));
+            const {data: {mappedDrivers: driverBucket}} = await $async($http.get('/api/studentDriverMapping/status'));
 
             const doc = new jsPDF({
-                orientation: "l",
+                orientation: 'l',
                 lineHeight: 1.5
             });
 
@@ -395,20 +395,20 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             }, {});
 
             driverBucket.map((driver, index) => {
-                let str = "";
+                let str = '';
 
                 if (driver) {
                     str += `Driver Name: ${driver.fullname}\n`;
                     str += `Driver Contact: ${driver.phone}\n`;
                     str += `Driver Capacity: ${driver.capacity}\n`;
-                    str += "\n";
+                    str += '\n';
                 }
 
                 if (!driver.students) {
                     driver.students = [];
                 }
 
-                str += stringTable.create(driver.students.map(driver => subsetAttr(["fullname", "email", "phone", "country", "isPresent"], driver)));
+                str += stringTable.create(driver.students.map(driver => subsetAttr(['fullname', 'email', 'phone', 'country', 'isPresent'], driver)));
 
                 doc.text(20, 20, str);
 
@@ -417,18 +417,18 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             });
 
-            doc.save("student-driver-mapping.pdf");
+            doc.save('student-driver-mapping.pdf');
         };
 
         $scope.sendMailToDrivers = async $event => {
-            if ($window.confirm("Are you sure to email mappings to drivers?")) {
-                await $async($http.post("/api/studentDriverMapping/EmailMappings"));
-                $window.alert("Successfully sent the mappings");
+            if ($window.confirm('Are you sure to email mappings to drivers?')) {
+                await $async($http.post('/api/studentDriverMapping/EmailMappings'));
+                $window.alert('Successfully sent the mappings');
             }
         };
 
         $scope.getStatus = async () => {
-            const {data} = await $async($http.get("/api/studentDriverMapping/status"));
+            const {data} = await $async($http.get('/api/studentDriverMapping/status'));
             $scope.availableDrivers = data.availableDrivers;
             $scope.availableStudents = data.availableStudents;
             $scope.rawAvailableStudents = $scope.availableStudents;
@@ -449,11 +449,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         }
 
         $scope.map = async (studentId, driverId) => {
-            await $async($scope.changeMap(studentId, driverId, "map"));
+            await $async($scope.changeMap(studentId, driverId, 'map'));
         };
 
         $scope.unmap = async (studentId, driverId) => {
-            await $async($scope.changeMap(studentId, driverId, "unmap"));
+            await $async($scope.changeMap(studentId, driverId, 'unmap'));
         };
 
         $scope.changeMap = async (studentId, driverId, action) => {
@@ -472,15 +472,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         await $async($scope.init());
     }])
-    .controller("studentAttendanceCtrl", ["$scope", "$http", "$window", "$async", async ($scope, $http, $window, $async) => {
-        $scope.countries = ["All Countries"];
+    .controller('studentAttendanceCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
+        $scope.countries = ['All Countries'];
         $scope.students = [];
         $scope.allStudents = [];
         $scope.countryCount = {};
 
-        $scope.country = "All Countries";
-        $scope.attendanceFilter = "all";
-        $scope.fullname = "";
+        $scope.country = 'All Countries';
+        $scope.attendanceFilter = 'all';
+        $scope.fullname = '';
         $scope.drivers = [];
         $scope.availableDriversBuckets = {};
 
@@ -500,7 +500,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         // Get All Drivers
         $scope.getAllDrivers = async () => {
-            const {data} = await $async($http.get("/api/driver/"));
+            const {data} = await $async($http.get('/api/driver/'));
             $scope.drivers = data.filter(driver => driver.role === 'Driver');
 
             $scope.availableDriversTable = $scope.drivers
@@ -518,7 +518,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         $scope.addDriverMap = async (studentId, driverId) => {
             if (driverId && studentId) {
-                await $async($http.post("/api/studentDriverMapping/map", {
+                await $async($http.post('/api/studentDriverMapping/map', {
                     driverId,
                     studentId
                 }));
@@ -528,9 +528,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.checkInViaEmail = async () => {
-            if ($window.confirm("Are you sure to send check-in via email to students?")) {
-                await $async($http.post("/api/attendance/student/sendCheckIn"));
-                alert("Check-in via email is sent to students");
+            if ($window.confirm('Are you sure to send check-in via email to students?')) {
+                await $async($http.post('/api/attendance/student/sendCheckIn'));
+                alert('Check-in via email is sent to students');
             }
         };
 
@@ -543,7 +543,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getAllStudents = async () => {
-            const response = await $async($http.get("/api/student"));
+            const response = await $async($http.get('/api/student'));
 
             $scope.students = response.data;
             $scope.allStudents = response.data;
@@ -560,21 +560,21 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             });
 
-            $scope.countryCount["All Countries"] = $scope.allStudents.length;
+            $scope.countryCount['All Countries'] = $scope.allStudents.length;
 
             // Filter
-            const countries = $scope.countries.filter(value => value !== "All Countries");
+            const countries = $scope.countries.filter(value => value !== 'All Countries');
 
             // Sort
             countries.sort();
 
-            $scope.countries = ["All Countries"].concat(countries);
+            $scope.countries = ['All Countries'].concat(countries);
 
             $scope.updateTable();
         };
 
         $scope.changeAttendance = async student => {
-            await $async($http.post("/api/attendance/student/setAttendance", {
+            await $async($http.post('/api/attendance/student/setAttendance', {
                 id: student.id,
                 attendance: student.isPresent
             }));
@@ -586,12 +586,12 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             let students = $scope.allStudents;
 
             const filteredStudents = {
-                "country": [],
-                "attendance": [],
-                "fullname": []
+                'country': [],
+                'attendance': [],
+                'fullname': []
             };
 
-            if ($scope.country === "All Countries") {
+            if ($scope.country === 'All Countries') {
                 filteredStudents.country = students;
             } else {
                 students.forEach(student => {
@@ -603,11 +603,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
             students = filteredStudents.country;
 
-            if ($scope.attendanceFilter === "all") {
+            if ($scope.attendanceFilter === 'all') {
                 filteredStudents.attendance = students;
             } else {
                 students.forEach(student => {
-                    if ((student.isPresent && $scope.attendanceFilter === "yes") || (!student.isPresent && $scope.attendanceFilter === "no")) {
+                    if ((student.isPresent && $scope.attendanceFilter === 'yes') || (!student.isPresent && $scope.attendanceFilter === 'no')) {
                         filteredStudents.attendance.push(student);
                     }
                 });
@@ -637,7 +637,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         await $async($scope.init());
     }])
-    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", "jsPDF", "$async", async ($scope, $http, $window, jsPDF, $async) => {
+    .controller('driverHostMappingCtrl', ['$scope', '$http', '$window', 'jsPDF', '$async', async ($scope, $http, $window, jsPDF, $async) => {
 
         $scope.resolvePassengers = driver => {
             if (driver.students && driver.students.length) {
@@ -665,11 +665,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getAllDriverMappingPDF = async () => {
-            const response = await $async($http.get("/api/driverHostMapping/status"));
+            const response = await $async($http.get('/api/driverHostMapping/status'));
             const hostBucket = response.data.mappedHosts;
 
             const doc = new jsPDF({
-                orientation: "l",
+                orientation: 'l',
                 lineHeight: 1.5
             });
 
@@ -683,16 +683,16 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             }, {});
 
             hostBucket.map((host, index) => {
-                let str = "";
+                let str = '';
 
                 if (host) {
                     str += `Host Name: ${host.fullname}\n`;
                     str += `Host Address: ${host.address}\n`;
                     str += `Host Contact: ${host.phone}\n`;
-                    str += "\n";
+                    str += '\n';
                 }
 
-                str += stringTable.create(host.drivers.map(driver => subsetAttr(["fullname", "email", "phone", "capacity", "isPresent"], driver)));
+                str += stringTable.create(host.drivers.map(driver => subsetAttr(['fullname', 'email', 'phone', 'capacity', 'isPresent'], driver)));
 
                 doc.text(20, 20, str);
 
@@ -701,29 +701,29 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 }
             });
 
-            doc.save("driver-host-mapping.pdf");
+            doc.save('driver-host-mapping.pdf');
         };
 
         $scope.sendMailToHosts = async $event => {
-            if ($window.confirm("Are you sure to email mappings to hosts?")) {
-                await $async($http.post("/api/driverHostMapping/EmailMappings"));
-                $window.alert("Successfully sent the mappings");
+            if ($window.confirm('Are you sure to email mappings to hosts?')) {
+                await $async($http.post('/api/driverHostMapping/EmailMappings'));
+                $window.alert('Successfully sent the mappings');
             }
         };
 
         $scope.getStatus = async () => {
-            const {data} = await $async($http.get("/api/driverHostMapping/status"));
+            const {data} = await $async($http.get('/api/driverHostMapping/status'));
             $scope.availableDrivers = data.availableDrivers;
             $scope.availableHosts = data.availableHosts;
             $scope.mappedHosts = data.mappedHosts;
         };
 
         $scope.map = async (driverId, hostId) => {
-            await $async($scope.changeMap(driverId, hostId, "map"));
+            await $async($scope.changeMap(driverId, hostId, 'map'));
         };
 
         $scope.unmap = async (driverId, hostId) => {
-            await $async($scope.changeMap(driverId, hostId, "unmap"));
+            await $async($scope.changeMap(driverId, hostId, 'unmap'));
         };
 
         $scope.changeMap = async (driverId, hostId, action) => {
@@ -742,12 +742,12 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         await $async($scope.init());
     }])
-    .controller("driverAttendanceCtrl", ["$scope", "$http", "$window", "$async", async ($scope, $http, $window, $async) => {
+    .controller('driverAttendanceCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
         $scope.drivers = [];
         $scope.allDrivers = [];
 
-        $scope.attendanceFilter = "all";
-        $scope.fullname = "";
+        $scope.attendanceFilter = 'all';
+        $scope.fullname = '';
 
         $scope.getCountAllDrivers = () => $scope.allDrivers.length;
 
@@ -756,14 +756,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.getCountAbsentDrivers = () => $scope.allDrivers.filter(x => !x.isPresent).length;
 
         $scope.checkInViaEmail = async () => {
-            if ($window.confirm("Are you sure to send check-in via email to drivers?")) {
-                await $async($http.post("/api/attendance/driver/sendCheckIn"));
-                alert("Check-in via email is sent to drivers");
+            if ($window.confirm('Are you sure to send check-in via email to drivers?')) {
+                await $async($http.post('/api/attendance/driver/sendCheckIn'));
+                alert('Check-in via email is sent to drivers');
             }
         };
 
         $scope.getAllDrivers = async () => {
-            const {data} = await $async($http.get("/api/driver"));
+            const {data} = await $async($http.get('/api/driver'));
             $scope.drivers = data.filter(value => value.role === 'Driver');
             $scope.allDrivers = data.filter(value => value.role === 'Driver');
 
@@ -771,7 +771,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         }
 
         $scope.changeAttendance = async driver => {
-            await $async($http.post("/api/attendance/driver/setAttendance", {
+            await $async($http.post('/api/attendance/driver/setAttendance', {
                 id: driver.id,
                 attendance: driver.isPresent
             }));
@@ -782,15 +782,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             let drivers = $scope.allDrivers;
 
             const filteredDrivers = {
-                "attendance": [],
-                "fullname": []
+                'attendance': [],
+                'fullname': []
             };
 
-            if ($scope.attendanceFilter === "all") {
+            if ($scope.attendanceFilter === 'all') {
                 filteredDrivers.attendance = drivers;
             } else {
                 drivers.forEach(driver => {
-                    if ((driver.isPresent && $scope.attendanceFilter === "yes") || (!driver.isPresent && $scope.attendanceFilter === "no")) {
+                    if ((driver.isPresent && $scope.attendanceFilter === 'yes') || (!driver.isPresent && $scope.attendanceFilter === 'no')) {
                         filteredDrivers.attendance.push(driver);
                     }
                 });
