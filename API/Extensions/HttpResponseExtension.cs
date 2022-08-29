@@ -6,7 +6,7 @@ namespace API.Extensions
     {
         public static bool IsFailure(this HttpResponse response)
         {
-            return response.StatusCode is not (>= 200 and <= 299); 
+            return response.StatusCode >= 400; 
         }
     }
 }
