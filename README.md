@@ -11,6 +11,8 @@ Re-write of back-end using ~.NET core ^3.1~ .NET 6
 - Azure Blob for storing of global configs
 - Mailjet for mass email
 - `Microsoft.AspNet.Identity.Core` for authentication and authorization
+- Azure table storage for daily API events
+- SignalR for live API event monitoring
 
 Notes:
 - Make sure you have the .NET Core SDK installed ([Download](https://www.microsoft.com/net/learn/get-started))
