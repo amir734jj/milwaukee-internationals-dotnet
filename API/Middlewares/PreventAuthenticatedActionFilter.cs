@@ -14,7 +14,7 @@ namespace API.Middlewares
             var disallowAuthenticatedAttribute = (context.ActionDescriptor as ControllerActionDescriptor)?.MethodInfo
                 .GetCustomAttribute<DisallowAuthenticatedAttribute>();
             
-            if (disallowAuthenticatedAttribute != null && context.HttpContext.User.Identity.IsAuthenticated)
+            if (context.HttpContext.User.Identity != null && disallowAuthenticatedAttribute != null && context.HttpContext.User.Identity.IsAuthenticated)
             {
                 context.Result = new RedirectToActionResult("Index", "Home", new { });
             }
