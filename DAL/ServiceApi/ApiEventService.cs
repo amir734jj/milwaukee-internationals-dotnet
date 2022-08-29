@@ -19,7 +19,7 @@ public class ApiEventService : IApiEventService
 
     private const string TableName = "event";
 
-    private const int QueryLimit = 30;
+    private const int QueryLimit = 35;
 
     public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs, IHubContext<MessageHub> hubContext)
     {
@@ -35,7 +35,7 @@ public class ApiEventService : IApiEventService
             Description = description,
             RecordedDate = DateTimeOffset.Now,
             // This is needed to make sure events are added in reverse chronological order because azure blob storage doesn't have order by feature
-            RowKey = (DateTime.MaxValue.Ticks - DateTimeOffset.Now.Ticks).ToString("d19"),
+            RowKey = (DateTimeOffset.MaxValue.Ticks - DateTimeOffset.Now.Ticks).ToString("d19"),
             PartitionKey = Guid.NewGuid().ToString()
         };
 
@@ -54,11 +54,11 @@ public class ApiEventService : IApiEventService
 
     private async Task<IEnumerable<ApiEvent>> GetEvents(int limit)
     {
-        var pages = _tableServiceClient.GetTableClient(TableName).QueryAsync<ApiEvent>(maxPerPage: limit);
+        var pages = _tableServiceClient.GetTableClient(TableName).QueryAsync<ApiEvent>(x => x.Timestamp > DateTimeOffset.Now.Subtract(TimeSpan.FromDays(3)), maxPerPage: limit);
         
         await foreach (var page in pages.AsPages())
         {
-            return page.Values.OrderByDescending(x => x.RecordedDate).ToList();
+            return page.Values.ToList();
         }
 
         return new List<ApiEvent>();
