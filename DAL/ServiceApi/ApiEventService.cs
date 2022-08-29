@@ -36,7 +36,7 @@ public class ApiEventService : IApiEventService
             RecordedDate = DateTimeOffset.Now,
             // This is needed to make sure events are added in reverse chronological order because azure blob storage doesn't have order by feature
             RowKey = (DateTimeOffset.MaxValue.Ticks - DateTimeOffset.Now.Ticks).ToString("d19"),
-            PartitionKey = Guid.NewGuid().ToString()
+            PartitionKey = DateTimeOffset.Now.ToString("yy-MM-dd")
         };
 
         await _hubContext.Clients.All.SendCoreAsync("events", new object[] { entity});
