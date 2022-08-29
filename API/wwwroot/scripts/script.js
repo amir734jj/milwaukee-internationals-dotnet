@@ -4,7 +4,18 @@ angular.element(document).ready(() => {
     }, 5000);
 });
 
-angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize'])
+angular.module('angular-async-await', [])
+    .factory('$async', ['$rootScope', '$log', ($rootScope, $log) => async p => {
+        try {
+            return await p;
+        } catch (e) {
+            $log.error(e);
+        } finally {
+            $rootScope.$apply();
+        }
+    }]);
+
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await'])
     .constant("jsPDF", (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ["$window", $window => ({
         restrict: 'A',
@@ -16,7 +27,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             });
         }
     })])
-    .controller("apiEventsCtrl", ['$scope', '$http', '$sce', async ($scope, $http, $sce) => {
+    .controller("apiEventsCtrl", ['$scope', '$http', '$sce', '$async', async ($scope, $http, $sce, $async) => {
 
         $scope.count = 0;
         $scope.events = [];
@@ -29,8 +40,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
         };
 
         $scope.init = async () => {
-            const {data: events} = await $http.get("/apiEvents/latest");
-            const {data: {token}} = await $http.get("/identity/token");
+            const {data: events} = await $async($http.get("/apiEvents/latest"));
+            const {data: {token}} = await $async($http.get("/identity/token"));
 
             events.sort((left, right) => moment.utc(left.recordedDate).diff(moment.utc(right.recordedDate))).forEach(evt => {
                 $scope.appendEvent(evt);
@@ -56,22 +67,21 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             });
 
             // Start the connection.
-            await connection.start();
+            await $async(connection.start());
         };
 
-        await $scope.init();
+        await $async($scope.init());
     }])
-    .controller("statsCtrl", ['$scope', '$http', ($scope, $http) => {
+    .controller("statsCtrl", ['$scope', '$http', '$async', async ($scope, $http, $async) => {
         $scope.countryDistribution = {};
         $scope.year = "All";
         $scope.countryDistributionChartData = [];
         $scope.countryDistributionChartLabels = [];
 
-        $scope.getCountryDistribution = () => {
-            $http.get("/stats/countryDistribution").then((response) => {
-                $scope.countryDistribution = response.data;
-                $scope.refreshCountryDistributionChart();
-            });
+        $scope.getCountryDistribution = async () => {
+            const {data} = await $async($http.get("/stats/countryDistribution"));
+            $scope.countryDistribution = data;
+            $scope.refreshCountryDistributionChart();
         };
 
         $scope.handleYearChange = ($event) => {
@@ -85,41 +95,38 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             $scope.countryDistributionChartData = Object.values($scope.countryDistribution[$scope.year]);
         };
 
-        $scope.init = () => {
-            $scope.getCountryDistribution();
+        $scope.init = async () => {
+            await $async($scope.getCountryDistribution());
         };
 
-        $scope.init();
-
+        await $async($scope.init());
     }])
-    .controller('eventInfoCtrl', ['$scope', '$http', '$window', ($scope, $http, $window) => {
+    .controller('eventInfoCtrl', ['$scope', '$http', '$window', '$async', ($scope, $http, $window, $async) => {
 
-        $scope.mapStudent = $event => {
+        $scope.mapStudent = async $event => {
             $event.preventDefault();
 
             const eventId = $scope.eventId;
             const studentId = $scope.studentId;
 
             if (eventId && studentId) {
-                $http.post("/api/event/map/" + eventId + "/" + studentId).then(() => {
-                    $scope.fetchInfo();
-                });
+                await $async($http.post(`/api/event/map/${eventId}/${studentId}`));
+                await $async($scope.fetchInfo());
             }
         };
 
-        $scope.unMapStudent = ($event, studentId) => {
+        $scope.unMapStudent = async ($event, studentId) => {
             $event.preventDefault();
 
             const eventId = $scope.eventId;
 
             if (eventId && studentId) {
-                $http.post("/api/event/unmap/" + eventId + "/" + studentId).then(() => {
-                    $scope.fetchInfo();
-                });
+                await $async($http.post(`/api/event/unmap/${eventId}/${studentId}`));
+                await $async($scope.fetchInfo());
             }
         };
 
-        $scope.sendAdHocEmail = $event => {
+        $scope.sendAdHocEmail = async $event => {
             $event.preventDefault();
 
             const eventId = $scope.eventId;
@@ -127,22 +134,19 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             const emailBody = angular.element('.summernote').eq(0).summernote("code");
 
             if (eventId && emailSubject && emailBody && $window.confirm("Are you sure to send an email to RSVPed students?")) {
-                $http.post("/api/event/email", {
+                await $async($http.post("/api/event/email", {
                     emails: $scope.event.students.map(x => x.student.email),
                     body: emailBody,
                     subject: emailSubject
-                }).then(() => {
-                    $window.alert("Successfully sent email!");
-                });
+                }));
+                $window.alert("Successfully sent email!");
             }
         };
 
-        $scope.fetchInfo = () => {
-            $http.get('/api/event/info/' + $scope.eventId).then(response => {
-                const data = response.data;
-                $scope.event = data.event;
-                $scope.availableStudents = data.availableStudents;
-            });
+        $scope.fetchInfo = async () => {
+            const {data} = await $async($http.get(`/api/event/info/${$scope.eventId}`));
+            $scope.event = data.event;
+            $scope.availableStudents = data.availableStudents;
         };
 
         // Start the text editor
@@ -162,10 +166,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
         // Start the text editor
         angular.element('.summernote').summernote({height: 150});
     }])
-    .controller("emailCheckInCtrl", ['$scope', '$http', ($scope, $http) => {
-        $scope.changeAttendance = (type, id, value) => $http.post("/utility/emailCheckInAction/" + type + "/" + id + "?present=" + value).then(() => {
-            console.log("Updated the attendance");
-        });
+    .controller("emailCheckInCtrl", ['$scope', '$http', '$async', async ($scope, $http, $async) => {
+        $scope.changeAttendance = async (type, id, value) => {
+            await $async($http.post(`/utility/emailCheckInAction/${type}/${id}?present=${value}`));
+        };
+        console.log("Updated the attendance");
     }])
     .controller('hostEditCtrl', ['$scope', $scope => {
 
@@ -192,7 +197,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             }
         }
     }])
-    .controller('studentListCtrl', ['$scope', '$http', 'jsPDF', ($scope, $http, jsPDF) => {
+    .controller('studentListCtrl', ['$scope', '$http', 'jsPDF', '$async', ($scope, $http, jsPDF, $async) => {
 
         $scope.pdfDownloadTable = {
             id: false,
@@ -216,149 +221,143 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
         $scope.toggleShowDetail = () => {
         };
 
-        $scope.getAllStudentsPDF = () => {
-            $http.get("/api/student").then(response => {
-                let students = response.data;
+        $scope.getAllStudentsPDF = async () => {
+            const {data: students} = await $async($http.get("/api/student"));
 
-                const doc = new jsPDF({
-                    orientation: "l",
-                    lineHeight: 1.5
-                });
-
-                doc.setFont('courier');
-
-                const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                    o[k] = String(obj[k]);
-                    return o;
-                }, {});
-
-                let i, j, temporary;
-                const chunk = 25;
-                const attributes = Object.keys($scope.pdfDownloadTable).filter(value => $scope.pdfDownloadTable[value]);
-
-                let fontSize = 10;
-                if (attributes.length <= 7) {
-                    fontSize = 10;
-                } else if (attributes.length < 10) {
-                    fontSize = 8;
-                } else {
-                    fontSize = 6;
-                }
-
-                doc.setFontSize(fontSize);
-
-                for (i = 0, j = students.length; i < j; i += chunk) {
-                    temporary = students.slice(i, i + chunk);
-
-                    let str = stringTable.create(temporary.map(student => subsetAttr(attributes, student)));
-
-                    // Needed
-                    str = str.replace(/’/g, "'");
-
-                    doc.text(15, 15, str);
-
-                    if (i + chunk < j) {
-                        doc.addPage();
-                    }
-                }
-
-                doc.save("student-list.pdf");
+            const doc = new jsPDF({
+                orientation: "l",
+                lineHeight: 1.5
             });
+
+            doc.setFont('courier');
+
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = String(obj[k]);
+                return o;
+            }, {});
+
+            let i, j, temporary;
+            const chunk = 25;
+            const attributes = Object.keys($scope.pdfDownloadTable).filter(value => $scope.pdfDownloadTable[value]);
+
+            let fontSize = 10;
+            if (attributes.length <= 7) {
+                fontSize = 10;
+            } else if (attributes.length < 10) {
+                fontSize = 8;
+            } else {
+                fontSize = 6;
+            }
+
+            doc.setFontSize(fontSize);
+
+            for (i = 0, j = students.length; i < j; i += chunk) {
+                temporary = students.slice(i, i + chunk);
+
+                let str = stringTable.create(temporary.map(student => subsetAttr(attributes, student)));
+
+                // Needed
+                str = str.replace(/’/g, "'");
+
+                doc.text(15, 15, str);
+
+                if (i + chunk < j) {
+                    doc.addPage();
+                }
+            }
+
+            doc.save("student-list.pdf");
         };
     }])
-    .controller("driverListCtrl", ['$scope', '$http', "jsPDF", ($scope, $http, jsPDF) => {
-        $scope.getAllDriversPDF = () => {
-            $http.get("/api/driver").then(response => {
-                const drivers = response.data;
+    .controller("driverListCtrl", ['$scope', '$http', "jsPDF", '$async', ($scope, $http, jsPDF, $async) => {
+        $scope.getAllDriversPDF = async () => {
+            const {data: drivers} = await $async($http.get("/api/driver"));
 
-                const doc = new jsPDF({
-                    orientation: "l",
-                    lineHeight: 1.5
-                });
+            const doc = new jsPDF({
+                orientation: "l",
+                lineHeight: 1.5
+            });
 
-                doc.setFont('courier');
+            doc.setFont('courier');
 
-                doc.setFontSize(10);
+            doc.setFontSize(10);
 
-                const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                    o[k] = obj[k];
-                    return o;
-                }, {});
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = obj[k];
+                return o;
+            }, {});
 
-                let i, j, temporary;
-                const chunk = 25;
-                for (i = 0, j = drivers.length; i < j; i += chunk) {
-                    temporary = drivers.slice(i, i + chunk);
+            let i, j, temporary;
+            const chunk = 25;
+            for (i = 0, j = drivers.length; i < j; i += chunk) {
+                temporary = drivers.slice(i, i + chunk);
 
-                    let str = stringTable.create(temporary.map(driver => {
+                let str = stringTable.create(temporary.map(driver => {
 
-                        // Set the navigator for the PDF
-                        driver.navigator = (driver.navigator || driver.navigator === "null") ?
-                            (driver.navigator.length > 20 ? driver.navigator.substring(0, 20) + " ..." : driver.navigator) : "-";
+                    // Set the navigator for the PDF
+                    driver.navigator = (driver.navigator || driver.navigator === "null") ?
+                        (driver.navigator.length > 20 ? `${driver.navigator.substring(0, 20)} ...` : driver.navigator) : "-";
 
-                        return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
-                    }));
+                    return subsetAttr(["displayId", "fullname", "capacity", "navigator", "role", "haveChildSeat"], driver);
+                }));
 
-                    // Needed
-                    str = str.replace(/’/g, "'");
+                // Needed
+                str = str.replace(/’/g, "'");
 
-                    if (i === 0) {
-                        str = "Driver List ( count of drivers: " + drivers.length + " )" + "\n\n" + str;
-                    }
-
-                    doc.text(20, 20, str);
-
-                    if (i + chunk < j) {
-                        doc.addPage();
-                    }
+                if (i === 0) {
+                    str = `Driver List ( count of drivers: ${drivers.length} )\n\n${str}`;
                 }
 
-                doc.save("driver-list.pdf");
-            });
+                doc.text(20, 20, str);
+
+                if (i + chunk < j) {
+                    doc.addPage();
+                }
+            }
+
+            doc.save("driver-list.pdf");
         };
     }])
-    .controller("hostListCtrl", ["$scope", "$http", "jsPDF", ($scope, $http, jsPDF) => {
-        $scope.getAllHostPDF = () => {
-            $http.get("/api/host").then(response => {
-                const hosts = response.data;
+    .controller("hostListCtrl", ["$scope", "$http", "jsPDF", "$async", ($scope, $http, jsPDF, $async) => {
+        $scope.getAllHostPDF = async () => {
+            const {data: hosts} = await $async($http.get("/api/host"));
 
-                const doc = new jsPDF({
-                    orientation: "l",
-                    lineHeight: 1.5
-                });
+            const doc = new jsPDF({
+                orientation: "l",
+                lineHeight: 1.5
+            });
 
-                doc.setFont('courier');
+            doc.setFont('courier');
 
-                doc.setFontSize(10);
+            doc.setFontSize(10);
 
-                const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                    o[k] = obj[k];
-                    return o;
-                }, {});
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = obj[k];
+                return o;
+            }, {});
 
-                let i, j, temparray;
-                const chunk = 25;
-                for (i = 0, j = hosts.length; i < j; i += chunk) {
-                    temparray = hosts.slice(i, i + chunk);
+            let i, j, temporary;
+            const chunk = 25;
+            for (i = 0, j = hosts.length; i < j; i += chunk) {
+                temporary = hosts.slice(i, i + chunk);
 
-                    let str = stringTable.create(temparray.map(host => subsetAttr(["fullname", "email", "phone", "address"], host)));
+                let str = stringTable.create(temporary.map(host => subsetAttr(["fullname", "email", "phone", "address"], host)));
 
-                    if (i === 0) {
-                        str = "Host List ( count of hosts: " + hosts.length + " )" + "\n\n" + str;
-                    }
-
-                    doc.text(20, 20, str);
-
-                    if (i + chunk < j) {
-                        doc.addPage();
-                    }
+                if (i === 0) {
+                    str = `Host List ( count of hosts: ${hosts.length} )\n\n${str}`;
                 }
 
-                doc.save("host-list.pdf");
-            });
+                doc.text(20, 20, str);
+
+                if (i + chunk < j) {
+                    doc.addPage();
+                }
+            }
+
+            doc.save("host-list.pdf");
         };
     }])
-    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", "jsPDF", ($scope, $http, $window, jsPDF) => {
+    .controller("studentDriverMappingCtrl", ["$scope", "$http", "$window", "jsPDF", "$async", async ($scope, $http, $window, jsPDF, $async) => {
 
         $scope.showPresentOnly = false;
 
@@ -378,61 +377,58 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             }
         };
 
-        $scope.getAllDriverMappingPDF = () => {
-            $http.get("/api/studentDriverMapping/status").then(response => {
-                const driverBucket = response.data.mappedDrivers;
+        $scope.getAllDriverMappingPDF = async () => {
+            const {data: {mappedDrivers: driverBucket}} = await $async($http.get("/api/studentDriverMapping/status"));
 
-                const doc = new jsPDF({
-                    orientation: "l",
-                    lineHeight: 1.5
-                });
-
-                doc.setFont('courier');
-
-                doc.setFontSize(11);
-
-                const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                    o[k] = obj[k];
-                    return o;
-                }, {});
-
-                driverBucket.map((driver, index) => {
-                    let str = "";
-
-                    if (driver) {
-                        str += "Driver Name: " + driver.fullname + "\n";
-                        str += "Driver Contact: " + driver.phone + "\n";
-                        str += "Driver Capacity: " + driver.capacity + "\n";
-                        str += "\n";
-                    }
-
-                    if (!driver.students) {
-                        driver.students = [];
-                    }
-
-                    str += stringTable.create(driver.students.map(driver => subsetAttr(["fullname", "email", "phone", "country", "isPresent"], driver)));
-
-                    doc.text(20, 20, str);
-
-                    if (index + 1 < driverBucket.length) {
-                        doc.addPage();
-                    }
-                });
-
-                doc.save("student-driver-mapping.pdf");
+            const doc = new jsPDF({
+                orientation: "l",
+                lineHeight: 1.5
             });
+
+            doc.setFont('courier');
+
+            doc.setFontSize(11);
+
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = obj[k];
+                return o;
+            }, {});
+
+            driverBucket.map((driver, index) => {
+                let str = "";
+
+                if (driver) {
+                    str += `Driver Name: ${driver.fullname}\n`;
+                    str += `Driver Contact: ${driver.phone}\n`;
+                    str += `Driver Capacity: ${driver.capacity}\n`;
+                    str += "\n";
+                }
+
+                if (!driver.students) {
+                    driver.students = [];
+                }
+
+                str += stringTable.create(driver.students.map(driver => subsetAttr(["fullname", "email", "phone", "country", "isPresent"], driver)));
+
+                doc.text(20, 20, str);
+
+                if (index + 1 < driverBucket.length) {
+                    doc.addPage();
+                }
+            });
+
+            doc.save("student-driver-mapping.pdf");
         };
 
-        $scope.sendMailToDrivers = $event => {
+        $scope.sendMailToDrivers = async $event => {
             if ($window.confirm("Are you sure to email mappings to drivers?")) {
-                $http.post("/api/studentDriverMapping/EmailMappings").then(response => {
-                    $window.alert("Successfully sent the mappings");
-                });
+                await $async($http.post("/api/studentDriverMapping/EmailMappings"));
+                $window.alert("Successfully sent the mappings");
             }
         };
 
-        $scope.getStatus = () => $http.get("/api/studentDriverMapping/status").then(response => {
-            const data = response.data;
+        $scope.getStatus = async () => {
+            const {data} = await $async($http.get("/api/studentDriverMapping/status"));
             $scope.availableDrivers = data.availableDrivers;
             $scope.availableStudents = data.availableStudents;
             $scope.rawAvailableStudents = $scope.availableStudents;
@@ -450,34 +446,33 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
                     (rv[key] = rv[key] || []).push(x);
                     return rv;
                 }, {});
-        });
+        }
 
-        $scope.map = (studentId, driverId) => {
-            $scope.changeMap(studentId, driverId, "map");
+        $scope.map = async (studentId, driverId) => {
+            await $async($scope.changeMap(studentId, driverId, "map"));
         };
 
-        $scope.unmap = (studentId, driverId) => {
-            $scope.changeMap(studentId, driverId, "unmap");
+        $scope.unmap = async (studentId, driverId) => {
+            await $async($scope.changeMap(studentId, driverId, "unmap"));
         };
 
-        $scope.changeMap = (studentId, driverId, action) => {
+        $scope.changeMap = async (studentId, driverId, action) => {
             if (driverId && studentId) {
-                $http.post("/api/studentDriverMapping/" + action, {
-                    "driverId": driverId,
-                    "studentId": studentId
-                }).then(() => {
-                    $scope.getStatus();
-                });
+                await $async($http.post(`/api/studentDriverMapping/${action}`, {
+                    driverId,
+                    studentId
+                }));
+                await $async($scope.getStatus());
             }
         };
 
-        $scope.init = () => {
-            $scope.getStatus();
+        $scope.init = async () => {
+            await $async($scope.getStatus());
         };
 
-        $scope.init();
+        await $async($scope.init());
     }])
-    .controller("studentAttendanceCtrl", ["$scope", "$http", "$window", ($scope, $http, $window) => {
+    .controller("studentAttendanceCtrl", ["$scope", "$http", "$window", "$async", async ($scope, $http, $window, $async) => {
         $scope.countries = ["All Countries"];
         $scope.students = [];
         $scope.allStudents = [];
@@ -504,41 +499,38 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
         };
 
         // Get All Drivers
-        $scope.getAllDrivers = () => {
-            $http.get("/api/driver/").then(response => {
-                $scope.drivers = response.data.filter(driver => driver.role === 'Driver');
+        $scope.getAllDrivers = async () => {
+            const {data} = await $async($http.get("/api/driver/"));
+            $scope.drivers = data.filter(driver => driver.role === 'Driver');
 
-                $scope.availableDriversTable = $scope.drivers
-                    .reduce((acc, driver) => {
-                        acc[driver.id] = driver.capacity > $scope.resolvePassengers(driver);
-                        return acc;
-                    }, {});
-
-                $scope.availableDriversBuckets = $scope.drivers.reduce((rv, x) => {
-                    const key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
-                    (rv[key] = rv[key] || []).push(x);
-                    return rv;
+            $scope.availableDriversTable = $scope.drivers
+                .reduce((acc, driver) => {
+                    acc[driver.id] = driver.capacity > $scope.resolvePassengers(driver);
+                    return acc;
                 }, {});
-            });
+
+            $scope.availableDriversBuckets = $scope.drivers.reduce((rv, x) => {
+                const key = ('host' in x && !!x['host']) ? x['host'].fullname : 'Unassigned';
+                (rv[key] = rv[key] || []).push(x);
+                return rv;
+            }, {});
         };
 
-        $scope.addDriverMap = (studentId, driverId) => {
+        $scope.addDriverMap = async (studentId, driverId) => {
             if (driverId && studentId) {
-                $http.post("/api/studentDriverMapping/map", {
-                    "driverId": driverId,
-                    "studentId": studentId
-                }).then(() => {
-                    $scope.getAllDrivers();
-                    $scope.getAllStudents();
-                });
+                await $async($http.post("/api/studentDriverMapping/map", {
+                    driverId,
+                    studentId
+                }));
+                await $async($scope.getAllDrivers());
+                await $async($scope.getAllStudents());
             }
         };
 
-        $scope.checkInViaEmail = () => {
+        $scope.checkInViaEmail = async () => {
             if ($window.confirm("Are you sure to send check-in via email to students?")) {
-                return $http.post("/api/attendance/student/sendCheckIn").then(() => {
-                    alert("Check-in via email is sent to students");
-                });
+                await $async($http.post("/api/attendance/student/sendCheckIn"));
+                alert("Check-in via email is sent to students");
             }
         };
 
@@ -550,7 +542,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             }
         };
 
-        $scope.getAllStudents = () => $http.get("/api/student").then(response => {
+        $scope.getAllStudents = async () => {
+            const response = await $async($http.get("/api/student"));
+
             $scope.students = response.data;
             $scope.allStudents = response.data;
 
@@ -577,14 +571,16 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             $scope.countries = ["All Countries"].concat(countries);
 
             $scope.updateTable();
-        });
+        };
 
-        $scope.changeAttendance = student => $http.post("/api/attendance/student/setAttendance", {
-            id: student.id,
-            attendance: student.isPresent
-        }).then(() => {
-            $scope.getAllStudents();
-        });
+        $scope.changeAttendance = async student => {
+            await $async($http.post("/api/attendance/student/setAttendance", {
+                id: student.id,
+                attendance: student.isPresent
+            }));
+
+            await $async($scope.getAllStudents());
+        }
 
         $scope.updateTable = () => {
             let students = $scope.allStudents;
@@ -634,14 +630,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             $scope.students = students;
         };
 
-        $scope.init = () => {
-            $scope.getAllDrivers();
-            $scope.getAllStudents();
+        $scope.init = async () => {
+            await $async($scope.getAllDrivers());
+            await $async($scope.getAllStudents());
         };
 
-        $scope.init();
+        await $async($scope.init());
     }])
-    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", "jsPDF", ($scope, $http, $window, jsPDF) => {
+    .controller("driverHostMappingCtrl", ["$scope", "$http", "$window", "jsPDF", "$async", async ($scope, $http, $window, jsPDF, $async) => {
 
         $scope.resolvePassengers = driver => {
             if (driver.students && driver.students.length) {
@@ -663,93 +659,90 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             }
 
             return {
-                "hostCapacity": hostCapacity,
-                "hostAssigned": hostAssigned
+                hostCapacity,
+                hostAssigned
             };
         };
 
-        $scope.getAllDriverMappingPDF = () => {
-            $http.get("/api/driverHostMapping/status").then(response => {
-                const hostBucket = response.data.mappedHosts;
+        $scope.getAllDriverMappingPDF = async () => {
+            const response = await $async($http.get("/api/driverHostMapping/status"));
+            const hostBucket = response.data.mappedHosts;
 
-                const doc = new jsPDF({
-                    orientation: "l",
-                    lineHeight: 1.5
-                });
-
-                doc.setFont('courier');
-
-                doc.setFontSize(11);
-
-                const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                    o[k] = obj[k];
-                    return o;
-                }, {});
-
-                hostBucket.map((host, index) => {
-                    let str = "";
-
-                    if (host) {
-                        str += "Host Name: " + host.fullname + "\n";
-                        str += "Host Address: " + host.address + "\n";
-                        str += "Host Contact: " + host.phone + "\n";
-                        str += "\n";
-                    }
-
-                    str += stringTable.create(host.drivers.map(driver => subsetAttr(["fullname", "email", "phone", "capacity", "isPresent"], driver)));
-
-                    doc.text(20, 20, str);
-
-                    if (index + 1 < hostBucket.length) {
-                        doc.addPage();
-                    }
-                });
-
-                doc.save("driver-host-mapping.pdf");
+            const doc = new jsPDF({
+                orientation: "l",
+                lineHeight: 1.5
             });
+
+            doc.setFont('courier');
+
+            doc.setFontSize(11);
+
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = obj[k];
+                return o;
+            }, {});
+
+            hostBucket.map((host, index) => {
+                let str = "";
+
+                if (host) {
+                    str += `Host Name: ${host.fullname}\n`;
+                    str += `Host Address: ${host.address}\n`;
+                    str += `Host Contact: ${host.phone}\n`;
+                    str += "\n";
+                }
+
+                str += stringTable.create(host.drivers.map(driver => subsetAttr(["fullname", "email", "phone", "capacity", "isPresent"], driver)));
+
+                doc.text(20, 20, str);
+
+                if (index + 1 < hostBucket.length) {
+                    doc.addPage();
+                }
+            });
+
+            doc.save("driver-host-mapping.pdf");
         };
 
-        $scope.sendMailToHosts = $event => {
+        $scope.sendMailToHosts = async $event => {
             if ($window.confirm("Are you sure to email mappings to hosts?")) {
-                $http.post("/api/driverHostMapping/EmailMappings").then(response => {
-                    $window.alert("Successfully sent the mappings");
-                });
+                await $async($http.post("/api/driverHostMapping/EmailMappings"));
+                $window.alert("Successfully sent the mappings");
             }
         };
 
-        $scope.getStatus = () => $http.get("/api/driverHostMapping/status").then(response => {
-            const data = response.data;
+        $scope.getStatus = async () => {
+            const {data} = await $async($http.get("/api/driverHostMapping/status"));
             $scope.availableDrivers = data.availableDrivers;
             $scope.availableHosts = data.availableHosts;
             $scope.mappedHosts = data.mappedHosts;
-        });
-
-        $scope.map = (driverId, hostId) => {
-            $scope.changeMap(driverId, hostId, "map");
         };
 
-        $scope.unmap = (driverId, hostId) => {
-            $scope.changeMap(driverId, hostId, "unmap");
+        $scope.map = async (driverId, hostId) => {
+            await $async($scope.changeMap(driverId, hostId, "map"));
         };
 
-        $scope.changeMap = (driverId, hostId, action) => {
+        $scope.unmap = async (driverId, hostId) => {
+            await $async($scope.changeMap(driverId, hostId, "unmap"));
+        };
+
+        $scope.changeMap = async (driverId, hostId, action) => {
             if (driverId && hostId) {
-                $http.post("/api/driverHostMapping/" + action, {
-                    "driverId": driverId,
-                    "hostId": hostId
-                }).then(() => {
-                    $scope.getStatus();
-                });
+                await $async($http.post(`/api/driverHostMapping/${action}`, {
+                    driverId,
+                    hostId
+                }));
+                await $async($scope.getStatus());
             }
         };
 
-        $scope.init = () => {
-            $scope.getStatus();
+        $scope.init = async () => {
+            await $async($scope.getStatus());
         };
 
-        $scope.init();
+        await $async($scope.init());
     }])
-    .controller("driverAttendanceCtrl", ["$scope", "$http", "$window", ($scope, $http, $window) => {
+    .controller("driverAttendanceCtrl", ["$scope", "$http", "$window", "$async", async ($scope, $http, $window, $async) => {
         $scope.drivers = [];
         $scope.allDrivers = [];
 
@@ -762,27 +755,28 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
 
         $scope.getCountAbsentDrivers = () => $scope.allDrivers.filter(x => !x.isPresent).length;
 
-        $scope.checkInViaEmail = () => {
+        $scope.checkInViaEmail = async () => {
             if ($window.confirm("Are you sure to send check-in via email to drivers?")) {
-                return $http.post("/api/attendance/driver/sendCheckIn").then(() => {
-                    alert("Check-in via email is sent to drivers");
-                });
+                await $async($http.post("/api/attendance/driver/sendCheckIn"));
+                alert("Check-in via email is sent to drivers");
             }
         };
 
-        $scope.getAllDrivers = () => $http.get("/api/driver").then(response => {
-            $scope.drivers = response.data.filter(value => value.role === 'Driver');
-            $scope.allDrivers = response.data.filter(value => value.role === 'Driver');
+        $scope.getAllDrivers = async () => {
+            const {data} = await $async($http.get("/api/driver"));
+            $scope.drivers = data.filter(value => value.role === 'Driver');
+            $scope.allDrivers = data.filter(value => value.role === 'Driver');
 
             $scope.updateTable();
-        });
+        }
 
-        $scope.changeAttendance = driver => $http.post("/api/attendance/driver/setAttendance", {
-            id: driver.id,
-            attendance: driver.isPresent
-        }).then(() => {
-            $scope.getAllStudents();
-        });
+        $scope.changeAttendance = async driver => {
+            await $async($http.post("/api/attendance/driver/setAttendance", {
+                id: driver.id,
+                attendance: driver.isPresent
+            }));
+            await $async($scope.getAllDrivers());
+        }
 
         $scope.updateTable = () => {
             let drivers = $scope.allDrivers;
@@ -819,10 +813,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize']
             $scope.drivers = drivers;
         };
 
-        $scope.init = () => {
-            $scope.getAllDrivers();
+        $scope.init = async () => {
+            await $async($scope.getAllDrivers());
         };
 
-        $scope.init();
+        await $async($scope.init());
     }]);
     

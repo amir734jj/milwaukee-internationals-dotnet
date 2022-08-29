@@ -9,7 +9,7 @@ namespace API.Controllers
     public class PlacesController : Controller
     {
         [HttpGet]
-        [Route("{year}")]
+        [Route("{year:int}")]
         public IActionResult Place(int year)
         {
             return View();
