@@ -39,7 +39,7 @@ public class ApiEventService : IApiEventService
             PartitionKey = DateTimeOffset.Now.ToString("yyyy-MM-dd")
         };
 
-        await _hubContext.Clients.All.SendCoreAsync("events", new object[] { entity});
+        await _hubContext.Clients.All.SendAsync("events", entity);
 
         if (_globalConfigs.RecordApiEvents)
         {
