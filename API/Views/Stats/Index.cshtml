@@ -62,9 +62,10 @@
         {
             var newCountryThisYear = !Model.Any(x => !x.CurrentYear && x.ActiveYear && x.CountryDistribution.ContainsKey(country));
             var missedCountryThisYear = Model.Any(x => x.CurrentYear && x.ActiveYear && !x.CountryDistribution.ContainsKey(country));
-
+            var countFromThisCountry = Model.Where(x => x.ActiveYear).Sum(x => x.CountryDistribution.GetValueOrDefault(country, 0));
+            
             <tr class="@(newCountryThisYear ? "success" : missedCountryThisYear ? "danger" : "")">
-                <td>@country.ToTrainCase()</td>
+                <td>@country.ToTrainCase() (@(countFromThisCountry))</td>
 
                 @foreach (var stat in Model.Where(stat => stat.ActiveYear))
                 {
