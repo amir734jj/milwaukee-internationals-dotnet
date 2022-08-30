@@ -344,7 +344,7 @@ namespace API
                     var exHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
                     var exception = exHandlerFeature?.Error;
                  
-                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} route: [{context.Request.HttpMethod}] {context.Request.GetDisplayUrl()} => {exception?.Message}");
+                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} route: [{context.Request.Method}] {context.Request.GetDisplayUrl()} => {exception?.Message}");
                     
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
                     await next();
