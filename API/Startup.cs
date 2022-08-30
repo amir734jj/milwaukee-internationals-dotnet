@@ -287,13 +287,13 @@ namespace API
             services.AddSingleton(new TableServiceClient(new Uri(Environment.GetEnvironmentVariable("AZURE_TABLE_EVENTS")!)));
             
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-            
+
             services.AddSignalR(config =>
             {
                 config.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10 mega-bytes
                 config.StreamBufferCapacity = 50;
                 config.EnableDetailedErrors = true;
-            });
+            }).AddNewtonsoftJsonProtocol();
         }
 
         /// <summary>
