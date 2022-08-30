@@ -500,7 +500,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
         // Get All Drivers
         $scope.getAllDrivers = async () => {
-            const {data} = await $async($http.get('/api/driver/'));
+            const {data} = await $async($http.get('/api/driver'));
             $scope.drivers = data.filter(driver => driver.role === 'Driver');
 
             $scope.availableDriversTable = $scope.drivers
