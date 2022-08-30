@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using API.Extensions;
@@ -352,8 +353,9 @@ namespace API
                 {
                     var exHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
                     var exception = exHandlerFeature?.Error;
-                 
-                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} route: [{context.Request.Method}] {context.Request.GetDisplayUrl()} => {exception?.Message}");
+
+                    var statusCodeEnum = (HttpStatusCode)context.Response.StatusCode;
+                    await apiEventService.RecordEvent($"Failure with status code: {statusCodeEnum.ToString()} / {context.Response.StatusCode} route: [{context.Request.Method}] {context.Request.GetDisplayUrl()} => {exception?.Message}");
                     
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
                     await next();
