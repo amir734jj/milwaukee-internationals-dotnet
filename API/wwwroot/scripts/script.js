@@ -62,6 +62,13 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 $scope.$apply();
             });
 
+            connection.on('log', (state, connectionId) => {
+                $scope.appendEvent({
+                    description: `SignalR event: ${state} ${connectionId}`,
+                    recordedDate: moment().toString()
+                });
+            });
+
             connection.on('events', evt => {
                 $scope.appendEvent(evt);
             });
