@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Statistics";
     Layout = "_Layout";
+    var numActiveYears = Model.Count(x => x.ActiveYear);
     var allCountries = Model.SelectMany(x => x.CountryDistribution.Select(y => y.Key)).Distinct().OrderBy(x => x).ToList();
 }
 
@@ -43,7 +44,8 @@
     
     <div class="list-group">
         <div class="list-group-item list-group-item-success">Student from countries that signed up just this year</div>
-        <div class="list-group-item list-group-item-danger">Student from countries that are missing this year</div>
+        <div class="list-group-item list-group-item-warning">Student from countries that are missing this year</div>
+        <div class="list-group-item list-group-item-danger">Student from countries that are missing this year but came every year</div>
     </div>
 
     <table class="table table-hover table-bordered">
@@ -62,9 +64,10 @@
         {
             var newCountryThisYear = !Model.Any(x => !x.CurrentYear && x.ActiveYear && x.CountryDistribution.ContainsKey(country));
             var missedCountryThisYear = Model.Any(x => x.CurrentYear && x.ActiveYear && !x.CountryDistribution.ContainsKey(country));
+            var missedCountryThisYearButCameEveryYear = missedCountryThisYear && Model.Count(x => !x.CurrentYear && x.ActiveYear && x.CountryDistribution.ContainsKey(country)) == (numActiveYears - 1);
             var countFromThisCountry = Model.Where(x => x.ActiveYear).Sum(x => x.CountryDistribution.GetValueOrDefault(country, 0));
             
-            <tr class="@(newCountryThisYear ? "success" : missedCountryThisYear ? "danger" : "")">
+            <tr class="@(newCountryThisYear ? "success" : missedCountryThisYearButCameEveryYear ? "danger" : missedCountryThisYear ? "warning" : "")">
                 <td>@country.ToTrainCase() (@(countFromThisCountry))</td>
 
                 @foreach (var stat in Model.Where(stat => stat.ActiveYear))
