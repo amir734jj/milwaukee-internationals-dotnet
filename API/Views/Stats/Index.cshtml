@@ -1,8 +1,10 @@
+@using CaseExtensions
 @model List<Models.ViewModels.StatsViewModel>
 
 @{
     ViewBag.Title = "Statistics";
     Layout = "_Layout";
+    var allCountries = Model.SelectMany(x => x.CountryDistribution.Select(y => y.Key)).Distinct().OrderBy(x => x).ToList();
 }
 
 <div class="container">
@@ -36,6 +38,44 @@
         }
         </tbody>
     </table>
+
+    <hr />
+    
+    <div class="list-group">
+        <div class="list-group-item list-group-item-success">Student from countries that signed up just this year</div>
+        <div class="list-group-item list-group-item-danger">Student from countries that are missing this year</div>
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Country (@(allCountries.Count))</th>
+
+            @foreach (var stat in Model.Where(stat => stat.ActiveYear))
+            {
+                <th class="@(stat.CurrentYear ? "active" : "")">@stat.Year</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var country in allCountries)
+        {
+            var newCountryThisYear = !Model.Any(x => !x.CurrentYear && x.ActiveYear && x.CountryDistribution.ContainsKey(country));
+            var missedCountryThisYear = Model.Any(x => x.CurrentYear && x.ActiveYear && !x.CountryDistribution.ContainsKey(country));
+
+            <tr class="@(newCountryThisYear ? "success" : missedCountryThisYear ? "danger" : "")">
+                <td>@country.ToTrainCase()</td>
+
+                @foreach (var stat in Model.Where(stat => stat.ActiveYear))
+                {
+                    <td>@(stat.CountryDistribution.ContainsKey(country))</td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <hr />
 
     <div class="container" ng-controller="statsCtrl">
 

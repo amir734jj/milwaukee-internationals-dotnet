@@ -28,6 +28,7 @@ public class StatsLogic : IStatsLogic
     public async Task<List<StatsViewModel>> GetStats()
     {
         var result = new List<StatsViewModel>();
+        var countryDistribution = await GetCountryDistribution();
         
         foreach (var year in _configLogic.GetYears())
         {
@@ -52,7 +53,8 @@ public class StatsLogic : IStatsLogic
                 CountDependents = countDependents,
                 CountDistinctCountries = countDistinctCountries,
                 CurrentYear = currentYear,
-                ActiveYear = activeYear
+                ActiveYear = activeYear,
+                CountryDistribution = countryDistribution[year.ToString()]
             }); 
         }
 
