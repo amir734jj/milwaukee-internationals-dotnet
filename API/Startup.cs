@@ -16,6 +16,7 @@ using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -76,6 +77,14 @@ namespace API
         {
             // https://stackoverflow.com/a/70304966/1834787
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+            var coldStartConfig = new BlobContainerClient(new Uri(Environment.GetEnvironmentVariable("AZURE_BLOB_CONFIG")!))
+                .GetBlobClient("cold-start-config");
+
+            services.AddDataProtection()
+                .SetApplicationName("milwaukee-internationals-website-cold-start")
+                .PersistKeysToAzureBlobStorage(coldStartConfig)
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(14));
             
             services.AddWebMarkupMin()
                 .AddHtmlMinification()
@@ -258,7 +267,7 @@ namespace API
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
             {
-                x.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+                x.Cookie.MaxAge = TimeSpan.FromHours(3);
                 x.LoginPath = new PathString("/Identity/login");
                 x.LogoutPath = new PathString("/Identity/logout");
             }).AddJwtBearer(config =>
