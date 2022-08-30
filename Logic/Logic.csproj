@@ -6,6 +6,7 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CaseExtensions" Version="1.1.0" />
     <PackageReference Include="Flurl" Version="3.0.6" />
     <PackageReference Include="libphonenumber-csharp" Version="8.12.53" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
