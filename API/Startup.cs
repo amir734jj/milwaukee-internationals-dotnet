@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -343,7 +344,7 @@ namespace API
                     var exHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
                     var exception = exHandlerFeature?.Error;
                  
-                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} => {exception?.Message}");
+                    await apiEventService.RecordEvent($"Failure with status code: {context.Response.StatusCode} route: {context.Request.GetDisplayUrl()} => {exception?.Message}");
                     
                     context.Request.Path = $"/Error/{context.Response.StatusCode}";
                     await next();
