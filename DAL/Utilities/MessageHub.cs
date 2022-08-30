@@ -24,17 +24,21 @@ public class MessageHub : Hub
             
     public override async Task OnConnectedAsync()
     {
-        UserTable[Context.ConnectionId] = await _userManager.FindByNameAsync(Context.User.Identity!.Name);
+        var user = await _userManager.FindByNameAsync(Context.User.Identity!.Name);
 
-        await Clients.All.SendAsync("log", "joined", Context.ConnectionId);
+        UserTable[Context.ConnectionId] = user;
+
+        await Clients.All.SendAsync("log", "joined", Context.ConnectionId, user.UserName);
         await Clients.All.SendAsync("count", UserTable.Count);
     }
 
     public override async Task OnDisconnectedAsync(Exception ex)
     {
+        var user = UserTable[Context.ConnectionId];
+        
         UserTable.Remove(Context.ConnectionId);
 
-        await Clients.All.SendAsync("log", "left", Context.ConnectionId);
+        await Clients.All.SendAsync("log", "left", Context.ConnectionId, user.UserName);
         await Clients.All.SendAsync("count", UserTable.Count);
     }
 }
