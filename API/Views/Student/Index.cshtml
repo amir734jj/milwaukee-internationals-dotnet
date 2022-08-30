@@ -79,7 +79,9 @@
             <tbody>
             @foreach (var student in Model)
             {
-                <tr>
+                var possiblyDuplicate = Model.Any(x => x.Id != student.Id && (x.Fullname.Contains(student.Fullname, StringComparison.OrdinalIgnoreCase) || student.Fullname.Contains(x.Fullname, StringComparison.OrdinalIgnoreCase)));
+                
+                <tr class="@(possiblyDuplicate ? "warning" : "")">
                     <td ng-show="showDetail">@student.DisplayId</td>
                     <td>@student.Fullname</td>
                     <td>@student.Country</td>
