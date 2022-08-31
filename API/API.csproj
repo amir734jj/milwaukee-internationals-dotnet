@@ -20,6 +20,7 @@
     <PackageReference Include="OwaspHeaders.Core" Version="4.5.1" />
     <PackageReference Include="reCAPTCHA.AspNetCore" Version="3.0.10" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="SeoHelper" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
     <PackageReference Include="WebMarkupMin.AspNetCore6" Version="2.12.0" />

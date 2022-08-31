@@ -43,6 +43,7 @@ using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 using reCAPTCHA.AspNetCore;
 using Scrutor;
+using SeoHelper.Extensions;
 using WebMarkupMin.AspNetCore6;
 using static DAL.Utilities.ConnectionStringUtility;
 
@@ -304,6 +305,8 @@ namespace API
                 config.StreamBufferCapacity = 50;
                 config.EnableDetailedErrors = true;
             }).AddNewtonsoftJsonProtocol();
+
+            services.AddSeo(_configuration, sectionName: "SeoOptions");
         }
 
         /// <summary>
@@ -361,6 +364,8 @@ namespace API
                     await next();
                 }
             });
+
+            app.UseSeoHelper();
 
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
