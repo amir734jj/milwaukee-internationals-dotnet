@@ -14,7 +14,6 @@ namespace API.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<User> _userManager;
-
         private readonly IProfileLogic _profileLogic;
 
         public ProfileController(UserManager<User> userManager, IProfileLogic profileLogic)
@@ -27,7 +26,7 @@ namespace API.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity is { IsAuthenticated: true })
             {
                 return View(_profileLogic.ResolveProfile(await _userManager.FindByNameAsync(User.Identity.Name)));
             }

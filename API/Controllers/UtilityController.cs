@@ -14,9 +14,7 @@ namespace API.Controllers
     public class UtilityController : Controller
     {
         private readonly IEmailUtilityLogic _emailUtilityLogic;
-        
         private readonly IStudentLogic _studentLogic;
-        
         private readonly IDriverLogic _driverLogic;
 
         /// <summary>

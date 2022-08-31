@@ -23,15 +23,11 @@ namespace API.Controllers
     {
         private readonly IUserLogic _userLogic;
         private readonly UserManager<User> _userManager;
-
         private readonly SignInManager<User> _signInManager;
-
         private readonly RoleManager<IdentityRole<int>> _roleManager;
-
         private readonly IRecaptchaService _recaptcha;
         private readonly IApiEventService _apiEventService;
         private readonly JwtSettings _jwtSettings;
-
         private readonly ILogger<IdentityController> _logger;
 
         public IdentityController(IUserLogic userLogic, UserManager<User> userManager,

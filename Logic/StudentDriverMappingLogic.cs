@@ -13,9 +13,7 @@ namespace Logic
     public class StudentDriverMappingLogic : IStudentDriverMappingLogic
     {
         private readonly IStudentLogic _studentLogic;
-        
         private readonly IDriverLogic _driverLogic;
-        
         private readonly IEmailServiceApi _emailServiceApi;
         private readonly IApiEventService _apiEventService;
 

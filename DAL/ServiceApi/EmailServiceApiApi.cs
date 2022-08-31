@@ -13,12 +13,10 @@ namespace DAL.ServiceApi
 {
     public class EmailServiceApi : IEmailServiceApi
     {
-        private readonly IEmailService _emailServiceApi;
-
         private readonly bool _connected;
 
+        private readonly IEmailService _emailServiceApi;
         private readonly IMailjetClient _mailJetClient;
-        
         private readonly GlobalConfigs _globalConfigs;
         private readonly ILogger<EmailServiceApi> _logger;
 

@@ -16,9 +16,7 @@ namespace API.Controllers
     public class PasswordResetController : Controller
     {
         private readonly UserManager<User> _userManager;
-        
         private readonly IUserLogic _userLogic;
-        
         private readonly IPasswordResetLogic _passwordResetLogic;
 
         public PasswordResetController(UserManager<User> userManager, IUserLogic userLogic, IPasswordResetLogic passwordResetLogic)

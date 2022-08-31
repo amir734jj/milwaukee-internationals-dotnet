@@ -15,7 +15,6 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IUserLogic _userLogic;
-        
         private readonly UserManager<User> _userManager;
 
         /// <summary>
