@@ -17,14 +17,11 @@ namespace Logic
     public class RegistrationLogic : IRegistrationLogic
     {
         private readonly IStudentLogic _studentLogic;
-
         private readonly IDriverLogic _driverLogic;
-
         private readonly IHostLogic _hostLogic;
-
         private readonly IEventLogic _eventLogic;
-
         private readonly IEmailServiceApi _emailServiceApiApi;
+        private readonly IApiEventService _apiEventService;
 
         /// <summary>
         /// Constructor dependency injection
@@ -34,14 +31,16 @@ namespace Logic
         /// <param name="hostLogic"></param>
         /// <param name="eventLogic"></param>
         /// <param name="emailServiceApiApi"></param>
+        /// <param name="apiEventService"></param>
         public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic,
-            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi)
+            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
             _hostLogic = hostLogic;
             _eventLogic = eventLogic;
             _emailServiceApiApi = emailServiceApiApi;
+            _apiEventService = apiEventService;
         }
 
         /// <summary>
@@ -57,6 +56,8 @@ namespace Logic
             // If save was successful
             if (driver != null)
             {
+                await _apiEventService.RecordEvent($"Driver {driver.Fullname} registered");
+
                 switch (driver.Role)
                 {
                     case RolesEnum.Driver:
@@ -118,13 +119,15 @@ namespace Logic
         /// <returns></returns>
         public async Task RegisterStudent(Student student)
         {
-            var result = await _studentLogic.Save(student);
-
+            student = await _studentLogic.Save(student);
+            
             // If save was successful
-            if (result != null)
+            if (student != null)
             {
+                await _apiEventService.RecordEvent($"Student {student.Fullname} registered");
+
                 const string rootUrl = ApiConstants.SiteUrl;
-                var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", result.GetHashCode().ToString());
+                var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GetHashCode().ToString());
 
                 var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
                 var svg = qr.ToSvgString(4);
@@ -176,11 +179,13 @@ namespace Logic
         /// <returns></returns>
         public async Task RegisterHost(Host host)
         {
-            var result = await _hostLogic.Save(host);
-
+            host = await _hostLogic.Save(host);
+            
             // If save was successful
-            if (result != null)
+            if (host != null)
             {
+                await _apiEventService.RecordEvent($"Host {host.Fullname} registered");
+
                 await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p> This is an automatically generated email. </p>
                     <p> ----------------------------------------- </p>

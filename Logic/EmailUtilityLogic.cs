@@ -14,16 +14,11 @@ namespace Logic
     public class EmailUtilityLogic :  IEmailUtilityLogic
     {
         private readonly GlobalConfigs _globalConfigs;
-
         private readonly IUserLogic _userLogic;
-        
         private readonly IEmailServiceApi _emailServiceApiApi;
         private readonly IApiEventService _apiEventService;
-
         private readonly IStudentLogic _studentLogic;
-        
         private readonly IHostLogic _hostLogic;
-        
         private readonly IDriverLogic _driverLogic;
 
         /// <summary>
@@ -53,11 +48,11 @@ namespace Logic
             
             return new EmailFormViewModel
             {
-                AdminCount = ApiConstants.AdminEmail.Length,
+                AdminCount = (await _userLogic.GetAll()).Count(x => x.UserRoleEnum == UserRoleEnum.Admin),
                 StudentCount = (await _studentLogic.GetAll(year)).Count(),
                 DriverCount = (await _driverLogic.GetAll(year)).Count(),
                 HostCount = (await _hostLogic.GetAll(year)).Count(),
-                UserCount = (await _userLogic.GetAll(year)).Count()
+                UserCount = (await _userLogic.GetAll()).Count()
             };
         }
 

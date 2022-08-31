@@ -13,9 +13,7 @@ namespace Logic
     public class DriverHostMappingLogic : IDriverHostMappingLogic
     {
         private readonly IDriverLogic _driverLogic;
-
         private readonly IHostLogic _hostLogic;
-
         private readonly IEmailServiceApi _emailServiceApi;
         private readonly IApiEventService _apiEventService;
 

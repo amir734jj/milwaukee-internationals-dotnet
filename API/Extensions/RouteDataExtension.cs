@@ -13,7 +13,7 @@ namespace API.Extensions
         /// <returns></returns>
         private static string GetController(this RouteData data)
         {
-            return data.Values["Controller"].ToString();
+            return data.Values["Controller"]?.ToString();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace API.Extensions
         /// <returns></returns>
         private static string GetAction(this RouteData data)
         {
-            return data.Values["action"].ToString();
+            return data.Values["action"]?.ToString();
         }
 
         /// <summary>
