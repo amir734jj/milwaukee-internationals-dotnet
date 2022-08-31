@@ -22,3 +22,7 @@
 body {
     font-family: Roboto-Regular,Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif !important;
 }
+
+.modal-body {
+    margin: 2rem;
+}
