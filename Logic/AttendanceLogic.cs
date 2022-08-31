@@ -11,9 +11,7 @@ namespace Logic
     public class AttendanceLogic : IAttendanceLogic
     {
         private readonly IStudentLogic _studentLogic;
-        
         private readonly IDriverLogic _driverLogic;
-        
         private readonly IEmailServiceApi _emailServiceApi;
         private readonly IApiEventService _apiEventService;
 

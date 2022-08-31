@@ -20,9 +20,7 @@ namespace Logic
         private const int StartYear = 2017; // DO-NOT CHANGE!
 
         private readonly IStorageService _storageService;
-
         private readonly ILogger<ConfigLogic> _logger;
-        
         private readonly GlobalConfigs _globalConfigs;
         private readonly IApiEventService _apiEventService;
 

@@ -21,9 +21,7 @@ namespace API.Controllers.API
         [SwaggerOperation("Status")]
         public IActionResult Status()
         {
-            var config = _globalConfigs.ToAnonymousObject();
-            
-            return Ok(config);
+            return Ok(_globalConfigs);
         }
     }
 }
