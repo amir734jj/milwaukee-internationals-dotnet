@@ -32,22 +32,9 @@ namespace Models.Constants
         public bool DisallowDuplicateStudents { get; set; }
         public bool RecordApiEvents { get; set; }
 
-        public object ToAnonymousObject()
-        {
-            return new
-            {
-                EventFeature,
-                YearValue,
-                EmailTestMode,
-                CurrentTheme,
-                DisallowDuplicateStudents,
-                RecordApiEvents
-            };
-        }
-
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(ToAnonymousObject());
+            return JsonConvert.SerializeObject(this);
         }
     }
 }
