@@ -165,9 +165,6 @@ namespace Logic
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
-                    <br>
-                    <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the day of the Tour of Milwaukee.
-                    <img src=""{qrUri}"" alt=""QR code"" />
                 ");
             }
         }
