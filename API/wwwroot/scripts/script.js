@@ -15,7 +15,10 @@ angular.module('angular-async-await', [])
         }
     }]);
 
-angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await'])
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await', 'angular-loading-bar'])
+    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+        cfpLoadingBarProvider.includeSpinner = false;
+    }])
     .constant('jsPDF', (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ['$window', $window => ({
         restrict: 'A',
