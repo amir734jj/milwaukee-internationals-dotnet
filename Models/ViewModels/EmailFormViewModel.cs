@@ -1,4 +1,5 @@
-﻿using Models.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using Models.Interfaces;
 
 namespace Models.ViewModels
 {
@@ -32,5 +33,8 @@ namespace Models.ViewModels
         public int DriverCount { get; set; }
         
         public int HostCount { get; set; }
+        
+        [Display(Name = "Additional Recipients")]
+        public string AdditionalRecipients { get; set; }
     }
 }
