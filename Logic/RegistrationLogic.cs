@@ -35,7 +35,8 @@ namespace Logic
         /// <param name="apiEventService"></param>
         /// <param name="globalConfigs"></param>
         public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic,
-            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService, GlobalConfigs globalConfigs)
+            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService,
+            GlobalConfigs globalConfigs)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
@@ -66,8 +67,6 @@ namespace Logic
                     case RolesEnum.Driver:
                         await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
                             $@"
-                    <p> This is an automatically generated email. </p>
-                    <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
                     <p> Role: {driver.Role}</p>
                     <p> Phone: {driver.Phone}</p>
@@ -90,8 +89,6 @@ namespace Logic
                     case RolesEnum.Navigator:
                         await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
                             $@"
-                    <p> This is an automatically generated email. </p>
-                    <p> ----------------------------------------- </p>
                     <p> Name: {driver.Fullname}</p>
                     <p> Role: {driver.Role}</p>
                     <p> Phone: {driver.Phone}</p>
@@ -123,7 +120,7 @@ namespace Logic
         public async Task RegisterStudent(Student student)
         {
             student = await _studentLogic.Save(student);
-            
+
             // If save was successful
             if (student != null)
             {
@@ -183,15 +180,13 @@ namespace Logic
         public async Task RegisterHost(Host host)
         {
             host = await _hostLogic.Save(host);
-            
+
             // If save was successful
             if (host != null)
             {
                 await _apiEventService.RecordEvent($"Host {host.Fullname} registered");
 
                 await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
-                    <p> This is an automatically generated email. </p>
-                    <p> ----------------------------------------- </p>
                     <p>Name: {host.Fullname}</p>
                     <p>Email: {host.Email}</p>
                     <p>Address: {host.Address}</p>
