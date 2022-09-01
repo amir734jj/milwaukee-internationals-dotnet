@@ -54,7 +54,7 @@ public class StatsLogic : IStatsLogic
                 CountDistinctCountries = countDistinctCountries,
                 CurrentYear = currentYear,
                 ActiveYear = activeYear,
-                CountryDistribution = countryDistribution[year.ToString()]
+                CountryDistribution = countryDistribution.GetValueOrDefault(year.ToString(), new Dictionary<string, int>())
             }); 
         }
 
