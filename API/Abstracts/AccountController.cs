@@ -27,7 +27,7 @@ namespace API.Abstracts
         
         public abstract JwtSettings ResolveJwtSettings();
 
-        public async Task<bool> Register(RegisterViewModel registerViewModel)
+        public async Task<(bool, string[])> Register(RegisterViewModel registerViewModel)
         {
             var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
             var enable = !ResolveUserManager().Users.Any();
@@ -43,11 +43,12 @@ namespace API.Abstracts
                 Enable = enable
             };
 
-            var result1 = (await ResolveUserManager().CreateAsync(user, registerViewModel.Password)).Succeeded;
+            var re = await ResolveUserManager().CreateAsync(user, registerViewModel.Password);
+            var result1 = re.Succeeded;
 
             if (!result1)
             {
-                return false;
+                return (false, re.Errors.Select(x => x.Description).ToArray());
             }
 
             var result2 = true;
@@ -57,12 +58,13 @@ namespace API.Abstracts
                 if (!await ResolveRoleManager().RoleExistsAsync(subRole.ToString()))
                 {
                     await ResolveRoleManager().CreateAsync(new IdentityRole<int>(subRole.ToString()));
-                    
-                    result2 &= (await ResolveUserManager().AddToRoleAsync(user, subRole.ToString())).Succeeded;
                 }
+                
+                // Add role to the user always
+                result2 &= (await ResolveUserManager().AddToRoleAsync(user, subRole.ToString())).Succeeded;
             }
 
-            return result2;
+            return (result2, Array.Empty<string>());
         }
 
         public async Task<bool> Login(LoginViewModel loginViewModel)
@@ -105,9 +107,9 @@ namespace API.Abstracts
 
         public async Task Logout()
         {
-            await ResolveSignInManager().SignOutAsync();
-
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            await ResolveSignInManager().SignOutAsync();
         }
         
         /// <summary>

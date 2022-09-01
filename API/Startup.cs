@@ -41,7 +41,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
-using reCAPTCHA.AspNetCore;
 using Scrutor;
 using WebMarkupMin.AspNetCore6;
 using static DAL.Utilities.ConnectionStringUtility;
@@ -283,14 +282,6 @@ namespace API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Key))
                 };
             });
-
-            // Re-Captcha config
-            services.Configure<RecaptchaSettings>(x =>
-            {
-                x.SiteKey = Environment.GetEnvironmentVariable("RECAPTCHASETTINGS_SITEKEY");
-                x.SecretKey = Environment.GetEnvironmentVariable("RECAPTCHASETTINGS_SECRETKEY");
-            });
-            services.AddTransient<IRecaptchaService, RecaptchaService>();
 
             services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
             

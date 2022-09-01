@@ -56,6 +56,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Edit/{id:int}")]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> EditView(int id)
         {
             var driver = await _hostLogic.Get(id);
@@ -70,6 +71,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Edit")]
+        [AuthorizeMiddleware(UserRoleEnum.Admin)]
         public async Task<IActionResult> EditHandler(Host host)
         {
             await _hostLogic.Update(host.Id, host);

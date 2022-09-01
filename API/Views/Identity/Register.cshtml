@@ -1,10 +1,6 @@
 ﻿@using Microsoft.Extensions.Options
 @using Models.Constants
-@using reCAPTCHA.AspNetCore
-@using reCAPTCHA.AspNetCore.Templates
 @model Models.ViewModels.Identities.RegisterViewModel
-@inject IOptions<RecaptchaSettings> RecaptchaSettings
-
 @{
     ViewBag.Title = "Register user";
     Layout = "_Layout";
@@ -86,12 +82,6 @@
 
             <div class="col-sm-10">
                 @Html.TextBox("invitation_code", "", new {type = "text", placeholder = "Enter invitation code", @class = "form-control", required = "required", ng_model = "invitation_code"})
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-sm-2 col-sm-offset-2">
-                @(Html.Recaptcha<RecaptchaV3HiddenInput>(RecaptchaSettings?.Value))
             </div>
         </div>
 

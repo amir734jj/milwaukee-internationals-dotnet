@@ -474,6 +474,9 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                     (rv[key] = rv[key] || []).push(x);
                     return rv;
                 }, {});
+
+            // Ensure state is preserved
+            $scope.togglePresentStudents($scope.showPresentOnly);
         }
 
         $scope.map = async (studentId, driverId) => {
@@ -510,7 +513,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.drivers = [];
         $scope.availableDriversBuckets = {};
         
-        $scope.generalFilterStudents = () => {
+        $scope.generalFilterStudents = (ignoreAttendance = false) => {
             let students = $scope.allStudents;
             if ($scope.country && $scope.country !== 'All Countries') {
                 students = students.filter(x => x.country === $scope.country);
@@ -520,7 +523,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                 students = students.filter(x => x.fullname.toLowerCase().includes($scope.fullname.toLowerCase()));
             }
 
-            if ($scope.attendanceFilter !== 'all') {
+            if (!ignoreAttendance && $scope.attendanceFilter !== 'all') {
                 students = students.filter(student => (student.isPresent && $scope.attendanceFilter === 'yes') || (!student.isPresent && $scope.attendanceFilter === 'no'));
             }
             
@@ -528,15 +531,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getCountAllStudents = () => {
-            return $scope.generalFilterStudents().length;
+            return $scope.generalFilterStudents(true).length;
         };
 
         $scope.getCountPresentStudents = () => {
-            return $scope.generalFilterStudents().filter(x => x.isPresent).length;
+            return $scope.generalFilterStudents(true).filter(x => x.isPresent).length;
         };
 
         $scope.getCountAbsentStudents = () => {
-            return $scope.generalFilterStudents().filter(x => !x.isPresent).length;
+            return $scope.generalFilterStudents(true).filter(x => !x.isPresent).length;
         };
         
         $scope.countries = () => {
@@ -621,8 +624,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.init = async () => {
-            await $async($scope.getAllDrivers());
             await $async($scope.getAllStudents());
+            await $async($scope.getAllDrivers());
         };
 
         await $async($scope.init());
@@ -739,24 +742,24 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.attendanceFilter = 'all';
         $scope.fullname = '';
 
-        $scope.generalFilterDrivers = () => {
+        $scope.generalFilterDrivers = (ignoreAttendance = false) => {
             let drivers = $scope.allDrivers;
             if ($scope.fullname) {
                 drivers = drivers.filter(x => x.fullname.toLowerCase().includes($scope.fullname.toLowerCase()));
             }
 
-            if ($scope.attendanceFilter !== 'all') {
+            if (!ignoreAttendance && $scope.attendanceFilter !== 'all') {
                 drivers = drivers.filter(driver => (driver.isPresent && $scope.attendanceFilter === 'yes') || (!driver.isPresent && $scope.attendanceFilter === 'no'));
             }
 
             return drivers;
         };
         
-        $scope.getCountAllDrivers = () => $scope.generalFilterDrivers().length;
+        $scope.getCountAllDrivers = () => $scope.generalFilterDrivers(true).length;
 
-        $scope.getCountPresentDrivers = () => $scope.generalFilterDrivers().filter(x => x.isPresent).length;
+        $scope.getCountPresentDrivers = () => $scope.generalFilterDrivers(true).filter(x => x.isPresent).length;
 
-        $scope.getCountAbsentDrivers = () => $scope.generalFilterDrivers().filter(x => !x.isPresent).length;
+        $scope.getCountAbsentDrivers = () => $scope.generalFilterDrivers(true).filter(x => !x.isPresent).length;
 
         $scope.checkInViaEmail = async () => {
             if ($window.confirm(`Are you sure to send check-in via email to [${$scope.getCountAllDrivers()}] drivers?`)) {

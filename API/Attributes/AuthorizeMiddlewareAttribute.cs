@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Models.Enums;
 
 namespace API.Attributes
@@ -7,6 +8,11 @@ namespace API.Attributes
     {
         public AuthorizeMiddlewareAttribute(params UserRoleEnum[] userRoleEnums)
         {
+            if (!userRoleEnums.Any())
+            {
+                userRoleEnums = new[] { UserRoleEnum.Basic };
+            }
+            
             Roles = userRoleEnums.JoinToString();
         }
     }

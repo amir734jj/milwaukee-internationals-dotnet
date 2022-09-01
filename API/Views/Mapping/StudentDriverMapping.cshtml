@@ -52,7 +52,7 @@
                                     <div class="col-sm-12">
                                         <div class="list-group">
                                             <div ng-repeat="student in driver.students" ng-class="student.isPresent ? 'list-group-item-success' : 'list-group-item-danger'" class="list-group-item clearfix">
-                                                <div class="pull-left vcenter">{{student.fullname}} ({{ student.country }}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }}</div>
+                                                <div class="pull-left vcenter">{{student.fullname}} ({{ student.country }}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }} {{ student.kosherFood ? "[H]" : "" }}</div>
                                                 <span class="pull-right">
                                                     <a ng-click="unmap(student.id, driver.id)" class="btn btn-danger pull-right">
                                                         <span class="glyphicon glyphicon-remove"></span>
@@ -80,7 +80,7 @@
                             <div class="row">
                                 <div ng-repeat="student in availableStudents" ng-class="student.isPresent ? 'list-group-item-success' : ''" class="list-group-item clearfix col-lg-6 col-md-6 col-sm-12">
 
-                                    <label>{{student.fullname}} ({{student.country}}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }} </label>
+                                    <label>{{student.fullname}} ({{student.country}}) {{ student.isFamily ? "[+" + student.familySize + "]" : "" }} {{ student.kosherFood ? "[H]" : "" }}</label>
 
                                     <div class="pull-right">
                                         <div class="form-group form-inline">
