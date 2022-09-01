@@ -27,7 +27,7 @@
         <form>
             <div class="form-group">
                 <label for="fullname">Fullname:</label>
-                <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" class="form-control"/>
+                <input id="fullname" type="text" ng-change="updateTable()" ng-model="fullname" ng-model-options="{ debounce: 300 }" class="form-control"/>
             </div>
             <div class="form-group">
                 <label>Filter by attendance:</label>
