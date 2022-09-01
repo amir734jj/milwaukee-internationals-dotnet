@@ -16,7 +16,7 @@ angular.module('angular-async-await', [])
     }]);
 
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await', 'angular-loading-bar'])
-    .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
         cfpLoadingBarProvider.latencyThreshold = 300;
     }])
@@ -240,7 +240,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.getAllStudentsCSV = async () => {
             const {data: students} = await $async($http.get('/api/student'));
             const attributes = Object.keys($scope.downloadTable).filter(value => $scope.downloadTable[value]);
-            
+
             const rows = students
                 .map(student => attributes.map(x => student[x]));
 
@@ -263,7 +263,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             });
 
             doc.setFont('courier');
-            
+
             let i, j, temporary;
             const chunk = 25;
             const attributes = Object.keys($scope.downloadTable).filter(value => $scope.downloadTable[value]);
@@ -512,10 +512,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.fullname = '';
         $scope.drivers = [];
         $scope.availableDriversBuckets = {};
-        
-        $scope.generalFilterStudents = (ignoreAttendance = false) => {
+
+        $scope.generalFilterStudents = ({ignoreAttendance = false, ignoreCountry = false} = {}) => {
             let students = $scope.allStudents;
-            if ($scope.country && $scope.country !== 'All Countries') {
+            if (!ignoreCountry && $scope.country && $scope.country !== 'All Countries') {
                 students = students.filter(x => x.country === $scope.country);
             }
 
@@ -526,29 +526,29 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             if (!ignoreAttendance && $scope.attendanceFilter !== 'all') {
                 students = students.filter(student => (student.isPresent && $scope.attendanceFilter === 'yes') || (!student.isPresent && $scope.attendanceFilter === 'no'));
             }
-            
+
             return students;
         };
 
         $scope.getCountAllStudents = () => {
-            return $scope.generalFilterStudents(true).length;
+            return $scope.generalFilterStudents({ignoreAttendance: true}).length;
         };
 
         $scope.getCountPresentStudents = () => {
-            return $scope.generalFilterStudents(true).filter(x => x.isPresent).length;
+            return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => x.isPresent).length;
         };
 
         $scope.getCountAbsentStudents = () => {
-            return $scope.generalFilterStudents(true).filter(x => !x.isPresent).length;
+            return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => !x.isPresent).length;
         };
-        
+
         $scope.countries = () => {
             const students = $scope.generalFilterStudents();
             return students.reduce((acc, student) => ({
                 ...acc,
                 [student.country]: (student.country in acc) ? acc[student.country] + 1 : 1
             }), {
-                ['All Countries']: students.length
+                ['All Countries']: $scope.generalFilterStudents({ignoreCountry: true}).length
             });
         };
 
@@ -584,8 +584,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                     driverId,
                     studentId
                 }));
-                await $async($scope.getAllDrivers());
                 await $async($scope.getAllStudents());
+                await $async($scope.getAllDrivers());
             }
         };
 
@@ -597,7 +597,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.getAllStudents = async () => {
-            const { data: allStudents } = await $async($http.get('/api/student'));
+            const {data: allStudents} = await $async($http.get('/api/student'));
             $scope.allStudents = allStudents;
 
             $scope.updateTable();
@@ -742,7 +742,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.attendanceFilter = 'all';
         $scope.fullname = '';
 
-        $scope.generalFilterDrivers = (ignoreAttendance = false) => {
+        $scope.generalFilterDrivers = ({ignoreAttendance = false} = {}) => {
             let drivers = $scope.allDrivers;
             if ($scope.fullname) {
                 drivers = drivers.filter(x => x.fullname.toLowerCase().includes($scope.fullname.toLowerCase()));
@@ -754,12 +754,12 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
 
             return drivers;
         };
-        
-        $scope.getCountAllDrivers = () => $scope.generalFilterDrivers(true).length;
 
-        $scope.getCountPresentDrivers = () => $scope.generalFilterDrivers(true).filter(x => x.isPresent).length;
+        $scope.getCountAllDrivers = () => $scope.generalFilterDrivers({ignoreAttendance: true}).length;
 
-        $scope.getCountAbsentDrivers = () => $scope.generalFilterDrivers(true).filter(x => !x.isPresent).length;
+        $scope.getCountPresentDrivers = () => $scope.generalFilterDrivers({ignoreAttendance: true}).filter(x => x.isPresent).length;
+
+        $scope.getCountAbsentDrivers = () => $scope.generalFilterDrivers({ignoreAttendance: true}).filter(x => !x.isPresent).length;
 
         $scope.checkInViaEmail = async () => {
             if ($window.confirm(`Are you sure to send check-in via email to [${$scope.getCountAllDrivers()}] drivers?`)) {
