@@ -20,7 +20,7 @@
     <div class="row">
         <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
             <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
-            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#pdfDownloadModal">Download PDF</button>
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">Download</button>
         </div>
     </div>
 </div>
@@ -158,91 +158,92 @@
 </div>
 
 <!-- Modal to select columns for PDF -->
-<div id="pdfDownloadModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
+<div id="downloadModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Student PDF Download</h4>
+                <h4 class="modal-title">Student Download</h4>
             </div>
             <div class="modal-body">
                 <div class="checkbox">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['id']"> Id
+                            <input type="checkbox" ng-model="downloadTable['id']"> Id
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['displayId']"> DisplayId
+                            <input type="checkbox" ng-model="downloadTable['displayId']"> DisplayId
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['fullname']" ng-disabled="true"> Fullname
+                            <input type="checkbox" ng-model="downloadTable['fullname']" ng-disabled="true"> Fullname
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['major']"> Major
+                            <input type="checkbox" ng-model="downloadTable['major']"> Major
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['university']"> University
+                            <input type="checkbox" ng-model="downloadTable['university']"> University
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['email']"> Email
+                            <input type="checkbox" ng-model="downloadTable['email']"> Email
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['phone']"> Phone
+                            <input type="checkbox" ng-model="downloadTable['phone']"> Phone
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['country']"> Country
+                            <input type="checkbox" ng-model="downloadTable['country']"> Country
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['isFamily']"> isFamily
+                            <input type="checkbox" ng-model="downloadTable['isFamily']"> isFamily
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['familySize']"> FamilySize
+                            <input type="checkbox" ng-model="downloadTable['familySize']"> FamilySize
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['needCarSeat']"> NeedCarSeat
+                            <input type="checkbox" ng-model="downloadTable['needCarSeat']"> NeedCarSeat
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['kosherFood']"> KosherFood
+                            <input type="checkbox" ng-model="downloadTable['kosherFood']"> KosherFood
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['isPresent']"> IsPresent
+                            <input type="checkbox" ng-model="downloadTable['isPresent']"> IsPresent
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="pdfDownloadTable['maskPreferred']"> MaskPreferred
+                            <input type="checkbox" ng-model="downloadTable['maskPreferred']"> MaskPreferred
                         </label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllStudentsPDF()">Download</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllStudentsPDF()">Download PDF</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllStudentsCSV()">Download CSV</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

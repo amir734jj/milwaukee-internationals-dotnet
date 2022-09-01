@@ -18,6 +18,7 @@ angular.module('angular-async-await', [])
 angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await', 'angular-loading-bar'])
     .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
+        cfpLoadingBarProvider.latencyThreshold = 300;
     }])
     .constant('jsPDF', (jspdf || window.jspdf).jsPDF)
     .directive('validateBeforeGoing', ['$window', $window => ({
@@ -209,7 +210,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
     }])
     .controller('studentListCtrl', ['$scope', '$http', 'jsPDF', '$async', ($scope, $http, jsPDF, $async) => {
 
-        $scope.pdfDownloadTable = {
+        $scope.downloadTable = {
             id: false,
             displayId: false,
             fullname: true,
@@ -231,6 +232,28 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.toggleShowDetail = () => {
         };
 
+        const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+            o[k] = String(obj[k]);
+            return o;
+        }, {});
+
+        $scope.getAllStudentsCSV = async () => {
+            const {data: students} = await $async($http.get('/api/student'));
+            const attributes = Object.keys($scope.downloadTable).filter(value => $scope.downloadTable[value]);
+            
+            const rows = students
+                .map(student => attributes.map(x => student[x]));
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            [attributes].concat(rows).forEach(rowArray => {
+                let row = rowArray.join(",");
+                csvContent += row + "\r\n";
+            });
+
+            download(csvContent, "student-list.csv", "text/csv");
+        }
+
         $scope.getAllStudentsPDF = async () => {
             const {data: students} = await $async($http.get('/api/student'));
 
@@ -240,15 +263,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             });
 
             doc.setFont('courier');
-
-            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
-                o[k] = String(obj[k]);
-                return o;
-            }, {});
-
+            
             let i, j, temporary;
             const chunk = 25;
-            const attributes = Object.keys($scope.pdfDownloadTable).filter(value => $scope.pdfDownloadTable[value]);
+            const attributes = Object.keys($scope.downloadTable).filter(value => $scope.downloadTable[value]);
 
             let fontSize = 10;
             if (attributes.length <= 7) {
@@ -483,22 +501,53 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         await $async($scope.init());
     }])
     .controller('studentAttendanceCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
-        $scope.countries = ['All Countries'];
         $scope.students = [];
         $scope.allStudents = [];
-        $scope.countryCount = {};
 
         $scope.country = 'All Countries';
         $scope.attendanceFilter = 'all';
         $scope.fullname = '';
         $scope.drivers = [];
         $scope.availableDriversBuckets = {};
+        
+        $scope.generalFilterStudents = () => {
+            let students = $scope.allStudents;
+            if ($scope.country && $scope.country !== 'All Countries') {
+                students = students.filter(x => x.country === $scope.country);
+            }
 
-        $scope.getCountAllStudents = () => $scope.allStudents.length;
+            if ($scope.fullname) {
+                students = students.filter(x => x.fullname.toLowerCase().includes($scope.fullname.toLowerCase()));
+            }
 
-        $scope.getCountPresentStudents = () => $scope.allStudents.filter(x => x.isPresent).length;
+            if ($scope.attendanceFilter !== 'all') {
+                students = students.filter(student => (student.isPresent && $scope.attendanceFilter === 'yes') || (!student.isPresent && $scope.attendanceFilter === 'no'));
+            }
+            
+            return students;
+        };
 
-        $scope.getCountAbsentStudents = () => $scope.allStudents.filter(x => !x.isPresent).length;
+        $scope.getCountAllStudents = () => {
+            return $scope.generalFilterStudents().length;
+        };
+
+        $scope.getCountPresentStudents = () => {
+            return $scope.generalFilterStudents().filter(x => x.isPresent).length;
+        };
+
+        $scope.getCountAbsentStudents = () => {
+            return $scope.generalFilterStudents().filter(x => !x.isPresent).length;
+        };
+        
+        $scope.countries = () => {
+            const students = $scope.generalFilterStudents();
+            return students.reduce((acc, student) => ({
+                ...acc,
+                [student.country]: (student.country in acc) ? acc[student.country] + 1 : 1
+            }), {
+                ['All Countries']: students.length
+            });
+        };
 
         $scope.resolvePassengers = driver => {
             if (driver.students && driver.students.length) {
@@ -538,47 +587,15 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         };
 
         $scope.checkInViaEmail = async () => {
-            if ($window.confirm('Are you sure to send check-in via email to students?')) {
+            if ($window.confirm(`Are you sure to send check-in via email to [${$scope.getCountAllStudents()}] students?`)) {
                 await $async($http.post('/api/attendance/student/sendCheckIn'));
-                alert('Check-in via email is sent to students');
-            }
-        };
-
-        $scope.getCountryCount = country => {
-            if (country in $scope.countryCount) {
-                return $scope.countryCount[country];
-            } else {
-                return 0;
+                $window.alert(`Check-in via email is sent to [${$scope.getCountAllStudents()}] students`);
             }
         };
 
         $scope.getAllStudents = async () => {
-            const response = await $async($http.get('/api/student'));
-
-            $scope.students = response.data;
-            $scope.allStudents = response.data;
-
-            $scope.students.forEach(student => {
-                if (!$scope.countries.includes(student.country)) {
-                    $scope.countries.push(student.country);
-                }
-
-                if (student.country in $scope.countryCount) {
-                    $scope.countryCount[student.country] = 1 + $scope.countryCount[student.country];
-                } else {
-                    $scope.countryCount[student.country] = 1;
-                }
-            });
-
-            $scope.countryCount['All Countries'] = $scope.allStudents.length;
-
-            // Filter
-            const countries = $scope.countries.filter(value => value !== 'All Countries');
-
-            // Sort
-            countries.sort();
-
-            $scope.countries = ['All Countries'].concat(countries);
+            const { data: allStudents } = await $async($http.get('/api/student'));
+            $scope.allStudents = allStudents;
 
             $scope.updateTable();
         };
@@ -593,51 +610,14 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         }
 
         $scope.updateTable = () => {
-            let students = $scope.allStudents;
-
-            const filteredStudents = {
-                'country': [],
-                'attendance': [],
-                'fullname': []
-            };
-
-            if ($scope.country === 'All Countries') {
-                filteredStudents.country = students;
-            } else {
-                students.forEach(student => {
-                    if (student.country === $scope.country) {
-                        filteredStudents.country.push(student);
-                    }
-                });
+            $scope.students = $scope.generalFilterStudents();
+            if (!$scope.country) {
+                $scope.country = 'All Countries';
             }
 
-            students = filteredStudents.country;
-
-            if ($scope.attendanceFilter === 'all') {
-                filteredStudents.attendance = students;
-            } else {
-                students.forEach(student => {
-                    if ((student.isPresent && $scope.attendanceFilter === 'yes') || (!student.isPresent && $scope.attendanceFilter === 'no')) {
-                        filteredStudents.attendance.push(student);
-                    }
-                });
+            if (!$scope.attendanceFilter) {
+                $scope.attendanceFilter = 'all';
             }
-
-            students = filteredStudents.attendance;
-
-            if (!$scope.fullname) {
-                filteredStudents.fullname = students;
-            } else {
-                students.forEach(student => {
-                    if (student.fullname.toLowerCase().indexOf($scope.fullname.toLowerCase()) > -1) {
-                        filteredStudents.fullname.push(student);
-                    }
-                });
-            }
-
-            students = filteredStudents.fullname;
-
-            $scope.students = students;
         };
 
         $scope.init = async () => {
@@ -759,23 +739,36 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         $scope.attendanceFilter = 'all';
         $scope.fullname = '';
 
-        $scope.getCountAllDrivers = () => $scope.allDrivers.length;
+        $scope.generalFilterDrivers = () => {
+            let drivers = $scope.allDrivers;
+            if ($scope.fullname) {
+                drivers = drivers.filter(x => x.fullname.toLowerCase().includes($scope.fullname.toLowerCase()));
+            }
 
-        $scope.getCountPresentDrivers = () => $scope.allDrivers.filter(x => x.isPresent).length;
+            if ($scope.attendanceFilter !== 'all') {
+                drivers = drivers.filter(driver => (driver.isPresent && $scope.attendanceFilter === 'yes') || (!driver.isPresent && $scope.attendanceFilter === 'no'));
+            }
 
-        $scope.getCountAbsentDrivers = () => $scope.allDrivers.filter(x => !x.isPresent).length;
+            return drivers;
+        };
+        
+        $scope.getCountAllDrivers = () => $scope.generalFilterDrivers().length;
+
+        $scope.getCountPresentDrivers = () => $scope.generalFilterDrivers().filter(x => x.isPresent).length;
+
+        $scope.getCountAbsentDrivers = () => $scope.generalFilterDrivers().filter(x => !x.isPresent).length;
 
         $scope.checkInViaEmail = async () => {
-            if ($window.confirm('Are you sure to send check-in via email to drivers?')) {
+            if ($window.confirm(`Are you sure to send check-in via email to [${$scope.getCountAllDrivers()}] drivers?`)) {
                 await $async($http.post('/api/attendance/driver/sendCheckIn'));
-                alert('Check-in via email is sent to drivers');
+                $window.alert(`Check-in via email is sent to [${$scope.getCountAllDrivers()}] drivers`);
             }
         };
 
         $scope.getAllDrivers = async () => {
-            const {data} = await $async($http.get('/api/driver'));
-            $scope.drivers = data.filter(value => value.role === 'Driver');
-            $scope.allDrivers = data.filter(value => value.role === 'Driver');
+            const {data: drivers} = await $async($http.get('/api/driver'));
+            $scope.drivers = drivers.filter(value => value.role === 'Driver');
+            $scope.allDrivers = drivers.filter(value => value.role === 'Driver');
 
             $scope.updateTable();
         }
@@ -789,38 +782,11 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         }
 
         $scope.updateTable = () => {
-            let drivers = $scope.allDrivers;
+            $scope.drivers = $scope.generalFilterDrivers();
 
-            const filteredDrivers = {
-                'attendance': [],
-                'fullname': []
-            };
-
-            if ($scope.attendanceFilter === 'all') {
-                filteredDrivers.attendance = drivers;
-            } else {
-                drivers.forEach(driver => {
-                    if ((driver.isPresent && $scope.attendanceFilter === 'yes') || (!driver.isPresent && $scope.attendanceFilter === 'no')) {
-                        filteredDrivers.attendance.push(driver);
-                    }
-                });
+            if (!$scope.attendanceFilter) {
+                $scope.attendanceFilter = 'all';
             }
-
-            drivers = filteredDrivers.attendance;
-
-            if (!$scope.fullname) {
-                filteredDrivers.fullname = drivers;
-            } else {
-                drivers.forEach(driver => {
-                    if (driver.fullname.toLowerCase().indexOf($scope.fullname.toLowerCase()) > -1) {
-                        filteredDrivers.fullname.push(driver);
-                    }
-                });
-            }
-
-            drivers = filteredDrivers.fullname;
-
-            $scope.drivers = drivers;
         };
 
         $scope.init = async () => {

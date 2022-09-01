@@ -27,10 +27,12 @@ namespace Models.Constants
             CurrentTheme = globalConfigViewModel.Theme;
             DisallowDuplicateStudents = globalConfigViewModel.DisallowDuplicateStudents;
             RecordApiEvents = globalConfigViewModel.RecordApiEvents;
+            QrInStudentEmail = globalConfigViewModel.QrInStudentEmail;
         }
 
         public bool DisallowDuplicateStudents { get; set; }
         public bool RecordApiEvents { get; set; }
+        public bool QrInStudentEmail { get; set; }
 
         public override string ToString()
         {
