@@ -80,7 +80,11 @@ namespace Logic
             // Add admin email
             if (emailFormViewModel.Admin)
             {
-                emailAddresses.AddRange(ApiConstants.AdminEmail);
+                var admins = (await _userLogic.GetAll()).Where(x => x.UserRoleEnum == UserRoleEnum.Admin)
+                    .Select(x => x.Email)
+                    .ToList();
+
+                emailAddresses.AddRange(admins);
             }
             
             // Add student emails
@@ -109,6 +113,13 @@ namespace Logic
             {
                 var users = await _userLogic.GetAll();
                 emailAddresses.AddRange(users.Select(x => x.Email).Where(x => !string.IsNullOrWhiteSpace(x)));
+            }
+
+            // Add additional emails
+            if (!string.IsNullOrWhiteSpace(emailFormViewModel.AdditionalRecipients))
+            {
+                var emails = emailFormViewModel.AdditionalRecipients.Split(',').Select(x => x.Trim()).ToList();
+                emailAddresses.AddRange(emails);
             }
 
             // Remove duplicates
