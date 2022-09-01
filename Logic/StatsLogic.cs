@@ -67,6 +67,10 @@ public class StatsLogic : IStatsLogic
         
         foreach (var year in _configLogic.GetYears())
         {
+            var countDrivers = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Driver);
+
+            if (countDrivers <= 0) continue;
+
             var countryDistributionForYear = (await _studentDal.GetAll(x => x.Year == year))
                 .GroupBy(x => x.Country.ToLower())
                 .ToDictionary(x => x.Key, x => x.Count());
