@@ -54,7 +54,7 @@
                     <a href="?sortBy=major&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                     <a href="?sortBy=major&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                 </th>
-                <th ng-show="showDetail">
+                <th>
                     MaskPreferred
                     <a href="?sortBy=maskPreferred&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                     <a href="?sortBy=maskPreferred&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
@@ -87,7 +87,7 @@
                     <td>@student.Country</td>
                     <td ng-show="showDetail">@student.University</td>
                     <td>@student.Major</td>
-                    <td ng-show="showDetail">@student.MaskPreferred</td>
+                    <td>@student.MaskPreferred</td>
                     <td ng-show="showDetail">@student.Interests</td>
                     <td ng-show="showDetail">@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
                     <td ng-show="showDetail">@student.Email</td>
