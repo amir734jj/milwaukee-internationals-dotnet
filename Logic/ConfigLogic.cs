@@ -50,7 +50,8 @@ namespace Logic
                 EmailTestMode = _globalConfigs.EmailTestMode,
                 Theme = _globalConfigs.CurrentTheme,
                 DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents,
-                RecordApiEvents = _globalConfigs.RecordApiEvents
+                RecordApiEvents = _globalConfigs.RecordApiEvents,
+                QrInStudentEmail = _globalConfigs.QrInStudentEmail
             };
 
             return await Task.FromResult(retVal);

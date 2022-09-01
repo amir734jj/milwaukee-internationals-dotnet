@@ -22,6 +22,7 @@ namespace Logic
         private readonly IEventLogic _eventLogic;
         private readonly IEmailServiceApi _emailServiceApiApi;
         private readonly IApiEventService _apiEventService;
+        private readonly GlobalConfigs _globalConfigs;
 
         /// <summary>
         /// Constructor dependency injection
@@ -32,8 +33,9 @@ namespace Logic
         /// <param name="eventLogic"></param>
         /// <param name="emailServiceApiApi"></param>
         /// <param name="apiEventService"></param>
+        /// <param name="globalConfigs"></param>
         public RegistrationLogic(IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic,
-            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService)
+            IEventLogic eventLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService, GlobalConfigs globalConfigs)
         {
             _studentLogic = studentLogic;
             _driverLogic = driverLogic;
@@ -41,6 +43,7 @@ namespace Logic
             _eventLogic = eventLogic;
             _emailServiceApiApi = emailServiceApiApi;
             _apiEventService = apiEventService;
+            _globalConfigs = globalConfigs;
         }
 
         /// <summary>
@@ -165,6 +168,9 @@ namespace Logic
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
+                    {(_globalConfigs.QrInStudentEmail ? @"<br>
+                    <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the day of the Tour of Milwaukee.</p>
+                    <img src=""{qrUri}"" alt=""QR code"" />" : "")}
                 ");
             }
         }

@@ -23,5 +23,8 @@ namespace Models.ViewModels.Config
 
         [Display(Name = "Record API events")]
         public bool RecordApiEvents { get; set; }
+
+        [Display(Name = "Display QR code in student email")]
+        public bool QrInStudentEmail { get; set; }
     }
 }
