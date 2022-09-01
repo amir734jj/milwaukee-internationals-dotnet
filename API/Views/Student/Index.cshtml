@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using System.Text.RegularExpressions
 @using API.Interfaces
 @using DAL.Extensions
 @using Models.Enums
@@ -119,10 +120,11 @@
         <tbody>
         @foreach (var student in Model)
         {
-            var possiblyDuplicateRegistration = Model.Any(x => x.Id != student.Id
-                                                   && (x.Fullname.Contains(student.Fullname, StringComparison.OrdinalIgnoreCase)
-                                                       || student.Fullname.Contains(x.Fullname, StringComparison.OrdinalIgnoreCase)));
-            
+            var possiblyDuplicateRegistration = Model.Where(x => x.Id != student.Id)
+                .Select(x => Regex.Split(x.Fullname.ToLower(), @"\s+").Intersect(Regex.Split(student.Fullname.ToLower(), @"\s+")))
+                .Select(x => x.Where(y => !string.IsNullOrWhiteSpace(y)))
+                .Any(x => x.Count() > 1);
+         
             var possiblyDuplicateDisplayId = Model.Any(x => x.Id != student.Id
                                                    && x.DisplayId.Equals(student.DisplayId, StringComparison.OrdinalIgnoreCase));
             
