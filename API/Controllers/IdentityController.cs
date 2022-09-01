@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Models.ViewModels.Identities;
-using reCAPTCHA.AspNetCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
@@ -25,13 +24,12 @@ namespace API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
-        private readonly IRecaptchaService _recaptcha;
         private readonly IApiEventService _apiEventService;
         private readonly JwtSettings _jwtSettings;
         private readonly ILogger<IdentityController> _logger;
 
         public IdentityController(IUserLogic userLogic, UserManager<User> userManager,
-            SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IRecaptchaService recaptcha, IApiEventService apiEventService,
+            SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IApiEventService apiEventService,
             JwtSettings jwtSettings,
             ILogger<IdentityController> logger)
         {
@@ -39,7 +37,6 @@ namespace API.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _recaptcha = recaptcha;
             _apiEventService = apiEventService;
             _jwtSettings = jwtSettings;
             _logger = logger;
@@ -98,18 +95,7 @@ namespace API.Controllers
         public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
         {
             TempData.Clear();
-
-            var recaptcha = await _recaptcha.Validate(Request);
-
-            /*if (!recaptcha.success)
-            {
-                _logger.LogError("Captcha failed: " + recaptcha.score);
-
-                TempData["Error"] = "There was an error validating recatpcha. Please try again!";
-
-                return RedirectToAction("Login");
-            }*/
-
+            
             var result = await base.Login(loginViewModel);
             
             if (result)
@@ -145,7 +131,7 @@ namespace API.Controllers
             {
                 var prevError = (string)TempData["Error"];
 
-                ModelState.AddModelError("", prevError);
+                if (prevError != null) ModelState.AddModelError("", prevError);
 
                 TempData.Clear();
             }
@@ -165,17 +151,6 @@ namespace API.Controllers
         {
             TempData.Clear();
 
-            var recaptcha = await _recaptcha.Validate(Request);
-
-            /*if (!recaptcha.success)
-            {
-                _logger.LogError("Captcha failed: " + recaptcha.score);
-
-                TempData["Error"] = "There was an error validating recaptcha. Please try again!";
-
-                return RedirectToAction("Register");
-            }*/
-
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {
                 TempData["Error"] = "Password and Password Confirmation do not match. Please try again!";
@@ -184,7 +159,7 @@ namespace API.Controllers
             }
 
             // Save the user
-            var result = await Register(registerViewModel);
+            var (result, errors) = await Register(registerViewModel);
 
             if (result)
             {
@@ -192,6 +167,8 @@ namespace API.Controllers
 
                 return RedirectToAction("Login");
             }
+
+            TempData["Error"] = $"Failed to register: {string.Join(',', errors)}";
             
             await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] failed to register");
 

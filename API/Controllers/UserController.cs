@@ -10,7 +10,7 @@ using Models.Enums;
 namespace API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [AuthorizeMiddleware]
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
     [Route("[controller]")]
     public class UserController : Controller
     {

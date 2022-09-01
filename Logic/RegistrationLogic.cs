@@ -194,7 +194,7 @@ namespace Logic
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
                     <br>
                     <p> Date: September 3, {DateTime.Now.Year}</p>
-                    <p> Time: 5:00 pm</p>
+                    <p> Time: 5:30 pm</p>
                     <p> We will send you more details once we have them.</p>
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
                     <p> Blessings,</p>

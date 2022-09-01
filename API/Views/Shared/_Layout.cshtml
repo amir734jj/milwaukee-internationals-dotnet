@@ -26,7 +26,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
@@ -78,19 +78,19 @@
     @* bar chart *@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/angular-chart.js@1.1.1/dist/angular-chart.js"></script>
-    
+
     @* download.js *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>
-    
+
     @* SignalR client *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.8/signalr.min.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css" />
-    
-    @* Momentjs client *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css"/>
+
+    @* Moment.js client *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-    
+
     @* string to table *@
     <script src="https://cdn.rawgit.com/dtao/string-table/master/stringTable.js"></script>
 
@@ -130,9 +130,13 @@
                     <li class="dropdown @(ViewContext.RouteData.MatchesAnyController("User", "Student", "Driver", "Host", "Event") ? "active" : "")">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listing <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="~/User">Users</a>
-                            </li>
+
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            {
+                                <li>
+                                    <a href="~/User">Users</a>
+                                </li>
+                            }
                             <li>
                                 <a href="~/Student">Students</a>
                             </li>
@@ -172,9 +176,12 @@
                         <a href="~/Mapping/StudentDriverMapping">Driver Mapping</a>
                     </li>
 
-                    <li class="@(ViewContext.RouteData.Matches("Mapping", "DriverHostMapping") ? "active" : "")">
-                        <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
-                    </li>
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <li class="@(ViewContext.RouteData.Matches("Mapping", "DriverHostMapping") ? "active" : "")">
+                            <a href="~/Mapping/DriverHostMapping">Host Mapping</a>
+                        </li>
+                    }
 
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Driver") ? "active" : "")">
                         <a href="~/Attendance/Driver">Driver Attendance</a>
