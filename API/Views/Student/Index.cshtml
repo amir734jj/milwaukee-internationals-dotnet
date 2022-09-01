@@ -14,197 +14,239 @@
 }
 
 <div class="container" ng-controller="studentListCtrl">
-    <div class="page-header">
-        <h3>List of Students <small>(@studentsCnt + @passengersCnt = @(studentsCnt + passengersCnt))</small></h3>
+<div class="page-header">
+    <h3>List of Students <small>(@studentsCnt + @passengersCnt = @(studentsCnt + passengersCnt))</small></h3>
 
-        <div class="row">
-            <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
-                <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
-                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#pdfDownloadModal">Download PDF</button>
-            </div>
+    <div class="row">
+        <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
+            <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#pdfDownloadModal">Download PDF</button>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered">
-            <thead>
-            <tr>
-                <th ng-show="showDetail">
-                    DisplayId
-                    <a href="?sortBy=displayId&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=displayId&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th>
-                    Fullname
-                    <a href="?sortBy=fullname&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=fullname&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th>
-                    Country
-                    <a href="?sortBy=country&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=country&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th ng-show="showDetail">
-                    University
-                    <a href="?sortBy=university&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=university&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th ng-show="showDetail">
-                    Major
-                    <a href="?sortBy=major&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=major&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th>
-                    MaskPreferred
-                    <a href="?sortBy=maskPreferred&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=maskPreferred&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th ng-show="showDetail">Interest</th>
-                <th>
-                    IsFamily
-                    <a href="?sortBy=familySize&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=familySize&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th ng-show="showDetail">Email</th>
-                <th ng-show="showDetail">Phone</th>
-                <th ng-show="showDetail">
-                    RegisteredOn
-                    <a href="?sortBy=registeredOn&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=registeredOn&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th>
-                    Kosher
-                    <a href="?sortBy=kosherFood&descending=false"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <a href="?sortBy=kosherFood&descending=true"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                </th>
-                <th class="hidden-xs" ng-show="showDetail">Action</th>
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th ng-show="showDetail">
+                DisplayId
+                <a href="?sortBy=displayId&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=displayId&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th>
+                Fullname
+                <a href="?sortBy=fullname&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=fullname&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th>
+                Country
+                <a href="?sortBy=country&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=country&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th ng-show="showDetail">
+                University
+                <a href="?sortBy=university&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=university&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th ng-show="showDetail">
+                Major
+                <a href="?sortBy=major&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=major&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th>
+                MaskPreferred
+                <a href="?sortBy=maskPreferred&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=maskPreferred&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th ng-show="showDetail">Interest</th>
+            <th>
+                IsFamily
+                <a href="?sortBy=familySize&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=familySize&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th ng-show="showDetail">Email</th>
+            <th ng-show="showDetail">Phone</th>
+            <th ng-show="showDetail">
+                RegisteredOn
+                <a href="?sortBy=registeredOn&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=registeredOn&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th>
+                Kosher
+                <a href="?sortBy=kosherFood&descending=false">
+                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </a>
+                <a href="?sortBy=kosherFood&descending=true">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </a>
+            </th>
+            <th class="hidden-xs" ng-show="showDetail">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var student in Model)
+        {
+            var possiblyDuplicateRegistration = Model.Any(x => x.Id != student.Id
+                                                   && (x.Fullname.Contains(student.Fullname, StringComparison.OrdinalIgnoreCase)
+                                                       || student.Fullname.Contains(x.Fullname, StringComparison.OrdinalIgnoreCase)));
+            
+            var possiblyDuplicateDisplayId = Model.Any(x => x.Id != student.Id
+                                                   && x.DisplayId.Equals(student.DisplayId, StringComparison.OrdinalIgnoreCase));
+            
+
+            <tr class="@(possiblyDuplicateDisplayId ? "danger" : possiblyDuplicateRegistration ? "warning" : "")">
+                <td ng-show="showDetail">@student.DisplayId</td>
+                <td>@student.Fullname</td>
+                <td>@student.Country</td>
+                <td ng-show="showDetail">@student.University</td>
+                <td ng-show="showDetail">@student.Major</td>
+                <td>@student.MaskPreferred</td>
+                <td ng-show="showDetail">@student.Interests</td>
+                <td>@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
+                <td ng-show="showDetail">@student.Email</td>
+                <td ng-show="showDetail">@student.Phone</td>
+                <td ng-show="showDetail">@student.RegisteredOn.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)</td>
+                <td>@student.KosherFood</td>
+                <td class="hidden-xs" ng-show="showDetail">
+                    <div class="btn-group-vertical btn-group-sm">
+
+                        <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
+
+                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                        {
+                            <a href="~/Student/delete/@student.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this student (@(student.Fullname))?">Delete</a>
+                        }
+                    </div>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            @foreach (var student in Model)
-            {
-                var possiblyDuplicate = Model.Any(x => x.Id != student.Id && (x.Fullname.Contains(student.Fullname, StringComparison.OrdinalIgnoreCase) || student.Fullname.Contains(x.Fullname, StringComparison.OrdinalIgnoreCase)));
-                
-                <tr class="@(possiblyDuplicate ? "warning" : "")">
-                    <td ng-show="showDetail">@student.DisplayId</td>
-                    <td>@student.Fullname</td>
-                    <td>@student.Country</td>
-                    <td ng-show="showDetail">@student.University</td>
-                    <td ng-show="showDetail">@student.Major</td>
-                    <td>@student.MaskPreferred</td>
-                    <td ng-show="showDetail">@student.Interests</td>
-                    <td>@student.IsFamily @(student.IsFamily ? $"({student.FamilySize})" : string.Empty)</td>
-                    <td ng-show="showDetail">@student.Email</td>
-                    <td ng-show="showDetail">@student.Phone</td>
-                    <td ng-show="showDetail">@student.RegisteredOn.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)</td>
-                    <td>@student.KosherFood</td>
-                    <td class="hidden-xs" ng-show="showDetail">
-                        <div class="btn-group-vertical btn-group-sm">
+        }
+        </tbody>
+    </table>
+</div>
 
-                            <a href="~/Student/edit/@student.Id" class="btn btn-primary">Edit</a>
+<!-- Modal to select columns for PDF -->
+<div id="pdfDownloadModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
 
-                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                            {
-                                <a href="~/Student/delete/@student.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this student (@(student.Fullname))?">Delete</a>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Modal to select columns for PDF -->
-    <div id="pdfDownloadModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Student PDF Download</h4>
-                </div>
-                <div class="modal-body">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Student PDF Download</h4>
+            </div>
+            <div class="modal-body">
+                <div class="checkbox">
                     <div class="checkbox">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['id']"> Id
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['displayId']"> DisplayId
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['fullname']" ng-disabled="true"> Fullname
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['major']"> Major
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['university']"> University
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['email']"> Email
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['phone']"> Phone
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['country']"> Country
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['isFamily']"> isFamily
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['familySize']"> FamilySize
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['needCarSeat']"> NeedCarSeat
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['kosherFood']"> KosherFood
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['isPresent']"> IsPresent
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="pdfDownloadTable['maskPreferred']"> MaskPreferred
-                            </label>
-                        </div>
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['id']"> Id
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['displayId']"> DisplayId
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['fullname']" ng-disabled="true"> Fullname
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['major']"> Major
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['university']"> University
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['email']"> Email
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['phone']"> Phone
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['country']"> Country
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['isFamily']"> isFamily
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['familySize']"> FamilySize
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['needCarSeat']"> NeedCarSeat
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['kosherFood']"> KosherFood
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['isPresent']"> IsPresent
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="pdfDownloadTable['maskPreferred']"> MaskPreferred
+                        </label>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllStudentsPDF()">Download</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
             </div>
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllStudentsPDF()">Download</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
+
     </div>
+</div>
 </div>
