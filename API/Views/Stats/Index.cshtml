@@ -72,7 +72,15 @@
 
                 @foreach (var stat in Model.Where(stat => stat.ActiveYear))
                 {
-                    <td>@(stat.CountryDistribution.ContainsKey(country))</td>
+                    var result = stat.CountryDistribution.ContainsKey(country);
+                    if (result)
+                    {
+                        <td>True (@(stat.CountryDistribution[country]))</td>
+                    }
+                    else
+                    {
+                        <td>False</td>
+                    }
                 }
             </tr>
         }
