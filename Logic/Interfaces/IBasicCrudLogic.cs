@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Logic.Interfaces
@@ -19,5 +20,7 @@ namespace Logic.Interfaces
         Task<T> Update(int id, T updatedInstance);
         
         Task<T> Update(int id, Action<T> modifyAction);
+
+        Task<int> Count(Expression<Func<T, bool>> filter);
     }
 }

@@ -171,6 +171,14 @@ namespace Logic
             }
         }
 
+        public async Task<bool> IsRegisterStudentOpen()
+        {
+            var year = DateTime.Now.Year;
+            var count = await _studentLogic.Count(x => x.Year == year);
+
+            return count <= _globalConfigs.MaxLimitStudentSeats;
+        }
+
         /// <summary>
         /// Registers host
         /// </summary>

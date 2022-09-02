@@ -75,8 +75,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("Student")]
-        public IActionResult Student()
+        public async Task<IActionResult> Student()
         {
+            if (!await _registrationLogic.IsRegisterStudentOpen())
+            {
+                return View("SorryClosed");
+            }
+
             if (TempData.ContainsKey("Error"))
             {
                 ViewData["Error"] = TempData["Error"];
@@ -156,7 +161,7 @@ namespace API.Controllers
         {
             return View(new Event());
         }
-        
+
         /// <summary>
         /// POST registration
         /// </summary>

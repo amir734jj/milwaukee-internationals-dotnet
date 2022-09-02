@@ -33,6 +33,7 @@ namespace Models.Constants
         public bool DisallowDuplicateStudents { get; set; }
         public bool RecordApiEvents { get; set; }
         public bool QrInStudentEmail { get; set; }
+        public int MaxLimitStudentSeats { get; set; } = 160;
 
         public override string ToString()
         {

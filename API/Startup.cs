@@ -12,7 +12,6 @@ using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using EfCoreRepository.Extensions;
-using EFCoreSecondLevelCacheInterceptor;
 using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -248,13 +247,6 @@ namespace API
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
-
-            // L2 EF cache
-            services.AddEFSecondLevelCache(options =>
-                options.UseEasyCachingCoreProvider("memory").DisableLogging(true)
-            );
-
-            services.AddEasyCaching(options => options.UseInMemory("memory"));
 
             var jwtSetting = _configuration
                 .GetSection("JwtSettings")
