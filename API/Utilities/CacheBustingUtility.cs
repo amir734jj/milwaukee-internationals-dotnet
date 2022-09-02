@@ -1,19 +1,20 @@
+using System.Web;
 using Models.Constants;
 
 namespace API.Utilities
 {
     public class CacheBustingUtility
     {
-        private readonly GlobalConfigs _globalConfigs;
+        private readonly string _cacheBustingKey;
 
         public CacheBustingUtility(GlobalConfigs globalConfigs)
         {
-            _globalConfigs = globalConfigs;
+            _cacheBustingKey = HttpUtility.UrlEncode(AssemblyInfo.AssemblyVersion + globalConfigs.LastModified.Ticks);
         }
         
-        public long CacheBustingKey()
+        public string CacheBustingKey()
         {
-            return AssemblyInfo.AssemblyVersion.GetHashCode() + _globalConfigs.LastModified.Ticks;
+            return _cacheBustingKey;
         }
     }
 }
