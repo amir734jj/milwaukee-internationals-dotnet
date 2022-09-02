@@ -19,9 +19,14 @@
     <h3>List of Students <small>(@studentsCnt + @passengersCnt = @(studentsCnt + passengersCnt))</small></h3>
 
     <div class="row">
-        <div class="pull-right col-lg-3 col-md-4 col-sm-5 clearfix">
-            <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
-            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">Download</button>
+        <div class="col-sm-5 col-sm-offset-7 col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
+            <div class="pull-right">
+                <toggle ng-model="showDetail" ng-change="toggleShowDetail(showDetail)" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" class="fast"></toggle>
+                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                {
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">Download</button>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -115,10 +120,10 @@
                 .Select(x => Regex.Split(x.Fullname.ToLower(), @"\s+").Intersect(Regex.Split(student.Fullname.ToLower(), @"\s+")))
                 .Select(x => x.Where(y => !string.IsNullOrWhiteSpace(y)))
                 .Any(x => x.Count() > 1);
-         
+
             var possiblyDuplicateDisplayId = Model.Any(x => x.Id != student.Id
-                                                   && x.DisplayId.Equals(student.DisplayId, StringComparison.OrdinalIgnoreCase));
-            
+                                                            && x.DisplayId.Equals(student.DisplayId, StringComparison.OrdinalIgnoreCase));
+
 
             <tr class="@(possiblyDuplicateDisplayId ? "danger" : possiblyDuplicateRegistration ? "warning" : "")">
                 <td ng-show="showDetail">@student.DisplayId</td>
