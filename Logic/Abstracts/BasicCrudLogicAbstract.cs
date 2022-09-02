@@ -148,5 +148,10 @@ namespace Logic.Abstracts
 
             return result;
         }
+
+        public async Task<int> Count(Expression<Func<T, bool>> filter)
+        {
+            return await Repository().Count(filter);
+        }
     }
 }

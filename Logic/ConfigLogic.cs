@@ -51,7 +51,8 @@ namespace Logic
                 Theme = _globalConfigs.CurrentTheme,
                 DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents,
                 RecordApiEvents = _globalConfigs.RecordApiEvents,
-                QrInStudentEmail = _globalConfigs.QrInStudentEmail
+                QrInStudentEmail = _globalConfigs.QrInStudentEmail,
+                MaxLimitStudentSeats = _globalConfigs.MaxLimitStudentSeats
             };
 
             return await Task.FromResult(retVal);

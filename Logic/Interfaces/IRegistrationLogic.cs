@@ -9,6 +9,8 @@ namespace Logic.Interfaces
 
         Task RegisterStudent(Student student);
         
+        Task<bool> IsRegisterStudentOpen();
+        
         Task RegisterHost(Host host);
 
         Task RegisterEvent(Event @event);

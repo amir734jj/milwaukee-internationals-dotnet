@@ -47,6 +47,11 @@
     </div>
     
     <div class="form-group">
+        @Html.LabelFor(x => x.MaxLimitStudentSeats, $"Max upper limit of students for {DateTime.Now.Year} year")
+        @Html.TextBoxFor(x => x.MaxLimitStudentSeats, new { @class = "form-control", @type = "number" })
+    </div>
+    
+    <div class="form-group">
         @Html.LabelFor(x => x.Theme)
         @Html.DropDownListFor(x => x.Theme, ApplicationConstants.Themes.Select(x => new SelectListItem {Text = x.Key, Value = x.Key, Selected = x.Key == selectedTheme}), new {@class = "form-control"})
     </div>

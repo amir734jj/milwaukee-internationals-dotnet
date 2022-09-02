@@ -26,5 +26,9 @@ namespace Models.ViewModels.Config
 
         [Display(Name = "Display QR code in student email")]
         public bool QrInStudentEmail { get; set; }
+
+        [Display(Name = "Max upper limit of students for this year")]
+        [Range(150, 300)]
+        public int MaxLimitStudentSeats { get; set; }
     }
 }
