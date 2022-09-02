@@ -70,7 +70,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        [Route("{userId}")]
+        [Route("{userId:int}")]
         public async Task<IActionResult> PasswordReset([FromRoute] int userId, [FromQuery] string token)
         {
             if (TempData.ContainsKey("Error"))

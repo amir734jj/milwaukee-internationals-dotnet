@@ -28,6 +28,7 @@ namespace Models.Constants
             DisallowDuplicateStudents = globalConfigViewModel.DisallowDuplicateStudents;
             RecordApiEvents = globalConfigViewModel.RecordApiEvents;
             QrInStudentEmail = globalConfigViewModel.QrInStudentEmail;
+            MaxLimitStudentSeats = globalConfigViewModel.MaxLimitStudentSeats;
         }
 
         public bool DisallowDuplicateStudents { get; set; }
