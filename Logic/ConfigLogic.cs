@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
@@ -23,44 +24,27 @@ namespace Logic
         private readonly ILogger<ConfigLogic> _logger;
         private readonly GlobalConfigs _globalConfigs;
         private readonly IApiEventService _apiEventService;
+        private readonly IMapper _mapper;
 
-        public ConfigLogic(IStorageService storageService, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+        public ConfigLogic(IStorageService storageService, ILogger<ConfigLogic> logger, GlobalConfigs globalConfigs, IApiEventService apiEventService, IMapper mapper)
         {
             _storageService = storageService;
             _logger = logger;
             _globalConfigs = globalConfigs;
             _apiEventService = apiEventService;
+            _mapper = mapper;
         }
 
-        public async Task<GlobalConfigViewModel> ResolveGlobalConfig()
+        public GlobalConfigViewModel ResolveGlobalConfig()
         {
-            var years = new HashSet<int>();
-            var currentYear = StartYear;
-            
-            while (currentYear <= DateTime.UtcNow.Year)
-            {
-                years.Add(currentYear++);
-            }
+            var retVal = _mapper.Map<GlobalConfigViewModel>(_globalConfigs);
 
-            var retVal = new GlobalConfigViewModel
-            {
-                Years = years,
-                UpdatedYear = _globalConfigs.YearValue,
-                EventFeature = _globalConfigs.EventFeature,
-                EmailTestMode = _globalConfigs.EmailTestMode,
-                Theme = _globalConfigs.CurrentTheme,
-                DisallowDuplicateStudents = _globalConfigs.DisallowDuplicateStudents,
-                RecordApiEvents = _globalConfigs.RecordApiEvents,
-                QrInStudentEmail = _globalConfigs.QrInStudentEmail,
-                MaxLimitStudentSeats = _globalConfigs.MaxLimitStudentSeats
-            };
-
-            return await Task.FromResult(retVal);
+            return retVal;
         }
 
         public async Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel)
         {
-            _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
+            _mapper.Map(globalConfigViewModel, _globalConfigs);
 
             await _storageService.Upload(ConfigFile, globalConfigViewModel.ToByteArray(), new Dictionary<string, string>
             {
@@ -79,8 +63,8 @@ namespace Logic
                 _logger.LogInformation("Successfully fetched the config from storage service");
                 
                 var globalConfigViewModel = response.Data.Deserialize<GlobalConfigViewModel>() ?? new GlobalConfigViewModel();
-                
-                _globalConfigs.UpdateGlobalConfigs(globalConfigViewModel);
+
+                _mapper.Map(globalConfigViewModel, _globalConfigs);
                 
                 await _apiEventService.RecordEvent($"Refreshed global config {_globalConfigs}");
             }

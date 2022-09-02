@@ -49,9 +49,9 @@
     <link href="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.js"></script>
 
-    @if (!string.IsNullOrEmpty(GlobalConfigs.CurrentTheme) && !"default".Equals(GlobalConfigs.CurrentTheme, StringComparison.CurrentCultureIgnoreCase))
+    @if (!string.IsNullOrEmpty(GlobalConfigs.Theme) && !"default".Equals(GlobalConfigs.Theme, StringComparison.CurrentCultureIgnoreCase))
     {
-        <link rel="stylesheet" href="~/styles/themes/@(themes[GlobalConfigs.CurrentTheme])?@cacheBustingKey"/>
+        <link rel="stylesheet" href="~/styles/themes/@(themes[GlobalConfigs.Theme])?@cacheBustingKey"/>
     }
 
     @* Input validator *@
