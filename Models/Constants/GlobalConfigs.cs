@@ -6,7 +6,7 @@ namespace Models.Constants
 {
     public class GlobalConfigs
     {
-        public DateTimeOffset LastModified { get; set; }
+        public DateTimeOffset LastModified { get; set; } = DateTimeOffset.Now;
 
         public bool EventFeature { get; private set; }
 
