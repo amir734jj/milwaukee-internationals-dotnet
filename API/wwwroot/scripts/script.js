@@ -4,6 +4,9 @@ angular.element(document).ready(() => {
     }, 5000);
 });
 
+// Ignore deprecation warnings
+moment.suppressDeprecationWarnings = true;
+
 angular.module('angular-async-await', [])
     .factory('$async', ['$rootScope', '$log', ($rootScope, $log) => async p => {
         try {
