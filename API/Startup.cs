@@ -287,6 +287,8 @@ namespace API
                 config.StreamBufferCapacity = 50;
                 config.EnableDetailedErrors = true;
             }).AddNewtonsoftJsonProtocol();
+
+            services.AddAutoMapper(Assembly.Load("Models"));
         }
 
         /// <summary>

@@ -21,9 +21,9 @@ namespace API.Controllers
         
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var result = await _configLogic.ResolveGlobalConfig();
+            var result = _configLogic.ResolveGlobalConfig();
             
             return View(result);
         }

@@ -1,13 +1,11 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.ViewModels.Config
 {
     public class GlobalConfigViewModel
     {
-        public IEnumerable<int> Years { get; set; }
-        
-        public int UpdatedYear { get; set; }
+        [Display(Name = "Current Year Context for Viewing")]
+        public int YearValue { get; set; }
         
         [Display(Name = "Ad-Hoc Event Feature")]
         public bool EventFeature { get; set; }
