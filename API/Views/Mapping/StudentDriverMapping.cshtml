@@ -13,7 +13,7 @@
 <div class="container">
     <div class="page-header">
         <h3>
-            Student-Driver Mapping 
+            Student-Driver Mapping
             <small>(Assigned Students: @Model.Count(x => x.Driver != null) out of @Model.Count)</small>
         </h3>
     </div>
@@ -21,14 +21,16 @@
     <div ng-controller="studentDriverMappingCtrl" class="row">
 
         <div class="row">
-            <div class="pull-right col-md-4 clearfix">
-                <toggle ng-model="showPresentOnly" ng-change="togglePresentStudents(showPresentOnly)" on="Show present" off="Show all" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
-                <a ng-click="getAllDriverMappingPDF()" class="btn btn-default btn-space">Download pdf</a>
-                
-                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                {
-                    <a ng-click="sendMailToDrivers($event)" class="btn btn-primary btn-space">Send Mapping</a>
-                }
+            <div class="col-sm-5 col-sm-offset-7 col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
+                <div class="pull-right">
+                    <toggle ng-model="showPresentOnly" ng-change="togglePresentStudents(showPresentOnly)" on="Show present" off="Show all" size="btn" onstyle="btn-success" offstyle="btn-default" class="fast"></toggle>
+                    <a ng-click="getAllDriverMappingPDF()" class="btn btn-default btn-space">Download pdf</a>
+
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <a ng-click="sendMailToDrivers($event)" class="btn btn-primary btn-space">Send Mapping</a>
+                    }
+                </div>
             </div>
         </div>
 

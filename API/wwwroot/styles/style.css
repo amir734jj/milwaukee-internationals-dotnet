@@ -26,3 +26,7 @@ body {
 .modal-body {
     margin: 2rem;
 }
+
+.quick .toggle-group {
+    transition: none;
+}
