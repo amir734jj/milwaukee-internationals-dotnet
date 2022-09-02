@@ -150,7 +150,6 @@ namespace Logic
                 await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation",
                     $@"
                     <p>Name: {student.Fullname}</p>
-                    <p>Email: {student.Email}</p>
                     <p>University: {student.University}</p>
                     <p>Major: {student.Major}</p>
                     <p>Phone: {student.Phone}</p>
@@ -188,7 +187,6 @@ namespace Logic
 
                 await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p>Name: {host.Fullname}</p>
-                    <p>Email: {host.Email}</p>
                     <p>Address: {host.Address}</p>
                     <hr>
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
