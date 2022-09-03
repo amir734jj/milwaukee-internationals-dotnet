@@ -77,18 +77,7 @@ namespace API.Controllers
         [Route("Student")]
         public async Task<IActionResult> Student()
         {
-            if (!await _registrationLogic.IsRegisterStudentOpen())
-            {
-                return View("SorryClosed");
-            }
-
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-                TempData.Clear();
-            }
-            
-            return View(new Student());
+            return View("SorryClosed");
         }
         
         /// <summary>
