@@ -111,8 +111,7 @@ namespace Logic
         {
             string MessageFunc(Driver driver)
             {
-                return $@"
-        <p> **This is an automatically generated email** </p>                      
+                return $@"                 
         <br />                                                                    
         <p> Hello {driver.Fullname},</p>
         <p> Your Driver ID:<strong> {driver.DisplayId} </strong></p> 
