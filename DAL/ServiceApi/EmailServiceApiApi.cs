@@ -59,7 +59,7 @@ namespace DAL.ServiceApi
                 {
                     // construct your email with builder
                     var email = new TransactionalEmailBuilder()
-                        .WithFrom(new SendContact("hesamian@uwm.edu"))
+                        .WithFrom(new SendContact("yiwagu@hotmail.com"))
                         .WithSubject(emailSubject)
                         .WithHtmlPart(emailHtml)
                         .WithCc(new SendContact(ApiConstants.SiteEmail))
