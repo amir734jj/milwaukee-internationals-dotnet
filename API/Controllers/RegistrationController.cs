@@ -77,7 +77,18 @@ namespace API.Controllers
         [Route("Student")]
         public async Task<IActionResult> Student()
         {
-            return View("SorryClosed");
+            if (User.Identity is { IsAuthenticated: false } && !await _registrationLogic.IsRegisterStudentOpen())
+            {
+                return View("SorryClosed");
+            }
+
+            if (TempData.ContainsKey("Error"))
+            {
+                ViewData["Error"] = TempData["Error"];
+                TempData.Clear();
+            }
+            
+            return View(new Student());
         }
         
         /// <summary>
