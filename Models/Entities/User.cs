@@ -19,7 +19,7 @@ namespace Models.Entities
         [Display(Name = "User Role")]
         public UserRoleEnum UserRoleEnum { get; set; }
 
-        public DateTimeOffset LastLoggedInDate { get; set; }
+        public DateTimeOffset LastLoggedInDate { get; set; } = DateTimeOffset.Now;
         
         public bool Enable { get; set; }
     }

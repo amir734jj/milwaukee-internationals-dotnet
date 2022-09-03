@@ -108,7 +108,7 @@ namespace API.Controllers
         }
         
         [HttpPost]
-        [Route("PasswordReset")]
+        [Route("Reset")]
         public async Task<IActionResult> PasswordResetHandler(PasswordResetViewModel passwordResetViewModel)
         {
             if (passwordResetViewModel.Password != passwordResetViewModel.ConfirmPassword)
@@ -118,7 +118,7 @@ namespace API.Controllers
                 return RedirectToAction("PasswordReset");
             }
 
-            var user = await _userLogic.Get(passwordResetViewModel.Id);
+            var user = await _userManager.FindByIdAsync(passwordResetViewModel.Id.ToString());
             
             var isResetTokenValid = await _userManager.ResetPasswordAsync(user, passwordResetViewModel.Token, passwordResetViewModel.Password);
             
