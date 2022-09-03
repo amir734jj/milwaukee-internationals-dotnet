@@ -23,8 +23,6 @@ namespace Logic
             
             await _emailServiceApi.SendEmailAsync(user.Email,
                 "Password Reset Request Email - MilwaukeeInternationals.com", $@"
-                    <p> This is an automatically generated email. </p>
-                    <p> ----------------------------------------- </p>
                     <p> Name: {user.Fullname}</p>
                     <p> Username: {user.UserName}</p>
                     <p> <a href=""{url}""> Password Reset Link </a></p>

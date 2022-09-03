@@ -103,8 +103,7 @@ namespace Logic
         {
             string MessageFunc(Host host)
             {
-                return $@"
-        <p> **This is an automatically generated email** </p>                      
+                return $@"               
         <br />
         <p> Hello {host.Fullname}</p>                                                 
         {(host.Drivers != null && host.Drivers.Any() ? $@"
