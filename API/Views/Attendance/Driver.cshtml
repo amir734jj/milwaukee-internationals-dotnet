@@ -49,18 +49,18 @@
             </div>
         </form>
         <hr/>
-        <table ts-wrapper="ts-wrapper" class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th ts-criteria="fullname" ts-default="ts-default">Fullname</th>
-                <th ts-criteria="capacity">Capacity</th>
-                <th ts-criteria="attendance">Checked-in</th>
+                <th>Fullname</th>
+                <th>Capacity</th>
+                <th>Checked-in</th>
                 <th>Host</th>
                 <th>Navigator</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="driver in drivers" ts-repeat="ts-repeat">
+            <tr ng-repeat="driver in drivers track by driver.id">
                 <td>{{driver.fullname}} ({{ driver.displayId }})</td>
                 <td>{{driver.capacity}}</td>
                 <td class="col-xs-4 col-sm-2">
