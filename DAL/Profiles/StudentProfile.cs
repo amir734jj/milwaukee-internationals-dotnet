@@ -7,25 +7,9 @@ namespace DAL.Profiles
 {
     public class StudentProfile : EntityProfile<Student>
     {
-        public override void Update(Student entity, Student dto)
+        public StudentProfile()
         {
-            entity.DisplayId = dto.DisplayId;
-            entity.Fullname = dto.Fullname;
-            entity.Email = dto.Email;
-            entity.Phone = dto.Phone;
-            entity.Major = dto.Major;
-            entity.Country = dto.Country;
-            entity.University = dto.University;
-            entity.IsFamily = dto.IsFamily;
-            entity.Interests = dto.Interests;
-            entity.NeedCarSeat = dto.NeedCarSeat;
-            entity.KosherFood = dto.KosherFood;
-            entity.IsPresent = dto.IsPresent;
-            entity.FamilySize = dto.FamilySize;
-            entity.MaskPreferred = dto.MaskPreferred;
-            entity.Year = dto.Year;
-            entity.DriverRefId = dto.DriverRefId;
-            entity.RegisteredOn = dto.RegisteredOn;
+            MapAll(x => x.Id, x => x.Driver);
         }
 
         public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)

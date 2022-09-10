@@ -6,23 +6,16 @@ namespace DAL.Profiles
 {
     public class UserProfile :  EntityProfile<User>
     {
-        public override void Update(User entity, User dto)
+        public UserProfile()
         {
-            entity.Fullname = dto.Fullname;
-            entity.PasswordHash = dto.PasswordHash;
-            entity.UserName = dto.UserName;
-            entity.UserRoleEnum = dto.UserRoleEnum;
-            entity.PhoneNumber = dto.PhoneNumber;
-            entity.Email = dto.Email;
-            entity.LastLoggedInDate = dto.LastLoggedInDate;
-            entity.Enable = dto.Enable;
-        }
-
-        public override IQueryable<User> Include<TQueryable>(TQueryable queryable)
-
-        {
-            return queryable
-                .OrderBy(x => x.Fullname);
+            Map(x => x.Fullname);
+            Map(x => x.PasswordHash);
+            Map(x => x.UserName);
+            Map(x => x.UserRoleEnum);
+            Map(x => x.PhoneNumber);
+            Map(x => x.Email);
+            Map(x => x.LastLoggedInDate);
+            Map(x => x.Enable);
         }
     }
 }

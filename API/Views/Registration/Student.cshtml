@@ -1,4 +1,6 @@
-﻿@model Models.Entities.Student
+﻿@using Models.Constants
+@model Models.Entities.Student
+@inject GlobalConfigs GlobalConfigs;
 
 @{
     ViewBag.Title = $"{DateTime.Now.Year} Free Tour of Milwaukee Registration";
@@ -11,9 +13,9 @@
 
 <div class="container">
     <div class="page-header">
-        <h2 class="text-center">@(DateTime.Now.Year) Free Tour of Milwaukee Registration</h2>
-        <h4 class="text-center">Date and Time: September 3, @(DateTime.Now.Year) at 12:00 noon</h4>
-        <h4 class="text-center">Location: <a href="https://goo.gl/maps/ZQUsoLLzzQQc8vveA" target="_blank">Lubar Hall Lobby (Business Building)</a></h4>
+        <h2 class="text-center">@(GlobalConfigs.TourDate.Year) Free Tour of Milwaukee Registration</h2>
+        <h4 class="text-center">Date and Time: @(GlobalConfigs.TourDate.ToString("dddd, MMMM d")) at @(GlobalConfigs.TourDate.ToString("h:mm tt"))</h4>
+        <h4 class="text-center">Location: <a href="https://goo.gl/maps/ZQUsoLLzzQQc8vveA" target="_blank">@(GlobalConfigs.TourLocation)</a></h4>
         <p class="text-center"><a href="https://www.facebook.com/Milwaukeeinternationals/">Questions? Click here to send us a message on our Facebook page</a></p>
     </div>
 

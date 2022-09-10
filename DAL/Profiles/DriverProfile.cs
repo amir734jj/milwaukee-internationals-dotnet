@@ -7,21 +7,9 @@ namespace DAL.Profiles
 {
     public class DriverProfile : EntityProfile<Driver>
     {
-        public override void Update(Driver entity, Driver dto)
+        public DriverProfile()
         {
-            entity.Fullname = dto.Fullname;
-            entity.Role = dto.Role;
-            entity.Phone = dto.Phone;
-            entity.Email = dto.Email;
-            entity.Capacity = dto.Capacity;
-            entity.Navigator = dto.Navigator;
-            entity.DisplayId = dto.DisplayId;
-            entity.RequireNavigator = dto.RequireNavigator;
-            entity.HaveChildSeat = dto.HaveChildSeat;
-            entity.HostRefId = dto.HostRefId;
-            entity.IsPresent = dto.IsPresent;
-            entity.Year = dto.Year;
-            ModifyList(entity.Students, dto.Students, x => x.Id);
+            MapAll(x => x.Id, x => x.Host);
         }
 
         public override IQueryable<Driver> Include<TQueryable>(TQueryable queryable)

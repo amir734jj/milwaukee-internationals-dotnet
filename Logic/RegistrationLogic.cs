@@ -74,11 +74,11 @@ namespace Logic
                     <p> Display Id: {driver.DisplayId}</p>
                     <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
                     <br>
-                    <p> {DateTime.Now.Year} Tour of Milwaukee</p>
-                    <p> Date: September 3, {DateTime.Now.Year}</p>
-                    <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
-                    <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
-                    <p> Location: Lubar Hall (Business Building, UWM) </p>
+                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {_globalConfigs.TourDate.ToString("dddd, MMMM d")}</p>
+                    <p> Time: {_globalConfigs.TourDate.ToString("h:mm tt")} (Brief orientation only for drivers and navigators) </p>
+                    <p> Address: {_globalConfigs.TourAddress} </p>
+                    <p> Location: {_globalConfigs.TourLocation} </p>
                     <br>
                     <p> Thank you for helping with the tour this year.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
@@ -94,11 +94,11 @@ namespace Logic
                     <p> Phone: {driver.Phone}</p>
                     <p> Display Id: {driver.DisplayId}</p>
                     <br>
-                    <p> {DateTime.Now.Year} Tour of Milwaukee</p>
-                    <p> Date: September 3, {DateTime.Now.Year}</p>
-                    <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
-                    <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
-                    <p> Location: Lubar Hall (Business Building, UWM) </p>
+                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {_globalConfigs.TourDate.ToString("dddd, MMMM d")}</p>
+                    <p> Time: {_globalConfigs.TourDate.ToString("h:mm tt")} (Brief orientation only for drivers and navigators) </p>
+                    <p> Address: {_globalConfigs.TourAddress} </p>
+                    <p> Location: {_globalConfigs.TourLocation} </p>
                     <br>
                     <p> Thank you for helping with the tour this year.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360).</p>
@@ -156,11 +156,11 @@ namespace Logic
                     <hr>
                     <p>See you at the Tour of Milwaukee</p>
                     <br>
-                    <p> {DateTime.Now.Year} Tour of Milwaukee Registration</p>
-                    <p> Date: September 3, {DateTime.Now.Year}</p>
-                    <p> Time: 12:00 noon</p>
-                    <p> Address: 3202 N Maryland Ave, Milwaukee, WI 53211 </p>
-                    <p> Location: Lubar Hall (Business Building, UWM) </p>
+                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {_globalConfigs.TourDate.ToString("dddd, MMMM d")}</p>
+                    <p> Time: {_globalConfigs.TourDate.ToString("h:mm tt")} (Brief orientation only for drivers and navigators) </p>
+                    <p> Address: {_globalConfigs.TourAddress} </p>
+                    <p> Location: {_globalConfigs.TourLocation} </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
@@ -199,8 +199,9 @@ namespace Logic
                     <hr>
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
                     <br>
-                    <p> Date: September 3, {DateTime.Now.Year}</p>
-                    <p> Time: 5:30 pm</p>
+                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {_globalConfigs.TourDate.ToString("dddd, MMMM d")}</p>
+                    <p> Time: {_globalConfigs.TourDate.ToString("h:mm tt")} (Brief orientation only for drivers and navigators) </p>
                     <p> We will send you more details once we have them.</p>
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
                     <p> Blessings,</p>
