@@ -31,6 +31,17 @@ namespace API.Controllers
         {
             return View();
         }
+        
+        /// <summary>
+        /// Returns thank you page
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ThankYou")]
+        public IActionResult ThankYou()
+        {
+            return View("Thankyou");
+        }
 
         /// <summary>
         /// Returns registration pages

@@ -8,13 +8,9 @@ namespace DAL.Profiles
 {
     public class EventProfile : EntityProfile<Event>
     {
-        public  override void Update(Event entity, Event dto)
+        public EventProfile()
         {
-            entity.Address = dto.Address;
-            entity.Description = dto.Description;
-            entity.Name = dto.Name;
-            entity.DateTime = dto.DateTime;
-            ModifyList(entity.Students, dto.Students, x => x.Id);
+            MapAll(x => x.Id);
         }
 
         public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)

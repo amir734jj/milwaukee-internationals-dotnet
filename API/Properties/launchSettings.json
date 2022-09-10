@@ -5,13 +5,19 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Localhost",
-        "MAIL_JET_KEY": "",
-        "MAIL_JET_SECRET": "",
-        "EMAIL_PASSWORD": "",
-        "DATABASE_URL": "",
-        "RecaptchaSettings:SecretKey": "",
-        "RecaptchaSettings:SiteKey": ""
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "AZURE_BLOB_CONFIG": "https://milwaukeeinternationals.blob.core.windows.net/website?sp=racwdli&st=2022-08-15T04:05:46Z&se=2024-09-15T12:05:46Z&spr=https&sv=2021-06-08&sr=c&sig=ynwPZ%2Fev8R5rzdi5UZHCtZMwBUs%2BPD7kF7arXFUrkKY%3D",
+        "AZURE_TABLE_EVENTS": "https://milwaukeeinternationals.table.core.windows.net/?sv=2021-06-08&ss=t&srt=sco&sp=rwdlacu&se=2023-11-01T13:59:05Z&st=2022-08-28T05:59:05Z&spr=https&sig=XY3GOgJ6lZ5mtsL9m8bdeyqwVWxAF1Qk5m7akJP48Qw%3D",
+        "DATABASE_URL": "postgres://fnummmzz:Yv3OArFbR1ww6wvOePr_37SCJHKQh2z8@rajje.db.elephantsql.com/fnummmzz",
+        "EMAIL_PASSWORD": "WelcomingIn2018$",
+        "MAIL_JET_KEY": "6a8331ff1f647d4c97b5e91a26f17c51",
+        "MAIL_JET_SECRET": "ffe626d2d1e3d21f9421e0ad6aa54e0a",
+        "OLD_HEROKU_DATABASE_URL": "postgres://rzpvfkfrsjsnop:628ef71887497896b33c00d2815f98902546fffcbb955a44831f95c654c31741@ec2-54-163-234-99.compute-1.amazonaws.com:5432/dalrkv74kdor1p",
+        "RecaptchaSettings:SecretKey": "6Le5bssUAAAAAA24isZRwztxiU6MTwgdNI1HtCeE",
+        "RECAPTCHASETTINGS_SECRETKEY": "6Le5bssUAAAAAA24isZRwztxiU6MTwgdNI1HtCeE",
+        "RecaptchaSettings:SiteKey": "6Le5bssUAAAAAKz-GxheIeb_U2DRvossWz2efCuc",
+        "RECAPTCHASETTINGS_SITEKEY": "6Le5bssUAAAAAKz-GxheIeb_U2DRvossWz2efCuc",
+        "TOUR_DAY_DATABASE_URL": "postgres://xqbcryfs:U_UnUMMNtdPixMGaAOBOWzMZBoIm8fCh@raja.db.elephantsql.com:5432/xqbcryfs"
       }
     }
   }

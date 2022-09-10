@@ -17,7 +17,7 @@ namespace API.Controllers.API
         }
         
         [HttpGet]
-        [Route("Status")]
+        [Route("")]
         [SwaggerOperation("Status")]
         public IActionResult Status()
         {

@@ -1,7 +1,5 @@
 @model Models.Entities.Event
 
-@Html.TextBoxFor(x => x.Id, new { @class = "hidden" })
-
 <div class="form-group">
     @Html.LabelFor(x => x.Name)
     @Html.TextBoxFor(x => x.Name, new { @class = "form-control", type = "text", placeholder = "Enter name", required = "required"})

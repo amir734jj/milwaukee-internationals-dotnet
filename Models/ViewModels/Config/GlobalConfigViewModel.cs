@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.ViewModels.Config
@@ -28,5 +29,14 @@ namespace Models.ViewModels.Config
         [Display(Name = "Max upper limit of students for this year")]
         [Range(150, 300)]
         public int MaxLimitStudentSeats { get; set; }
+        
+        [Display(Name = "Time of the tour")]
+        public DateTime TourDate { get; set; }
+        
+        [Display(Name = "Address of the tour")]
+        public string TourAddress { get; set; }     
+        
+        [Display(Name = "Location of the tour")]
+        public string TourLocation { get; set; }
     }
 }

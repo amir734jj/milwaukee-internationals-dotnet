@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Models.Constants
+@inject GlobalConfigs GlobalConfigs;
+@{
     ViewBag.Title = "Registration Complete";
     Layout = "_Layout";
 }
@@ -8,10 +10,10 @@
 <h4>You will receive a confirmation email shortly. You can also check your spam folder and mark us as safe sender for future communication.</h4>
 <br/>
 <br/>
-<h4>2022 Tour of Milwaukee Registration</h4>
+<h4>@(GlobalConfigs.TourDate.Year) Tour of Milwaukee Registration</h4>
 
-<h4>Date: September 3, 2022</h4>
-<h4>Time: 12:00 noon</h4>
-<h4>Address: 3202 N Maryland Ave, Milwaukee, WI 53211</h4>
-<h4>Location: Lubar Hall (Business Building, UWM)</h4>
+<h4>Date: @(GlobalConfigs.TourDate.ToString("dddd, MMMM d"))</h4>
+<h4>Time: @(GlobalConfigs.TourDate.ToString("h:mm tt"))</h4>
+<h4>Address: @(GlobalConfigs.TourAddress)</h4>
+<h4>Location: @(GlobalConfigs.TourLocation)</h4>
 <h4>If you need any sort of help (furniture, etc.), please contact Asher Imtiaz.</h4>

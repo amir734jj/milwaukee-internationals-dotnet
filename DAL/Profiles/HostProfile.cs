@@ -7,14 +7,9 @@ namespace DAL.Profiles
 {
     public class HostProfile : EntityProfile<Host>
     {
-        public override void Update(Host entity, Host dto)
+        public HostProfile()
         {
-            entity.Fullname = dto.Fullname;
-            entity.Email = dto.Email;
-            entity.Phone = dto.Phone;
-            entity.Address = dto.Address;
-            entity.Year = dto.Year;
-            ModifyList(entity.Drivers, dto.Drivers, x => x.Id);
+            MapAll(x => x.Id);
         }
 
         public override IQueryable<Host> Include<TQueryable>(TQueryable queryable)
