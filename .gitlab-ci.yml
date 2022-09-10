@@ -4,7 +4,7 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
-  $HEROKU_TOKEN: $HEROKU_TOKEN
+  HEROKU_TOKEN: $HEROKU_TOKEN
 
 stages:
   - build
