@@ -4,12 +4,16 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
+  $HEROKU_TOKEN: $HEROKU_TOKEN
 
 stages:
   - build
 
 docker-build:
   stage: build
+  only:
+    - master
+  allow_failure: false
   script:
     - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/hesamian/milwaukee-internationals-core .
     - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
