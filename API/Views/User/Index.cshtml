@@ -41,7 +41,7 @@
             </th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Enable</th>
+            <th class="hidden-sm hidden-xs">Enabled</th>
             <th class="hidden-sm hidden-xs">Username</th>
             <th class="hidden-sm hidden-xs">Role</th>
             <th class="hidden-sm hidden-xs">LastLoggedInDate</th>
@@ -57,11 +57,11 @@
         {
             var disabled = userInfo.Username == user.UserName;
 
-            <tr>
+            <tr class="@(disabled ? "danger" : "")">
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
-                <td>@user.Enable</td>
+                <td class="hidden-sm hidden-xs">@user.Enable</td>
                 <td class="hidden-sm hidden-xs">@user.UserName</td>
                 <td class="hidden-sm hidden-xs">@user.UserRoleEnum</td>
                 <td class="hidden-sm hidden-xs">@user.LastLoggedInDate.ToCentralTime().DateTime.ToString(CultureInfo.InvariantCulture)</td>
