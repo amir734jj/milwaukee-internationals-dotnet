@@ -349,6 +349,7 @@ namespace API
 
             // Use wwwroot folder as default static path
             app.UseDefaultFiles()
+                .UseHttpsRedirection()
                 .UseEnableRequestRewind()
                 .UseStaticFiles()
                 .UseCookiePolicy()
