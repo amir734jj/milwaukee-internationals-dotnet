@@ -9,7 +9,7 @@ namespace DAL.Profiles
     {
         public HostProfile()
         {
-            MapAll(x => x.Id);
+            MapAll();
         }
 
         public override IQueryable<Host> Include<TQueryable>(TQueryable queryable)

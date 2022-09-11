@@ -9,7 +9,7 @@ namespace DAL.Profiles
     {
         public StudentProfile()
         {
-            MapAll(x => x.Id, x => x.Driver);
+            MapAll(x => x.Driver);
         }
 
         public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)

@@ -10,7 +10,7 @@ namespace DAL.Profiles
     {
         public EventProfile()
         {
-            MapAll(x => x.Id);
+            MapAll();
         }
 
         public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)

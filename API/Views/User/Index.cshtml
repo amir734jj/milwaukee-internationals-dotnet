@@ -56,8 +56,9 @@
         @foreach (var user in Model)
         {
             var disabled = userInfo.Username == user.UserName;
+            var hideDisabledUsers = !user.Enable ? @"ng-show=""showDetail""" : "";
 
-            <tr class="@(!user.Enable ? "danger" : "")">
+            <tr class="@(!user.Enable ? "danger" : "")" @Html.Raw(hideDisabledUsers)>
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td class="hidden-sm hidden-xs">@user.PhoneNumber</td>
