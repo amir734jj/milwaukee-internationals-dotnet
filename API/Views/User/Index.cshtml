@@ -57,7 +57,7 @@
         {
             var disabled = userInfo.Username == user.UserName;
 
-            <tr class="@(disabled ? "danger" : "")">
+            <tr class="@(!user.Enable ? "danger" : "")">
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
                 <td class="hidden-sm hidden-xs">@user.PhoneNumber</td>
