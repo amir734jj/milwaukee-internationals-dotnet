@@ -1,7 +1,3 @@
-image: docker:latest
-services:
-  - docker:sue445/heroku-cli
-
 variables:
   HEROKU_API_KEY: $HEROKU_TOKEN
   APP_NAME: "milwaukee-internationals-core"
@@ -10,7 +6,9 @@ stages:
   - build
 
 docker-build:
-  stage: build
+  stage: deploy
+  image: sue445/heroku-cli
+  resource_group: heroku
   only:
     - master
   allow_failure: false
