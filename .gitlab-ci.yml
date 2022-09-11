@@ -7,12 +7,13 @@ stages:
 
 docker-build:
   stage: deploy
-  image: docker:dind
+  image: docker:dind-rootless
   resource_group: heroku
   only:
     - master
   allow_failure: false
   script:
+    - docker version
     - apk add --no-cache bash curl nodejs make gcompat build-base m4 ncurses
     - apk add --no-cache --virtual=build-dependencies wget ca-certificates
     - curl https://cli-assets.heroku.com/install.sh | sh
