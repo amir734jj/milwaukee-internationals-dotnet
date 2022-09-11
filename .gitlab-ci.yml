@@ -23,4 +23,4 @@ docker-build:
     - npm install -g heroku
     - heroku container:login
     - heroku container:push --app $APP_NAME web
-    - heroku container:release web
+    - heroku container:release --app $APP_NAME web
