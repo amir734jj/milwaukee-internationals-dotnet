@@ -40,7 +40,7 @@
                 </a>
             </th>
             <th>Email</th>
-            <th>Phone</th>
+            <th class="hidden-sm hidden-xs">Phone</th>
             <th class="hidden-sm hidden-xs">Enabled</th>
             <th class="hidden-sm hidden-xs">Username</th>
             <th class="hidden-sm hidden-xs">Role</th>
@@ -60,7 +60,7 @@
             <tr class="@(disabled ? "danger" : "")">
                 <td>@user.Fullname</td>
                 <td>@user.Email</td>
-                <td>@user.PhoneNumber</td>
+                <td class="hidden-sm hidden-xs">@user.PhoneNumber</td>
                 <td class="hidden-sm hidden-xs">@user.Enable</td>
                 <td class="hidden-sm hidden-xs">@user.UserName</td>
                 <td class="hidden-sm hidden-xs">@user.UserRoleEnum</td>
