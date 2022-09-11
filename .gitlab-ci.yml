@@ -3,16 +3,17 @@ variables:
   APP_NAME: "milwaukee-internationals-core"
 
 stages:
-  - deploy
+  - build
 
 docker-build:
   stage: deploy
-  image: sue445/heroku-cli
+  image: docker
   resource_group: heroku
   only:
     - master
   allow_failure: false
   script:
+    - apk add bash curl nodejs
     - heroku container:login
     - heroku container:push --app $APP_NAME web
     - heroku container:release web
