@@ -9,7 +9,7 @@ namespace DAL.Profiles
     {
         public DriverProfile()
         {
-            MapAll(x => x.Id, x => x.Host);
+            MapAll(x => x.Host);
         }
 
         public override IQueryable<Driver> Include<TQueryable>(TQueryable queryable)
