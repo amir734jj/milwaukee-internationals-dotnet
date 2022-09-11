@@ -13,7 +13,8 @@ docker-build:
     - master
   allow_failure: false
   script:
-    - apk add bash curl nodejs
+    - apk add --no-cache bash curl nodejs make gcompat build-base m4 ncurses
+    - apk add --no-cache --virtual=build-dependencies wget ca-certificates
     - curl https://cli-assets.heroku.com/install.sh | sh
     - heroku container:login
     - heroku container:push --app $APP_NAME web
