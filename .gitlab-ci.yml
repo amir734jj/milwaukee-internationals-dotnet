@@ -9,7 +9,7 @@ stages:
 
 docker-build:
   stage: deploy
-  image: docker:dind-rootless
+  image: docker:dind
   resource_group: heroku
   only:
     - master
