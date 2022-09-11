@@ -3,6 +3,7 @@ variables:
   APP_NAME: "milwaukee-internationals-core"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: "tcp://docker:2375"
+  HEROKU_USERNAME: "hesamian@uwm.edu"
 
 services:
   - docker:dind
@@ -22,6 +23,6 @@ docker-build:
     - apk add --no-cache bash curl nodejs make gcompat build-base m4 ncurses
     - apk add --no-cache --virtual=build-dependencies wget ca-certificates
     - curl https://cli-assets.heroku.com/install.sh | sh
-    - heroku container:login
+    - echo $HEROKU_API_KEY | docker login --username=$HEROKU_USERNAME --password-stdin registry.heroku.com
     - heroku container:push --app $APP_NAME web
     - heroku container:release web
