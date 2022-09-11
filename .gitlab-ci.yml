@@ -7,7 +7,7 @@ stages:
 
 docker-build:
   stage: deploy
-  image: docker
+  image: docker:dind
   resource_group: heroku
   only:
     - master
