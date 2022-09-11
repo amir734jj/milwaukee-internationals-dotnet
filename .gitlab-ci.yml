@@ -3,7 +3,7 @@ variables:
   APP_NAME: "milwaukee-internationals-core"
 
 stages:
-  - build
+  - deploy
 
 docker-build:
   stage: deploy
