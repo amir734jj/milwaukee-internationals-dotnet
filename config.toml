@@ -1,2 +1,3 @@
-[runners.docker]
-    privileged = true
+[[runners]]
+    [runners.docker]
+        privileged = true
