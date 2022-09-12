@@ -96,7 +96,7 @@ namespace API.Controllers
         {
             TempData.Clear();
             
-            var result = await base.Login(loginViewModel);
+            var (result, message) = await base.Login(loginViewModel);
             
             if (result)
             {
@@ -112,7 +112,9 @@ namespace API.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login");
+            await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login because of {message}");
+            
+            TempData["Error"] = string.Join(", ", message);
 
             return RedirectToAction("NotAuthenticated");
         }
@@ -184,6 +186,15 @@ namespace API.Controllers
         [SwaggerOperation("NotAuthenticated")]
         public IActionResult NotAuthenticated()
         {
+            if (TempData.ContainsKey("Error"))
+            {
+                var prevError = (string)TempData["Error"];
+
+                if (prevError != null) ModelState.AddModelError("", prevError);
+
+                TempData.Clear();
+            }
+            
             return View();
         }
 
