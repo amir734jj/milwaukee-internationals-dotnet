@@ -243,7 +243,13 @@ namespace API
                 }
             });
 
-            services.AddIdentity<User, IdentityRole<int>>(x => { x.User.RequireUniqueEmail = true; })
+            services.AddIdentity<User, IdentityRole<int>>(x =>
+                {
+                    x.User.RequireUniqueEmail = true; 
+                    x.Lockout.AllowedForNewUsers = true;
+                    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+                    x.Lockout.MaxFailedAccessAttempts = 3;
+                })
                 .AddEntityFrameworkStores<EntityDbContext>()
                 .AddRoles<IdentityRole<int>>()
                 .AddDefaultTokenProviders();
