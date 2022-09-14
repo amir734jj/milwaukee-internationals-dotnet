@@ -114,7 +114,7 @@ namespace API.Controllers
 
             await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login because of {message}");
             
-            TempData["Error"] = string.Join(", ", message);
+            TempData["Error"] = message;
 
             return RedirectToAction("NotAuthenticated");
         }

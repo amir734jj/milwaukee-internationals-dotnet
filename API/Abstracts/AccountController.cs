@@ -67,26 +67,26 @@ namespace API.Abstracts
             return (result2, Array.Empty<string>());
         }
 
-        public async Task<(bool, string[])> Login(LoginViewModel loginViewModel)
+        public async Task<(bool, string)> Login(LoginViewModel loginViewModel)
         {
             // Ensure the username and password is valid.
             var result = await ResolveUserManager().FindByNameAsync(loginViewModel.Username);
             
             if (result == null)
             {
-                return (false, new []{"Could not find account associated with this username."});
+                return (false, "Could not find account associated with this username.");
             }
 
             var loginResult = await ResolveSignInManager().PasswordSignInAsync(result, loginViewModel.Password, true, true);
 
             if (loginResult.IsLockedOut)
             {
-                return (false, new []{"Your account is locked out."});
+                return (false, "Your account is locked out.");
             }
 
             if (!loginResult.Succeeded)
             {
-                return (false, new []{"Username/Password combination is not valid."});
+                return (false, "Username/Password combination is not valid.");
             }
 
             // Generate and issue a JWT token
@@ -112,7 +112,7 @@ namespace API.Abstracts
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(principal), authProperties);
 
-            return (true, Array.Empty<string>());
+            return (true, null);
         }
 
         public async Task Logout()
