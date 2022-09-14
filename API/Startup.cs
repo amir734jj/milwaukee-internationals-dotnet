@@ -124,7 +124,10 @@ namespace API
                 optionBuilder.UseMailKit(mailKitOptions);
             });
 
-            services.AddRouting(options => { options.LowercaseUrls = true; });
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+            });
 
             services.AddDistributedMemoryCache();
 
