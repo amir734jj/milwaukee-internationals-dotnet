@@ -8,7 +8,7 @@ using Models.ViewModels;
 namespace API.Controllers.API;
 
 [AllowAnonymous]
-[Route("api/[controller]i")]
+[Route("api/[controller]")]
 public class PushNotificationController : Controller
 {
     private readonly IApiEventService _apiEventService;
