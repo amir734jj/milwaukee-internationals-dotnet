@@ -31,7 +31,7 @@ public class PushNotificationController : Controller
     [Route("token")]
     public async Task<IActionResult> Save([FromBody]TokenViewModel token)
     {
-        await _apiEventService.RecordEvent($"Received a token: {token}");
+        await _apiEventService.RecordEvent($"Received a token: {token.Token}");
 
         Tokens.Add(token.Token);
         
@@ -42,7 +42,7 @@ public class PushNotificationController : Controller
     [Route("token")]
     public async Task<IActionResult> Delete([FromBody]TokenViewModel token)
     {
-        await _apiEventService.RecordEvent($"Deleted a token: {token}");
+        await _apiEventService.RecordEvent($"Deleted a token: {token.Token}");
 
         Tokens.Remove(token.Token);
 
