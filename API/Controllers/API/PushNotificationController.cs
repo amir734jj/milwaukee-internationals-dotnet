@@ -8,7 +8,7 @@ using Models.ViewModels;
 namespace API.Controllers.API;
 
 [AllowAnonymous]
-[Route("[controller]/token")]
+[Route("[controller]/api")]
 public class PushNotificationController : Controller
 {
     private readonly IApiEventService _apiEventService;
@@ -21,14 +21,14 @@ public class PushNotificationController : Controller
     }
     
     [HttpGet]
-    [Route("")]
+    [Route("token")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(Tokens);
     }
 
     [HttpPost]
-    [Route("")]
+    [Route("token")]
     public async Task<IActionResult> Save([FromBody]TokenViewModel token)
     {
         await _apiEventService.RecordEvent($"Received a token: {token}");
@@ -39,7 +39,7 @@ public class PushNotificationController : Controller
     }
     
     [HttpDelete]
-    [Route("")]
+    [Route("token")]
     public async Task<IActionResult> Delete([FromBody]TokenViewModel token)
     {
         await _apiEventService.RecordEvent($"Deleted a token: {token}");
