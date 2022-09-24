@@ -10,6 +10,7 @@
     <PackageReference Include="Flurl" Version="3.0.6" />
     <PackageReference Include="libphonenumber-csharp" Version="8.12.54" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="MlkPwgen" Version="0.3.0" />
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.3" />
     <PackageReference Include="Svg" Version="3.4.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />

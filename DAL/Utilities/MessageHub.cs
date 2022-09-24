@@ -21,7 +21,7 @@ public class MessageHub : Hub
     {
         _userManager = userManager;
     }
-            
+
     public override async Task OnConnectedAsync()
     {
         var user = await _userManager.FindByNameAsync(Context.User.Identity!.Name);

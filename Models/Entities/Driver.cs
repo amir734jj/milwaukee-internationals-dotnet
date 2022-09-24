@@ -58,7 +58,10 @@ namespace Models.Entities
         /// </summary>
         public int Year { get; set; }
 
-
+        public List<PushToken> PushTokens { get; set; }
+        
+        public string UniqueToken { get; set; }
+        
         /// <summary>
         /// Override generate hashcode
         /// </summary>

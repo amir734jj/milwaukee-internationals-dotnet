@@ -370,6 +370,7 @@ namespace API
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<MessageHub>("/hub");
+                    endpoints.MapHub<LogHub>("/log");
                 });
 
             Console.WriteLine("Application Started!");

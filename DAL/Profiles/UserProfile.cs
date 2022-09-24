@@ -1,4 +1,3 @@
-using System.Linq;
 using EfCoreRepository;
 using Models.Entities;
 
