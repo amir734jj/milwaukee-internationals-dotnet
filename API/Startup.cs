@@ -74,6 +74,13 @@ namespace API
         /// <returns></returns>
         public void ConfigureServices(IServiceCollection services)
         {
+            // If environment is localhost, then enable CORS policy, otherwise no cross-origin access
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder
+                .WithOrigins(_configuration.GetSection("TrustedSpaUrls").Get<string[]>())
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()));
+            
             // https://stackoverflow.com/a/70304966/1834787
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
