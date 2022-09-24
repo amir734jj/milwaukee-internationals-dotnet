@@ -295,6 +295,7 @@ namespace API
                 config.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10 mega-bytes
                 config.StreamBufferCapacity = 50;
                 config.EnableDetailedErrors = true;
+                config.HandshakeTimeout = TimeSpan.MaxValue;
             }).AddNewtonsoftJsonProtocol();
 
             services.AddAutoMapper(Assembly.Load("Models"));
