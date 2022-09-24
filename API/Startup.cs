@@ -147,6 +147,13 @@ namespace API
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
 
+            services.AddSignalR(config =>
+            {
+                config.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10 mega-bytes
+                config.StreamBufferCapacity = 50;
+                config.EnableDetailedErrors = true;
+            }).AddNewtonsoftJsonProtocol();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Milwaukee-Internationals-API", Version = "v1" });
@@ -296,14 +303,6 @@ namespace API
             services.AddSingleton(new TableServiceClient(new Uri(Environment.GetEnvironmentVariable("AZURE_TABLE_EVENTS")!)));
             
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-
-            services.AddSignalR(config =>
-            {
-                config.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10 mega-bytes
-                config.StreamBufferCapacity = 50;
-                config.EnableDetailedErrors = true;
-                config.HandshakeTimeout = TimeSpan.MaxValue;
-            }).AddNewtonsoftJsonProtocol();
 
             services.AddAutoMapper(Assembly.Load("Models"));
         }
