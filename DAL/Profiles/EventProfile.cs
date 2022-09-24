@@ -13,7 +13,7 @@ namespace DAL.Profiles
             MapAll();
         }
 
-        public override IQueryable<Event> Include<TQueryable>(TQueryable queryable)
+        protected override IQueryable<Event> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .Include(x => x.Students)

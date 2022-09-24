@@ -9,10 +9,10 @@ namespace DAL.Profiles
     {
         public StudentProfile()
         {
-            MapAll(x => x.Driver);
+            MapAll();
         }
 
-        public override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
+        protected override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
         {
             return queryable
                 .Include(x => x.Events)

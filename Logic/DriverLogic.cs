@@ -6,6 +6,7 @@ using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
+using MlkPwgen;
 using Models.Constants;
 using Models.Entities;
 using Models.Enums;
@@ -47,6 +48,7 @@ namespace Logic
 
             // Normalize phone number
             instance.Phone = NormalizePhoneNumber(instance.Phone);
+            instance.UniqueToken = await GenerateUniqueToken();
             
             var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).MaxBy(x => x.Id)
                 ?.DisplayId;
@@ -99,6 +101,19 @@ namespace Logic
         public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null)
         {
             return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
+        }
+
+        private async Task<string> GenerateUniqueToken()
+        {
+            while (true)
+            {
+                var uniqueId = PasswordGenerator.Generate(6, Sets.Upper);
+
+                if (await _dal.Count(x => x.UniqueToken == uniqueId) == 0)
+                {
+                    return uniqueId;
+                }
+            }
         }
     }
 }

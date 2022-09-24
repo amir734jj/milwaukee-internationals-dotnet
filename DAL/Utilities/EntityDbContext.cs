@@ -17,6 +17,8 @@ namespace DAL.Utilities
         public DbSet<Host> Hosts { get; set; }
         
         public DbSet<Event> Events { get; set; }
+        
+        public DbSet<PushToken> PushTokens { get; set; }
 
         public EntityDbContext() { }
 
