@@ -6,6 +6,7 @@ using Azure.Data.Tables;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Models.Constants;
 using Models.ViewModels.EventService;
 
@@ -16,20 +17,24 @@ public class ApiEventService : IApiEventService
     private readonly TableServiceClient _tableServiceClient;
     private readonly GlobalConfigs _globalConfigs;
     private readonly IHubContext<MessageHub> _hubContext;
+    private readonly ILogger<ApiEventService> _logger;
 
     private const string TableName = "event";
 
     private const int QueryLimit = 35;
 
-    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs, IHubContext<MessageHub> hubContext)
+    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs, IHubContext<MessageHub> hubContext, ILogger<ApiEventService> logger)
     {
         _tableServiceClient = tableServiceClient;
         _globalConfigs = globalConfigs;
         _hubContext = hubContext;
+        _logger = logger;
     }
 
     public async Task RecordEvent(string description)
     {
+        _logger.LogTrace("{}", description);
+        
         var entity = new ApiEvent
         {
             Description = description,

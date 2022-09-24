@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -18,10 +19,8 @@ public class LogHub : Hub
         _apiEventService = apiEventService;
     }
     
-    public void Sink(object props)
+    public async Task Sink(object props)
     {
-        _logger.LogTrace("Mobile app log: {}", props);
-
-        _apiEventService.RecordEvent(JsonConvert.SerializeObject(props));
+        await _apiEventService.RecordEvent($"Mobile app log: {JsonConvert.SerializeObject(props)}");
     }
 }

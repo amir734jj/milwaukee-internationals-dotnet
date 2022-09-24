@@ -22,7 +22,7 @@ public class PushNotificationController : Controller
     
     [HttpGet]
     [Route("token")]
-    public async Task<IActionResult> GetAll()
+    public IActionResult GetAll()
     {
         return Ok(Tokens);
     }
