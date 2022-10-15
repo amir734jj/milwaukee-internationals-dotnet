@@ -7,8 +7,8 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Azure.Data.Tables" Version="12.6.1" />
     <PackageReference Include="Enums.NET" Version="4.0.0" />
-    <PackageReference Include="Invio.Hashing" Version="1.3.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ObjectHashing" Version="0.0.2" />
   </ItemGroup>
 </Project>

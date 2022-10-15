@@ -77,7 +77,7 @@ namespace Logic
         {
             (await _studentLogic.GetAll()).ForEach(x =>
             {
-                var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Student/{x.GetHashCode()}";
+                var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Student/{x.GenerateHash()}";
                 
                 _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
                     <h4>Please use this link to check-in</h4>
@@ -101,7 +101,7 @@ namespace Logic
         {
             (await _driverLogic.GetAll()).ForEach(x =>
             {
-                var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
+                var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Driver/{x.GenerateHash()}";
                 
                 _emailServiceApi.SendEmailAsync(x.Email, $"Tour Driver Check-In and Host Info ({DateTime.UtcNow.Year})", $@"
                     <h4>Hello {x.Fullname},</h4>

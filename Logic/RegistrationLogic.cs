@@ -127,7 +127,7 @@ namespace Logic
                 await _apiEventService.RecordEvent($"Student {student.Fullname} registered");
 
                 const string rootUrl = ApiConstants.SiteUrl;
-                var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GetHashCode().ToString());
+                var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GenerateHash());
 
                 var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
                 var svg = qr.ToSvgString(4);
