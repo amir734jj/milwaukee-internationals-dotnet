@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Models.Enums;
 using Models.Interfaces;
-using HashCode = Invio.Hashing.HashCode;
+using ObjectHashing;
+using ObjectHashing.Interfaces;
 
 namespace Models.Entities
 {
     [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-    public class Driver : IPerson
+    public class Driver : ObjectHash<Driver>, IPerson
     {
         [Key]
         public int Id { get; set; }
@@ -61,19 +61,17 @@ namespace Models.Entities
         public List<PushToken> PushTokens { get; set; }
         
         public string UniqueToken { get; set; }
-        
-        /// <summary>
-        /// Override generate hashcode
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
+
+        protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Driver> config)
         {
-            return Math.Abs(HashCode.From(
-                HashCode.From(Id),
-                HashCode.FromSet(Email),
-                HashCode.FromSet(Phone),
-                HashCode.FromSet(Fullname)
-            ));
+            config
+                .DefaultAlgorithm()
+                .Property(x => x.Id)
+                .Property(x => x.Email)
+                .Property(x => x.Phone)
+                .Property(x => x.Fullname)
+                .DefaultSerialization()
+                .Build();
         }
 
         public override string ToString()
