@@ -13,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using Models.Entities;
 using Models.Enums;
 using Models.ViewModels.Identities;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace API.Abstracts
 {
@@ -138,7 +137,7 @@ namespace API.Abstracts
                 new Claim(ClaimTypes.Name, user.UserName),    // use username as name
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));

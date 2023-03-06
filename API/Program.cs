@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,20 +20,10 @@ namespace API
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    var port = Environment.GetEnvironmentVariable("PORT");
-                    if (string.IsNullOrEmpty(port))
-                    {
-                        port = "5000";
-                    }
-                    
-                    webBuilder
-                        .UseKestrel()
-                        .UseIISIntegration()
-                        .UseStartup<Startup>()
-                        .UseUrls("http://*:" + port);
-                })
+                .ConfigureWebHostDefaults(webBuilder => webBuilder
+                    .UseKestrel()
+                    .UseIISIntegration()
+                    .UseStartup<Startup>())
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Error))
                 .ConfigureLogging((hostingContext, logging) =>
