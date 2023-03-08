@@ -42,22 +42,22 @@ namespace API.Controllers
             _logger = logger;
         }
 
-        public override UserManager<User> ResolveUserManager()
+        protected override UserManager<User> ResolveUserManager()
         {
             return _userManager;
         }
 
-        public override SignInManager<User> ResolveSignInManager()
+        protected override SignInManager<User> ResolveSignInManager()
         {
             return _signInManager;
         }
 
-        public override RoleManager<IdentityRole<int>> ResolveRoleManager()
+        protected override RoleManager<IdentityRole<int>> ResolveRoleManager()
         {
             return _roleManager;
         }
 
-        public override JwtSettings ResolveJwtSettings()
+        protected override JwtSettings ResolveJwtSettings()
         {
             return _jwtSettings;
         }
