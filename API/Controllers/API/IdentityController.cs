@@ -15,7 +15,7 @@ namespace Api.Controllers.Api
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
-    public class AccountController : AbstractAccountController
+    public class IdentityController : AbstractIdentityController
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signManager;
@@ -24,7 +24,7 @@ namespace Api.Controllers.Api
         private readonly IUserLogic _userLogic;
         private readonly IApiEventService _apiEventService;
 
-        public AccountController(JwtSettings jwtSettings, UserManager<User> userManager,
+        public IdentityController(JwtSettings jwtSettings, UserManager<User> userManager,
             SignInManager<User> signManager, RoleManager<IdentityRole<int>> roleManager, IUserLogic userLogic, IApiEventService apiEventService)
         {
             _jwtSettings = jwtSettings;

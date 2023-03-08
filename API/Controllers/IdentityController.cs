@@ -18,7 +18,7 @@ namespace API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
-    public class IdentityController : AbstractAccountController
+    public class IdentityController : AbstractIdentityController
     {
         private readonly IUserLogic _userLogic;
         private readonly UserManager<User> _userManager;

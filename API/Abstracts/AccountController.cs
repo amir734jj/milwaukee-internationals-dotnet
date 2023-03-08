@@ -16,7 +16,7 @@ using Models.ViewModels.Identities;
 
 namespace API.Abstracts
 {
-    public abstract class AbstractAccountController : Controller
+    public abstract class AbstractIdentityController : Controller
     {
         [NonAction]
         protected abstract UserManager<User> ResolveUserManager();
