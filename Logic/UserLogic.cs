@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -72,9 +74,9 @@ namespace Logic
             return _apiEventService;
         }
 
-        public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null)
+        public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<User, bool>> filter = null)
         {
-            var fetchUsersObservable = base.GetAll(sortBy, descending)
+            var fetchUsersObservable = base.GetAll(sortBy, descending, filter)
                 .ToObservable()
                 .Then(users => users.Select(user =>
                 {

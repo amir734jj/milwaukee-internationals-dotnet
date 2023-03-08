@@ -50,22 +50,26 @@ namespace Api.Controllers.Api
             return Ok(new { });
         }
 
-        public override UserManager<User> ResolveUserManager()
+        [NonAction]
+        protected override UserManager<User> ResolveUserManager()
         {
             return _userManager;
         }
 
-        public override SignInManager<User> ResolveSignInManager()
+        [NonAction]
+        protected override SignInManager<User> ResolveSignInManager()
         {
             return _signManager;
         }
 
-        public override RoleManager<IdentityRole<int>> ResolveRoleManager()
+        [NonAction]
+        protected override RoleManager<IdentityRole<int>> ResolveRoleManager()
         {
             return _roleManager;
         }
 
-        public override JwtSettings ResolveJwtSettings()
+        [NonAction]
+        protected override JwtSettings ResolveJwtSettings()
         {
             return _jwtSettings;
         }

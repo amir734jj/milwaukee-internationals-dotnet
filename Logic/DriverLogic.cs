@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
@@ -88,6 +89,13 @@ namespace Logic
             });
         }
 
+        public async Task<Driver> FindByDriverId(string driverId)
+        {
+            var driver = await _dal.Get(x => x.DisplayId == driverId && x.Year == _globalConfigs.YearValue);
+
+            return driver;
+        }
+
         protected override IBasicCrud<Driver> Repository()
         {
             return _dal;
@@ -98,9 +106,9 @@ namespace Logic
             return _apiEventService;
         }
 
-        public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null)
+        public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<Driver, bool>> filter = null)
         {
-            return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
+            return await base.GetAll(sortBy, descending, x => x.Year == _globalConfigs.YearValue);
         }
 
         private async Task<string> GenerateUniqueToken()

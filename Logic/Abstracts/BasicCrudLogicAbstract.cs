@@ -20,15 +20,14 @@ namespace Logic.Abstracts
 
         public async Task<IEnumerable<T>> GetAll(int year)
         {
-            var result = (await GetAll()).ToList();
-
-            return result switch
+            return this switch
             {
-                List<Driver> drivers => drivers.Where(x => x.Year == year).Cast<T>(),
-                List<Host> hosts => hosts.Where(x => x.Year == year).Cast<T>(),
-                List<Student> students => students.Where(x => x.Year == year).Cast<T>(),
-                List<User> users => users.Cast<T>(),
-                _ => result
+                BasicCrudLogicAbstract<Driver> driverLogic => (await driverLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
+                BasicCrudLogicAbstract<Host> hostLogic => (await hostLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
+                BasicCrudLogicAbstract<Student> studentLogic => (await studentLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
+                BasicCrudLogicAbstract<Event> eventLogic => (await eventLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
+                BasicCrudLogicAbstract<User> userLogic => (await userLogic.GetAll()).Cast<T>(),
+                _ => new List<T>()
             };
         }
 
@@ -37,10 +36,11 @@ namespace Logic.Abstracts
         /// </summary>
         /// <param name="sortBy"></param>
         /// <param name="descending"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null)
+        public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<T, bool>> filter = null)
         {
-            var result = await Repository().GetAll();
+            var result = await Repository().GetAll(filter ?? (x => true));
 
             await ApiEventService().RecordEvent($"Queried all {typeof(T).Name}");
 

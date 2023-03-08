@@ -1,8 +1,10 @@
-﻿using API.Abstracts;
+﻿using System.Threading.Tasks;
+using API.Abstracts;
 using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers.API
 {
@@ -19,6 +21,21 @@ namespace API.Controllers.API
         public DriverController(IDriverLogic driverLogic)
         {
             _driverLogic = driverLogic;
+        }
+        
+        [HttpGet]
+        [Route("login/{driverId}")]
+        [SwaggerOperation("DriverLogin")]
+        public async Task<IActionResult> DriverLogin([FromRoute] string driverId)
+        {
+            var driver = await _driverLogic.FindByDriverId(driverId);
+
+            if (driver == null)
+            {
+                return BadRequest("Failed to find the driver");
+            }
+
+            return Ok(driver);
         }
 
         /// <summary>

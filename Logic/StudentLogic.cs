@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
@@ -114,9 +115,9 @@ namespace Logic
             return _apiEventService;
         }
 
-        public override async Task<IEnumerable<Student>> GetAll(string sortBy = null, bool? descending = null)
+        public override async Task<IEnumerable<Student>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<Student, bool>> filter = null)
         {
-            return (await base.GetAll(sortBy, descending)).Where(x => x.Year == _globalConfigs.YearValue);
+            return await base.GetAll(sortBy, descending, x => x.Year == _globalConfigs.YearValue);
         }
     }
 }

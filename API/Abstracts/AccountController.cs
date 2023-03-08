@@ -18,15 +18,20 @@ namespace API.Abstracts
 {
     public abstract class AbstractAccountController : Controller
     {
-        public abstract UserManager<User> ResolveUserManager();
+        [NonAction]
+        protected abstract UserManager<User> ResolveUserManager();
 
-        public abstract SignInManager<User> ResolveSignInManager();
+        [NonAction]
+        protected abstract SignInManager<User> ResolveSignInManager();
 
-        public abstract RoleManager<IdentityRole<int>> ResolveRoleManager();
+        [NonAction]
+        protected abstract RoleManager<IdentityRole<int>> ResolveRoleManager();
         
-        public abstract JwtSettings ResolveJwtSettings();
+        [NonAction]
+        protected abstract JwtSettings ResolveJwtSettings();
 
-        public async Task<(bool, string[])> Register(RegisterViewModel registerViewModel)
+        [NonAction]
+        protected async Task<(bool, string[])> Register(RegisterViewModel registerViewModel)
         {
             var role = ResolveUserManager().Users.Any() ? UserRoleEnum.Basic : UserRoleEnum.Admin;
             var enable = !ResolveUserManager().Users.Any();
@@ -66,7 +71,8 @@ namespace API.Abstracts
             return (result2, Array.Empty<string>());
         }
 
-        public async Task<(bool, string)> Login(LoginViewModel loginViewModel)
+        [NonAction]
+        protected async Task<(bool, string)> Login(LoginViewModel loginViewModel)
         {
             // Ensure the username and password is valid.
             var result = await ResolveUserManager().FindByNameAsync(loginViewModel.Username);
@@ -114,7 +120,8 @@ namespace API.Abstracts
             return (true, null);
         }
 
-        public async Task Logout()
+        [NonAction]
+        protected async Task Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             
@@ -126,7 +133,8 @@ namespace API.Abstracts
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public string ResolveToken(User user)
+        [NonAction]
+        protected string ResolveToken(User user)
         {
             var jwtSettings = ResolveJwtSettings();
             
