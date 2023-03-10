@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Models.Entities;
 
-namespace Models.ViewModels
+namespace Models.ViewModels;
+
+public class EventManagementViewModel
 {
-    public class EventManagementViewModel
-    {
-        public Event Event { get; set; }
+    public Event Event { get; set; }
         
-        public IEnumerable<Student> AvailableStudents { get; set; }
-    }
+    public IEnumerable<Student> AvailableStudents { get; set; }
 }

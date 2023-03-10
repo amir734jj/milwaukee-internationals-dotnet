@@ -8,102 +8,102 @@ using Models.Entities;
 using Models.Enums;
 using Models.ViewModels;
 
-namespace Logic
+namespace Logic;
+
+public class DriverHostMappingLogic : IDriverHostMappingLogic
 {
-    public class DriverHostMappingLogic : IDriverHostMappingLogic
+    private readonly IDriverLogic _driverLogic;
+    private readonly IHostLogic _hostLogic;
+    private readonly IEmailServiceApi _emailServiceApi;
+    private readonly IApiEventService _apiEventService;
+
+    /// <summary>
+    /// Driver-Host mapping logic
+    /// </summary>
+    /// <param name="driverLogic"></param>
+    /// <param name="hostLogic"></param>
+    /// <param name="emailServiceApi"></param>
+    /// <param name="apiEventService"></param>
+    public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApi, IApiEventService apiEventService)
     {
-        private readonly IDriverLogic _driverLogic;
-        private readonly IHostLogic _hostLogic;
-        private readonly IEmailServiceApi _emailServiceApi;
-        private readonly IApiEventService _apiEventService;
+        _driverLogic = driverLogic;
+        _hostLogic = hostLogic;
+        _emailServiceApi = emailServiceApi;
+        _apiEventService = apiEventService;
+    }
 
-        /// <summary>
-        /// Driver-Host mapping logic
-        /// </summary>
-        /// <param name="driverLogic"></param>
-        /// <param name="hostLogic"></param>
-        /// <param name="emailServiceApi"></param>
-        /// <param name="apiEventService"></param>
-        public DriverHostMappingLogic(IDriverLogic driverLogic, IHostLogic hostLogic, IEmailServiceApi emailServiceApi, IApiEventService apiEventService)
+    /// <summary>
+    /// Logic to handle the mapping
+    /// </summary>
+    /// <param name="newDriverHostMappingViewModel"></param>
+    /// <returns></returns>
+    public async Task<bool> MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+    {
+        var host = await _hostLogic.Get(newDriverHostMappingViewModel.HostId);
+
+        // Save changes to driver
+        var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
         {
-            _driverLogic = driverLogic;
-            _hostLogic = hostLogic;
-            _emailServiceApi = emailServiceApi;
-            _apiEventService = apiEventService;
-        }
-
-        /// <summary>
-        /// Logic to handle the mapping
-        /// </summary>
-        /// <param name="newDriverHostMappingViewModel"></param>
-        /// <returns></returns>
-        public async Task<bool> MapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
-        {
-            var host = await _hostLogic.Get(newDriverHostMappingViewModel.HostId);
-
-            // Save changes to driver
-            var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
-            {
-                // Add map
-                x.Host = host;
-                x.HostRefId = host.Id;
-            }) != null;
+            // Add map
+            x.Host = host;
+            x.HostRefId = host.Id;
+        }) != null;
             
-            await _apiEventService.RecordEvent(
-                $"Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
+        await _apiEventService.RecordEvent(
+            $"Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <summary>
-        /// Un-Map student from driver
-        /// </summary>
-        /// <param name="newDriverHostMappingViewModel"></param>
-        /// <returns></returns>
-        public async Task<bool> UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+    /// <summary>
+    /// Un-Map student from driver
+    /// </summary>
+    /// <param name="newDriverHostMappingViewModel"></param>
+    /// <returns></returns>
+    public async Task<bool> UnMapDriverToHost(NewDriverHostMappingViewModel newDriverHostMappingViewModel)
+    {
+        // Save changes to driver
+        var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
         {
-            // Save changes to driver
-            var result = await _driverLogic.Update(newDriverHostMappingViewModel.DriverId, x =>
-            {
-                // Remove map
-                x.Host = null;
-                x.HostRefId = null;
-            }) != null;
+            // Remove map
+            x.Host = null;
+            x.HostRefId = null;
+        }) != null;
             
-            await _apiEventService.RecordEvent(
-                $"Un-Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
+        await _apiEventService.RecordEvent(
+            $"Un-Mapped driver to host {newDriverHostMappingViewModel.DriverId} to {newDriverHostMappingViewModel.HostId}");
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <summary>
-        /// Returns the status of mappings
-        /// </summary>
-        /// <returns></returns>
-        public async Task<DriverHostMappingViewModel> MappingStatus()
+    /// <summary>
+    /// Returns the status of mappings
+    /// </summary>
+    /// <returns></returns>
+    public async Task<DriverHostMappingViewModel> MappingStatus()
+    {
+        var hosts = (await _hostLogic.GetAll()).ToList();
+        var drivers = (await _driverLogic.GetAll()).Where(x => x.Role == RolesEnum.Driver).ToList();
+
+        // TODO: add check to return only students that are present
+        return new DriverHostMappingViewModel
         {
-            var hosts = (await _hostLogic.GetAll()).ToList();
-            var drivers = (await _driverLogic.GetAll()).Where(x => x.Role == RolesEnum.Driver).ToList();
+            AvailableHosts = hosts,
+            AvailableDrivers = drivers.Where(x => x.Host == null),
+            MappedDrivers = drivers.Where(x => x.Host != null),
+            MappedHosts = hosts.Where(x => x.Drivers != null && x.Drivers.Any())
+        };
+    }
 
-            // TODO: add check to return only students that are present
-            return new DriverHostMappingViewModel
-            {
-                AvailableHosts = hosts,
-                AvailableDrivers = drivers.Where(x => x.Host == null),
-                MappedDrivers = drivers.Where(x => x.Host != null),
-                MappedHosts = hosts.Where(x => x.Drivers != null && x.Drivers.Any())
-            };
-        }
-
-        /// <summary>
-        /// Emails the mappings to hosts
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> EmailMappings()
+    /// <summary>
+    /// Emails the mappings to hosts
+    /// </summary>
+    /// <returns></returns>
+    public async Task<bool> EmailMappings()
+    {
+        string MessageFunc(Host host)
         {
-            string MessageFunc(Host host)
-            {
-                return $@"               
+            return $@"               
         <br />
         <p> Hello {host.Fullname}</p>                                                 
         {(host.Drivers != null && host.Drivers.Any() ? $@"
@@ -127,20 +127,19 @@ namespace Logic
         <p> Thank you for helping with the tour this year. Reply to this email will be sent automatically to the team.</p>      
         <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
         ";
-            }
-
-            var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
-
-            // Send the email to hosts
-            var tasks = hosts
-                .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
-
-            await Task.WhenAll(tasks);
-            
-            await _apiEventService.RecordEvent("Sent driver-host mapping emails");
-            
-            // Return true
-            return true;
         }
+
+        var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
+
+        // Send the email to hosts
+        var tasks = hosts
+            .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+
+        await Task.WhenAll(tasks);
+            
+        await _apiEventService.RecordEvent("Sent driver-host mapping emails");
+            
+        // Return true
+        return true;
     }
 }

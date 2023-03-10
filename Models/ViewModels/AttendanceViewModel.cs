@@ -1,11 +1,10 @@
 ﻿using Models.Interfaces;
 
-namespace Models.ViewModels
+namespace Models.ViewModels;
+
+public class AttendanceViewModel : IViewModel
 {
-    public class AttendanceViewModel : IViewModel
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
         
-        public bool Attendance { get; set; }
-    }
+    public bool Attendance { get; set; }
 }

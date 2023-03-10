@@ -10,148 +10,148 @@ using Logic.Interfaces;
 using Models.Entities;
 using Models.Interfaces;
 
-namespace Logic.Abstracts
+namespace Logic.Abstracts;
+
+public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity
 {
-    public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : class, IEntity
+    protected abstract IBasicCrud<T> Repository();
+        
+    protected abstract IApiEventService ApiEventService();
+
+    public async Task<IEnumerable<T>> GetAll(int year)
     {
-        protected abstract IBasicCrud<T> Repository();
-        
-        protected abstract IApiEventService ApiEventService();
-
-        public async Task<IEnumerable<T>> GetAll(int year)
+        return this switch
         {
-            return this switch
-            {
-                BasicCrudLogicAbstract<Driver> driverLogic => (await driverLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
-                BasicCrudLogicAbstract<Host> hostLogic => (await hostLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
-                BasicCrudLogicAbstract<Student> studentLogic => (await studentLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
-                BasicCrudLogicAbstract<Event> eventLogic => (await eventLogic.GetAll(filter: x => x.Year == year)).Cast<T>(),
-                BasicCrudLogicAbstract<User> userLogic => (await userLogic.GetAll()).Cast<T>(),
-                _ => new List<T>()
-            };
-        }
+            BasicCrudLogicAbstract<Driver> driverLogic => (await driverLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<Host> hostLogic => (await hostLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<Student> studentLogic => (await studentLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<Event> eventLogic => (await eventLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<Location> locationLogic => (await locationLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<User> userLogic => (await userLogic.GetAll()).Cast<T>(),
+            _ => new List<T>()
+        };
+    }
 
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="sortBy"></param>
-        /// <param name="descending"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<T, bool>> filter = null)
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="sortBy"></param>
+    /// <param name="descending"></param>
+    /// <param name="filters"></param>
+    /// <returns></returns>
+    public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<T, bool>>[] filters)
+    {
+        var result = await Repository().GetAll(filters);
+
+        await ApiEventService().RecordEvent($"Queried all {typeof(T).Name}");
+
+        if (string.IsNullOrEmpty(sortBy))
         {
-            var result = await Repository().GetAll(filter ?? (x => true));
-
-            await ApiEventService().RecordEvent($"Queried all {typeof(T).Name}");
-
-            if (string.IsNullOrEmpty(sortBy))
-            {
-                return result;
-            }
-
-            var property = typeof(T).GetProperties()
-                .Where(x => x.CanRead && x.CanWrite)
-                .FirstOrDefault(x => x.Name.Equals(sortBy, StringComparison.OrdinalIgnoreCase));
-
-            if (property == null)
-            {
-                return result;
-            }
-
-            var propertyAccessFunc = ToLambda(property).Compile();
-
-            if (!descending.HasValue || !descending.Value)
-            {
-                return result.OrderBy(propertyAccessFunc).ToList();
-            }
-
-            return result.OrderByDescending(propertyAccessFunc).ToList();
-        }
-        
-        private static Expression<Func<T, object>> ToLambda(PropertyInfo propertyInfo)
-        {
-            var parameter = Expression.Parameter(typeof(T));
-            var property = Expression.Property(parameter, propertyInfo);
-            var propAsObject = Expression.Convert(property, typeof(object));
-
-            return Expression.Lambda<Func<T, object>>(propAsObject, parameter);            
-        }
-
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public virtual async Task<T> Get(int id)
-        {
-            var result =  await Repository().Get(id);
-            
-            await ApiEventService().RecordEvent($"Queried ID: {id} of {typeof(T).Name}");
-
             return result;
         }
 
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public virtual async Task<T> Save(T instance)
+        var property = typeof(T).GetProperties()
+            .Where(x => x.CanRead && x.CanWrite)
+            .FirstOrDefault(x => x.Name.Equals(sortBy, StringComparison.OrdinalIgnoreCase));
+
+        if (property == null)
         {
-            var result = await Repository().Save(instance);
+            return result;
+        }
+
+        var propertyAccessFunc = ToLambda(property).Compile();
+
+        if (!descending.HasValue || !descending.Value)
+        {
+            return result.OrderBy(propertyAccessFunc).ToList();
+        }
+
+        return result.OrderByDescending(propertyAccessFunc).ToList();
+    }
+        
+    private static Expression<Func<T, object>> ToLambda(PropertyInfo propertyInfo)
+    {
+        var parameter = Expression.Parameter(typeof(T));
+        var property = Expression.Property(parameter, propertyInfo);
+        var propAsObject = Expression.Convert(property, typeof(object));
+
+        return Expression.Lambda<Func<T, object>>(propAsObject, parameter);            
+    }
+
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public virtual async Task<T> Get(int id)
+    {
+        var result =  await Repository().Get(id);
+            
+        await ApiEventService().RecordEvent($"Queried ID: {id} of {typeof(T).Name}");
+
+        return result;
+    }
+
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="instance"></param>
+    /// <returns></returns>
+    public virtual async Task<T> Save(T instance)
+    {
+        var result = await Repository().Save(instance);
          
-            await ApiEventService().RecordEvent($"Save new {typeof(T).Name} => {instance}");
+        await ApiEventService().RecordEvent($"Save new {typeof(T).Name} => {instance}");
 
-            return result;
-        }
+        return result.FirstOrDefault();
+    }
 
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public virtual async Task<T> Delete(int id)
-        {
-            var result =await Repository().Delete(id);
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public virtual async Task<T> Delete(int id)
+    {
+        var result =await Repository().Delete(id);
             
-            await ApiEventService().RecordEvent($"Delete {typeof(T).Name} with ID: {id}");
+        await ApiEventService().RecordEvent($"Delete {typeof(T).Name} with ID: {id}");
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="updatedInstance"></param>
-        /// <returns></returns>
-        public virtual async Task<T> Update(int id, T updatedInstance)
-        {
-            var result = await Repository().Update(id, updatedInstance);
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="updatedInstance"></param>
+    /// <returns></returns>
+    public virtual async Task<T> Update(int id, T updatedInstance)
+    {
+        var result = await Repository().Update(id, updatedInstance);
             
-            await ApiEventService().RecordEvent($"Update {typeof(T).Name} with ID: {id} => {updatedInstance}");
+        await ApiEventService().RecordEvent($"Update {typeof(T).Name} with ID: {id} => {updatedInstance}");
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <summary>
-        /// Call forwarding
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="modifyAction"></param>
-        /// <returns></returns>
-        public virtual async Task<T> Update(int id, Action<T> modifyAction)
-        {
-            var result = await Repository().Update(id, modifyAction);;
+    /// <summary>
+    /// Call forwarding
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="modifyAction"></param>
+    /// <returns></returns>
+    public virtual async Task<T> Update(int id, Action<T> modifyAction)
+    {
+        var result = await Repository().Update(id, modifyAction);;
             
-            await ApiEventService().RecordEvent($"Updated {typeof(T).Name} with ID: {id} => {result}");
+        await ApiEventService().RecordEvent($"Updated {typeof(T).Name} with ID: {id} => {result}");
 
-            return result;
-        }
+        return result;
+    }
 
-        public async Task<int> Count(Expression<Func<T, bool>> filter)
-        {
-            return await Repository().Count(filter);
-        }
+    public async Task<int> Count(Expression<Func<T, bool>> filter)
+    {
+        return await Repository().Count(filter);
     }
 }

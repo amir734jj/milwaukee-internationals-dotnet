@@ -7,195 +7,227 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 
-namespace API.Controllers
-{
-    [AllowAnonymous]
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("[controller]")]
-    public class RegistrationController : Controller
-    {
-        private readonly IRegistrationLogic _registrationLogic;
+namespace API.Controllers;
 
-        public RegistrationController(IRegistrationLogic registrationLogic)
-        {
-            _registrationLogic = registrationLogic;
-        }
+[AllowAnonymous]
+[ApiExplorerSettings(IgnoreApi = true)]
+[Route("[controller]")]
+public class RegistrationController : Controller
+{
+    private readonly IRegistrationLogic _registrationLogic;
+
+    public RegistrationController(IRegistrationLogic registrationLogic)
+    {
+        _registrationLogic = registrationLogic;
+    }
         
-        /// <summary>
-        /// Returns registration page for drivers
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+    /// <summary>
+    /// Returns registration page for drivers
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("")]
+    public IActionResult Index()
+    {
+        return View();
+    }
         
-        /// <summary>
-        /// Returns thank you page
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("ThankYou")]
-        public IActionResult ThankYou()
+    /// <summary>
+    /// Returns thank you page
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("ThankYou")]
+    public IActionResult ThankYou()
+    {
+        return View("Thankyou");
+    }
+
+    /// <summary>
+    /// Returns registration pages
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("Driver")]
+    public IActionResult Driver()
+    {
+        if (TempData.ContainsKey("Error"))
         {
+            ViewData["Error"] = TempData["Error"];
+            TempData.Clear();
+        }
+            
+        return View(new Driver());
+    }
+        
+    /// <summary>
+    /// POST registration
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("Driver/Register")]
+    public async Task<IActionResult> RegisterDriver(Driver driver)
+    {
+        try
+        {
+            await _registrationLogic.RegisterDriver(driver);
+
+            ModelState.ClearModelStateErrors();
+
             return View("Thankyou");
         }
-
-        /// <summary>
-        /// Returns registration pages
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("Driver")]
-        public IActionResult Driver()
+        catch (Exception e)
         {
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-                TempData.Clear();
-            }
+            TempData["Error"] = $"Failed to register driver. Please try again! {e.Message}";
+
+            return RedirectToAction("Driver");
+        }
+    }
+
+    [HttpGet]
+    [Route("Student")]
+    public async Task<IActionResult> Student()
+    {
+        if (User.Identity is { IsAuthenticated: false } && !await _registrationLogic.IsRegisterStudentOpen())
+        {
+            return View("SorryClosed");
+        }
+
+        if (TempData.ContainsKey("Error"))
+        {
+            ViewData["Error"] = TempData["Error"];
+            TempData.Clear();
+        }
             
-            return View(new Driver());
-        }
+        return View(new Student());
+    }
         
-        /// <summary>
-        /// POST registration
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Driver/Register")]
-        public async Task<IActionResult> RegisterDriver(Driver driver)
+    /// <summary>
+    /// POST registration
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("Student/Register")]
+    public async Task<IActionResult> RegisterStudent(Student student)
+    {
+        try
         {
-            try
-            {
-                await _registrationLogic.RegisterDriver(driver);
+            await _registrationLogic.RegisterStudent(student);
 
-                ModelState.ClearModelStateErrors();
+            ModelState.ClearModelStateErrors();
 
-                return View("Thankyou");
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = $"Failed to register driver. Please try again! {e.Message}";
-
-                return RedirectToAction("Driver");
-            }
+            return View("Thankyou");
         }
-
-        [HttpGet]
-        [Route("Student")]
-        public async Task<IActionResult> Student()
+        catch (Exception e)
         {
-            if (User.Identity is { IsAuthenticated: false } && !await _registrationLogic.IsRegisterStudentOpen())
-            {
-                return View("SorryClosed");
-            }
+            TempData["Error"] = $"Failed to register student. Please try again! {e.Message}";
 
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-                TempData.Clear();
-            }
+            return RedirectToAction("Student");
+        }
+    }
+        
+    [AuthorizeMiddleware]
+    [HttpGet]
+    [Route("Host")]
+    public IActionResult Host()
+    {
+        if (TempData.ContainsKey("Error"))
+        {
+            ViewData["Error"] = TempData["Error"];
+            TempData.Clear();
+        }
             
-            return View(new Student());
-        }
+        return View(new Host());
+    }
         
-        /// <summary>
-        /// POST registration
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Student/Register")]
-        public async Task<IActionResult> RegisterStudent(Student student)
+    /// <summary>
+    /// POST registration
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware]
+    [HttpPost]
+    [Route("Host/Register")]
+    public async Task<IActionResult> RegisterHost(Host host)
+    {
+        try
         {
-            try
-            {
-                await _registrationLogic.RegisterStudent(student);
+            await _registrationLogic.RegisterHost(host);
 
-                ModelState.ClearModelStateErrors();
+            ModelState.ClearModelStateErrors();
 
-                return View("Thankyou");
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = $"Failed to register student. Please try again! {e.Message}";
-
-                return RedirectToAction("Student");
-            }
+            return View("Thankyou");
         }
+        catch (Exception e)
+        {
+            TempData["Error"] = $"Failed to register host. Please try again! {e.Message}";
+
+            return RedirectToAction("Host");
+        }
+    }
         
-        [AuthorizeMiddleware]
-        [HttpGet]
-        [Route("Host")]
-        public IActionResult Host()
+    [AuthorizeMiddleware]
+    [HttpGet]
+    [Route("Event")]
+    public IActionResult Event()
+    {
+        return View(new Event());
+    }
+
+    /// <summary>
+    /// POST registration
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware]
+    [HttpPost]
+    [Route("Event/Register")]
+    public async Task<IActionResult> RegisterEvent(Event @event)
+    {
+        try
         {
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-                TempData.Clear();
-            }
-            
-            return View(new Host());
+            await _registrationLogic.RegisterEvent(@event);
+
+            ModelState.ClearModelStateErrors();
+
+            return RedirectToAction("Index", "Event");
         }
-        
-        /// <summary>
-        /// POST registration
-        /// </summary>
-        /// <returns></returns>
-        [AuthorizeMiddleware]
-        [HttpPost]
-        [Route("Host/Register")]
-        public async Task<IActionResult> RegisterHost(Host host)
+        catch (Exception e)
         {
-            try
-            {
-                await _registrationLogic.RegisterHost(host);
+            TempData["Error"] = $"Failed to register event. Please try again! {e.Message}";
 
-                ModelState.ClearModelStateErrors();
-
-                return View("Thankyou");
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = $"Failed to register host. Please try again! {e.Message}";
-
-                return RedirectToAction("Host");
-            }
+            return RedirectToAction("Event");
         }
-        
-        [AuthorizeMiddleware]
-        [HttpGet]
-        [Route("Event")]
-        public IActionResult Event()
+    }      
+    
+    [AuthorizeMiddleware]
+    [HttpGet]
+    [Route("Location")]
+    public IActionResult Location()
+    {
+        return View(new Location());
+    }
+
+    /// <summary>
+    /// POST registration
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware]
+    [HttpPost]
+    [Route("Location/Register")]
+    public async Task<IActionResult> RegisterLocation(Location location)
+    {
+        try
         {
-            return View(new Event());
+            await _registrationLogic.RegisterLocation(location);
+
+            ModelState.ClearModelStateErrors();
+
+            return RedirectToAction("Index", "Location");
         }
-
-        /// <summary>
-        /// POST registration
-        /// </summary>
-        /// <returns></returns>
-        [AuthorizeMiddleware]
-        [HttpPost]
-        [Route("Event/Register")]
-        public async Task<IActionResult> RegisterEvent(Event @event)
+        catch (Exception e)
         {
-            try
-            {
-                await _registrationLogic.RegisterEvent(@event);
+            TempData["Error"] = $"Failed to register location. Please try again! {e.Message}";
 
-                ModelState.ClearModelStateErrors();
-
-                return View("Thankyou");
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = $"Failed to register event. Please try again! {e.Message}";
-
-                return RedirectToAction("Event");
-            }
+            return RedirectToAction("Location");
         }
     }
 }

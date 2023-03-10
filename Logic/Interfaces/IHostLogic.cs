@@ -1,9 +1,8 @@
 ﻿using Models.Entities;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IHostLogic : IBasicCrudLogic<Host>
 {
-    public interface IHostLogic : IBasicCrudLogic<Host>
-    {
         
-    }
 }

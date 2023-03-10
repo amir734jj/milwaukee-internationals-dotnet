@@ -31,4 +31,9 @@
     </Folder>
   </ItemGroup>
   
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Location\Edit.cshtml" />
+    <AdditionalFiles Include="Views\Location\Index.cshtml" />
+  </ItemGroup>
+  
 </Project>

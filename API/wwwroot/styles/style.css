@@ -311,3 +311,9 @@ body {
 .margin-left-xl {
     margin-left: 3em;
 }
+
+.hcenter
+{
+    display: flex;
+    justify-content: center;
+}

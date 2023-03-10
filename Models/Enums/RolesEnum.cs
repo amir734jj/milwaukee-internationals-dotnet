@@ -1,8 +1,7 @@
-﻿namespace Models.Enums
+﻿namespace Models.Enums;
+
+public enum RolesEnum
 {
-    public enum RolesEnum
-    {
-        Driver,
-        Navigator
-    }
+    Driver,
+    Navigator
 }

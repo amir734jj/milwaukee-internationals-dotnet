@@ -1,14 +1,13 @@
 ﻿using Models.Interfaces;
 
-namespace Models.ViewModels
+namespace Models.ViewModels;
+
+/// <summary>
+/// Student-Driver mapping view model for new map
+/// </summary>
+public class NewStudentDriverMappingViewModel : IViewModel
 {
-    /// <summary>
-    /// Student-Driver mapping view model for new map
-    /// </summary>
-    public class NewStudentDriverMappingViewModel : IViewModel
-    {
-        public int StudentId { get; set; }
+    public int StudentId { get; set; }
         
-        public int DriverId { get; set; }
-    }
+    public int DriverId { get; set; }
 }

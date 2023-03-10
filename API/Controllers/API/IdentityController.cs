@@ -5,175 +5,175 @@ using API.Abstracts;
 using API.Utilities;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Models.ViewModels.Identities;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
-using Models.Entities;
-namespace Api.Controllers.Api
+
+namespace API.Controllers.API;
+
+[AllowAnonymous]
+[Route("api/[controller]")]
+public class IdentityController : AbstractIdentityController
 {
-    [AllowAnonymous]
-    [Route("api/[controller]")]
-    public class IdentityController : AbstractIdentityController
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signManager;
+    private readonly RoleManager<IdentityRole<int>> _roleManager;
+    private readonly JwtSettings _jwtSettings;
+    private readonly IUserLogic _userLogic;
+    private readonly IApiEventService _apiEventService;
+
+    public IdentityController(JwtSettings jwtSettings, UserManager<User> userManager,
+        SignInManager<User> signManager, RoleManager<IdentityRole<int>> roleManager, IUserLogic userLogic, IApiEventService apiEventService)
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signManager;
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
-        private readonly JwtSettings _jwtSettings;
-        private readonly IUserLogic _userLogic;
-        private readonly IApiEventService _apiEventService;
+        _jwtSettings = jwtSettings;
+        _userManager = userManager;
+        _signManager = signManager;
+        _roleManager = roleManager;
+        _userLogic = userLogic;
+        _apiEventService = apiEventService;
+    }
 
-        public IdentityController(JwtSettings jwtSettings, UserManager<User> userManager,
-            SignInManager<User> signManager, RoleManager<IdentityRole<int>> roleManager, IUserLogic userLogic, IApiEventService apiEventService)
+    [HttpGet]
+    [Route("")]
+    [SwaggerOperation("AccountInfo")]
+    public async Task<IActionResult> Index()
+    {
+        if (User.Identity is { IsAuthenticated: true })
         {
-            _jwtSettings = jwtSettings;
-            _userManager = userManager;
-            _signManager = signManager;
-            _roleManager = roleManager;
-            _userLogic = userLogic;
-            _apiEventService = apiEventService;
-        }
-
-        [HttpGet]
-        [Route("")]
-        [SwaggerOperation("AccountInfo")]
-        public async Task<IActionResult> Index()
-        {
-            if (User.Identity is { IsAuthenticated: true })
-            {
-                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+            var user = await _userManager.FindByEmailAsync(User.Identity.Name);
                 
-                return Ok(user);
-            }
-
-            return Ok(new { });
+            return Ok(user);
         }
 
-        [NonAction]
-        protected override UserManager<User> ResolveUserManager()
+        return Ok(new { });
+    }
+
+    [NonAction]
+    protected override UserManager<User> ResolveUserManager()
+    {
+        return _userManager;
+    }
+
+    [NonAction]
+    protected override SignInManager<User> ResolveSignInManager()
+    {
+        return _signManager;
+    }
+
+    [NonAction]
+    protected override RoleManager<IdentityRole<int>> ResolveRoleManager()
+    {
+        return _roleManager;
+    }
+
+    [NonAction]
+    protected override JwtSettings ResolveJwtSettings()
+    {
+        return _jwtSettings;
+    }
+
+    [HttpPost]
+    [Route("Register")]
+    [SwaggerOperation("Register")]
+    public new async Task<IActionResult> Register([FromBody] RegisterViewModel registerViewModel)
+    {
+        TempData.Clear();
+
+        if (registerViewModel.Password != registerViewModel.ConfirmPassword)
         {
-            return _userManager;
+            TempData["Error"] = "Password and Password Confirmation do not match. Please try again!";
+
+            return BadRequest("Password and Password Confirmation do not match");
         }
 
-        [NonAction]
-        protected override SignInManager<User> ResolveSignInManager()
+        // Save the user
+        var (result, errors) = await base.Register(registerViewModel);
+
+        if (result)
         {
-            return _signManager;
+            await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] successfully register");
+
+            return Ok("Successfully registered");
         }
+            
+        await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] failed to register");
 
-        [NonAction]
-        protected override RoleManager<IdentityRole<int>> ResolveRoleManager()
+        return BadRequest("Failed to register");
+    }
+
+    [HttpPost]
+    [Route("Login")]
+    [SwaggerOperation("Login")]
+    public new async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
+    {
+        TempData.Clear();
+            
+        var (result, message) = await base.Login(loginViewModel);
+            
+        if (result)
         {
-            return _roleManager;
-        }
+            await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] logged in successfully");
 
-        [NonAction]
-        protected override JwtSettings ResolveJwtSettings()
-        {
-            return _jwtSettings;
-        }
+            var user = (await _userLogic.GetAll()).First(x =>
+                x.UserName.Equals(loginViewModel.Username, StringComparison.OrdinalIgnoreCase));
 
-        [HttpPost]
-        [Route("Register")]
-        [SwaggerOperation("Register")]
-        public new async Task<IActionResult> Register([FromBody] RegisterViewModel registerViewModel)
-        {
-            TempData.Clear();
+            user.LastLoggedInDate = DateTimeOffset.Now;
 
-            if (registerViewModel.Password != registerViewModel.ConfirmPassword)
+            await _userLogic.Update(user.Id, user);
+
+            var token = ResolveToken(user);
+
+            return Ok(new
             {
-                TempData["Error"] = "Password and Password Confirmation do not match. Please try again!";
-
-                return BadRequest("Password and Password Confirmation do not match");
-            }
-
-            // Save the user
-            var (result, errors) = await base.Register(registerViewModel);
-
-            if (result)
-            {
-                await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] successfully register");
-
-                return Ok("Successfully registered");
-            }
-            
-            await _apiEventService.RecordEvent($"User [{registerViewModel.Username}] failed to register");
-
-            return BadRequest("Failed to register");
+                token,
+                user.UserName,
+                user.Email
+            });
         }
 
-        [HttpPost]
-        [Route("Login")]
-        [SwaggerOperation("Login")]
-        public new async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
-        {
-            TempData.Clear();
+        await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login because of {message}");
+
+        return Unauthorized();
+    }
+
+    [Authorize]
+    [HttpPost]
+    [Route("Logout")]
+    [SwaggerOperation("Logout")]
+    public new async Task<IActionResult> Logout()
+    {
+        var result = await ResolveUserManager().FindByNameAsync(User.Identity!.Name);
             
-            var (result, message) = await base.Login(loginViewModel);
+        await base.Logout();
             
-            if (result)
-            {
-                await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] logged in successfully");
+        await _apiEventService.RecordEvent($"User [{result.UserName}] successfully logged-out");
 
-                var user = (await _userLogic.GetAll()).First(x =>
-                    x.UserName.Equals(loginViewModel.Username, StringComparison.OrdinalIgnoreCase));
-
-                user.LastLoggedInDate = DateTimeOffset.Now;
-
-                await _userLogic.Update(user.Id, user);
-
-                var token = ResolveToken(user);
-
-                return Ok(new
-                {
-                    token,
-                    user.UserName,
-                    user.Email
-                });
-            }
-
-            await _apiEventService.RecordEvent($"User [{loginViewModel.Username}] failed to login because of {message}");
-
-            return Unauthorized();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("Logout")]
-        [SwaggerOperation("Logout")]
-        public new async Task<IActionResult> Logout()
-        {
-            var result = await ResolveUserManager().FindByNameAsync(User.Identity!.Name);
-            
-            await base.Logout();
-            
-            await _apiEventService.RecordEvent($"User [{result.UserName}] successfully logged-out");
-
-            return Ok("Successfully logged out");
-        }
+        return Ok("Successfully logged out");
+    }
         
-        [Authorize]
-        [HttpGet]
-        [Route("Refresh")]
-        [SwaggerOperation("Refresh")]
-        public async Task<IActionResult> Refresh()
+    [Authorize]
+    [HttpGet]
+    [Route("Refresh")]
+    [SwaggerOperation("Refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        if (User.Identity != null)
         {
-            if (User.Identity != null)
-            {
-                var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+            var user = await _userManager.FindByEmailAsync(User.Identity.Name);
                 
-                var token = base.ResolveToken(user);
+            var token = base.ResolveToken(user);
 
-                return Ok(new
-                {
-                    token,
-                    user.UserName,
-                    user.Email
-                });
-            }
-
-            return BadRequest("Failed to find the user");
+            return Ok(new
+            {
+                token,
+                user.UserName,
+                user.Email
+            });
         }
+
+        return BadRequest("Failed to find the user");
     }
 }

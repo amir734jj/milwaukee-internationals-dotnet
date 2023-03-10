@@ -808,5 +808,50 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         });
 
         await $scope.init();
+    }])
+    .controller('locationListCtrl', ['$scope', '$http', '$window', '$async', 'jsPDF', async ($scope, $http, $window, $async, jsPDF) => {
+        $scope.getAllLocationsPDF = $async($scope, async () => {
+            const {data: locations} = await $http.get('/api/location');
+
+            const doc = new jsPDF({
+                orientation: 'l',
+                lineHeight: 1.5
+            });
+
+            doc.setFont('courier');
+
+            doc.setFontSize(10);
+
+            const subsetAttr = (attrList, obj) => attrList.reduce((o, k) => {
+                o[k] = obj[k];
+                return o;
+            }, {});
+
+            let i, j, temporary;
+            const chunk = 25;
+            for (i = 0, j = locations.length; i < j; i += chunk) {
+                temporary = locations.slice(i, i + chunk);
+
+                let str = stringTable.create(temporary.map(location => {
+                    return subsetAttr(['name', 'address', 'description'], location);
+                }));
+
+                // Needed
+                str = str.replace(/’/g, "'");
+
+                if (i === 0) {
+                    str = `Location List ( count of locations: ${locations.length} )\n\n${str}`;
+                }
+
+                doc.text(20, 20, str);
+
+                if (i + chunk < j) {
+                    doc.addPage();
+                }
+            }
+
+            doc.save('location-list.pdf');
+        });
+    }])
+    .controller('locationEditCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
     }]);
-    

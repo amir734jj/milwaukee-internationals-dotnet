@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Models.Entities;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IDriverLogic : IBasicCrudLogic<Driver>
 {
-    public interface IDriverLogic : IBasicCrudLogic<Driver>
-    {
-        public Task<Driver> FindByDriverId(string driverId);
-    }
+    public Task<Driver> FindByDriverId(string driverId);
 }

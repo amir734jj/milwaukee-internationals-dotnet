@@ -24,11 +24,15 @@ public class MessageHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        var user = await _userManager.FindByNameAsync(Context.User.Identity!.Name);
+        if (Context.User != null)
+        {
+            var user = await _userManager.FindByNameAsync(Context.User.Identity!.Name);
 
-        UserTable[Context.ConnectionId] = user;
+            UserTable[Context.ConnectionId] = user;
 
-        await Clients.All.SendAsync("log", "joined", Context.ConnectionId, user.UserName);
+            await Clients.All.SendAsync("log", "joined", Context.ConnectionId, user.UserName);
+        }
+
         await Clients.All.SendAsync("count", UserTable.Count);
     }
 

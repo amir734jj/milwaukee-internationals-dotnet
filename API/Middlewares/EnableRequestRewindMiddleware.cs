@@ -1,28 +1,27 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace API.Middlewares
+namespace API.Middlewares;
+
+public class EnableRequestRewindMiddleware
 {
-    public class EnableRequestRewindMiddleware
-    {
-        private readonly RequestDelegate _next;
+    private readonly RequestDelegate _next;
         
-        public EnableRequestRewindMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+    public EnableRequestRewindMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
 
-        /// <summary>
-        ///     On any action ...
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        // ReSharper disable once UnusedMember.Global
-        public async Task Invoke(HttpContext context)
-        {
-            context.Request.EnableBuffering();
+    /// <summary>
+    ///     On any action ...
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    // ReSharper disable once UnusedMember.Global
+    public async Task Invoke(HttpContext context)
+    {
+        context.Request.EnableBuffering();
 
-            await _next(context);
-        }
+        await _next(context);
     }
 }

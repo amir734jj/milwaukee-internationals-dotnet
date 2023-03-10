@@ -1,13 +1,13 @@
 using System;
-using TimeZoneConverter;
+using Models.Constants;
 
-namespace DAL.Extensions;
+namespace Models.Extensions;
 
 public static class DateTimeOffsetExtension
 {
     public static DateTimeOffset ToCentralTime(this DateTimeOffset dateTimeOffset)
     {
-        var tzi = TZConvert.GetTimeZoneInfo("America/Chicago");
+        var tzi = ApplicationConstants.TimeZoneInfo;
         
         return TimeZoneInfo.ConvertTime(dateTimeOffset, tzi);
     }

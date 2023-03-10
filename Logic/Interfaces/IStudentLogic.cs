@@ -1,9 +1,8 @@
 ﻿using Models.Entities;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IStudentLogic : IBasicCrudLogic<Student>
 {
-    public interface IStudentLogic : IBasicCrudLogic<Student>
-    {
         
-    }
 }

@@ -13,85 +13,84 @@ using Microsoft.AspNetCore.Identity;
 using Models.Entities;
 using Models.Enums;
 
-namespace Logic
+namespace Logic;
+
+public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
 {
-    public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
+    private readonly IBasicCrud<User> _dal;
+    private readonly UserManager<User> _userManager;
+    private readonly IApiEventService _apiEventService;
+
+    /// <summary>
+    /// Constructor dependency injection
+    /// </summary>
+    /// <param name="repository"></param>
+    /// <param name="userManager"></param>
+    /// <param name="apiEventService"></param>
+    public UserLogic(IEfRepository repository, UserManager<User> userManager, IApiEventService apiEventService)
     {
-        private readonly IBasicCrud<User> _dal;
-        private readonly UserManager<User> _userManager;
-        private readonly IApiEventService _apiEventService;
+        _dal = repository.For<User>();
+        _userManager = userManager;
+        _apiEventService = apiEventService;
+    }
 
-        /// <summary>
-        /// Constructor dependency injection
-        /// </summary>
-        /// <param name="repository"></param>
-        /// <param name="userManager"></param>
-        /// <param name="apiEventService"></param>
-        public UserLogic(IEfRepository repository, UserManager<User> userManager, IApiEventService apiEventService)
-        {
-            _dal = repository.For<User>();
-            _userManager = userManager;
-            _apiEventService = apiEventService;
-        }
+    public override async Task<User> Get(int id)
+    {
+        var fetchUserObservable = base.Get(id)
+            .ToObservable()
+            .Then(user =>
+            {
+                var roles = _userManager.GetRolesAsync(user).Result;
 
-        public override async Task<User> Get(int id)
-        {
-            var fetchUserObservable = base.Get(id)
-                .ToObservable()
-                .Then(user =>
-                {
-                    var roles = _userManager.GetRolesAsync(user).Result;
+                user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
+                    ? UserRoleEnum.Admin
+                    : UserRoleEnum.Basic;
 
-                    user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
-                        ? UserRoleEnum.Admin
-                        : UserRoleEnum.Basic;
+                return user;
+            });
 
-                    return user;
-                });
+        var result = await Observable.When(fetchUserObservable);
 
-            var result = await Observable.When(fetchUserObservable);
+        return result;
+    }
 
-            return result;
-        }
+    public async Task Disable(int id)
+    {
+        await _dal.Update(id, x => x.Enable = false);
+    }
 
-        public async Task Disable(int id)
-        {
-            await _dal.Update(id, x => x.Enable = false);
-        }
+    public async Task Enable(int id)
+    {
+        await _dal.Update(id, x => x.Enable = true);
+    }
 
-        public async Task Enable(int id)
-        {
-            await _dal.Update(id, x => x.Enable = true);
-        }
-
-        protected override IBasicCrud<User> Repository()
-        {
-            return _dal;
-        }
+    protected override IBasicCrud<User> Repository()
+    {
+        return _dal;
+    }
         
-        protected override IApiEventService ApiEventService()
-        {
-            return _apiEventService;
-        }
+    protected override IApiEventService ApiEventService()
+    {
+        return _apiEventService;
+    }
 
-        public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, Expression<Func<User, bool>> filter = null)
-        {
-            var fetchUsersObservable = base.GetAll(sortBy, descending, filter)
-                .ToObservable()
-                .Then(users => users.Select(user =>
-                {
-                    var roles = _userManager.GetRolesAsync(user).Result;
+    public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<User, bool>>[] filters)
+    {
+        var fetchUsersObservable = base.GetAll(sortBy, descending, filters)
+            .ToObservable()
+            .Then(users => users.Select(user =>
+            {
+                var roles = _userManager.GetRolesAsync(user).Result;
 
-                    user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
-                        ? UserRoleEnum.Admin
-                        : UserRoleEnum.Basic;
+                user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
+                    ? UserRoleEnum.Admin
+                    : UserRoleEnum.Basic;
 
-                    return user;
-                }));
+                return user;
+            }));
 
-            var result = await Observable.When(fetchUsersObservable);
+        var result = await Observable.When(fetchUsersObservable);
 
-            return result;
-        }
+        return result;
     }
 }

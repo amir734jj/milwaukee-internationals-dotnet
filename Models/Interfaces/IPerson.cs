@@ -1,7 +1,6 @@
-﻿namespace Models.Interfaces
+﻿namespace Models.Interfaces;
+
+public interface IPerson : IEntity
 {
-    public interface IPerson : IEntity
-    {
-        string Fullname { get; set; }
-    }
+    string Fullname { get; set; }
 }

@@ -3,46 +3,45 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Models.Interfaces;
 
-namespace Logic.Extensions
+namespace Logic.Extensions;
+
+/// <summary>
+/// View model extensions
+/// </summary>
+public static class ViewModelExtension
 {
     /// <summary>
-    /// View model extensions
+    /// Property name or display name value all via linq
     /// </summary>
-    public static class ViewModelExtension
+    /// <param name="_"></param>
+    /// <param name="expression"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static string PropName<T>(this T _, Expression<Func<T, object>> expression) where T : IViewModel
     {
-        /// <summary>
-        /// Property name or display name value all via linq
-        /// </summary>
-        /// <param name="_"></param>
-        /// <param name="expression"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static string PropName<T>(this T _, Expression<Func<T, object>> expression) where T : IViewModel
-        {
-            return MemberExpressionVisitor.ResolveMember(expression)?.Name;
-        }
+        return MemberExpressionVisitor.ResolveMember(expression)?.Name;
     }
+}
     
-    internal class MemberExpressionVisitor : ExpressionVisitor {
+internal class MemberExpressionVisitor : ExpressionVisitor {
 
-        private PropertyInfo _member;
+    private PropertyInfo _member;
 
-        public static PropertyInfo ResolveMember(Expression expression)
-        {
-            var instance = new MemberExpressionVisitor();
+    public static PropertyInfo ResolveMember(Expression expression)
+    {
+        var instance = new MemberExpressionVisitor();
 
-            instance.Visit(expression);
+        instance.Visit(expression);
 
-            var result = instance._member;
+        var result = instance._member;
 
-            return result;
-        }
+        return result;
+    }
 
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            _member = (PropertyInfo) node.Member;
+    protected override Expression VisitMember(MemberExpression node)
+    {
+        _member = (PropertyInfo) node.Member;
             
-            return base.VisitMember(node);
-        }
+        return base.VisitMember(node);
     }
 }

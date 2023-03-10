@@ -1,10 +1,9 @@
 using API.Utilities;
 using Microsoft.AspNetCore.Http;
 
-namespace API.Interfaces
+namespace API.Interfaces;
+
+public interface IHttpRequestUtilityBuilder
 {
-    public interface IHttpRequestUtilityBuilder
-    {
-        HttpRequestUtility For(HttpContext ctx);
-    }
+    HttpRequestUtility For(HttpContext ctx);
 }

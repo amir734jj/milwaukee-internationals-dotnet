@@ -1,0 +1,13 @@
+@model Models.Entities.Location
+
+@{
+    ViewBag.Title = "Edit Location";
+    Layout = "_Layout";
+}
+
+@using (Html.BeginForm("EditHandler", "Location", FormMethod.Post, new {ng_controller = "locationEditCtrl"}))
+{
+    @(await Html.PartialAsync("LocationContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Edit"}}))
+    
+    <input class="btn btn-primary" type="submit" value="Update"/>
+}

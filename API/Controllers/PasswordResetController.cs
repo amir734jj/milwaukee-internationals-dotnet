@@ -8,128 +8,127 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 using Models.ViewModels.PasswordReset;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[ApiExplorerSettings(IgnoreApi = true)]
+[AllowAnonymous]
+[Route("[controller]")]
+public class PasswordResetController : Controller
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [AllowAnonymous]
-    [Route("[controller]")]
-    public class PasswordResetController : Controller
+    private readonly UserManager<User> _userManager;
+    private readonly IUserLogic _userLogic;
+    private readonly IPasswordResetLogic _passwordResetLogic;
+
+    public PasswordResetController(UserManager<User> userManager, IUserLogic userLogic, IPasswordResetLogic passwordResetLogic)
     {
-        private readonly UserManager<User> _userManager;
-        private readonly IUserLogic _userLogic;
-        private readonly IPasswordResetLogic _passwordResetLogic;
+        _userManager = userManager;
+        _userLogic = userLogic;
+        _passwordResetLogic = passwordResetLogic;
+    }
 
-        public PasswordResetController(UserManager<User> userManager, IUserLogic userLogic, IPasswordResetLogic passwordResetLogic)
+    [HttpGet]
+    [Route("")]
+    public IActionResult PasswordResetRequest()
+    {
+        if (TempData.ContainsKey("Error"))
         {
-            _userManager = userManager;
-            _userLogic = userLogic;
-            _passwordResetLogic = passwordResetLogic;
+            ViewData["Error"] = TempData["Error"];
         }
-
-        [HttpGet]
-        [Route("")]
-        public IActionResult PasswordResetRequest()
+            
+        if (TempData.ContainsKey("Message"))
         {
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-            }
-            
-            if (TempData.ContainsKey("Message"))
-            {
-                ViewData["Message"] = TempData["Message"];
-            }
-            
-            TempData.Clear();
-            
-            return View(new PasswordResetRequestViewModel());
+            ViewData["Message"] = TempData["Message"];
         }
+            
+        TempData.Clear();
+            
+        return View(new PasswordResetRequestViewModel());
+    }
         
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> PasswordResetRequestHandler(PasswordResetRequestViewModel requestViewModel)
+    [HttpPost]
+    [Route("")]
+    public async Task<IActionResult> PasswordResetRequestHandler(PasswordResetRequestViewModel requestViewModel)
+    {
+        var user = (await _userLogic.GetAll()).FirstOrDefault(x =>
+            string.Equals(x.Email, requestViewModel.Email, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(x.UserName, requestViewModel.Username, StringComparison.OrdinalIgnoreCase));
+
+        if (user == null)
         {
-            var user = (await _userLogic.GetAll()).FirstOrDefault(x =>
-                string.Equals(x.Email, requestViewModel.Email, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(x.UserName, requestViewModel.Username, StringComparison.OrdinalIgnoreCase));
-
-            if (user == null)
-            {
-                TempData["Error"] = "Failed to find the user";
-
-                return RedirectToAction("PasswordResetRequest");
-            }
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            await _passwordResetLogic.SendPasswordResetEmail(user, token);
-            
-            TempData["Message"] = "Successfully sent the password reset email. Please check your email!";
+            TempData["Error"] = "Failed to find the user";
 
             return RedirectToAction("PasswordResetRequest");
         }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        await _passwordResetLogic.SendPasswordResetEmail(user, token);
+            
+        TempData["Message"] = "Successfully sent the password reset email. Please check your email!";
+
+        return RedirectToAction("PasswordResetRequest");
+    }
         
-        [HttpGet]
-        [Route("{userId:int}")]
-        public async Task<IActionResult> PasswordReset([FromRoute] int userId, [FromQuery] string token)
+    [HttpGet]
+    [Route("{userId:int}")]
+    public async Task<IActionResult> PasswordReset([FromRoute] int userId, [FromQuery] string token)
+    {
+        if (TempData.ContainsKey("Error"))
         {
-            if (TempData.ContainsKey("Error"))
-            {
-                ViewData["Error"] = TempData["Error"];
-            }
-            
-            if (TempData.ContainsKey("Message"))
-            {
-                ViewData["Message"] = TempData["Message"];
-            }
-            
-            TempData.Clear();
-
-            var user = await _userLogic.Get(userId);
-            
-            var isResetTokenValid = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword", token);
-            
-            if (!isResetTokenValid)
-            {
-                TempData["Error"] = "Password Reset link is not valid!";
-
-                return RedirectToAction("PasswordResetRequest");
-            }
-
-            var viewModel = new PasswordResetViewModel
-            {
-                Email = user.Email,
-                Username = user.UserName,
-                Token = token,
-                Id = user.Id
-            };
-
-            return View(viewModel);
+            ViewData["Error"] = TempData["Error"];
         }
-        
-        [HttpPost]
-        [Route("Reset")]
-        public async Task<IActionResult> PasswordResetHandler(PasswordResetViewModel passwordResetViewModel)
+            
+        if (TempData.ContainsKey("Message"))
         {
-            if (passwordResetViewModel.Password != passwordResetViewModel.ConfirmPassword)
-            {
-                TempData["Error"] = "Password and Password Confirmation do not match!";
+            ViewData["Message"] = TempData["Message"];
+        }
+            
+        TempData.Clear();
 
-                return RedirectToAction("PasswordReset");
-            }
-
-            var user = await _userManager.FindByIdAsync(passwordResetViewModel.Id.ToString());
+        var user = await _userLogic.Get(userId);
             
-            var isResetTokenValid = await _userManager.ResetPasswordAsync(user, passwordResetViewModel.Token, passwordResetViewModel.Password);
+        var isResetTokenValid = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword", token);
             
-            if (isResetTokenValid.Succeeded)
-            {
-                return RedirectToAction("Login", "Identity");
-            }
-            
-            TempData["Error"] = "Password Reset failed";
+        if (!isResetTokenValid)
+        {
+            TempData["Error"] = "Password Reset link is not valid!";
 
             return RedirectToAction("PasswordResetRequest");
         }
+
+        var viewModel = new PasswordResetViewModel
+        {
+            Email = user.Email,
+            Username = user.UserName,
+            Token = token,
+            Id = user.Id
+        };
+
+        return View(viewModel);
+    }
+        
+    [HttpPost]
+    [Route("Reset")]
+    public async Task<IActionResult> PasswordResetHandler(PasswordResetViewModel passwordResetViewModel)
+    {
+        if (passwordResetViewModel.Password != passwordResetViewModel.ConfirmPassword)
+        {
+            TempData["Error"] = "Password and Password Confirmation do not match!";
+
+            return RedirectToAction("PasswordReset");
+        }
+
+        var user = await _userManager.FindByIdAsync(passwordResetViewModel.Id.ToString());
+            
+        var isResetTokenValid = await _userManager.ResetPasswordAsync(user, passwordResetViewModel.Token, passwordResetViewModel.Password);
+            
+        if (isResetTokenValid.Succeeded)
+        {
+            return RedirectToAction("Login", "Identity");
+        }
+            
+        TempData["Error"] = "Password Reset failed";
+
+        return RedirectToAction("PasswordResetRequest");
     }
 }

@@ -1,20 +1,19 @@
 using EfCoreRepository;
 using Models.Entities;
 
-namespace DAL.Profiles
+namespace DAL.Profiles;
+
+public class UserProfile :  EntityProfile<User>
 {
-    public class UserProfile :  EntityProfile<User>
+    public UserProfile()
     {
-        public UserProfile()
-        {
-            Map(x => x.Fullname);
-            Map(x => x.PasswordHash);
-            Map(x => x.UserName);
-            Map(x => x.UserRoleEnum);
-            Map(x => x.PhoneNumber);
-            Map(x => x.Email);
-            Map(x => x.LastLoggedInDate);
-            Map(x => x.Enable);
-        }
+        Map(x => x.Fullname);
+        Map(x => x.PasswordHash);
+        Map(x => x.UserName);
+        Map(x => x.UserRoleEnum);
+        Map(x => x.PhoneNumber);
+        Map(x => x.Email);
+        Map(x => x.LastLoggedInDate);
+        Map(x => x.Enable);
     }
 }

@@ -1,9 +1,8 @@
 using System;
 
-namespace API.Attributes
+namespace API.Attributes;
+
+public class DisallowAuthenticatedAttribute : Attribute
 {
-    public class DisallowAuthenticatedAttribute : Attribute
-    {
         
-    }
 }

@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Models.ViewModels;
 
-namespace Logic.Interfaces
-{
-    public interface IStudentDriverMappingLogic
-    {
-        Task<bool> MapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel);
-        
-        Task<bool> UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel);
+namespace Logic.Interfaces;
 
-        Task<StudentDriverMappingViewModel> MappingStatus();
+public interface IStudentDriverMappingLogic
+{
+    Task<bool> MapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel);
         
-        Task<bool> EmailMappings();
-    }
+    Task<bool> UnMapStudentToDriver(NewStudentDriverMappingViewModel newStudentDriverMappingViewModel);
+
+    Task<StudentDriverMappingViewModel> MappingStatus();
+        
+    Task<bool> EmailMappings();
 }

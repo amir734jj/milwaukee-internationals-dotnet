@@ -3,25 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Constants;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace API.Controllers.API
-{
-    [AuthorizeMiddleware]
-    [Route("api/[controller]")]
-    public class ConfigController : Controller
-    {
-        private readonly GlobalConfigs _globalConfigs;
+namespace API.Controllers.API;
 
-        public ConfigController(GlobalConfigs globalConfigs)
-        {
-            _globalConfigs = globalConfigs;
-        }
+[AuthorizeMiddleware]
+[Route("api/[controller]")]
+public class ConfigController : Controller
+{
+    private readonly GlobalConfigs _globalConfigs;
+
+    public ConfigController(GlobalConfigs globalConfigs)
+    {
+        _globalConfigs = globalConfigs;
+    }
         
-        [HttpGet]
-        [Route("")]
-        [SwaggerOperation("Status")]
-        public IActionResult Status()
-        {
-            return Ok(_globalConfigs);
-        }
+    [HttpGet]
+    [Route("")]
+    [SwaggerOperation("Status")]
+    public IActionResult Status()
+    {
+        return Ok(_globalConfigs);
     }
 }

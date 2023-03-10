@@ -153,6 +153,13 @@
                                     <a href="~/Event">Events</a>
                                 </li>
                             }
+                            
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            {
+                                <li>
+                                    <a href="~/Location">Locations</a>
+                                </li>
+                            }
                         </ul>
                     </li>
 
@@ -165,6 +172,12 @@
                             <li>
                                 <a href="~/Registration/Host">Register Host</a>
                             </li>
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            {
+                                <li>
+                                    <a href="~/Registration/Location">Register Location</a>
+                                </li>
+                            }
                         </ul>
                     </li>
 

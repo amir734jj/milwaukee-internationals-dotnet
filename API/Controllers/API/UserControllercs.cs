@@ -4,30 +4,29 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 
-namespace API.Controllers.API
+namespace API.Controllers.API;
+
+[AuthorizeMiddleware]
+[Route("api/[controller]")]
+public class UserController : BasicCrudController<User>
 {
-    [AuthorizeMiddleware]
-    [Route("api/[controller]")]
-    public class UserController : BasicCrudController<User>
+    private readonly IUserLogic _userLogic;
+
+    /// <summary>
+    /// Constructor dependency injection
+    /// </summary>
+    /// <param name="userLogic"></param>
+    public UserController(IUserLogic userLogic)
     {
-        private readonly IUserLogic _userLogic;
+        _userLogic = userLogic;
+    }
 
-        /// <summary>
-        /// Constructor dependency injection
-        /// </summary>
-        /// <param name="userLogic"></param>
-        public UserController(IUserLogic userLogic)
-        {
-            _userLogic = userLogic;
-        }
-
-        /// <summary>
-        /// Returns instance of logic
-        /// </summary>
-        /// <returns></returns>
-        protected override IBasicCrudLogic<User> BasicCrudLogic()
-        {
-            return _userLogic;
-        }
+    /// <summary>
+    /// Returns instance of logic
+    /// </summary>
+    /// <returns></returns>
+    protected override IBasicCrudLogic<User> BasicCrudLogic()
+    {
+        return _userLogic;
     }
 }

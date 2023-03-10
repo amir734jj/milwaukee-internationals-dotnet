@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Models.ViewModels.Config;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IConfigLogic
 {
-    public interface IConfigLogic
-    {
-        GlobalConfigViewModel ResolveGlobalConfig();
+    GlobalConfigViewModel ResolveGlobalConfig();
 
-        Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel);
+    Task SetGlobalConfig(GlobalConfigViewModel globalConfigViewModel);
 
-        Task Refresh();
+    Task Refresh();
 
-        IEnumerable<int> GetYears();
-    }
+    IEnumerable<int> GetYears();
 }

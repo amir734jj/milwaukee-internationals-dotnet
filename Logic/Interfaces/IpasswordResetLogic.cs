@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using Models.Entities;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IPasswordResetLogic
 {
-    public interface IPasswordResetLogic
-    {
-        Task SendPasswordResetEmail(User user, string passwordResetToken);
-    }
+    Task SendPasswordResetEmail(User user, string passwordResetToken);
 }

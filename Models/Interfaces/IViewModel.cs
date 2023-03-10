@@ -1,7 +1,6 @@
-﻿namespace Models.Interfaces
+﻿namespace Models.Interfaces;
+
+public interface IViewModel
 {
-    public interface IViewModel
-    {
         
-    }
 }

@@ -1,0 +1,23 @@
+﻿@model Models.Entities.Location
+
+@{
+    ViewBag.Title = "Register Location";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3> Location Registration </h3>
+    </div>
+    
+    <br />
+    
+    @await Html.PartialAsync("SimpleAlertContent", ViewData)
+    
+    @using (Html.BeginForm("RegisterLocation", "Registration", FormMethod.Post))
+    {
+        @await Html.PartialAsync("LocationContent", Model)
+
+        <input class="btn btn-primary" type="submit" value="Register" />
+    }
+</div>

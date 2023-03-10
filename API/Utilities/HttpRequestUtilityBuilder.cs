@@ -6,85 +6,84 @@ using Models.Entities;
 using Models.Enums;
 using static Models.Enums.UserRoleEnumExtension;
 
-namespace API.Utilities
+namespace API.Utilities;
+
+/// <summary>
+/// UserInfo Struct
+/// </summary>
+public struct UserInfo
 {
-    /// <summary>
-    /// UserInfo Struct
-    /// </summary>
-    public struct UserInfo
+    public string Username { get; set; }
+
+    public UserRoleEnum UserRoleEnum { get; set; }
+}
+    
+public class HttpRequestUtility {
+    
+    private readonly UserManager<User> _userManager;
+        
+    private readonly SignInManager<User> _signInManager;
+
+    private readonly HttpContext _ctx;
+        
+    public HttpRequestUtility(UserManager<User> userManager, SignInManager<User> signInManager, HttpContext ctx)
     {
-        public string Username { get; set; }
-
-        public UserRoleEnum UserRoleEnum { get; set; }
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _ctx = ctx;
     }
-    
-    public class HttpRequestUtility {
-    
-        private readonly UserManager<User> _userManager;
-        
-        private readonly SignInManager<User> _signInManager;
 
-        private readonly HttpContext _ctx;
-        
-        public HttpRequestUtility(UserManager<User> userManager, SignInManager<User> signInManager, HttpContext ctx)
+    /// <summary>
+    /// Extension method to quickly get the username/password
+    /// </summary>
+    /// <returns></returns>
+    public async Task<UserInfo> GetUserInfo()
+    {
+        var user = await _userManager.GetUserAsync(_ctx.User);
+
+        if (user == null)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _ctx = ctx;
-        }
-
-        /// <summary>
-        /// Extension method to quickly get the username/password
-        /// </summary>
-        /// <returns></returns>
-        public async Task<UserInfo> GetUserInfo()
-        {
-            var user = await _userManager.GetUserAsync(_ctx.User);
-
-            if (user == null)
-            {
-                return new UserInfo
-                {
-                    Username = null,
-                    UserRoleEnum = UserRoleEnum.Basic
-                };
-            }
-
-            var role = MostComprehensive(ParseRoles(await _userManager.GetRolesAsync(user)));
-
             return new UserInfo
             {
-                Username = user.UserName,
-                UserRoleEnum = role
+                Username = null,
+                UserRoleEnum = UserRoleEnum.Basic
             };
         }
 
-        /// <summary>
-        /// Extension method to check whether user is logged in or not
-        /// </summary>
-        /// <returns></returns>
-        public bool IsAuthenticated()
+        var role = MostComprehensive(ParseRoles(await _userManager.GetRolesAsync(user)));
+
+        return new UserInfo
         {
-            return _signInManager.IsSignedIn(_ctx.User);
-        }
+            Username = user.UserName,
+            UserRoleEnum = role
+        };
     }
-    
-    // ReSharper disable once UnusedMember.Global
-    public class HttpRequestUtilityBuilder : IHttpRequestUtilityBuilder
+
+    /// <summary>
+    /// Extension method to check whether user is logged in or not
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAuthenticated()
     {
-        private readonly UserManager<User> _userManager;
+        return _signInManager.IsSignedIn(_ctx.User);
+    }
+}
+    
+// ReSharper disable once UnusedMember.Global
+public class HttpRequestUtilityBuilder : IHttpRequestUtilityBuilder
+{
+    private readonly UserManager<User> _userManager;
         
-        private readonly SignInManager<User> _signInManager;
+    private readonly SignInManager<User> _signInManager;
 
-        public HttpRequestUtilityBuilder(UserManager<User> userManager, SignInManager<User> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+    public HttpRequestUtilityBuilder(UserManager<User> userManager, SignInManager<User> signInManager)
+    {
+        _userManager = userManager;
+        _signInManager = signInManager;
+    }
 
-        public HttpRequestUtility For(HttpContext ctx)
-        {
-            return new HttpRequestUtility(_userManager, _signInManager, ctx);
-        }
+    public HttpRequestUtility For(HttpContext ctx)
+    {
+        return new HttpRequestUtility(_userManager, _signInManager, ctx);
     }
 }

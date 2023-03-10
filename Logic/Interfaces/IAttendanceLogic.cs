@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Models.ViewModels;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IAttendanceLogic
 {
-    public interface IAttendanceLogic
-    {
-        Task<bool> StudentSetAttendance(AttendanceViewModel attendanceViewModel);
+    Task<bool> StudentSetAttendance(AttendanceViewModel attendanceViewModel);
         
-        Task<bool> DriverSetAttendance(AttendanceViewModel attendanceViewModel);
+    Task<bool> DriverSetAttendance(AttendanceViewModel attendanceViewModel);
 
-        Task<bool> HandleStudentSendCheckIn();
+    Task<bool> HandleStudentSendCheckIn();
 
-        Task<bool> HandleDriverSendCheckIn();
-    }
+    Task<bool> HandleDriverSendCheckIn();
 }

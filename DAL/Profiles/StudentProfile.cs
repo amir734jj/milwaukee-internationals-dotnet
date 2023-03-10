@@ -3,22 +3,21 @@ using EfCoreRepository;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 
-namespace DAL.Profiles
-{
-    public class StudentProfile : EntityProfile<Student>
-    {
-        public StudentProfile()
-        {
-            MapAll();
-        }
+namespace DAL.Profiles;
 
-        protected override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
-        {
-            return queryable
-                .Include(x => x.Events)
-                .Include(x => x.Driver)
-                .ThenInclude(x => x.Host)
-                .OrderBy(x => x.Fullname);
-        }
+public class StudentProfile : EntityProfile<Student>
+{
+    public StudentProfile()
+    {
+        MapAll(student => student.Year);
+    }
+
+    protected override IQueryable<Student> Include<TQueryable>(TQueryable queryable)
+    {
+        return queryable
+            .Include(x => x.Events)
+            .Include(x => x.Driver)
+            .ThenInclude(x => x.Host)
+            .OrderBy(x => x.Fullname);
     }
 }

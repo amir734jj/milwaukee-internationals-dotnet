@@ -1,0 +1,93 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AutoMapper.Internal;
+using DAL.Interfaces;
+using EfCoreRepository.Interfaces;
+using Logic.Abstracts;
+using Logic.Interfaces;
+using Models.Constants;
+using Models.Entities;
+
+namespace Logic;
+
+public class LocationLogic : BasicCrudLogicAbstract<Location>, ILocationLogic
+{
+    private readonly IBasicCrud<Location> _dal;
+    private readonly GlobalConfigs _globalConfigs;
+    private readonly IApiEventService _apiEventService;
+
+    public LocationLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    {
+        _dal = repository.For<Location>();
+        _globalConfigs = globalConfigs;
+        _apiEventService = apiEventService;
+    }
+    
+    protected override IBasicCrud<Location> Repository()
+    {
+        return _dal;
+    }
+
+    protected override IApiEventService ApiEventService()
+    {
+        return _apiEventService;
+    }
+
+    public override async Task<Location> Save(Location instance)
+    {
+        var locations = await GetAll();
+
+        instance.Rank = locations.Count() + 1;
+        instance.Year = DateTime.Now.Year;
+
+        return await base.Save(instance);
+    }
+
+    public override async Task<IEnumerable<Location>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Location, bool>>[] filters)
+    {
+        Expression<Func<Location, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+
+        return await base.GetAll(sortBy ?? "Rank", descending, new [] {yearFilterExpr}.Concat(filters).ToArray());
+    }
+
+    public async Task MoveRankUp(int id)
+    {
+        var source = await Get(id);
+        
+        if (source == null) return;
+
+        foreach (var entity in await GetAll())
+        {
+            if (entity.Rank == source.Rank - 1)
+            {
+                await _dal.Update(entity.Id, x => x.Rank++);
+                
+                await _dal.Update(source.Id, x => x.Rank--);
+                
+                break;
+            }
+        }
+    }
+
+    public async Task MoveRankDown(int id)
+    {
+        var source = await Get(id);
+        
+        if (source == null) return;
+
+        foreach (var entity in await GetAll())
+        {
+            if (entity.Rank == source.Rank + 1)
+            {
+                await _dal.Update(entity.Id, x => x.Rank--);
+                
+                await _dal.Update(source.Id, x => x.Rank++);
+                
+                break;
+            }
+        }
+    }
+}

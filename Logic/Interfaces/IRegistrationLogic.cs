@@ -1,18 +1,19 @@
 ﻿using System.Threading.Tasks;
 using Models.Entities;
 
-namespace Logic.Interfaces
+namespace Logic.Interfaces;
+
+public interface IRegistrationLogic
 {
-    public interface IRegistrationLogic
-    {
-        Task RegisterDriver(Driver driver);
+    Task RegisterDriver(Driver driver);
 
-        Task RegisterStudent(Student student);
+    Task RegisterStudent(Student student);
         
-        Task<bool> IsRegisterStudentOpen();
+    Task<bool> IsRegisterStudentOpen();
         
-        Task RegisterHost(Host host);
+    Task RegisterHost(Host host);
 
-        Task RegisterEvent(Event @event);
-    }
+    Task RegisterEvent(Event @event);
+    
+    Task RegisterLocation(Location location);
 }

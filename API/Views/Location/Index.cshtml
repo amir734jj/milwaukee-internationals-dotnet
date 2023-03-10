@@ -1,0 +1,92 @@
+﻿@using API.Interfaces
+@using Models.Enums
+@model IEnumerable<Models.Entities.Location>
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
+
+@{
+    ViewBag.Title = "Locations";
+    Layout = "_Layout";
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+}
+
+<div class="container" ng-controller="locationListCtrl">
+    <div class="page-header">
+        <h3>
+            List of Locations
+        </h3>
+
+        <div class="row">
+            <div class="col-sm-5 col-sm-offset-7 col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
+                <div class="pull-right">
+                    <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" toggle-class="quick" class="margin-right-md"></toggle>
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <button class="btn btn-default pull-right" ng-click="getAllLocationsPDF()">Download PDF</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th class="hidden-xs" ng-show="showDetail">
+                    Rank
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Description
+                </th>
+                <th class="hidden-xs" ng-show="showDetail">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var location in Model.OrderBy(x => x.Rank))
+            {
+                <tr>
+                    <td>@location.Rank</td>
+                    <td>@location.Name</td>
+                    <td>@location.Address</td>
+                    <td>@location.Description</td>
+                    <td class="hidden-xs" ng-show="showDetail">
+                        <div class="hcenter">
+                            <div class="btn-group-vertical btn-group-sm">
+                                @if (location.Rank > 1)
+                                {
+                                    <a href="~/Location/edit/@location.Id/rank/up" class="btn btn-default">Move Up</a>
+                                }
+                                else
+                                {
+                                    <a href="" class="btn btn-default disabled">Move Up</a>
+                                }
+                                
+                                @if (location.Rank < Model.Count())
+                                {
+                                    <a href="~/Location/edit/@location.Id/rank/down" class="btn btn-default">Move Down</a>
+                                }
+                                else
+                                {
+                                    <a href="" class="btn btn-default disabled">Move Down</a>
+                                }
+                                
+                                <a href="~/Location/edit/@location.Id" class="btn btn-primary">Edit</a>
+                                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                                {
+                                    <a href="~/Location/delete/@location.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this location (@(location.Name))?">Delete</a>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

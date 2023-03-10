@@ -1,15 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Models.ViewModels.PasswordReset
+namespace Models.ViewModels.PasswordReset;
+
+public class PasswordResetRequestViewModel
 {
-    public class PasswordResetRequestViewModel
-    {
-        [Required]
-        [MinLength(6)]
-        public string Username { get; set; }
+    [Required]
+    [MinLength(6)]
+    public string Username { get; set; }
         
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-    }
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
 }

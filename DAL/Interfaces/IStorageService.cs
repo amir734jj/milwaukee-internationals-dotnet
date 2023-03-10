@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Models.ViewModels.StorageService;
 
-namespace DAL.Interfaces
+namespace DAL.Interfaces;
+
+public interface IStorageService
 {
-    public interface IStorageService
-    {
-        Task<SimpleStorageResponse> Upload(string fileKey,
-            byte[] data,
-            IDictionary<string, string> metadata);
+    Task<SimpleStorageResponse> Upload(string fileKey,
+        byte[] data,
+        IDictionary<string, string> metadata);
 
-        Task<DownloadStorageResponse> Download(string keyName);
+    Task<DownloadStorageResponse> Download(string keyName);
 
-        Task<List<string>> List();
-    }
+    Task<List<string>> List();
 }

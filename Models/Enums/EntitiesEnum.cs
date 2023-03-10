@@ -1,10 +1,9 @@
-﻿namespace Models.Enums
+﻿namespace Models.Enums;
+
+public enum EntitiesEnum
 {
-    public enum EntitiesEnum
-    {
-        User = 0,
-        Student = 1,
-        Driver = 2,
-        Host = 3
-    }
+    User = 0,
+    Student = 1,
+    Driver = 2,
+    Host = 3
 }

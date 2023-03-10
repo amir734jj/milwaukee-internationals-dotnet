@@ -2,12 +2,11 @@ using System.Threading.Tasks;
 using Models.Entities;
 using Models.ViewModels;
 
-namespace Logic.Interfaces
-{
-    public interface IProfileLogic
-    {
-        ProfileViewModel ResolveProfile(User user);
+namespace Logic.Interfaces;
 
-        Task UpdateUser(ProfileViewModel profile);
-    }
+public interface IProfileLogic
+{
+    ProfileViewModel ResolveProfile(User user);
+
+    Task UpdateUser(ProfileViewModel profile);
 }
