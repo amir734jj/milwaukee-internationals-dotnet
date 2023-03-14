@@ -1,0 +1,75 @@
+﻿@using API.Interfaces
+@using Models.Enums
+@inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
+@model (List<Models.Entities.LocationMapping> mappings, List<Models.Entities.Location> locations)
+
+@{
+    ViewBag.Title = "Location Wizard";
+    Layout = "_Layout";
+
+    var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3>
+            Location Wizard
+        </h3>
+
+        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+        {
+            <div class="clearfix">
+                <a class="btn btn-primary pull-right" href="~/LocationWizard/New/">Add Location Mapping</a>
+            </div>
+        }
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>
+                Source
+            </th>
+            <th>
+                Destinations
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var location in Model.locations.OrderBy(x => x.Name))
+        {
+            <tr>
+                <td>@location.Name</td>
+                <td>
+                    @{
+                        var mappings = Model.mappings.Where(x => x.SourceId == location.Id).ToList();
+
+                        @if (mappings.Any())
+                        {
+                            <div class="list-group">
+                                @foreach (var locationMapping in mappings)
+                                {
+                                    <li class="list-group-item">
+                                        @(locationMapping.Sink.Name)
+                                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                                        {
+                                            <a href="~/LocationWizard/edit/@locationMapping.Id" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="~/LocationWizard/delete/@locationMapping.Id" class="btn btn-sm btn-danger" validate-before-going data-message="Are you sure to delete mapping between (@(location.Name)  and @(locationMapping.Sink.Name)?">Delete</a>
+                                        }
+                                    </li>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                No mapping assigned
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

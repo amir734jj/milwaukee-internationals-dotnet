@@ -24,7 +24,7 @@ public class LocationController : Controller
     }
  
     /// <summary>
-    /// Returns driver view
+    /// Returns location view
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -35,7 +35,7 @@ public class LocationController : Controller
     }
         
     /// <summary>
-    /// Delete a driver
+    /// Delete a location
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -50,7 +50,7 @@ public class LocationController : Controller
     }
         
     /// <summary>
-    /// Edit a driver
+    /// Edit a location
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -64,7 +64,7 @@ public class LocationController : Controller
     }
         
     /// <summary>
-    /// Edit a driver
+    /// Edit a location
     /// </summary>
     /// <param name="location"></param>
     /// <returns></returns>

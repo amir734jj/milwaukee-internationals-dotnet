@@ -27,6 +27,7 @@ public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : c
             BasicCrudLogicAbstract<Student> studentLogic => (await studentLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
             BasicCrudLogicAbstract<Event> eventLogic => (await eventLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
             BasicCrudLogicAbstract<Location> locationLogic => (await locationLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
+            BasicCrudLogicAbstract<LocationMapping> locationMappingLogic => (await locationMappingLogic.GetAll(filters: x => x.Year == year)).Cast<T>(),
             BasicCrudLogicAbstract<User> userLogic => (await userLogic.GetAll()).Cast<T>(),
             _ => new List<T>()
         };

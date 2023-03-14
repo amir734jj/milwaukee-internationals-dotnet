@@ -1,0 +1,15 @@
+@model (Models.Entities.LocationMapping model, List<Models.Entities.Location> locations)
+
+@{
+    ViewBag.Title = "Edit Host";
+    Layout = "_Layout";
+}
+
+@await Html.PartialAsync("SimpleAlertContent", ViewData)
+
+@using (Html.BeginForm("EditHandler", "LocationWizard", FormMethod.Post, new {ng_controller = "locationMappingEditCtrl"}))
+{
+    @await Html.PartialAsync("LocationMappingContent", Model)
+
+    <input class="btn btn-primary" type="submit" value="Update"/>
+}

@@ -1,0 +1,23 @@
+﻿@model (Models.Entities.LocationMapping model, List<Models.Entities.Location> locations)
+
+@{
+    ViewBag.Title = "Add Location Mapping";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="page-header">
+        <h3> New Location Mapping </h3>
+    </div>
+    
+    <br />
+    
+    @await Html.PartialAsync("SimpleAlertContent", ViewData)
+    
+    @using (Html.BeginForm("SaveHandler", "LocationWizard", FormMethod.Post, new {ng_controller = "locationMappingSaveCtrl"}))
+    {
+        @await Html.PartialAsync("LocationMappingContent", Model)
+
+        <input class="btn btn-primary" type="submit" value="Save" />
+    }
+</div>

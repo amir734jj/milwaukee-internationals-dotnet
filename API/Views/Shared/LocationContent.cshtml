@@ -1,20 +1,22 @@
 @model Models.Entities.Location
 
 <div ng-init="">
-    @Html.TextBoxFor(x => x.Rank, new {@class = "hidden"})
+    @Html.TextBoxFor(x => x.Id, new {@class = "hidden"})
+
+    @Html.TextBoxFor(x => x.Rank, new { @class = "hidden" })
 
     <div class="form-group">
         @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name, new {@class = "form-control", type = "text", placeholder = "Enter name", required = "required"})
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", type = "text", placeholder = "Enter name", required = "required" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.Address)
-        @Html.TextAreaFor(x => x.Address, new {@class = "form-control", type = "text", placeholder = "Enter address", required = "required"})
+        @Html.TextAreaFor(x => x.Address, new { @class = "form-control", type = "text", placeholder = "Enter address", required = "required" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(x => x.Description)
-        @Html.TextAreaFor(x => x.Description, new {@class = "form-control", type = "text", placeholder = "Enter description", required = "required"})
+        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", type = "text", placeholder = "Enter description", required = "required" })
     </div>
 </div>

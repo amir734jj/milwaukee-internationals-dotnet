@@ -5,7 +5,7 @@ using Models.Interfaces;
 
 namespace Models.Entities;
 
-public class Event : IEntity
+public class Event : IYearlyEntity
 {
     [Key]
     public int Id { get; set; }

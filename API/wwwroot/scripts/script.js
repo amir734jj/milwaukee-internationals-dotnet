@@ -854,4 +854,8 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         });
     }])
     .controller('locationEditCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
+    }])
+    .controller('locationMappingEditCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
+    }])
+    .controller('locationMappingSaveCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
     }]);

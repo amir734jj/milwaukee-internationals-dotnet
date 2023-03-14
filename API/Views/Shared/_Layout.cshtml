@@ -203,6 +203,13 @@
                     <li class="@(ViewContext.RouteData.Matches("Attendance", "Student") ? "active" : "")">
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
+
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    {
+                        <li class="@(ViewContext.RouteData.Matches("LocationWizard") ? "active" : "")">
+                            <a href="~/LocationWizard">Location Wizard</a>
+                        </li>
+                    }
                 }
             </ul>
 
