@@ -12,6 +12,7 @@ public class LocationMappingProfile: EntityProfile<LocationMapping>
         Map(x => x.SourceId);
         Map(x => x.SinkId);
         Map(x => x.Year);
+        Map(x => x.Description);
     }
 
     protected override IQueryable<LocationMapping> Include<TQueryable>(TQueryable queryable)

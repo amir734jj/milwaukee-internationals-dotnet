@@ -135,14 +135,14 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
             throw new Exception("Source and target are the same");
         }
 
-        var existingMappings = (await GetAll()).ToList();
+        var existingMappings = (await GetAll()).Where(x => x.Id != id).ToList();
 
         if (existingMappings.Any(x => x.SourceId == updatedInstance.SourceId && x.SinkId == updatedInstance.SinkId))
         {
             throw new Exception("Duplicate mapping is not allowed");
         }
         
-        var mappings = existingMappings.Where(x => x.Id != id).Concat(new[] { updatedInstance }).ToList();
+        var mappings = existingMappings.Concat(new[] { updatedInstance }).ToList();
 
         if (await IsCyclic(mappings))
         {
