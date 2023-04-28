@@ -68,7 +68,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpGet]
     [Route("Login")]
-    [SwaggerOperation("Login")]
     [DisallowAuthenticated]
     public IActionResult Login()
     {
@@ -90,7 +89,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpPost]
     [Route("LoginHandler")]
-    [SwaggerOperation("LoginHandler")]
     [DisallowAuthenticated]
     public async Task<IActionResult> LoginHandler(LoginViewModel loginViewModel)
     {
@@ -125,7 +123,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpGet]
     [Route("Register")]
-    [SwaggerOperation("Register")]
     [DisallowAuthenticated]
     public IActionResult Register()
     {
@@ -147,7 +144,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpPost]
     [Route("RegisterHandler")]
-    [SwaggerOperation("RegisterHandler")]
     [DisallowAuthenticated]
     public async Task<IActionResult> RegisterHandler(RegisterViewModel registerViewModel)
     {
@@ -183,7 +179,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpGet]
     [Route("NotAuthenticated")]
-    [SwaggerOperation("NotAuthenticated")]
     public IActionResult NotAuthenticated()
     {
         if (TempData.ContainsKey("Error"))
@@ -204,7 +199,6 @@ public class IdentityController : AbstractIdentityController
     /// <returns></returns>
     [HttpGet]
     [Route("Logout")]
-    [SwaggerOperation("Logout")]
     [Authorize]
     public async Task<IActionResult> LogoutHandler()
     {
@@ -220,7 +214,6 @@ public class IdentityController : AbstractIdentityController
     [Authorize]
     [HttpGet]
     [Route("Token")]
-    [SwaggerOperation("Token")]
     public async Task<IActionResult> Token()
     {
         var user = await _userManager.FindByNameAsync(User.Identity!.Name);

@@ -30,14 +30,14 @@ public class PasswordResetController : Controller
     [Route("")]
     public IActionResult PasswordResetRequest()
     {
-        if (TempData.ContainsKey("Error"))
+        if (TempData.TryGetValue("Error", out var error))
         {
-            ViewData["Error"] = TempData["Error"];
+            ViewData["Error"] = error;
         }
             
-        if (TempData.ContainsKey("Message"))
+        if (TempData.TryGetValue("Message", out var message))
         {
-            ViewData["Message"] = TempData["Message"];
+            ViewData["Message"] = message;
         }
             
         TempData.Clear();
@@ -73,14 +73,14 @@ public class PasswordResetController : Controller
     [Route("{userId:int}")]
     public async Task<IActionResult> PasswordReset([FromRoute] int userId, [FromQuery] string token)
     {
-        if (TempData.ContainsKey("Error"))
+        if (TempData.TryGetValue("Error", out var error))
         {
-            ViewData["Error"] = TempData["Error"];
+            ViewData["Error"] = error;
         }
             
-        if (TempData.ContainsKey("Message"))
+        if (TempData.TryGetValue("Message", out var message))
         {
-            ViewData["Message"] = TempData["Message"];
+            ViewData["Message"] = message;
         }
             
         TempData.Clear();

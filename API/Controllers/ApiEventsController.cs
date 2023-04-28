@@ -21,7 +21,6 @@ public class ApiEventsController : Controller
 
     [HttpGet]
     [Route("")]
-    [SwaggerOperation("ApiEvents")]
     public IActionResult Index()
     {
         return View();
@@ -29,7 +28,6 @@ public class ApiEventsController : Controller
     
     [HttpGet]
     [Route("latest")]
-    [SwaggerOperation("GetLatestApiEvents")]
     public async Task<IActionResult> GetLatestApiEvents()
     {
         return Ok(await _apiEventService.GetEvents());

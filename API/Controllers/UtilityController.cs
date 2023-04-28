@@ -37,7 +37,6 @@ public class UtilityController : Controller
     [AuthorizeMiddleware(UserRoleEnum.Admin)]
     [HttpGet]
     [Route("AdHocEmail")]
-    [SwaggerOperation("AdHocEmail")]
     public async Task<IActionResult> AdHocEmail(bool status = false)
     {
         var viewModel = await _emailUtilityLogic.GetEmailForm();
@@ -54,7 +53,6 @@ public class UtilityController : Controller
     [AuthorizeMiddleware(UserRoleEnum.Admin)]
     [HttpPost]
     [Route("AdHocEmailAction")]
-    [SwaggerOperation("AdHocEmailAction")]
     public async Task<IActionResult> AdHocEmailAction(EmailFormViewModel emailFormViewModel)
     {
         // Handle the action
@@ -69,7 +67,6 @@ public class UtilityController : Controller
     /// <returns></returns>
     [HttpGet]
     [Route("EmailCheckIn/{type}/{hashcode}")]
-    [SwaggerOperation("EmailCheckIn")]
     public async Task<IActionResult> EmailCheckIn([FromRoute] EntitiesEnum type, [FromRoute] string hashcode)
     {
         // ReSharper disable once SwitchStatementMissingSomeCases
@@ -90,7 +87,6 @@ public class UtilityController : Controller
     /// <returns></returns>
     [HttpPost]
     [Route("EmailCheckInAction/{type}/{id:int}")]
-    [SwaggerOperation("EmailCheckInAction")]
     public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
         [FromQuery] bool present)
     {

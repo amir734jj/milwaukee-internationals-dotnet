@@ -104,7 +104,7 @@ public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : c
          
         await ApiEventService().RecordEvent($"Save new {typeof(T).Name} => {instance}");
 
-        return result.FirstOrDefault();
+        return result;
     }
 
     /// <summary>

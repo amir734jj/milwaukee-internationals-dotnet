@@ -10,7 +10,7 @@
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
 }
 
-<div class="container">
+<div class="container" ng-controller="locationMappingCtrl">
     <div class="page-header">
         <h3>
             Location Wizard
@@ -50,12 +50,22 @@
                                 @foreach (var locationMapping in mappings)
                                 {
                                     <li class="list-group-item">
-                                        @(locationMapping.Sink.Name)
-                                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                                        {
-                                            <a href="~/LocationWizard/edit/@locationMapping.Id" class="btn btn-sm btn-primary">Edit</a>
-                                            <a href="~/LocationWizard/delete/@locationMapping.Id" class="btn btn-sm btn-danger" validate-before-going data-message="Are you sure to delete mapping between (@(location.Name)  and @(locationMapping.Sink.Name)?">Delete</a>
-                                        }
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p>
+                                                    @(locationMapping.Sink.Name)
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="pull-right">
+                                                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                                                    {
+                                                        <a href="~/LocationWizard/edit/@locationMapping.Id" class="btn btn-sm btn-primary">Edit</a>
+                                                        <a href="~/LocationWizard/delete/@locationMapping.Id" class="btn btn-sm btn-danger" validate-before-going data-message="Are you sure to delete mapping between (@(location.Name)  and @(locationMapping.Sink.Name)?">Delete</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
                                     </li>
                                 }
                             </div>
@@ -73,3 +83,5 @@
         </tbody>
     </table>
 </div>
+
+<canvas id="viewport" width="800" height="600"></canvas>

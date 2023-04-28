@@ -1,15 +1,15 @@
-@if (ViewData.ContainsKey("Error"))
+@if (ViewData.TryGetValue("Error", out var value))
 {
     <div class="alert alert-danger alert-dismissible fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
-        <strong>Error!</strong> @(ViewData["Error"])
+        <strong>Error!</strong> @value
     </div>
 }
 
-@if (ViewData.ContainsKey("Message"))
+@if (ViewData.TryGetValue("Message", out var value1))
 {
     <div class="alert alert-success alert-dismissible fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
-        <strong>Success!</strong> @(ViewData["Message"])
+        <strong>Success!</strong> @value1
     </div>
 }

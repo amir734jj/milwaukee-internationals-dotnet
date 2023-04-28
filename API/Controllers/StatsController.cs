@@ -21,7 +21,6 @@ public class StatsController : Controller
 
     [HttpGet]
     [Route("")]
-    [SwaggerOperation("Stats")]
     public async Task<IActionResult> Index()
     {
         return View(await _statsLogic.GetStats());
@@ -29,7 +28,6 @@ public class StatsController : Controller
 
     [HttpGet]
     [Route("CountryDistribution")]
-    [SwaggerOperation("CountryDistribution")]
     public async Task<IActionResult> GetCountryDistribution()
     {
         return Ok(await _statsLogic.GetCountryDistribution());

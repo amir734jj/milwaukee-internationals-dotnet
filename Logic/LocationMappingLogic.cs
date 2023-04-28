@@ -124,6 +124,10 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
         }
 
         instance.Year = DateTime.Now.Year;
+        
+        // Clear these otherwise entity framework will try to add them to their corresponding tables as well
+        instance.Source = null;
+        instance.Sink = null;
 
         return await base.Save(instance);
     }

@@ -285,6 +285,7 @@ public class Startup
             x.Cookie.MaxAge = TimeSpan.FromHours(3);
             x.LoginPath = new PathString("/Identity/login");
             x.LogoutPath = new PathString("/Identity/logout");
+            x.SlidingExpiration = true;
         }).AddJwtBearer(config =>
         {
             config.RequireHttpsMetadata = false;
