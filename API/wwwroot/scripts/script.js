@@ -12,9 +12,9 @@ angular.module('angular-async-await', [])
         if (!$scope.contour) {
             $scope.contour = 0;
         }
-        
+
         $scope.contour++;
-        
+
         try {
             return await func(...args);
         } catch (e) {
@@ -30,125 +30,104 @@ angular.module('angular-async-await', [])
         }
     }]);
 
-angular.module('arber.js', [])
-    .factory('arber.js-renderer', () => (elm) => {
-        const canvas = angular.element(elm).get(0);
-        const ctx = canvas.getContext("2d");
-        let particleSystem;
+angular.module('cytoscape.js-edgehandles', [])
+    .factory('dag-render', () => (elm, {nodes, edges}) => {
+        const cy = cytoscape({
+            container: elm,
 
-        const that = {
-            init: system => {
-                //
-                // the particle system will call the init function once, right before the
-                // first frame is to be drawn. it's a good place to set up the canvas and
-                // to pass the canvas size to the particle system
-                //
-                // save a reference to the particle system for use in the .redraw() loop
-                particleSystem = system
-
-                // inform the system of the screen dimensions so it can map coords for us.
-                // if the canvas is ever resized, screenSize should be called again with
-                // the new dimensions
-                particleSystem.screenSize(canvas.width, canvas.height)
-                particleSystem.screenPadding(80) // leave an extra 80px of whitespace per side
-
-                // set up some event handlers to allow for node-dragging
-                that.initMouseHandling()
+            layout: {
+                name: 'concentric',
+                concentric: n => n.id() === 'j' ? 200 : 0,
+                levelWidth: nodes => 100,
+                minNodeSpacing: 100
             },
 
-            redraw: () => {
-                // 
-                // redraw will be called repeatedly during the run whenever the node positions
-                // change. the new positions for the nodes can be accessed by looking at the
-                // .p attribute of a given node. however the p.x & p.y values are in the coordinates
-                // of the particle system rather than the screen. you can either map them to
-                // the screen yourself, or use the convenience iterators .eachNode (and .eachEdge)
-                // which allow you to step through the actual node objects but also pass an
-                // x,y point in the screen's coordinate system
-                // 
-                ctx.fillStyle = "white"
-                ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-                particleSystem.eachEdge((edge, pt1, pt2) => {
-                    // edge: {source:Node, target:Node, length:#, data:{}}
-                    // pt1:  {x:#, y:#}  source position in screen coords
-                    // pt2:  {x:#, y:#}  target position in screen coords
-
-                    // draw a line from pt1 to pt2
-                    ctx.strokeStyle = "rgba(0,0,0, .333)"
-                    ctx.lineWidth = 1
-                    ctx.beginPath()
-                    ctx.moveTo(pt1.x, pt1.y)
-                    ctx.lineTo(pt2.x, pt2.y)
-                    ctx.stroke()
-                })
-
-                particleSystem.eachNode((node, pt) => {
-                    // node: {mass:#, p:{x,y}, name:"", data:{}}
-                    // pt:   {x:#, y:#}  node position in screen coords
-
-                    // draw a rectangle centered at pt
-                    const w = 10;
-                    ctx.fillStyle = (node.data.alone) ? "orange" : "black"
-                    ctx.fillRect(pt.x - w / 2, pt.y - w / 2, w, w)
-                })
-            },
-
-            initMouseHandling: () => {
-                // no-nonsense drag and drop (thanks springy.js)
-                let dragged = null;
-
-                // set up a handler object that will initially listen for mousedowns then
-                // for moves and mouseups while dragging
-                const handler = {
-                    clicked: e => {
-                        const pos = angular.element(canvas).offset();
-                        _mouseP = arbor.Point(e.pageX - pos.left, e.pageY - pos.top)
-                        dragged = particleSystem.nearest(_mouseP);
-
-                        if (dragged && dragged.node !== null) {
-                            // while we're dragging, don't let physics move the node
-                            dragged.node.fixed = true
-                        }
-
-                        angular.element(canvas).bind('mousemove', handler.dragged)
-                        angular.element(window).bind('mouseup', handler.dropped)
-
-                        return false
-                    },
-                    dragged: e => {
-                        const pos = angular.element(canvas).offset();
-                        const s = arbor.Point(e.pageX - pos.left, e.pageY - pos.top);
-
-                        if (dragged && dragged.node !== null) {
-                            const p = particleSystem.fromScreen(s);
-                            dragged.node.p = p
-                        }
-
-                        return false
-                    },
-
-                    dropped: e => {
-                        if (dragged === null || dragged.node === undefined) return
-                        if (dragged.node !== null) dragged.node.fixed = false
-                        dragged.node.tempMass = 1000
-                        dragged = null
-                        angular.element(canvas).unbind('mousemove', handler.dragged)
-                        angular.element(window).unbind('mouseup', handler.dropped)
-                        _mouseP = null
-                        return false
+            style: [
+                {
+                    selector: 'node[name]',
+                    style: {
+                        'content': 'data(name)'
                     }
-                };
+                },
 
-                // start listening
-                angular.element(canvas).mousedown(handler.clicked);
-            },
+                {
+                    selector: 'edge',
+                    style: {
+                        'curve-style': 'bezier',
+                        'target-arrow-shape': 'triangle'
+                    }
+                },
 
-        };
-        return that;
+                // some style for the extension
+
+                {
+                    selector: '.eh-handle',
+                    style: {
+                        'background-color': 'red',
+                        'width': 12,
+                        'height': 12,
+                        'shape': 'ellipse',
+                        'overlay-opacity': 0,
+                        'border-width': 12, // makes the handle easier to hit
+                        'border-opacity': 0
+                    }
+                },
+
+                {
+                    selector: '.eh-hover',
+                    style: {
+                        'background-color': 'red'
+                    }
+                },
+
+                {
+                    selector: '.eh-source',
+                    style: {
+                        'border-width': 2,
+                        'border-color': 'red'
+                    }
+                },
+
+                {
+                    selector: '.eh-target',
+                    style: {
+                        'border-width': 2,
+                        'border-color': 'red'
+                    }
+                },
+
+                {
+                    selector: '.eh-preview, .eh-ghost-edge',
+                    style: {
+                        'background-color': 'red',
+                        'line-color': 'red',
+                        'target-arrow-color': 'red',
+                        'source-arrow-color': 'red'
+                    }
+                },
+
+                {
+                    selector: '.eh-ghost-edge.eh-preview-active',
+                    style: {
+                        'opacity': 0
+                    }
+                }
+            ],
+
+            elements: {
+                nodes,
+                edges
+            }
+        });
+
+        return cy.edgehandles({
+            snap: false, // when enabled, the edge can be drawn by just moving close to a target node (can be confusing on compound graphs)
+            noEdgeEventsInDraw: true, // set events:no to edges during draws, prevents mouseouts on compounds
+            disableBrowserGestures: true // during an edge drawing gesture, disable browser gestures such as two-finger trackpad swipe and pinch-to-zoom
+        });
     });
 
-angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await', 'angular-loading-bar', 'arber.js'])
+angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize', 'angular-async-await', 'angular-loading-bar', 'cytoscape.js-edgehandles'])
     .config(['cfpLoadingBarProvider', cfpLoadingBarProvider => {
         cfpLoadingBarProvider.includeSpinner = false;
         cfpLoadingBarProvider.latencyThreshold = 300;
@@ -897,7 +876,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             }
         });
 
-        $scope.getAllDrivers =  $async($scope, async () => {
+        $scope.getAllDrivers = $async($scope, async () => {
             const {data: drivers} = await $http.get('/api/driver');
             $scope.drivers = drivers.filter(value => value.role === 'Driver');
             $scope.allDrivers = drivers.filter(value => value.role === 'Driver');
@@ -973,20 +952,20 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
     }])
     .controller('locationEditCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
     }])
-    .controller('locationMappingCtrl', ['$scope', '$http', '$window', '$async', 'arber.js-renderer', ($scope, $http, $window, $async, Renderer) => {
-        angular.element(document).ready(() => {
-            const sys = arbor.ParticleSystem(1000, 600, 0.5); // create the system with sensible repulsion/stiffness/friction
-            sys.parameters({gravity:true}); // use center-gravity to make the graph settle nicely (ymmv)
-            sys.renderer = Renderer("#viewport"); // our newly created renderer will have its .init() method called shortly by sys...
+    .controller('locationMappingCtrl', ['$scope', '$http', '$window', '$async', 'dag-render', async ($scope, $http, $window, $async, dagRender) => {
 
-            // add some nodes to the graph and watch it go...
-            sys.addEdge('a','b');
-            sys.addEdge('a','c');
-            sys.addEdge('a','d');
-            sys.addEdge('a','e');
-            sys.addNode('f', {alone:true, mass:.25});
-            
-            sys.ren
+        const {data: locations} = await $http.get(`/api/Location`);
+        const {data: mappings} = await $http.get(`/api/LocationMapping`);
+
+        angular.element(document).ready(() => {
+
+            let data = {
+                nodes: locations.map(({id, name}) => ({data: {id, name}})),
+                edges: mappings.map(({sourceId, sinkId}) => ({data: {source: sourceId, target: sinkId}}))
+            };
+
+            dagRender(angular.element('#graph'), data);
+
         });
     }])
     .controller('locationMappingEditCtrl', ['$scope', '$http', '$window', '$async', async ($scope, $http, $window, $async) => {
