@@ -11,130 +11,183 @@
     var navigatorsOnly = Model.Where(x => x.Role == RolesEnum.Navigator).ToList();
 }
 
-<div class="container" ng-controller="driverListCtrl">
-    <div class="page-header">
-        <h3>
-            List of Drivers
-            <small>
-                (
-                Count Drivers: @(driversOnly.Count),
-                Assigned Seats: @(driversOnly.SelectMany(x => x.Students).Count()),
-                Total Seats: @(driversOnly.Select(x => x.Capacity).Sum()),
-                Count Navigators: @(navigatorsOnly.Count)
-                )
-            </small>
-        </h3>
+<div ng-controller="driverListCtrl">
+    <div class="container">
+        <div class="page-header">
+            <h3>
+                List of Drivers
+                <small>
+                    (
+                    Count Drivers: @(driversOnly.Count),
+                    Assigned Seats: @(driversOnly.SelectMany(x => x.Students).Count()),
+                    Total Seats: @(driversOnly.Select(x => x.Capacity).Sum()),
+                    Count Navigators: @(navigatorsOnly.Count)
+                    )
+                </small>
+            </h3>
 
-        <div class="row">
-            <div class="col-sm-5 col-sm-offset-7 col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
-                <div class="pull-right">
-                    <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" toggle-class="quick" class="margin-right-md"></toggle>
-                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                    {
-                        <button class="btn btn-default pull-right" ng-click="getAllDriversPDF()">Download PDF</button>
-                    }
+            <div class="row">
+                <div class="col-sm-5 col-sm-offset-7 col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
+                    <div class="pull-right">
+                        <toggle ng-model="showDetail" on="Hide detail" off="Show detail" size="btn" onstyle="btn-success" offstyle="btn-danger" toggle-class="quick" class="margin-right-md"></toggle>
+                        @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                        {
+                            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#downloadModal">Download</button>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>
+                        DisplayId
+                        <a href="?sortBy=displayId&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=displayId&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th>
+                        Fullname
+                        <a href="?sortBy=fullname&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=fullname&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th>Role</th>
+                    <th>
+                        Capacity
+                        <a href="?sortBy=capacity&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=capacity&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th ng-show="showDetail">
+                        Email
+                        <a href="?sortBy=email&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=email&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th ng-show="showDetail">
+                        UniqueToken
+                        <a href="?sortBy=uniqueToken&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=uniqueToken&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th>Phone</th>
+                    <th>
+                        Navigator
+                        <a href="?sortBy=navigator&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=navigator&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th>
+                        Have Child Seat
+                        <a href="?sortBy=haveChildSeat&descending=false">
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </a>
+                        <a href="?sortBy=haveChildSeat&descending=true">
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    <th class="hidden-xs" ng-show="showDetail">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var driver in Model)
+                {
+                    <tr class="@(driver.Role == RolesEnum.Navigator ? "warning" : "")">
+                        <td>@driver.DisplayId</td>
+                        <td>@driver.Fullname</td>
+                        <td>@driver.Role.ToString()</td>
+                        <td>@driver.Capacity</td>
+                        <td ng-show="showDetail">@driver.Email</td>
+                        <td ng-show="showDetail">@driver.UniqueToken</td>
+                        <td>@driver.Phone</td>
+                        <td>@driver.Navigator</td>
+                        <td>@driver.HaveChildSeat</td>
+                        <td class="hidden-xs" ng-show="showDetail">
+                            <div class="btn-group-vertical btn-group-sm">
+                                <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
+                                @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                                {
+                                    <a href="~/Driver/delete/@driver.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this driver (@(driver.Fullname))?">Delete</a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered">
-            <thead>
-            <tr>
-                <th>
-                    DisplayId
-                    <a href="?sortBy=displayId&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=displayId&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th>
-                    Fullname
-                    <a href="?sortBy=fullname&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=fullname&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th>Role</th>
-                <th>
-                    Capacity
-                    <a href="?sortBy=capacity&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=capacity&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th ng-show="showDetail">
-                    Email
-                    <a href="?sortBy=email&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=email&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th ng-show="showDetail">
-                    UniqueToken
-                    <a href="?sortBy=uniqueToken&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=uniqueToken&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th>Phone</th>
-                <th>
-                    Navigator
-                    <a href="?sortBy=navigator&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=navigator&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th>
-                    Have Child Seat
-                    <a href="?sortBy=haveChildSeat&descending=false">
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                    </a>
-                    <a href="?sortBy=haveChildSeat&descending=true">
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    </a>
-                </th>
-                <th class="hidden-xs" ng-show="showDetail">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var driver in Model)
-            {
-                <tr class="@(driver.Role == RolesEnum.Navigator ? "warning" : "")">
-                    <td>@driver.DisplayId</td>
-                    <td>@driver.Fullname</td>
-                    <td>@driver.Role.ToString()</td>
-                    <td>@driver.Capacity</td>
-                    <td ng-show="showDetail">@driver.Email</td>
-                    <td ng-show="showDetail">@driver.UniqueToken</td>
-                    <td>@driver.Phone</td>
-                    <td>@driver.Navigator</td>
-                    <td>@driver.HaveChildSeat</td>
-                    <td class="hidden-xs" ng-show="showDetail">
-                        <div class="btn-group-vertical btn-group-sm">
-                            <a href="~/Driver/edit/@driver.Id" class="btn btn-primary">Edit</a>
-                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
-                            {
-                                <a href="~/Driver/delete/@driver.Id" class="btn btn-danger" validate-before-going data-message="Are you sure to delete this driver (@(driver.Fullname))?">Delete</a>
-                            }
+
+    <!-- Modal to select columns for PDF -->
+    <div id="downloadModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Driver Download</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="checkbox">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="downloadTable['displayId']"> DisplayId
+                            </label>
                         </div>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="downloadTable['fullname']" ng-disabled="true"> Fullname
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="downloadTable['email']"> Email
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="downloadTable['phone']"> Phone
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="downloadTable['isPresent']"> IsPresent
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllDriversPDF()">Download PDF</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getAllDriversCSV()">Download CSV</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
     </div>
+    
 </div>

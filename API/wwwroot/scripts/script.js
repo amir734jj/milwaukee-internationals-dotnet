@@ -408,6 +408,32 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         });
     }])
     .controller('driverListCtrl', ['$scope', '$http', 'jsPDF', '$async', ($scope, $http, jsPDF, $async) => {
+        $scope.downloadTable = {
+            id: false,
+            displayId: false,
+            fullname: true,
+            email: false,
+            phone: true,
+            isPresent: true,
+        };
+
+        $scope.getAllDriversCSV = $async($scope, async () => {
+            const {data: drivers} = await $http.get('/api/driver');
+            const attributes = Object.keys($scope.downloadTable).filter(value => $scope.downloadTable[value]);
+
+            const rows = drivers
+                .map(driver => attributes.map(x => driver[x]));
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            [attributes].concat(rows).forEach(rowArray => {
+                let row = rowArray.join(",");
+                csvContent += row + "\r\n";
+            });
+
+            download(csvContent, "driver-list.csv", "text/csv");
+        });
+        
         $scope.getAllDriversPDF = $async($scope, async () => {
             const {data: drivers} = await $http.get('/api/driver');
 
@@ -436,7 +462,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
                     driver.navigator = driver.navigator || driver.navigator === 'null' ?
                         (driver.navigator.length > 20 ? `${driver.navigator.substring(0, 20)} ...` : driver.navigator) : '-';
 
-                    return subsetAttr(['displayId', 'fullname', 'capacity', 'navigator', 'role', 'haveChildSeat'], driver);
+                    return subsetAttr(Object.keys($scope.downloadTable).filter(key => $scope.downloadTable[key]), driver);
                 }));
 
                 // Needed
