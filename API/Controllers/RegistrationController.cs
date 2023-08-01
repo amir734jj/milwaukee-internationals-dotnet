@@ -6,6 +6,7 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Models.Enums;
 
 namespace API.Controllers;
 
@@ -74,7 +75,7 @@ public class RegistrationController : Controller
 
             ModelState.ClearModelStateErrors();
 
-            return View("Thankyou");
+            return View("Thankyou", EntitiesEnum.Driver);
         }
         catch (Exception e)
         {
@@ -116,7 +117,7 @@ public class RegistrationController : Controller
 
             ModelState.ClearModelStateErrors();
 
-            return View("Thankyou", "student");
+            return View("Thankyou", EntitiesEnum.Student);
         }
         catch (Exception e)
         {
@@ -155,7 +156,7 @@ public class RegistrationController : Controller
 
             ModelState.ClearModelStateErrors();
 
-            return View("Thankyou");
+            return View("Thankyou", EntitiesEnum.Host);
         }
         catch (Exception e)
         {

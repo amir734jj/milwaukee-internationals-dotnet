@@ -1,4 +1,6 @@
-﻿@using Models.Constants
+﻿@model Models.Enums.EntitiesEnum
+@using Models.Constants
+@using Models.Enums
 @inject GlobalConfigs GlobalConfigs;
 @{
     ViewBag.Title = "Registration Complete";
@@ -10,7 +12,7 @@
 <h4>You will receive a confirmation email shortly. You can also check your spam folder and mark us as safe sender for future communication.</h4>
 <br/>
 
-@if (Model == "student")
+@if (Model == EntitiesEnum.Student)
 {
     <br/>
     <h4>@(GlobalConfigs.TourDate.Year) Tour of Milwaukee Registration</h4>
