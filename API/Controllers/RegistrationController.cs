@@ -116,7 +116,7 @@ public class RegistrationController : Controller
 
             ModelState.ClearModelStateErrors();
 
-            return View("Thankyou");
+            return View("Thankyou", "student");
         }
         catch (Exception e)
         {
