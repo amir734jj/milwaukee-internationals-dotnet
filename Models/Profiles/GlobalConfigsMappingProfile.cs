@@ -27,9 +27,7 @@ public class GlobalConfigsMappingProfile: Profile
 {
     public GlobalConfigsMappingProfile()
     {
-        CreateMap<GlobalConfigs, GlobalConfigViewModel>()
-            .ForMember(x => x.TourDate, x => x.ConvertUsing(new DateTimeWithZoneTypeConverter()));
-        CreateMap<GlobalConfigViewModel, GlobalConfigs>()
-            .ForMember(x => x.TourDate, x => x.ConvertUsing(new DateTimeWithoutZoneTypeConverter()));
+        CreateMap<GlobalConfigs, GlobalConfigViewModel>();
+        CreateMap<GlobalConfigViewModel, GlobalConfigs>();
     }
 }

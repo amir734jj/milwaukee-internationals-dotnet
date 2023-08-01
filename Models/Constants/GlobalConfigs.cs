@@ -26,7 +26,7 @@ public class GlobalConfigs
     /// </summary>
     public int MaxLimitStudentSeats { get; set; } = 160;
         
-    public DateTimeOffset TourDate { get; set; } = DateTimeOffset.Now;
+    public DateTime TourDate { get; set; } = DateTime.Now;
         
     public string TourAddress { get; set; }     
         
