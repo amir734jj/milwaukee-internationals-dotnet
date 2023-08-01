@@ -84,33 +84,13 @@ public class RegistrationLogic : IRegistrationLogic
                     <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
                     <br>
                     <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d}</p>
-                    <p> Time: {_globalConfigs.TourDate:h:mm tt} (Brief orientation only for drivers and navigators) </p>
+                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
                     <p> Address: {_globalConfigs.TourAddress} </p>
                     <p> Location: {_globalConfigs.TourLocation} </p>
                     <br>
                     <p> Thank you for helping with the tour this year.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
-                    <br>
-                    <p> Blessings, </p>
-                ");
-                    break;
-                case RolesEnum.Navigator:
-                    await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
-                        $@"
-                    <p> Name: {driver.Fullname}</p>
-                    <p> Role: {driver.Role}</p>
-                    <p> Phone: {driver.Phone}</p>
-                    <p> Display Id: {driver.DisplayId}</p>
-                    <br>
-                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d}</p>
-                    <p> Time: {_globalConfigs.TourDate:h:mm tt} (Brief orientation only for drivers and navigators) </p>
-                    <p> Address: {_globalConfigs.TourAddress} </p>
-                    <p> Location: {_globalConfigs.TourLocation} </p>
-                    <br>
-                    <p> Thank you for helping with the tour this year.</p>
-                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
                     <p> Blessings, </p>
                 ");
@@ -166,8 +146,8 @@ public class RegistrationLogic : IRegistrationLogic
                     <p>See you at the Tour of Milwaukee</p>
                     <br>
                     <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d}</p>
-                    <p> Time: {_globalConfigs.TourDate:h:mm tt} (Brief orientation only for drivers and navigators) </p>
+                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> Time: 12:00 noon</p>
                     <p> Address: {_globalConfigs.TourAddress} </p>
                     <p> Location: {_globalConfigs.TourLocation} </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
@@ -209,8 +189,8 @@ public class RegistrationLogic : IRegistrationLogic
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
                     <br>
                     <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d}</p>
-                    <p> Time: {_globalConfigs.TourDate:h:mm tt} (Brief orientation only for drivers and navigators) </p>
+                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> Time: 5:30 pm</p>
                     <p> We will send you more details once we have them.</p>
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
                     <p> Blessings,</p>
