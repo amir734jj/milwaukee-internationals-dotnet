@@ -165,7 +165,7 @@
                                 </li>
                             }
                             
-                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                            @if (userInfo.UserRoleEnum == UserRoleEnum.Admin && GlobalConfigs.LocationWizardFeature)
                             {
                                 <li>
                                     <a href="~/Location">Locations</a>
@@ -215,7 +215,7 @@
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
 
-                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin && GlobalConfigs.LocationWizardFeature)
                     {
                         <li class="@(ViewContext.RouteData.Matches("LocationWizard") ? "active" : "")">
                             <a href="~/LocationWizard">Location Wizard</a>

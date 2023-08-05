@@ -38,4 +38,7 @@ public class GlobalConfigViewModel
         
     [Display(Name = "Location of the tour")]
     public string TourLocation { get; set; }
+    
+    [Display(Name = "Location Wizard Feature")]
+    public bool LocationWizardFeature { get; set; }
 }

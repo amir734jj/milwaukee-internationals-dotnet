@@ -31,4 +31,6 @@ public class GlobalConfigs
     public string TourAddress { get; set; }     
         
     public string TourLocation { get; set; }
+    
+    public bool LocationWizardFeature { get; set; }
 }
