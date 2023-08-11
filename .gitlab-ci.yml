@@ -8,6 +8,7 @@ variables:
   APP_NAME: "milwaukee-internationals-core"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: "tcp://docker:2375"
+  HEROKU_REGISTRY: "registry.heroku.com"
 
 stages:
   - deploy
@@ -18,9 +19,10 @@ docker-build:
   only:
     - master
   allow_failure: false
-  script:
+  before_script:
     - apk --no-cache add npm
     - npm install -g heroku
-    - heroku container:login
+  script:
+    - docker login --username=_ --password=$HEROKU_API_KEY $HEROKU_REGISTRY
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
