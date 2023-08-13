@@ -9,6 +9,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: "tcp://docker:2375"
   HEROKU_REGISTRY: "registry.heroku.com"
+  HEROKU_EMAIL: "hesamian@uwm.edu"
 
 stages:
   - deploy
@@ -20,9 +21,15 @@ docker-build:
     - master
   allow_failure: false
   before_script:
-    - apk --no-cache add npm
+    - apk --no-cache add curl node.js npm
     - npm install -g heroku
   script:
-    - heroku container:login
+    - touch ~/.netrc
+    - echo "machine api.heroku.com" >> ~/.netrc
+    - echo "  login $HEROKU_EMAIL" >> ~/.netrc
+    - echo "  password $HEROKU_API_KEY" >> ~/.netrc
+    - echo "machine git.heroku.com" >> ~/.netrc
+    - echo "  login $HEROKU_EMAIL" >> ~/.netrc
+    - echo "  password $HEROKU_API_KEY" >> ~/.netrc
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
