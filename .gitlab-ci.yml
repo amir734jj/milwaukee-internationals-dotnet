@@ -31,5 +31,6 @@ docker-build:
     - echo "machine git.heroku.com" >> ~/.netrc
     - echo "  login $HEROKU_EMAIL" >> ~/.netrc
     - echo "  password $HEROKU_API_KEY" >> ~/.netrc
+    - heroku container:login
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
