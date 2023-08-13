@@ -23,6 +23,6 @@ docker-build:
     - apk --no-cache add npm
     - npm install -g heroku
   script:
-    - docker login --username=_ --password=$HEROKU_API_KEY $HEROKU_REGISTRY
+    - heroku container:login
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
