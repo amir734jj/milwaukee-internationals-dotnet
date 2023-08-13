@@ -34,3 +34,5 @@ docker-build:
     - heroku container:login
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
+    - heroku container:logout
+    - rm ~/.netrc
