@@ -4,7 +4,7 @@ public static class CountriesConstant
 {
     public static readonly string[] Countries =
     {
-        "China", "India",
+        "India", "China",
         "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
         "Anguilla", "Argentina", "Armenia",
         "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas",
