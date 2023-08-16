@@ -24,6 +24,7 @@ docker-build:
     - apk --no-cache add curl nodejs npm
     - npm install -g heroku
   script:
+    - echo $HEROKU_API_KEY
     - heroku container:login
     - heroku container:push --app $APP_NAME web
     - heroku container:release --app $APP_NAME web
