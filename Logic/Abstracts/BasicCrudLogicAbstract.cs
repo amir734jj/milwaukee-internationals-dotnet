@@ -37,10 +37,11 @@ public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : c
     /// Call forwarding
     /// </summary>
     /// <param name="sortBy"></param>
+    /// <param name="sortByModifier"></param>
     /// <param name="descending"></param>
     /// <param name="filters"></param>
     /// <returns></returns>
-    public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<T, bool>>[] filters)
+    public virtual async Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<T, bool>>[] filters)
     {
         var result = await Repository().GetAll(filters);
 
@@ -60,7 +61,7 @@ public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : c
             return result;
         }
 
-        var propertyAccessFunc = ToLambda(property).Compile();
+        var propertyAccessFunc = ToLambda(property, sortByModifier).Compile();
 
         if (!descending.HasValue || !descending.Value)
         {
@@ -70,11 +71,16 @@ public abstract class BasicCrudLogicAbstract<T> : IBasicCrudLogic<T> where T : c
         return result.OrderByDescending(propertyAccessFunc).ToList();
     }
         
-    private static Expression<Func<T, object>> ToLambda(PropertyInfo propertyInfo)
+    private static Expression<Func<T, object>> ToLambda(PropertyInfo propertyInfo, Func<object, string, object> sortByModifier = null)
     {
         var parameter = Expression.Parameter(typeof(T));
         var property = Expression.Property(parameter, propertyInfo);
-        var propAsObject = Expression.Convert(property, typeof(object));
+        Expression propAsObject = Expression.Convert(property, typeof(object));
+
+        if (sortByModifier != null)
+        {
+            propAsObject = Expression.Invoke(Expression.Constant(sortByModifier), propAsObject, Expression.Constant(propertyInfo.Name));
+        }
 
         return Expression.Lambda<Func<T, object>>(propAsObject, parameter);            
     }

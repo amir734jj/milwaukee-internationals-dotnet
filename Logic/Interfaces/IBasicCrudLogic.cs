@@ -9,7 +9,7 @@ public interface IBasicCrudLogic<T>
 {
     Task<IEnumerable<T>> GetAll(int year);
         
-    Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<T, bool>>[] filters);
+    Task<IEnumerable<T>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<T, bool>>[] filters);
 
     Task<T> Get(int id);
 

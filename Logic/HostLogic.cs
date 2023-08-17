@@ -53,11 +53,11 @@ public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
         return _apiEventService;
     }
 
-    public override async Task<IEnumerable<Host>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Host, bool>>[] filters)
+    public override async Task<IEnumerable<Host>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Host, bool>>[] filters)
     {
         Expression<Func<Host, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
         
-        return await base.GetAll(sortBy, descending, filters.Concat(new[] { yearFilterExpr }).ToArray());
+        return await base.GetAll(sortBy, descending, null, filters.Concat(new[] { yearFilterExpr }).ToArray());
     }
 
     public override Task<Host> Update(int id, Host host)

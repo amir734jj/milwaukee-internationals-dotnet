@@ -106,11 +106,21 @@ public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
         return _apiEventService;
     }
 
-    public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Driver, bool>>[] filters)
+    public override async Task<IEnumerable<Driver>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Driver, bool>>[] filters)
     {
         Expression<Func<Driver, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
-        
-        return await base.GetAll(sortBy, descending, new[] { yearFilterExpr}.Concat(filters).ToArray());
+
+        return await base.GetAll(sortBy, descending, SortByModifierFunc, new[] { yearFilterExpr}.Concat(filters).ToArray());
+
+        object SortByModifierFunc(object value, string prop)
+        {
+            if (prop == nameof(Driver.DisplayId) && value is string displayId)
+            {
+                return int.Parse(displayId.Split("-").Last());
+            }
+
+            return value;
+        }
     }
 
     private async Task<string> GenerateUniqueToken()

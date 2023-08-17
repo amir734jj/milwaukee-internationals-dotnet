@@ -45,11 +45,11 @@ public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
         return _apiEventService;
     }
 
-    public override async Task<IEnumerable<Event>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Event, bool>>[] filters)
+    public override async Task<IEnumerable<Event>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Event, bool>>[] filters)
     {
         Expression<Func<Event, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
 
-        return await base.GetAll(sortBy, descending, new[] {yearFilterExpr}.Concat(filters).ToArray());
+        return await base.GetAll(sortBy, descending, null, new[] {yearFilterExpr}.Concat(filters).ToArray());
     }
 
     public override Task<Event> Save(Event instance)

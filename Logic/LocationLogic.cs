@@ -46,11 +46,11 @@ public class LocationLogic : BasicCrudLogicAbstract<Location>, ILocationLogic
         return await base.Save(instance);
     }
 
-    public override async Task<IEnumerable<Location>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Location, bool>>[] filters)
+    public override async Task<IEnumerable<Location>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Location, bool>>[] filters)
     {
         Expression<Func<Location, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
 
-        return await base.GetAll(sortBy ?? "Rank", descending, new [] {yearFilterExpr}.Concat(filters).ToArray());
+        return await base.GetAll(sortBy ?? "Rank", descending, null, new [] {yearFilterExpr}.Concat(filters).ToArray());
     }
 
     public async Task MoveRankUp(int id)

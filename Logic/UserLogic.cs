@@ -74,9 +74,9 @@ public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
         return _apiEventService;
     }
 
-    public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<User, bool>>[] filters)
+    public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<User, bool>>[] filters)
     {
-        var fetchUsersObservable = base.GetAll(sortBy, descending, filters)
+        var fetchUsersObservable = base.GetAll(sortBy, descending, null, filters)
             .ToObservable()
             .Then(users => users.Select(user =>
             {

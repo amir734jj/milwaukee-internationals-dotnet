@@ -156,10 +156,10 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
         return await base.Update(id, updatedInstance);
     }
     
-    public override async Task<IEnumerable<LocationMapping>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<LocationMapping, bool>>[] filters)
+    public override async Task<IEnumerable<LocationMapping>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<LocationMapping, bool>>[] filters)
     {
         Expression<Func<LocationMapping, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
 
-        return await base.GetAll(sortBy, descending, new [] {yearFilterExpr}.Concat(filters).ToArray());
+        return await base.GetAll(sortBy, descending, null, new [] {yearFilterExpr}.Concat(filters).ToArray());
     }
 }

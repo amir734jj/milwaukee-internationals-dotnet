@@ -115,10 +115,20 @@ public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
         return _apiEventService;
     }
 
-    public override async Task<IEnumerable<Student>> GetAll(string sortBy = null, bool? descending = null, params Expression<Func<Student, bool>>[] filters)
+    public override async Task<IEnumerable<Student>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Student, bool>>[] filters)
     {
         Expression<Func<Student, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
         
-        return await base.GetAll(sortBy, descending, new[] { yearFilterExpr}.Concat(filters).ToArray());
+        return await base.GetAll(sortBy, descending, SortByModifierFunc, new[] { yearFilterExpr}.Concat(filters).ToArray());
+        
+        object SortByModifierFunc(object value, string prop)
+        {
+            if (prop == nameof(Student.DisplayId) && value is string displayId)
+            {
+                return int.Parse(displayId.Split("-").Last());
+            }
+
+            return value;
+        }
     }
 }
