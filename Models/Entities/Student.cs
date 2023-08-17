@@ -34,7 +34,7 @@ public class Student : ObjectHash<Student>, IPerson, IYearlyEntity
         
     public string DisplayId { get; set; }
         
-    [Display(Name="Need a car seat?")]
+    [Display(Name="Need a child seat?")]
     public bool NeedCarSeat { get; set; }
         
     [Display(Name="Halal or Kosher food")]
