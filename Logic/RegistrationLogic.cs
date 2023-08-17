@@ -144,6 +144,7 @@ public class RegistrationLogic : IRegistrationLogic
                     <p>Phone: {student.Phone}</p>
                     <hr>
                     <p>See you at the Tour of Milwaukee</p>
+                    <p> Note that this is not a bus tour; it's a personal tour with 2-4 people in each vehicle. The tour concludes with a dinner at an American home. </p>
                     <br>
                     <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
                     <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
