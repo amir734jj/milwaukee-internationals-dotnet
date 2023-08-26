@@ -85,7 +85,7 @@ public class RegistrationLogic : IRegistrationLogic
                     <br>
                     <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
                     <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
-                    <p> Time: 12:30 pm (Brief orientation only for drivers and navigators) </p>
+                    <p> Time: 12:00 noon (Brief orientation only for drivers and navigators) </p>
                     <p> Address: {_globalConfigs.TourAddress} </p>
                     <p> Location: {_globalConfigs.TourLocation} </p>
                     <br>
