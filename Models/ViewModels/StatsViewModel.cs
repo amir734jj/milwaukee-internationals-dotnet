@@ -12,8 +12,6 @@ public class StatsViewModel
     
     public int CountHosts { get; set; }
     
-    public int CountNavigators { get; set; }
-    
     public int Year { get; set; }
     
     public int CountDistinctCountries { get; set; }
@@ -23,4 +21,6 @@ public class StatsViewModel
     public bool ActiveYear { get; set; }
     
     public Dictionary<string, int> CountryDistribution { get; set; }
+    
+    public int CountPresentStudents { get; set; }
 }

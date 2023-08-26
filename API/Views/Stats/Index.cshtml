@@ -21,19 +21,21 @@
         <tr>
             <th>Year</th>
             <th>Count Students</th>
+            <th>Count Present</th>
             <th>Count Drivers</th>
-            <th>Count Navigators</th>
             <th>Count Hosts</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var stat in Model)
         {
+            var percentage = (1.0 * stat.CountPresentStudents / stat.CountStudents * 100).ToString("F1");
+            
             <tr>
                 <td class="@(stat.CurrentYear ? "active" : !stat.ActiveYear ? "danger" : "success")">@stat.Year</td>
                 <td>@stat.CountStudents + @stat.CountDependents (@stat.CountDistinctCountries countries)</td>
+                <td>@stat.CountPresentStudents (@(percentage)%)</td>
                 <td>@stat.CountDrivers</td>
-                <td>@stat.CountNavigators</td>
                 <td>@stat.CountHosts</td>
             </tr>
         }

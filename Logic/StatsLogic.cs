@@ -35,7 +35,6 @@ public class StatsLogic : IStatsLogic
             var students = (await _studentDal.GetAll(x => x.Year == year)).ToList();
             
             var countDrivers = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Driver);
-            var countNavigators = await _driverDal.Count(x => x.Year == year && x.Role == RolesEnum.Navigator);
             var countHosts = await _hostDal.Count(x => x.Year == year);
             var countDependents = students.Select(x => x.FamilySize).Sum();
             var countDistinctCountries = students.Select(x => x.Country.ToLower()).Distinct().Count();
@@ -45,9 +44,9 @@ public class StatsLogic : IStatsLogic
             
             result.Add(new StatsViewModel
             {
+                CountPresentStudents = students.Count(x => x.IsPresent),
                 Year = year,
                 CountDrivers = countDrivers,
-                CountNavigators = countNavigators,
                 CountStudents = students.Count,
                 CountHosts = countHosts,
                 CountDependents = countDependents,
