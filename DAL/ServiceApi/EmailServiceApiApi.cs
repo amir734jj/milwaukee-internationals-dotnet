@@ -81,8 +81,9 @@ public class EmailServiceApi : IEmailServiceApi
     /// <returns></returns>
     public async Task SendEmailAsync(IEnumerable<string> emailAddresses, string emailSubject, string emailHtml)
     {
-        var tasks = emailAddresses.Select(x => SendEmailAsync(x, emailSubject, emailHtml)).ToArray();
-
-        await Task.WhenAll(tasks);
+        await Parallel.ForEachAsync(emailAddresses, new ParallelOptions { MaxDegreeOfParallelism = 3 } ,async (emailAddress, _) =>
+        {
+            await SendEmailAsync(emailAddress, emailSubject, emailHtml);
+        });
     }
 }
