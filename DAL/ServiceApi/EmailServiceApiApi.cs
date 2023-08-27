@@ -55,25 +55,20 @@ public class EmailServiceApi : IEmailServiceApi
 
         if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
         {
-            var task = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(async _ =>
-            {
-                // construct your email with builder
-                var email = new TransactionalEmailBuilder()
-                    .WithFrom(new SendContact("yiwagu@hotmail.com"))
-                    .WithSubject(emailSubject)
-                    .WithHtmlPart(emailHtml)
-                    .WithCc(new SendContact(ApiConstants.SiteEmail))
-                    .WithTo(new SendContact(_globalConfigs.EmailTestMode ? ApiConstants.SiteEmail : emailAddress))
-                    .Build();
+            // construct your email with builder
+            var email = new TransactionalEmailBuilder()
+                .WithFrom(new SendContact("yiwagu@hotmail.com"))
+                .WithSubject(emailSubject)
+                .WithHtmlPart(emailHtml)
+                .WithCc(new SendContact(ApiConstants.SiteEmail))
+                .WithTo(new SendContact(_globalConfigs.EmailTestMode ? ApiConstants.SiteEmail : emailAddress))
+                .Build();
 
-                // invoke API to send email
-                var response = await _mailJetClient.SendTransactionalEmailAsync(email);
+            // invoke API to send email
+            var response = await _mailJetClient.SendTransactionalEmailAsync(email);
                     
-                // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-                _logger.LogInformation("Email sent successfully {}", response?.ToString());
-            });
-
-            await task;
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+            _logger.LogInformation("Email sent successfully {}", response?.ToString());
         }
     }
 
