@@ -54,10 +54,13 @@ public class EmailServiceApi : IEmailServiceApi
         // return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
 
         if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
-        {
+        { 
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+            _logger.LogInformation("Sending email to {}", emailAddress);
+            
             // construct your email with builder
             var email = new TransactionalEmailBuilder()
-                .WithFrom(new SendContact("yiwagu@hotmail.com"))
+                .WithFrom(new SendContact("tourofmilwaukee@gmail.com"))
                 .WithSubject(emailSubject)
                 .WithHtmlPart(emailHtml)
                 .WithCc(new SendContact(ApiConstants.SiteEmail))
