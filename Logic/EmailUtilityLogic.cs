@@ -17,6 +17,7 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
     private readonly IUserLogic _userLogic;
     private readonly IEmailServiceApi _emailServiceApiApi;
     private readonly IApiEventService _apiEventService;
+    private readonly IRegistrationLogic _registrationLogic;
     private readonly IStudentLogic _studentLogic;
     private readonly IHostLogic _hostLogic;
     private readonly IDriverLogic _driverLogic;
@@ -31,7 +32,16 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
     /// <param name="userLogic"></param>
     /// <param name="emailServiceApiApi"></param>
     /// <param name="apiEventService"></param>
-    public EmailUtilityLogic(GlobalConfigs globalConfigs, IStudentLogic studentLogic, IDriverLogic driverLogic, IHostLogic hostLogic, IUserLogic userLogic, IEmailServiceApi emailServiceApiApi, IApiEventService apiEventService)
+    /// <param name="registrationLogic"></param>
+    public EmailUtilityLogic(
+        GlobalConfigs globalConfigs,
+        IStudentLogic studentLogic,
+        IDriverLogic driverLogic,
+        IHostLogic hostLogic,
+        IUserLogic userLogic,
+        IEmailServiceApi emailServiceApiApi,
+        IApiEventService apiEventService,
+        IRegistrationLogic registrationLogic)
     {
         _globalConfigs = globalConfigs;
         _studentLogic = studentLogic;
@@ -40,6 +50,7 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
         _userLogic = userLogic;
         _emailServiceApiApi = emailServiceApiApi;
         _apiEventService = apiEventService;
+        _registrationLogic = registrationLogic;
     }
 
     public async Task<EmailFormViewModel> GetEmailForm()
@@ -165,5 +176,31 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
         await _apiEventService.RecordEvent($"Handled [{entitiesEnum.GetName()}] check-in email response with ID: {id}");
 
         return true;
+    }
+
+    public async Task SendConfirmationEmail(EntitiesEnum rolesEnum)
+    {
+        var year = _globalConfigs.YearValue;
+
+        switch (rolesEnum)
+        {
+            case EntitiesEnum.Student:
+                await Task.WhenAll((await _studentLogic.GetAll(year))
+                    .Select(student => _registrationLogic.SendStudentEmail(student)));
+
+                break;
+            case EntitiesEnum.Driver:
+                await Task.WhenAll((await _driverLogic.GetAll(year))
+                    .Select(driver => _registrationLogic.SendDriverEmail(driver)));
+
+                break;
+            case EntitiesEnum.Host:
+                await Task.WhenAll((await _hostLogic.GetAll(year))
+                    .Select(host => _registrationLogic.SendHostEmail(host)));
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(rolesEnum), rolesEnum, null);
+        }
     }
 }

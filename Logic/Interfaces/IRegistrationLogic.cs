@@ -16,4 +16,10 @@ public interface IRegistrationLogic
     Task RegisterEvent(Event @event);
     
     Task RegisterLocation(Location location);
+
+    Task SendStudentEmail(Student student);
+    
+    Task SendDriverEmail(Driver driver);
+    
+    Task SendHostEmail(Host host);
 }

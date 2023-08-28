@@ -1,5 +1,6 @@
 @using Logic.Extensions
 @using Models.Constants
+@using Models.Enums
 @using Models.ViewModels
 @model EmailFormViewModel
 @inject GlobalConfigs GlobalConfigs
@@ -23,7 +24,11 @@
 
         <p>
             Note that students, drivers, hosts are all the ones for selected year context. If you wish to send an email to those
-            for prior years then change the year context. Current year context is <strong>@(GlobalConfigs.YearValue)</strong>.
+            for prior years then change the year context.
+        </p>
+        
+        <p>
+            Current year context is <strong>@(GlobalConfigs.YearValue)</strong> so emails will go to students/drivers/hosts of this select year.
         </p>
         
         <p>
@@ -31,6 +36,22 @@
             So the email <strong> @(GlobalConfigs.EmailTestMode ? "WILL NOT" : "WILL") </strong> be sent to the users.
         </p>
         
+        <button data-toggle="collapse" data-target="#confirmationEmail" class="btn btn-primary">Confirmation Email</button>
+
+        <div id="confirmationEmail" class="collapse" style="padding-top: 2rem">
+            <p>
+                These confirmation email will be sent to students/drivers/hosts of <strong>@(GlobalConfigs.YearValue)</strong> year.
+            </p>
+            
+            <p>
+                <a href="~/Utility/SendConfirmationEmail/@(EntitiesEnum.Student)" class="btn btn-danger" validate-before-going data-message="Are you sure to re-send confirmation email to students)?">Re-Send Student Confirmation Email (@(Model.StudentCount))</a>
+
+                <a href="~/Utility/SendConfirmationEmail/@(EntitiesEnum.Driver)" class="btn btn-danger" validate-before-going data-message="Are you sure to re-send confirmation email to drivers)?">Re-Send Driver Confirmation Email (@(Model.DriverCount))</a>
+
+                <a href="~/Utility/SendConfirmationEmail/@(EntitiesEnum.Host)" class="btn btn-danger" validate-before-going data-message="Are you sure to re-send confirmation email to hosts)?">Re-Send Host Confirmation Email (@(Model.HostCount))</a>
+            </p>
+        </div>
+
     </div>
 
     @using (Html.BeginForm("AdHocEmailAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "emailUtilityCtrl", style="margin-left: 2rem;"}))
@@ -88,7 +109,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Send email</button>
+            <button type="submit" class="btn btn-primary">Send Ad-Hoc email</button>
         </div>
     }
 </div>

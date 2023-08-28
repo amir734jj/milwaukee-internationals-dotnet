@@ -56,88 +56,31 @@ public class RegistrationLogic : IRegistrationLogic
         _globalConfigs = globalConfigs;
     }
 
-    /// <summary>
-    /// Register driver
-    /// </summary>
-    /// <param name="driver"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    /// <returns></returns>
-    public async Task RegisterDriver(Driver driver)
+    public async Task SendStudentEmail(Student student)
     {
-        driver = await _driverLogic.Save(driver);
+        const string rootUrl = ApiConstants.SiteUrl;
+        var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GenerateHash());
 
-        // If save was successful
-        if (driver != null)
-        {
-            await _apiEventService.RecordEvent($"Driver {driver.Fullname} registered");
+        var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
+        var svg = qr.ToSvgString(4);
 
-            switch (driver.Role)
-            {
-                case RolesEnum.Driver:
-                    await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
-                        $@"
-                    <p> Name: {driver.Fullname}</p>
-                    <p> Role: {driver.Role}</p>
-                    <p> Phone: {driver.Phone}</p>
-                    <p> Capacity: {driver.Capacity}</p>
-                    <p> Display Id: {driver.DisplayId}</p>
-                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
-                    <br>
-                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
-                    <p> Time: 12:00 noon (Brief orientation only for drivers and navigators) </p>
-                    <p> Address: {_globalConfigs.TourAddress} </p>
-                    <p> Location: {_globalConfigs.TourLocation} </p>
-                    <br>
-                    <p> Thank you for helping with the tour this year.</p>
-                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
-                    <br>
-                    <p> Blessings, </p>
-                ");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-    }
+        var doc = new XmlDocument();
+        doc.LoadXml(svg);
 
-    /// <summary>
-    /// Registers student
-    /// </summary>
-    /// <param name="student"></param>
-    /// <returns></returns>
-    public async Task RegisterStudent(Student student)
-    {
-        student = await _studentLogic.Save(student);
+        var svgDocument = SvgDocument.Open(doc);
+        using var smallBitmap = svgDocument.Draw();
 
-        // If save was successful
-        if (student != null)
-        {
-            await _apiEventService.RecordEvent($"Student {student.Fullname} registered");
-
-            const string rootUrl = ApiConstants.SiteUrl;
-            var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GenerateHash());
-
-            var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
-            var svg = qr.ToSvgString(4);
-
-            var doc = new XmlDocument();
-            doc.LoadXml(svg);
-
-            var svgDocument = SvgDocument.Open(doc);
-            using var smallBitmap = svgDocument.Draw();
-
-            using var bitmap = svgDocument.Draw(400, 400);
-            var ms = new MemoryStream();
+        using var bitmap = svgDocument.Draw(400, 400);
+        var ms = new MemoryStream();
 #pragma warning disable CA1416
-            bitmap.Save(ms, ImageFormat.Png);
+        bitmap.Save(ms, ImageFormat.Png);
 #pragma warning restore CA1416
 
-            var sigBase64 = Convert.ToBase64String(ms.ToArray());
-            var qrUri = $"data:image/png;base64,{sigBase64}";
+        var sigBase64 = Convert.ToBase64String(ms.ToArray());
+        var qrUri = $"data:image/png;base64,{sigBase64}";
 
-            await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation",
-                $@"
+        await _emailServiceApiApi.SendEmailAsync(student.Email, "Tour of Milwaukee Registration Confirmation",
+            $@"
                     <p>Name: {student.Fullname}</p>
                     <p>University: {student.University}</p>
                     <p>Major: {student.Major}</p>
@@ -158,32 +101,42 @@ public class RegistrationLogic : IRegistrationLogic
                     <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the day of the Tour of Milwaukee.</p>
                     <img src=""{qrUri}"" alt=""QR code"" />" : "")}
                 ");
+    }
+
+    public async Task SendDriverEmail(Driver driver)
+    {
+        switch (driver.Role)
+        {
+            case RolesEnum.Driver:
+                await _emailServiceApiApi.SendEmailAsync(driver.Email, "Tour of Milwaukee: Driver registration",
+                    $@"
+                    <p> Name: {driver.Fullname}</p>
+                    <p> Role: {driver.Role}</p>
+                    <p> Phone: {driver.Phone}</p>
+                    <p> Capacity: {driver.Capacity}</p>
+                    <p> Display Id: {driver.DisplayId}</p>
+                    <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
+                    <br>
+                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> Time: 12:00 noon (Brief orientation only for drivers and navigators) </p>
+                    <p> Address: {_globalConfigs.TourAddress} </p>
+                    <p> Location: {_globalConfigs.TourLocation} </p>
+                    <br>
+                    <p> Thank you for helping with the tour this year.</p>
+                    <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
+                    <br>
+                    <p> Blessings, </p>
+                ");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
-    public async Task<bool> IsRegisterStudentOpen()
+    public async Task SendHostEmail(Host host)
     {
-        var year = DateTime.Now.Year;
-        var count = await _studentLogic.Count(x => x.Year == year);
-
-        return count <= _globalConfigs.MaxLimitStudentSeats;
-    }
-
-    /// <summary>
-    /// Registers host
-    /// </summary>
-    /// <param name="host"></param>
-    /// <returns></returns>
-    public async Task RegisterHost(Host host)
-    {
-        host = await _hostLogic.Save(host);
-
-        // If save was successful
-        if (host != null)
-        {
-            await _apiEventService.RecordEvent($"Host {host.Fullname} registered");
-
-            await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
+        await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p>Name: {host.Fullname}</p>
                     <p>Address: {host.Address}</p>
                     <hr>
@@ -196,6 +149,53 @@ public class RegistrationLogic : IRegistrationLogic
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
                     <p> Blessings,</p>
                 ");
+    }
+
+    public async Task<bool> IsRegisterStudentOpen()
+    {
+        var year = DateTime.Now.Year;
+        var count = await _studentLogic.Count(x => x.Year == year);
+
+        return count <= _globalConfigs.MaxLimitStudentSeats;
+    }
+    
+    
+    public async Task RegisterDriver(Driver driver)
+    {
+        driver = await _driverLogic.Save(driver);
+
+        // If save was successful
+        if (driver != null)
+        {
+            await _apiEventService.RecordEvent($"Driver {driver.Fullname} registered");
+
+            await SendDriverEmail(driver);
+        }
+    }
+
+    public async Task RegisterStudent(Student student)
+    {
+        student = await _studentLogic.Save(student);
+
+        // If save was successful
+        if (student != null)
+        {
+            await _apiEventService.RecordEvent($"Student {student.Fullname} registered");
+            
+            await SendStudentEmail(student);
+        }
+    }
+
+    public async Task RegisterHost(Host host)
+    {
+        host = await _hostLogic.Save(host);
+
+        // If save was successful
+        if (host != null)
+        {
+            await _apiEventService.RecordEvent($"Host {host.Fullname} registered");
+
+            await SendHostEmail(host);
         }
     }
 

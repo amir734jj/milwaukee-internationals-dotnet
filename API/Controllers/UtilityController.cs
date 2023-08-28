@@ -60,6 +60,21 @@ public class UtilityController : Controller
 
         return RedirectToAction("AdHocEmail", new { status = true });
     }
+    
+    /// <summary>
+    /// Post action handler
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
+    [HttpGet]
+    [Route("SendConfirmationEmail/{rolesEnum}")]
+    public async Task<IActionResult> SendConfirmationEmail(EntitiesEnum rolesEnum)
+    {
+        // Handle the action
+        await _emailUtilityLogic.SendConfirmationEmail(rolesEnum);
+
+        return RedirectToAction("AdHocEmail", new { status = true });
+    }
         
     /// <summary>
     /// Post action handler

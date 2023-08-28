@@ -13,4 +13,6 @@ public interface IEmailUtilityLogic
     Task<bool> HandleAdHocEmail(EmailFormViewModel emailFormViewModel);
 
     Task<bool> HandleEmailCheckIn(EntitiesEnum entitiesEnum, int id, bool present);
+    
+    Task SendConfirmationEmail(EntitiesEnum rolesEnum);
 }
