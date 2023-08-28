@@ -7,6 +7,7 @@ const buffer = require('vinyl-buffer');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const autoprefixer = require('gulp-autoprefixer');
+const minify = require("gulp-minify");
 
 babelify.configure({
     babelrc: './.babelrc'
@@ -20,6 +21,12 @@ gulp.task('scripts', function () {
         .pipe(buffer())
         .pipe(sourcemaps.init())
         .pipe(uglify())
+        .pipe(minify({
+            noSource: true,
+            ext: {
+                min: '.js'
+            },
+        }))
         .pipe(sourcemaps.write(''))
         .pipe(gulp.dest('client-build/scripts/'));
 });
