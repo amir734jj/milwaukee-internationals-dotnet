@@ -18,6 +18,13 @@
             Successfully sent the email
         </div>
     }
+    
+    @if (GlobalConfigs.YearValue != DateTime.Now.Year)
+    {
+        <div class="alert alert-danger">
+            <strong>Be careful!</strong> Year context is not set to current year. Email will be send to students/drivers/hosts of @(GlobalConfigs.YearValue) year.
+        </div>
+    }
 
     <div class="page-header">
         <h3>Email Utility Service</h3>
