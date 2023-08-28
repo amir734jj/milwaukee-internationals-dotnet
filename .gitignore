@@ -24,3 +24,6 @@ milwaukee-internationals-netcore\.sln\.DotSettings\.user
 node_modules
 client-build
 *.sqlite-*
+
+launchSettings.json
+imageid.txt
