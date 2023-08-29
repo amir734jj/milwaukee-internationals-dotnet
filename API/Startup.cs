@@ -29,6 +29,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MlkPwgen;
@@ -84,7 +85,7 @@ public class Startup
         // https://stackoverflow.com/a/70304966/1834787
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        var coldStartConfig = new BlobContainerClient(new Uri(Environment.GetEnvironmentVariable("AZURE_BLOB_CONFIG")!))
+        var coldStartConfig = new BlobContainerClient(new Uri(_configuration.GetRequiredValue<string>("AZURE_BLOB_CONFIG")!))
             .GetBlobClient("cold-start-config");
 
         services.AddDataProtection()
@@ -106,30 +107,6 @@ public class Startup
         services.AddLogging();
             
         services.Configure<JwtSettings>(_configuration.GetSection("JwtSettings"));
-
-        // Add MailKit
-        services.AddMailKit(optionBuilder =>
-        {
-            var emailSection = _configuration.GetSection("Email");
-
-            var mailKitOptions = new MailKitOptions
-            {
-                // Get options from secrets.json
-                Server = emailSection.GetValue<string>("Server"),
-                Port = emailSection.GetValue<int>("Port"),
-                SenderName = emailSection.GetValue<string>("SenderName"),
-                SenderEmail = emailSection.GetValue<string>("SenderEmail"),
-
-                // Can be optional with no authentication 
-                Account = emailSection.GetValue<string>("Account"),
-                Password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD"),
-
-                // Enable ssl or tls
-                Security = true
-            };
-
-            optionBuilder.UseMailKit(mailKitOptions);
-        });
 
         services.AddRouting(options =>
         {
@@ -198,41 +175,16 @@ public class Startup
 
         services.AddSingleton<CacheBustingUtility>();
 
-        // If environment is localhost then use mock email service
-        if (_env.IsDevelopment())
-        {
-            services.AddSingleton<IEmailServiceApi>(new EmailServiceApi());
-        }
-        else
-        {
-            /*
-            var (accessKeyId, secretAccessKey, url) = (
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_ACCESS_KEY_ID"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_SECRET_ACCESS_KEY"),
-                _configuration.GetRequiredValue<string>("CLOUDCUBE_URL")
-            );
+        services.AddSingleton<ISmsService>(ctx => new SmsService(
+            _configuration.GetRequiredValue<string>("TWILIO_SID"),
+            _configuration.GetRequiredValue<string>("TWILIO_TOKEN"),
+            _configuration.GetRequiredValue<string>("TWILIO_PHONE_NUMBER"),
+            ctx.GetRequiredService<GlobalConfigs>(),
+            ctx.GetRequiredService<ILogger<SmsService>>()));
 
-            var prefix = new Uri(url).Segments[1];
-            const string bucketName = "cloud-cube";
+        services.AddSingleton(new BlobContainerClient(new Uri(_configuration.GetRequiredValue<string>("AZURE_BLOB_CONFIG")!)));
 
-            // Generally bad practice
-            var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-            */
-
-            // Create S3 client
-            /*services.AddSingleton<IAmazonS3>(ctx => new AmazonS3Client(credentials, RegionEndpoint.USEast1));
-            services.AddSingleton(new S3ServiceConfig(bucketName, prefix));
-
-            services.AddTransient<IStorageService>(ctx => new S3StorageService(
-                ctx.GetRequiredService<ILogger<S3StorageService>>(),
-                ctx.GetRequiredService<IAmazonS3>(),
-                ctx.GetRequiredService<S3ServiceConfig>()
-            ));*/
-                
-            services.AddSingleton(new BlobContainerClient(new Uri(Environment.GetEnvironmentVariable("AZURE_BLOB_CONFIG")!)));
-                
-            services.AddTransient<IStorageService, AzureBlobService>();
-        }
+        services.AddTransient<IStorageService, AzureBlobService>();
 
         services.AddSingleton<GlobalConfigs>();
 
@@ -314,7 +266,7 @@ public class Startup
     /// <param name="app"></param>
     /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
-    public void Configure(IApplicationBuilder app, IConfigLogic configLogic, IApiEventService apiEventService)
+    public void Configure(IApplicationBuilder app, IConfigLogic configLogic, IApiEventService apiEventService, ISmsService smsService)
     {
         // Refresh global config
         configLogic.Refresh();

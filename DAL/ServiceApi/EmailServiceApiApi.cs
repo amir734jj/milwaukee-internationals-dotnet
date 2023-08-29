@@ -7,35 +7,24 @@ using Mailjet.Client;
 using Mailjet.Client.TransactionalEmails;
 using Microsoft.Extensions.Logging;
 using Models.Constants;
-using NETCore.MailKit.Core;
 
 namespace DAL.ServiceApi;
 
 public class EmailServiceApi : IEmailServiceApi
 {
-    private readonly bool _connected;
-
-    private readonly IEmailService _emailServiceApi;
     private readonly IMailjetClient _mailJetClient;
     private readonly GlobalConfigs _globalConfigs;
     private readonly ILogger<EmailServiceApi> _logger;
 
-    public EmailServiceApi()
-    {
-        _connected = false;
-    }
 
     /// <summary>
     /// Constructor dependency injection
     /// </summary>
-    /// <param name="emailServiceApi"></param>
     /// <param name="mailJetClient"></param>
     /// <param name="globalConfigs"></param>
     /// <param name="logger"></param>
-    public EmailServiceApi(IEmailService emailServiceApi, IMailjetClient mailJetClient, GlobalConfigs globalConfigs, ILogger<EmailServiceApi> logger)
+    public EmailServiceApi(IMailjetClient mailJetClient, GlobalConfigs globalConfigs, ILogger<EmailServiceApi> logger)
     {
-        _connected = true;
-        _emailServiceApi = emailServiceApi;
         _mailJetClient = mailJetClient;
         _globalConfigs = globalConfigs;
         _logger = logger;
@@ -50,10 +39,7 @@ public class EmailServiceApi : IEmailServiceApi
     /// <returns></returns>
     public async Task SendEmailAsync(string emailAddress, string emailSubject, string emailHtml)
     {
-        // Original GMail service
-        // return _connected ? _emailServiceApi.SendAsync(emailAddress, emailSubject, emailText, true) : Task.CompletedTask;
-
-        if (_connected && !string.IsNullOrWhiteSpace(emailAddress))
+        if (!string.IsNullOrWhiteSpace(emailAddress))
         { 
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             _logger.LogInformation("Sending email to {}", emailAddress);

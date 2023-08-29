@@ -288,6 +288,21 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
         // Start the text editor
         angular.element('.summernote').summernote({height: 150});
     }])
+    .controller('smsUtilityCtrl', ['$timeout', '$scope', ($timeout, $scope) => {
+
+        // Hide the .autoclose
+        $timeout(() => {
+            angular.element('.autoclose').fadeOut();
+        }, 2000);
+        
+        $scope.getSmsBodylength = () => $scope.smsBody ? $scope.smsBody.length : 0;
+
+        angular.element("form").on("submit", (evt) => {
+           if ($scope.getSmsBodylength() >= 160) {
+               evt.preventDefault();
+           }
+        });
+    }])
     .controller('emailCheckInCtrl', ['$scope', '$http', '$async', async ($scope, $http, $async) => {
         $scope.changeAttendance = $async($scope, async (type, id, value) => {
             await $http.post(`/utility/emailCheckInAction/${type}/${id}?present=${value}`);

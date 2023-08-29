@@ -5,7 +5,6 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using Models.ViewModels;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
 
@@ -14,6 +13,7 @@ namespace API.Controllers;
 public class UtilityController : Controller
 {
     private readonly IEmailUtilityLogic _emailUtilityLogic;
+    private readonly ISmsUtilityLogic _smsUtilityLogic;
     private readonly IStudentLogic _studentLogic;
     private readonly IDriverLogic _driverLogic;
 
@@ -21,11 +21,13 @@ public class UtilityController : Controller
     /// Constructor dependency injection
     /// </summary>
     /// <param name="emailUtilityLogic"></param>
+    /// <param name="smsUtilityLogic"></param>
     /// <param name="studentLogic"></param>
     /// <param name="driverLogic"></param>
-    public UtilityController(IEmailUtilityLogic emailUtilityLogic, IStudentLogic studentLogic, IDriverLogic driverLogic)
+    public UtilityController(IEmailUtilityLogic emailUtilityLogic, ISmsUtilityLogic smsUtilityLogic, IStudentLogic studentLogic, IDriverLogic driverLogic)
     {
         _emailUtilityLogic = emailUtilityLogic;
+        _smsUtilityLogic = smsUtilityLogic;
         _studentLogic = studentLogic;
         _driverLogic = driverLogic;
     }
@@ -56,9 +58,9 @@ public class UtilityController : Controller
     public async Task<IActionResult> AdHocEmailAction(EmailFormViewModel emailFormViewModel)
     {
         // Handle the action
-        await _emailUtilityLogic.HandleAdHocEmail(emailFormViewModel);
+        var result = await _emailUtilityLogic.HandleAdHocEmail(emailFormViewModel);
 
-        return RedirectToAction("AdHocEmail", new { status = true });
+        return RedirectToAction("AdHocEmail", new { status = result });
     }
     
     /// <summary>
@@ -109,5 +111,37 @@ public class UtilityController : Controller
 
         // Redirect to home page
         return Ok(result);
+    }
+    
+    
+    /// <summary>
+    /// Returns sms utility view
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
+    [HttpGet]
+    [Route("AdHocSms")]
+    public async Task<IActionResult> AdHocSms(bool status = false)
+    {
+        var viewModel = await _smsUtilityLogic.GetSmsForm();
+
+        viewModel.Status = status;
+            
+        return View(viewModel);
+    }
+
+    /// <summary>
+    /// Post action handler
+    /// </summary>
+    /// <returns></returns>
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
+    [HttpPost]
+    [Route("AdHocSmsAction")]
+    public async Task<IActionResult> AdHocSmsAction(SmsFormViewModel smsFormViewModel)
+    {
+        // Handle the action
+        var result = await _smsUtilityLogic.HandleAdHocSms(smsFormViewModel);
+
+        return RedirectToAction("AdHocSms", new { status = result });
     }
 }

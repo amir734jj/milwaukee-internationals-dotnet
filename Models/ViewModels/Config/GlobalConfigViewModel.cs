@@ -13,6 +13,9 @@ public class GlobalConfigViewModel
 
     [Display(Name = "Email Test Mode")]
     public bool EmailTestMode { get; set; }
+
+    [Display(Name = "SMS Test Mode")]
+    public bool SmsTestMode { get; set; }
         
     [Display(Name = "Website Theme")]
     public string Theme { get; set; }

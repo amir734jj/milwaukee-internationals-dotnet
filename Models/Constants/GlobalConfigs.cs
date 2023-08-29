@@ -4,6 +4,7 @@ namespace Models.Constants;
 
 public class GlobalConfigs
 {
+    public bool SMSTestMode { get; set; }
     public DateTimeOffset LastModified { get; set; } = DateTimeOffset.Now;
 
     public bool EventFeature { get; set; }

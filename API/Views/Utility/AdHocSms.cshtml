@@ -1,0 +1,101 @@
+@using Logic.Extensions
+@using Models.Constants
+@using Models.Enums
+@using Models.ViewModels
+@model SmsFormViewModel
+@inject GlobalConfigs GlobalConfigs
+
+@{
+    ViewBag.Title = "SMS AdHoc Utility";
+    Layout = "_Layout";
+}
+
+<div class="container">
+
+    @if (Model.Status)
+    {
+        <div class="alert alert-success autoclose">
+            Successfully sent the SMS
+        </div>
+    }
+    
+    @if (GlobalConfigs.YearValue != DateTime.Now.Year)
+    {
+        <div class="alert alert-danger">
+            <strong>Be careful!</strong> Year context is not set to current year. SMS will be send to students/drivers/hosts of @(GlobalConfigs.YearValue) year.
+        </div>
+    }
+
+    <div class="page-header">
+        <h3>SMS Utility Service</h3>
+
+        <p>
+            Note that students, drivers, hosts are all the ones for selected year context. If you wish to send an SMS to those
+            for prior years then change the year context.
+        </p>
+        
+        <p>
+            Current year context is <strong>@(GlobalConfigs.YearValue)</strong> so SMS will go to students/drivers/hosts of this select year.
+        </p>
+        
+        <p>
+            <strong> SMS test mode </strong> is currently <strong> @(GlobalConfigs.SMSTestMode ? "Active" : "Inactive") </strong>.
+            So the SMS <strong> @(GlobalConfigs.SMSTestMode ? "WILL NOT" : "WILL") </strong> be sent to the users.
+        </p>
+
+    </div>
+
+    @using (Html.BeginForm("AdHocSmsAction", "Utility", FormMethod.Post, new {@class = "form-horizontal", ng_controller = "smsUtilityCtrl", style="margin-left: 2rem;"}))
+    {
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Admin)
+                            @Model.PropName(x => x.Admin) (@Model.AdminCount)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Students)
+                            @Model.PropName(x => x.Students) (@Model.StudentCount)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Drivers)
+                            @Model.PropName(x => x.Drivers) (@Model.DriverCount)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Hosts)
+                            @Model.PropName(x => x.Hosts) (@Model.HostCount)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.Users)
+                            @Model.PropName(x => x.Users) (@Model.UserCount)
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.AdditionalRecipients)
+            @Html.TextBoxFor(x => x.AdditionalRecipients, new {@class = "form-control", type = "text", placeholder = "Enter additional recipients (comma separated)"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Message) ({{ smsBody ? smsBody.length : 0 }}) [only 160 characters]
+            @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control", rows = "1", required = true, id = "smsBody", ng_model="smsBody"})
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Send Ad-Hoc SMS</button>
+        </div>
+    }
+</div>
