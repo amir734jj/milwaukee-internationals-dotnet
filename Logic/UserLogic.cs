@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
@@ -36,22 +34,15 @@ public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
 
     public override async Task<User> Get(int id)
     {
-        var fetchUserObservable = base.Get(id)
-            .ToObservable()
-            .Then(user =>
-            {
-                var roles = _userManager.GetRolesAsync(user).Result;
+        var user = await base.Get(id);
+        
+        var roles = await _userManager.GetRolesAsync(user);
 
-                user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
-                    ? UserRoleEnum.Admin
-                    : UserRoleEnum.Basic;
+        user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
+            ? UserRoleEnum.Admin
+            : UserRoleEnum.Basic;
 
-                return user;
-            });
-
-        var result = await Observable.When(fetchUserObservable);
-
-        return result;
+        return user;
     }
 
     public async Task Disable(int id)
@@ -76,20 +67,18 @@ public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
 
     public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<User, bool>>[] filters)
     {
-        var fetchUsersObservable = base.GetAll(sortBy, descending, null, filters)
-            .ToObservable()
-            .Then(users => users.Select(user =>
-            {
-                var roles = _userManager.GetRolesAsync(user).Result;
+        var users = await base.GetAll(sortBy, descending, null, filters);
 
-                user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
-                    ? UserRoleEnum.Admin
-                    : UserRoleEnum.Basic;
+        var result = await Task.WhenAll(users.Select(async user =>
+        {
+            var roles = await _userManager.GetRolesAsync(user);
 
-                return user;
-            }));
+            user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
+                ? UserRoleEnum.Admin
+                : UserRoleEnum.Basic;
 
-        var result = await Observable.When(fetchUsersObservable);
+            return user;
+        }).ToList());
 
         return result;
     }

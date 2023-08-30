@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using Models.Interfaces;
+using ObjectHashing;
+using ObjectHashing.Interfaces;
+using ObjectHashing.Models;
 
 namespace Models.Entities;
 
-[SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-public class Student : IPerson, IYearlyEntity
+public class Student : ObjectHash<Student>, IPerson, IYearlyEntity
 {
     [Key]
     public int Id { get; set; }
@@ -64,10 +65,17 @@ public class Student : IPerson, IYearlyEntity
     public bool MaskPreferred { get; set; }
         
     public DateTimeOffset RegisteredOn { get; set; }
-
-    public override int GetHashCode()
+    
+    protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Student> config)
     {
-        return Math.Abs(HashCode.Combine(Id, Email, Phone, Fullname));
+        config
+            .Algorithm(HashAlgorithm.Md5)
+            .Property(x => x.Email)
+            .Property(x => x.Phone)
+            .Property(x => x.Id)
+            .Property(x => x.Fullname)
+            .DefaultSerialization()
+            .Build();
     }
 
     public override string ToString()

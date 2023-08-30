@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Models.Interfaces;
+using ObjectHashing;
+using ObjectHashing.Interfaces;
+using ObjectHashing.Models;
 
 namespace Models.Entities;
 
-public class Location : IYearlyEntity, IEqualityComparer<Location>
+public class Location : ObjectHash<Location>, IYearlyEntity, IEqualityComparer<Location>
 {
     [Key]
     public int Id { get; set; }
@@ -35,6 +38,16 @@ public class Location : IYearlyEntity, IEqualityComparer<Location>
 
     public int GetHashCode(Location obj)
     {
-        return Math.Abs(HashCode.Combine(Id, Year));
+        return HashCode.Combine(Id, Name);
+    }
+
+    protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Location> config)
+    {
+        config
+            .Algorithm(HashAlgorithm.Md5)
+            .Property(x => x.Name)
+            .Property(x => x.Id)
+            .DefaultSerialization()
+            .Build();
     }
 }

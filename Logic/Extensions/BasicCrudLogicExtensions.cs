@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Logic.Interfaces;
+using ObjectHashing;
 
 namespace Logic.Extensions;
 
@@ -13,8 +14,8 @@ public static class BasicCrudLogicExtensions
     /// <param name="hashcode"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T> GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, string hashcode)
+    public static async Task<T> GetByHashcode<T>(this IBasicCrudLogic<T> basicCrudLogic, string hashcode) where T: ObjectHash<T>
     {
-        return (await basicCrudLogic.GetAll()).FirstOrDefault(x => x.GetHashCode().ToString() == hashcode);
+        return (await basicCrudLogic.GetAll()).FirstOrDefault(x => x.GenerateHash() == hashcode);
     }
 }
