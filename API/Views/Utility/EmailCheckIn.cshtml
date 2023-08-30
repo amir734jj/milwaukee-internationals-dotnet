@@ -77,7 +77,7 @@
                             @foreach (var student in driver.Students)
                             {
                                 <li class="list-group-item clearfix list-group-item-warning">
-                                    <label class="pull-left">@student.Fullname (@student.Country, @student.Major.Trim()) @(student.IsFamily ? $"[+{student.FamilySize}]" : "") @(student.MaskPreferred ? "[M]" : "")</label>
+                                    <label class="pull-left">@student.Fullname (@student.Country, @student.Major.Trim()) @(student.IsFamily ? $"[+{student.FamilySize}]" : "")</label>
                                 </li>
                             }
                         </ul>
@@ -118,14 +118,14 @@
                     <label class="pull-right">@(student.IsFamily ? $"Yes [+{student.FamilySize}]" : "No")</label>
                 </li>
                 <li class="list-group-item clearfix">
-                    <label class="pull-left">MaskPreferred</label>
-                    <label class="pull-right">@(student.MaskPreferred ? $"Yes" : "No")</label>
+                    <label class="pull-left">Halal or Kosher food</label>
+                    <label class="pull-right">@(student.KosherFood ? $"Yes" : "No")</label>
                 </li>
                 @if (student.Driver != null)
                 {
                     <li class="list-group-item clearfix list-group-item-success">
                         <label class="pull-left">Driver ID</label>
-                        <label class="pull-right">@student.Driver.DisplayId</label>
+                        <label class="pull-right">@student.Driver.DisplayId.Split('-')[1]</label>
                     </li>
                     <li class="list-group-item clearfix list-group-item-success">
                         <label class="pull-left">Driver Name</label>
