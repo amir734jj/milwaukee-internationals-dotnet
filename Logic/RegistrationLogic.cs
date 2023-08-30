@@ -59,7 +59,7 @@ public class RegistrationLogic : IRegistrationLogic
     public async Task SendStudentEmail(Student student)
     {
         const string rootUrl = ApiConstants.SiteUrl;
-        var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GenerateHash());
+        var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GetHashCode().ToString());
 
         var qr = QrCode.EncodeText(checkInPath, QrCode.Ecc.High);
         var svg = qr.ToSvgString(4);

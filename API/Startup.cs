@@ -35,8 +35,6 @@ using Microsoft.OpenApi.Models;
 using MlkPwgen;
 using Models.Constants;
 using Models.Entities;
-using NETCore.MailKit.Extensions;
-using NETCore.MailKit.Infrastructure.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using OwaspHeaders.Core.Extensions;

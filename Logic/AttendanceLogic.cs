@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DAL.Extensions;
 using DAL.Interfaces;
 using Logic.Interfaces;
 using Models.Constants;
@@ -75,19 +74,19 @@ public class AttendanceLogic : IAttendanceLogic
     /// <returns></returns>
     public async Task<bool> HandleStudentSendCheckIn()
     {
-        (await _studentLogic.GetAll()).ForEach(x =>
+        foreach (var x in await _studentLogic.GetAll())
         {
-            var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Student/{x.GenerateHash()}";
+            var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Student/{x.GetHashCode()}";
                 
-            _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
+            await _emailServiceApi.SendEmailAsync(x.Email, "Tour Check-In", $@"
                     <h4>Please use this link to check-in</h4>
                     <br>
                     <p><a href=""{url}"">Link</a> ({url})</p>
                     <br>
                     <p>Thank you</p>
                 ");
-        });
-            
+        }
+
         await _apiEventService.RecordEvent("Sent student check-in emails");
             
         return true;
@@ -99,11 +98,11 @@ public class AttendanceLogic : IAttendanceLogic
     /// <returns></returns>
     public async Task<bool> HandleDriverSendCheckIn()
     {
-        (await _driverLogic.GetAll()).ForEach(x =>
+        foreach (var x in await _driverLogic.GetAll())
         {
-            var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Driver/{x.GenerateHash()}";
+            var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Driver/{x.GetHashCode()}";
                 
-            _emailServiceApi.SendEmailAsync(x.Email, $"Tour Driver Check-In and Host Info ({DateTime.UtcNow.Year})", $@"
+            await _emailServiceApi.SendEmailAsync(x.Email, $"Tour Driver Check-In and Host Info ({DateTime.UtcNow.Year})", $@"
                     <h4>Hello {x.Fullname},</h4>
                     <h4>Please use the following link to see details and to check-in</h4>
                     <p><a href=""{url}"">{url}</a></p>
@@ -114,8 +113,8 @@ public class AttendanceLogic : IAttendanceLogic
                     <p>Reach out to us if there are issues.</p>
                     <p>Thank you</p>
                 ");
-        });
-            
+        }
+
         await _apiEventService.RecordEvent("Sent driver check-in emails");
 
         return true;

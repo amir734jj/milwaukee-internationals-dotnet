@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Models.Enums;
 using Models.Interfaces;
-using ObjectHashing;
-using ObjectHashing.Interfaces;
 
 namespace Models.Entities;
 
 [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-public class Driver : ObjectHash<Driver>, IPerson, IYearlyEntity
+public class Driver : IPerson, IYearlyEntity
 {
     [Key]
     public int Id { get; set; }
@@ -62,16 +61,9 @@ public class Driver : ObjectHash<Driver>, IPerson, IYearlyEntity
         
     public string UniqueToken { get; set; }
 
-    protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Driver> config)
+    public override int GetHashCode()
     {
-        config
-            .DefaultAlgorithm()
-            .Property(x => x.Id)
-            .Property(x => x.Email)
-            .Property(x => x.Phone)
-            .Property(x => x.Fullname)
-            .DefaultSerialization()
-            .Build();
+        return Math.Abs(HashCode.Combine(Id, Email, Phone, Fullname));
     }
 
     public override string ToString()

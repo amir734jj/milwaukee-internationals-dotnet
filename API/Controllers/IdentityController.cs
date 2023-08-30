@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Models.ViewModels.Identities;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
 

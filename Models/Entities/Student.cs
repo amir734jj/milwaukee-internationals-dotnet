@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Models.Interfaces;
-using ObjectHashing;
-using ObjectHashing.Interfaces;
 
 namespace Models.Entities;
 
 [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-public class Student : ObjectHash<Student>, IPerson, IYearlyEntity
+public class Student : IPerson, IYearlyEntity
 {
     [Key]
     public int Id { get; set; }
@@ -67,16 +65,9 @@ public class Student : ObjectHash<Student>, IPerson, IYearlyEntity
         
     public DateTimeOffset RegisteredOn { get; set; }
 
-    protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Student> config)
+    public override int GetHashCode()
     {
-        config
-            .DefaultAlgorithm()
-            .Property(x => x.Id)
-            .Property(x => x.Email)
-            .Property(x => x.Phone)
-            .Property(x => x.Fullname)
-            .DefaultSerialization()
-            .Build();
+        return Math.Abs(HashCode.Combine(Id, Email, Phone, Fullname));
     }
 
     public override string ToString()

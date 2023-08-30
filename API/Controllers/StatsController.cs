@@ -3,7 +3,6 @@ using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
 
