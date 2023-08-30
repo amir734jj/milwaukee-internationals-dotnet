@@ -67,19 +67,17 @@ public class UserLogic : BasicCrudLogicAbstract<User>, IUserLogic
 
     public override async Task<IEnumerable<User>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<User, bool>>[] filters)
     {
-        var users = await base.GetAll(sortBy, descending, null, filters);
+        var users = (await base.GetAll(sortBy, descending, null, filters)).ToList();
 
-        var result = await Task.WhenAll(users.Select(async user =>
+        foreach (var user in users)
         {
             var roles = await _userManager.GetRolesAsync(user);
 
             user.UserRoleEnum = roles.Contains(UserRoleEnum.Admin.ToString())
                 ? UserRoleEnum.Admin
                 : UserRoleEnum.Basic;
+        }
 
-            return user;
-        }).ToList());
-
-        return result;
+        return users;
     }
 }
