@@ -90,12 +90,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(x => x.Message) ({{ smsBody ? smsBody.length : 0 }}) [only 160 characters]
-            @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control", rows = "1", required = true, id = "smsBody", ng_model="smsBody"})
+            @Html.LabelFor(x => x.Message) ({{ getSmsBodyLength() }}) [only 160 characters]
+            @Html.TextAreaFor(x => x.Message, new {placeholder = "Enter text", @class = "form-control", rows = "3", required = true, id = "smsBody", ng_model="smsBody"})
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Send Ad-Hoc SMS</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="getSmsBodyLength() >= 160">Send Ad-Hoc SMS</button>
         </div>
     }
 </div>

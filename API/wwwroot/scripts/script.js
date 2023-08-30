@@ -295,13 +295,7 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             angular.element('.autoclose').fadeOut();
         }, 2000);
         
-        $scope.getSmsBodylength = () => $scope.smsBody ? $scope.smsBody.length : 0;
-
-        angular.element("form").on("submit", (evt) => {
-           if ($scope.getSmsBodylength() >= 160) {
-               evt.preventDefault();
-           }
-        });
+        $scope.getSmsBodyLength = () => $scope.smsBody ? $scope.smsBody.length : 0;
     }])
     .controller('emailCheckInCtrl', ['$scope', '$http', '$async', async ($scope, $http, $async) => {
         $scope.changeAttendance = $async($scope, async (type, id, value) => {
