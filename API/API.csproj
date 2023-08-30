@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="OwaspHeaders.Core" Version="4.5.1" />
-    <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
     <PackageReference Include="WebMarkupMin.AspNetCore6" Version="2.12.0" />
