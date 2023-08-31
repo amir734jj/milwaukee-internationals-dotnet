@@ -8,4 +8,6 @@ public interface ISmsUtilityLogic
     Task<bool> HandleAdHocSms(SmsFormViewModel smsFormViewModel);
     
     Task<SmsFormViewModel> GetSmsForm();
+    
+    Task HandleDriverSms();
 }

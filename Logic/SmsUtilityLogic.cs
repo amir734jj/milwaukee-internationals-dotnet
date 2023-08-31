@@ -115,4 +115,14 @@ public class SmsUtilityLogic : ISmsUtilityLogic
             UserCount = (await _userLogic.GetAll()).Count()
         };
     }
+
+    public async Task HandleDriverSms()
+    {
+        var year = _globalConfigs.YearValue;
+            
+        foreach (var driver in await _driverLogic.GetAll(year))
+        {
+            await _registrationLogic.SendDriverSms(driver);
+        }
+    }
 }

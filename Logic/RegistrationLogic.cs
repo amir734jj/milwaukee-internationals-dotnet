@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using DAL.Interfaces;
@@ -23,6 +24,7 @@ public class RegistrationLogic : IRegistrationLogic
     private readonly ILocationLogic _locationLogic;
     private readonly IEmailServiceApi _emailServiceApiApi;
     private readonly IApiEventService _apiEventService;
+    private readonly ISmsService _smsService;
     private readonly GlobalConfigs _globalConfigs;
 
     /// <summary>
@@ -35,6 +37,7 @@ public class RegistrationLogic : IRegistrationLogic
     /// <param name="locationLogic"></param>
     /// <param name="emailServiceApiApi"></param>
     /// <param name="apiEventService"></param>
+    /// <param name="smsService"></param>
     /// <param name="globalConfigs"></param>
     public RegistrationLogic(
         IStudentLogic studentLogic,
@@ -44,6 +47,7 @@ public class RegistrationLogic : IRegistrationLogic
         ILocationLogic locationLogic,
         IEmailServiceApi emailServiceApiApi,
         IApiEventService apiEventService,
+        ISmsService smsService,
         GlobalConfigs globalConfigs)
     {
         _studentLogic = studentLogic;
@@ -53,6 +57,7 @@ public class RegistrationLogic : IRegistrationLogic
         _locationLogic = locationLogic;
         _emailServiceApiApi = emailServiceApiApi;
         _apiEventService = apiEventService;
+        _smsService = smsService;
         _globalConfigs = globalConfigs;
     }
 
@@ -207,5 +212,14 @@ public class RegistrationLogic : IRegistrationLogic
     public async Task RegisterLocation(Location location)
     {
         await _locationLogic.Save(location);
+    }
+
+    public async Task SendDriverSms(Driver driver)
+    {
+        var text = $"Thank you for being a driver,\n" +
+                   $"you have {driver.Students.Count} to drive\n" +
+                   $"students: {string.Join(", ", driver.Students.Select(x => x.Fullname))}\n" +
+                   $"milwaukeeinternationals.com/places";
+        await _smsService.SendMessage(driver.Phone, text);
     }
 }
