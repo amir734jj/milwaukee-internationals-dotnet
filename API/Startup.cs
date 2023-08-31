@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -174,9 +175,8 @@ public class Startup
         services.AddSingleton<CacheBustingUtility>();
 
         services.AddSingleton<ISmsService>(ctx => new SmsService(
-            _configuration.GetRequiredValue<string>("TWILIO_SID"),
-            _configuration.GetRequiredValue<string>("TWILIO_TOKEN"),
-            _configuration.GetRequiredValue<string>("TWILIO_PHONE_NUMBER"),
+            _configuration.GetRequiredValue<string>("TELNYX_AUTH_TOKEN"),
+            _configuration.GetRequiredValue<string>("TELNYX_SENDER_PHONE_NUMBER"),
             ctx.GetRequiredService<GlobalConfigs>(),
             ctx.GetRequiredService<ILogger<SmsService>>()));
 

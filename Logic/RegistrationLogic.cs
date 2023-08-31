@@ -217,7 +217,7 @@ public class RegistrationLogic : IRegistrationLogic
     public async Task SendDriverSms(Driver driver)
     {
         var text = $"Thank you for being a driver,\n" +
-                   $"you have {driver.Students.Count} to drive\n" +
+                   $"you have {driver.Students.Count} students to drive\n" +
                    $"students: {string.Join(", ", driver.Students.Select(x => x.Fullname))}\n" +
                    $"milwaukeeinternationals.com/places";
         await _smsService.SendMessage(driver.Phone, text);

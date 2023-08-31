@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using DAL.Interfaces;
 using Microsoft.Extensions.Logging;
 using Models.Constants;
-using Twilio;
-using Twilio.Rest.Api.V2010.Account;
-using Twilio.Types;
+using Telnyx;
 
 namespace DAL.ServiceApi;
 
@@ -16,13 +14,12 @@ public class SmsService : ISmsService
     private readonly string _senderPhoneNumber;
     private readonly GlobalConfigs _globalConfigs;
 
-    public SmsService(string sid, string token, string senderPhoneNumber,  GlobalConfigs globalConfigs, ILogger<SmsService> logger)
+    public SmsService(string telnyxApiKey, string senderPhoneNumber,  GlobalConfigs globalConfigs, ILogger<SmsService> logger)
     {
-        _logger = logger;
         _senderPhoneNumber = senderPhoneNumber;
         _globalConfigs = globalConfigs;
-
-        TwilioClient.Init(sid, token);
+        _logger = logger;
+        TelnyxConfiguration.SetApiKey(telnyxApiKey);
     }
 
     public async Task SendMessage(string phoneNumber, string message)
@@ -32,18 +29,23 @@ public class SmsService : ISmsService
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             _logger.LogInformation("Sending SMS to {}", phoneNumber);
 
-            var messageOptions = new CreateMessageOptions(new PhoneNumber(_globalConfigs.SMSTestMode ? ApiConstants.SitePhoneNumber : phoneNumber))
+            var service = new MessagingSenderIdService();
+            var options = new NewMessagingSenderId
             {
-                From = new PhoneNumber(_senderPhoneNumber),
-                Body = message,
-                SendAsMms = false
+                From = SimplifyPhoneNumber(_globalConfigs.SMSTestMode ? ApiConstants.SitePhoneNumber : phoneNumber),
+                To = SimplifyPhoneNumber(phoneNumber),
+                Text = message
             };
-
-            var response = await MessageResource.CreateAsync(messageOptions);
             
-            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            _logger.LogInformation("SMS sent successfully {}", response?.Body);
+            var messageResponse = await service.CreateAsync(options);
+            
+            _logger.LogInformation("SMS sent successfully {}", messageResponse);
         }
+
+        return;
+
+        // This is needed because of this library
+        static string SimplifyPhoneNumber(string x) => x.Replace("-", "").Replace(" ", "");
     }
 
     public async Task SendMessage(IEnumerable<string> phoneNumbers, string message)
