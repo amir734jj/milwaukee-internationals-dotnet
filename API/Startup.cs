@@ -14,6 +14,7 @@ using DAL.ServiceApi;
 using DAL.Utilities;
 using EfCoreRepository.Extensions;
 using Logic.Interfaces;
+using Logic.Utilities;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;

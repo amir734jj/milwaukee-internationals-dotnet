@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Microsoft.Extensions.Logging;
 using Models.Constants;
+using PhoneNumbers;
 using Telnyx;
 
 namespace DAL.ServiceApi;
@@ -32,8 +34,8 @@ public class SmsService : ISmsService
             var service = new MessagingSenderIdService();
             var options = new NewMessagingSenderId
             {
-                From = SimplifyPhoneNumber(_globalConfigs.SMSTestMode ? ApiConstants.SitePhoneNumber : phoneNumber),
-                To = SimplifyPhoneNumber(phoneNumber),
+                From = NormalizePhoneNumberForSms(_globalConfigs.SMSTestMode ? ApiConstants.SitePhoneNumber : _senderPhoneNumber),
+                To = NormalizePhoneNumberForSms(phoneNumber),
                 Text = message
             };
             
@@ -41,15 +43,34 @@ public class SmsService : ISmsService
             
             _logger.LogInformation("SMS sent successfully {}", messageResponse);
         }
-
-        return;
-
-        // This is needed because of this library
-        static string SimplifyPhoneNumber(string x) => x.Replace("-", "").Replace(" ", "");
     }
 
     public async Task SendMessage(IEnumerable<string> phoneNumbers, string message)
     {
         await Task.WhenAll(phoneNumbers.Select(phoneNumber => SendMessage(phoneNumber, message)));
+    }
+
+    private static string NormalizePhoneNumberForSms(string phoneNumberRaw)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumberRaw))
+        {
+            return phoneNumberRaw;
+        }
+
+        try
+        {
+            var phoneNumberUtil = PhoneNumberUtil.GetInstance();
+
+            var phoneNumber = phoneNumberUtil.Parse(phoneNumberRaw, "US" /* DEFAULT REGION */);
+                
+            // We have people registering with phone number from different country, we don't want to lose the country code
+            var result = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.RFC3966 /* DO NOT CHANGE */);
+
+            return result.Replace("tel:", "").Replace("-", "");
+        }
+        catch (Exception)
+        {
+            return phoneNumberRaw;
+        }
     }
 }
