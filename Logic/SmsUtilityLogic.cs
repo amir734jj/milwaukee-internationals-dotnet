@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using Logic.Interfaces;
+using Logic.Utilities;
 using Models.Constants;
 using Models.Enums;
 using Models.ViewModels;
-using Newtonsoft.Json;
 
 namespace Logic;
 
@@ -140,17 +140,37 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         }
     }
     
-    public async Task IncomingSms(IncomingSmsViewModel body)
+    public async Task IncomingSms(IncomingSmsViewModel request)
     {
         // Ignore spam messages
-        if (body?.data?.payload?.is_spam ?? true)
+        if (request?.data?.payload?.is_spam ?? true)
         {
             return;
         }
+
+        var users = (await _userLogic.GetAll()).Select(x => (Role: "user", x.Fullname, Phone: x.PhoneNumber));
+        var students = (await _studentLogic.GetAll()).Select(x => (Role: "student", x.Fullname, x.Phone));
+        var drivers = (await _driverLogic.GetAll()).Select(x => (Role: "driver", x.Fullname, x.Phone));
+        var hosts = (await _hostLogic.GetAll()).Select(x => (Role: "host", x.Fullname, x.Phone));
+        var everyone = users.Concat(students).Concat(drivers).Concat(hosts);
+
+        var from = request.data?.payload?.from?.phone_number;
+        var carrier = request.data?.payload?.from?.carrier;
+        var body = request.data?.payload?.text;
+        var normalizedFrom = RegistrationUtility.NormalizePhoneNumber(from);
+
+        var find = everyone.FirstOrDefault(x => RegistrationUtility.NormalizePhoneNumber(x.Phone) == normalizedFrom);
+        var middle = string.Empty;
+
+        if (find != default)
+        {
+            middle = $"(from {find.Role} {find.Fullname})\n";
+        }
+
+        var text = $"SMS from {from} [{carrier}]\n" +
+                   $"{middle}" +
+                   $"{body}";
         
-        var text = $"SMS from {body.data?.payload?.from?.phone_number} [{body.data?.payload?.from?.carrier}]\n" +
-                   $"{body.data?.payload?.text}";
-        
-        await _emailServiceApi.SendEmailAsync(ApiConstants.SiteEmail, "SMS received", text);
+        await _emailServiceApi.SendEmailAsync(ApiConstants.SiteEmail, $"SMS received {middle}", text);
     }
 }
