@@ -10,5 +10,5 @@ public interface ISmsUtilityLogic
     Task<SmsFormViewModel> GetSmsForm();
     
     Task HandleDriverSms();
-    Task IncomingSms(object body);
+    Task IncomingSms(IncomingSmsViewModel body);
 }

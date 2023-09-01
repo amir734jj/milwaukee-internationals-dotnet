@@ -4,6 +4,7 @@ using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
+using Models.ViewModels;
 
 namespace API.Controllers;
 
@@ -30,7 +31,7 @@ public class SmsController : Controller
     [HttpPost]
     [Route("Incoming")]
     [AllowAnonymous]
-    public async Task<ActionResult> IncomingSms([FromBody]object body)
+    public async Task<ActionResult> IncomingSms([FromBody]IncomingSmsViewModel body)
     {
         await _smsUtilityLogic.IncomingSms(body);
 

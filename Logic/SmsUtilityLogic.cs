@@ -130,8 +130,17 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         }
     }
 
-    public async Task IncomingSms(object body)
+    public async Task IncomingSms(IncomingSmsViewModel body)
     {
-        await _emailServiceApi.SendEmailAsync("amirhesamyan@gmail.com", "SMS", JsonConvert.SerializeObject(body));
+        // Ignore spam messages
+        if (body?.data?.payload?.is_spam ?? true)
+        {
+            return;
+        }
+        
+        var text = $"SMS from {body.data?.payload?.from?.phone_number} [{body.data?.payload?.from?.carrier}]\n" +
+                   $"{body.data?.payload?.text}";
+        
+        await _emailServiceApi.SendEmailAsync(ApiConstants.SiteEmail, "SMS received", text);
     }
 }
