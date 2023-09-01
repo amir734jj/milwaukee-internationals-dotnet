@@ -27,7 +27,7 @@ public class SmsController : Controller
         return RedirectToAction("Driver", "Attendance");
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("Incoming")]
     [AllowAnonymous]
     public async Task<ActionResult> IncomingSms([FromBody]object body)
