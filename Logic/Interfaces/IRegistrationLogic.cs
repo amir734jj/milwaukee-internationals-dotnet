@@ -24,4 +24,6 @@ public interface IRegistrationLogic
     Task SendHostEmail(Host host);
 
     Task SendDriverSms(Driver driver);
+
+    Task SendStudentSms(Student student);
 }

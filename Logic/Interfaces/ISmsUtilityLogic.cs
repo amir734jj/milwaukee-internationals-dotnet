@@ -10,4 +10,6 @@ public interface ISmsUtilityLogic
     Task<SmsFormViewModel> GetSmsForm();
     
     Task HandleDriverSms();
+
+    Task HandleStudentSms();
 }

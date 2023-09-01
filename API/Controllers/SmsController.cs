@@ -25,4 +25,13 @@ public class SmsController : Controller
 
         return RedirectToAction("Driver", "Attendance");
     }
+
+    [HttpGet]
+    [Route("Student")]
+    public async Task<ActionResult> SendStudentSms()
+    {
+        await _smsUtilityLogic.HandleStudentSms();
+
+        return RedirectToAction("Student", "Attendance");
+    }
 }

@@ -125,4 +125,14 @@ public class SmsUtilityLogic : ISmsUtilityLogic
             await _registrationLogic.SendDriverSms(driver);
         }
     }
+
+    public async Task HandleStudentSms()
+    {
+        var year = _globalConfigs.YearValue;
+
+        foreach (var student in await _studentLogic.GetAll(year))
+        {
+            await _registrationLogic.SendStudentSms(student);
+        }
+    }
 }

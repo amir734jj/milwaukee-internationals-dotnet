@@ -216,10 +216,19 @@ public class RegistrationLogic : IRegistrationLogic
 
     public async Task SendDriverSms(Driver driver)
     {
-        var text = $"Thank you for being a driver,\n" +
-                   $"you have {driver.Students.Count} students to drive\n" +
-                   $"students: {string.Join(", ", driver.Students.Select(x => x.Fullname))}\n" +
-                   $"milwaukeeinternationals.com/places";
+        var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Driver/{driver.GenerateHash()}";
+
+        var text = $"Asher here.Your display ID is {driver.DisplayId.Split('-')[0]}, link to check-in and see tour details {url}";
+        
         await _smsService.SendMessage(driver.Phone, text);
+    }
+
+    public async Task SendStudentSms(Student student)
+    {
+        var url = $"{ApiConstants.SiteUrl}/utility/EmailCheckIn/Student/{student.GenerateHash()}";
+
+        var text = $"Asher here.Link to check-in and see tour details {url}";
+        
+        await _smsService.SendMessage(student.Phone, text);
     }
 }
