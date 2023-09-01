@@ -161,7 +161,7 @@ public class RegistrationLogic : IRegistrationLogic
         var year = DateTime.Now.Year;
         var count = await _studentLogic.Count(x => x.Year == year);
 
-        return count <= _globalConfigs.MaxLimitStudentSeats;
+        return count < _globalConfigs.MaxLimitStudentSeats;
     }
     
     
