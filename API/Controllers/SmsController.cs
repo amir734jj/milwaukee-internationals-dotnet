@@ -30,6 +30,7 @@ public class SmsController : Controller
 
     [HttpGet]
     [Route("Student")]
+    [AuthorizeMiddleware(UserRoleEnum.Admin)]
     public async Task<ActionResult> SendStudentSms()
     {
         await _smsUtilityLogic.HandleStudentSms();
