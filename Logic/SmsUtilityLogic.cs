@@ -6,6 +6,7 @@ using Logic.Interfaces;
 using Models.Constants;
 using Models.Enums;
 using Models.ViewModels;
+using Newtonsoft.Json;
 
 namespace Logic;
 
@@ -17,6 +18,7 @@ public class SmsUtilityLogic : ISmsUtilityLogic
     private readonly IDriverLogic _driverLogic;
     private readonly IHostLogic _hostLogic;
     private readonly IUserLogic _userLogic;
+    private readonly IEmailServiceApi _emailServiceApi;
     private readonly IApiEventService _apiEventService;
     private readonly IRegistrationLogic _registrationLogic;
 
@@ -27,6 +29,7 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         IDriverLogic driverLogic,
         IHostLogic hostLogic,
         IUserLogic userLogic,
+        IEmailServiceApi emailServiceApi,
         IApiEventService apiEventService,
         IRegistrationLogic registrationLogic)
     {
@@ -36,6 +39,7 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         _driverLogic = driverLogic;
         _hostLogic = hostLogic;
         _userLogic = userLogic;
+        _emailServiceApi = emailServiceApi;
         _apiEventService = apiEventService;
         _registrationLogic = registrationLogic;
     }
@@ -134,5 +138,19 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         {
             await _registrationLogic.SendStudentSms(student);
         }
+    }
+    
+    public async Task IncomingSms(IncomingSmsViewModel body)
+    {
+        // Ignore spam messages
+        if (body?.data?.payload?.is_spam ?? true)
+        {
+            return;
+        }
+        
+        var text = $"SMS from {body.data?.payload?.from?.phone_number} [{body.data?.payload?.from?.carrier}]\n" +
+                   $"{body.data?.payload?.text}";
+        
+        await _emailServiceApi.SendEmailAsync(ApiConstants.SiteEmail, "SMS received", text);
     }
 }
