@@ -111,6 +111,11 @@ public class RegistrationController : Controller
     [Route("Student/Register")]
     public async Task<IActionResult> RegisterStudent(Student student)
     {
+        if (User.Identity is { IsAuthenticated: false } && !await _registrationLogic.IsRegisterStudentOpen())
+        {
+            return View("SorryClosed");
+        }
+        
         try
         {
             await _registrationLogic.RegisterStudent(student);
