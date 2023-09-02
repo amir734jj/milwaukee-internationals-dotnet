@@ -55,7 +55,7 @@
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="opt-radio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentStudents() }})
+                        <input type="radio" name="opt-radio" value="yes" ng-model="attendanceFilter" ng-change="updateTable()"/>Show Present ({{ getCountPresentStudents() }}) [total={{ getTotalCountPresentStudents() }}]
                     </label>
                 </div>
                 <div class="radio">

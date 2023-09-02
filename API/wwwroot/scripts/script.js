@@ -542,6 +542,22 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             }
         };
 
+        $scope.driverActualSize = (driver) => {
+          return driver.students.map(x => 1 + x.familySize).reduce((acc, x) => acc + x, 0);
+        };
+
+        $scope.driverOverCapacity = (driver) => {
+          return driver.capacity < $scope.driverActualSize(driver);
+        };
+
+        $scope.overCapacityDrivers = () => {
+          return ($scope.availableDrivers || []).map(x => x.key).filter(driver => $scope.driverOverCapacity(driver));
+        };
+
+        $scope.overCapacityDriversNames = () => {
+          return $scope.overCapacityDrivers().map(driver => driver.fullname).join(", ");
+        };
+
         $scope.togglePresentStudents = flag => {
             if (flag) {
                 $scope.availableStudents = $scope.rawAvailableStudents.filter(student => student.isPresent);

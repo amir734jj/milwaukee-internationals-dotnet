@@ -21,6 +21,10 @@
     </div>
 
     <div ng-controller="studentDriverMappingCtrl" class="row">
+        
+        <div class="alert alert-danger" ng-if="overCapacityDrivers().length">
+          <strong>Over Capacity!</strong> {{ overCapacityDriversNames() }}
+        </div>
 
         <div class="row">
             <div class="col-sm-7 col-sm-offset-5 col-md-6 col-md-offset-6 col-lg-5 col-lg-offset-7">
@@ -35,7 +39,7 @@
                 </div>
             </div>
         </div>
-        
+
         <br/>
 
         <div class="row">
@@ -54,6 +58,9 @@
                                                 {{driver.fullname}} ({{driver.displayId}})
                                                 <div class="small">(capacity = {{driver.capacity}}, displayId: {{ driver.displayId }})</div>
                                             </h4>
+                                            <div class="alert alert-danger" ng-if="driverOverCapacity(driver)">
+                                                <strong>Over capacity!</strong> capacity={{ driver.capacity }} < assigned={{ driverActualSize(driver) }}
+                                            </div>
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="list-group">
