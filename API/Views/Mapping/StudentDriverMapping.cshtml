@@ -1,6 +1,8 @@
 ﻿@using API.Interfaces
+@using Models.Constants
 @using Models.Enums
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
+@inject GlobalConfigs GlobalConfig
 @model List<Models.Entities.Student>
 
 @{
@@ -28,7 +30,7 @@
 
                     @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <a ng-click="sendMailToDrivers($event)" class="btn btn-primary btn-space">Send Mapping</a>
+                        <a ng-click="sendMailToDrivers($event)" class="btn @(GlobalConfig.EmailTestMode ? "btn-primary" : "btn-danger") btn-space">Send Mapping</a>
                     }
                 </div>
             </div>
