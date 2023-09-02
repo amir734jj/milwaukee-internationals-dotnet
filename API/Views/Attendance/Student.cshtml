@@ -14,7 +14,7 @@
     <div class="page-header">
         <h3>
             Student Attendance 
-            <small> (+{{ getCountPresentStudents() }}, -{{ getCountAbsentStudents() }}) </small>
+            <small> (+{{ getCountPresentStudents() }} [total count: {{ getTotalCountPresentStudents() }}], -{{ getCountAbsentStudents() }}) </small>
         </h3>
 
         @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)

@@ -683,6 +683,10 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => x.isPresent).length;
         };
 
+        $scope.getTotalCountPresentStudents = () => {
+            return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => x.isPresent).map(x => 1 + x.familySize).reduce((acc, x) => x + acc, 0);
+        };
+
         $scope.getCountAbsentStudents = () => {
             return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => !x.isPresent).length;
         };
