@@ -31,17 +31,27 @@ public class SmsService : ISmsService
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             _logger.LogInformation("Sending SMS to {}", phoneNumber);
 
-            var service = new MessagingSenderIdService();
-            var options = new NewMessagingSenderId
+            try
             {
-                From = NormalizePhoneNumberForSms(_globalConfigs.SMSTestMode ? ApiConstants.SitePhoneNumber : _senderPhoneNumber),
-                To = NormalizePhoneNumberForSms(phoneNumber),
-                Text = message
-            };
-            
-            var messageResponse = await service.CreateAsync(options);
-            
-            _logger.LogInformation("SMS sent successfully {}", messageResponse);
+
+                var service = new MessagingSenderIdService();
+                var options = new NewMessagingSenderId
+                {
+                    From = NormalizePhoneNumberForSms(_globalConfigs.SMSTestMode
+                        ? ApiConstants.SitePhoneNumber
+                        : _senderPhoneNumber),
+                    To = NormalizePhoneNumberForSms(phoneNumber),
+                    Text = message
+                };
+
+                var messageResponse = await service.CreateAsync(options);
+
+                _logger.LogInformation("SMS sent successfully {}", messageResponse);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation("SMS sent failed {}", e);
+            }
         }
     }
 
