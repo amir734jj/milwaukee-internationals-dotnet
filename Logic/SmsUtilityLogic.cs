@@ -97,6 +97,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
 
         // Remove duplicates
         phoneNumbers = phoneNumbers.Distinct().ToList();
+        
+        // CC to website admin
+        phoneNumbers.Add(ApiConstants.SitePhoneNumber);
 
         // Send the email
         await _smsService.SendMessage(phoneNumbers, smsFormViewModel.Message);
@@ -137,6 +140,16 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         foreach (var student in await _studentLogic.GetAll(year))
         {
             await _registrationLogic.SendStudentSms(student);
+        }
+    }
+
+    public async Task HandleHostSms()
+    {
+        var year = _globalConfigs.YearValue;
+
+        foreach (var host in await _hostLogic.GetAll(year))
+        {
+            await _registrationLogic.SendHostSms(host);
         }
     }
     

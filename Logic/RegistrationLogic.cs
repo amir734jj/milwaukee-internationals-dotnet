@@ -231,4 +231,12 @@ public class RegistrationLogic : IRegistrationLogic
         
         await _smsService.SendMessage(student.Phone, text);
     }
+
+    public async Task SendHostSms(Host host)
+    {
+        var text = $"Hi Asher here. you have {host.Drivers.Count} drivers coming " +
+                   $"with {host.Drivers.Select(driver => driver.Students.Select(student => 1 + student.FamilySize).Sum())} students";
+
+        await _smsService.SendMessage(host.Phone, text);
+    }
 }

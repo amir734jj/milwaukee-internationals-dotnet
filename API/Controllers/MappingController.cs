@@ -13,11 +13,13 @@ public class MappingController : Controller
 {
     private readonly IStudentLogic _studentLogic;
     private readonly IDriverLogic _driverLogic;
+    private readonly ISmsUtilityLogic _smsUtilityLogic;
 
-    public MappingController(IStudentLogic studentLogic, IDriverLogic driverLogic)
+    public MappingController(IStudentLogic studentLogic, IDriverLogic driverLogic, ISmsUtilityLogic smsUtilityLogic)
     {
         _studentLogic = studentLogic;
         _driverLogic = driverLogic;
+        _smsUtilityLogic = smsUtilityLogic;
     }
         
     // GET the view
@@ -51,5 +53,18 @@ public class MappingController : Controller
         var drivers = (await _driverLogic.GetAll()).ToList();
 
         return View(drivers);
+    }
+
+    /// <summary>
+    /// Host heads up SMS
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("HostHeadsUpSms")]
+    public async Task<IActionResult> HostHeadsUpSms()
+    {
+        await _smsUtilityLogic.HandleHostSms();
+
+        return RedirectToAction("DriverHostMapping");
     }
 }

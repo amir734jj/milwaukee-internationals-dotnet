@@ -104,7 +104,7 @@ public class UtilityController : Controller
     /// <returns></returns>
     [HttpPost]
     [Route("EmailCheckInAction/{type}/{id:int}")]
-    public async Task<IActionResult> EmailCheckinHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
+    public async Task<IActionResult> EmailCheckInHandler([FromRoute] EntitiesEnum type, [FromRoute] int id,
         [FromQuery] bool present)
     {
         var result = await _emailUtilityLogic.HandleEmailCheckIn(type, id, present);

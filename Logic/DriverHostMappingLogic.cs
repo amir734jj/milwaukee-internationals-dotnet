@@ -101,6 +101,19 @@ public class DriverHostMappingLogic : IDriverHostMappingLogic
     /// <returns></returns>
     public async Task<bool> EmailMappings()
     {
+        var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
+
+        // Send the email to hosts
+        var tasks = hosts
+            .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
+
+        await Task.WhenAll(tasks);
+            
+        await _apiEventService.RecordEvent("Sent driver-host mapping emails");
+            
+        // Return true
+        return true;
+
         string MessageFunc(Host host)
         {
             return $@"               
@@ -128,18 +141,5 @@ public class DriverHostMappingLogic : IDriverHostMappingLogic
         <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p> 
         ";
         }
-
-        var hosts = await _hostLogic.GetAll(DateTime.UtcNow.Year);
-
-        // Send the email to hosts
-        var tasks = hosts
-            .Select(x => _emailServiceApi.SendEmailAsync(x.Email, "Tour of Milwaukee - Assigned Drivers", MessageFunc(x)));
-
-        await Task.WhenAll(tasks);
-            
-        await _apiEventService.RecordEvent("Sent driver-host mapping emails");
-            
-        // Return true
-        return true;
     }
 }

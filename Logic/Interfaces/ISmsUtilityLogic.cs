@@ -12,6 +12,8 @@ public interface ISmsUtilityLogic
     Task HandleDriverSms();
 
     Task HandleStudentSms();
+
+    Task HandleHostSms();
     
     Task IncomingSms(IncomingSmsViewModel body);
 }
