@@ -5,9 +5,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="Azure.Data.Tables" Version="12.8.1" />
+    <PackageReference Include="Azure.Data.Tables" Version="12.8.2" />
     <PackageReference Include="Enums.NET" Version="4.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.25" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ObjectHashing" Version="0.0.4" />
     <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
