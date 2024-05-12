@@ -58,8 +58,6 @@ public class Driver : ObjectHash<Driver>, IPerson, IYearlyEntity
     public int Year { get; set; }
 
     public List<PushToken> PushTokens { get; set; }
-        
-    public string UniqueToken { get; set; }
 
     protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Driver> config)
     {

@@ -11,6 +11,7 @@ using MlkPwgen;
 using Models.Constants;
 using Models.Entities;
 using Models.Enums;
+using Models.ViewModels;
 using static Logic.Utilities.RegistrationUtility;
 
 namespace Logic;
@@ -49,7 +50,6 @@ public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
 
         // Normalize phone number
         instance.Phone = NormalizePhoneNumber(instance.Phone);
-        instance.UniqueToken = await GenerateUniqueToken();
             
         var lastDisplayId = (await base.GetAll(DateTime.UtcNow.Year)).MaxBy(x => x.Id)
             ?.DisplayId;
@@ -89,9 +89,12 @@ public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
         });
     }
 
-    public async Task<Driver> FindByDriverId(string driverId)
+    public async Task<Driver> DriverLogin(DriverLoginViewModel driverLoginViewModel)
     {
-        var driver = await _dal.Get(x => x.DisplayId == driverId && x.Year == _globalConfigs.YearValue);
+        var driver = await _dal.Get(x => 
+            x.DisplayId == driverLoginViewModel.DriverId &&
+            x.Email == driverLoginViewModel.Email &&
+            x.Year == DateTime.Now.Year);
 
         return driver;
     }
@@ -120,19 +123,6 @@ public class DriverLogic : BasicCrudLogicAbstract<Driver>, IDriverLogic
             }
 
             return value;
-        }
-    }
-
-    private async Task<string> GenerateUniqueToken()
-    {
-        while (true)
-        {
-            var uniqueId = PasswordGenerator.Generate(6, Sets.Upper);
-
-            if (await _dal.Count(x => x.UniqueToken == uniqueId) == 0)
-            {
-                return uniqueId;
-            }
         }
     }
 }

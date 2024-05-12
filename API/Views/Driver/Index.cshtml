@@ -80,15 +80,6 @@
                             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                         </a>
                     </th>
-                    <th ng-show="showDetail">
-                        UniqueToken
-                        <a href="?sortBy=uniqueToken&descending=false">
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        </a>
-                        <a href="?sortBy=uniqueToken&descending=true">
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        </a>
-                    </th>
                     <th>Phone</th>
                     <th>
                         Navigator
@@ -120,7 +111,6 @@
                         <td>@driver.Role.ToString()</td>
                         <td>@driver.Capacity</td>
                         <td ng-show="showDetail">@driver.Email</td>
-                        <td ng-show="showDetail">@driver.UniqueToken</td>
                         <td>@driver.Phone</td>
                         <td>@driver.Navigator</td>
                         <td>@driver.HaveChildSeat</td>

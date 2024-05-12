@@ -26,14 +26,9 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="wwwroot\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Folder>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <AdditionalFiles Include="Views\Location\Edit.cshtml" />
-    <AdditionalFiles Include="Views\Location\Index.cshtml" />
+    <Content Update="appsettings.json;web.config" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Views\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
 </Project>

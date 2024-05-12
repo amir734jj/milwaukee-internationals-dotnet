@@ -4,6 +4,7 @@ using API.Attributes;
 using Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Models.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers.API;
@@ -26,9 +27,9 @@ public class DriverController : BasicCrudController<Driver>
     [HttpGet]
     [Route("login/{driverId}")]
     [SwaggerOperation("DriverLogin")]
-    public async Task<IActionResult> DriverLogin([FromRoute] string driverId)
+    public async Task<IActionResult> DriverLogin([FromBody] DriverLoginViewModel driverLoginViewModel)
     {
-        var driver = await _driverLogic.FindByDriverId(driverId);
+        var driver = await _driverLogic.DriverLogin(driverLoginViewModel);
 
         if (driver == null)
         {
