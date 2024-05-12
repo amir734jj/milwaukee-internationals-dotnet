@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -14,7 +13,6 @@ using DAL.ServiceApi;
 using DAL.Utilities;
 using EfCoreRepository.Extensions;
 using Logic.Interfaces;
-using Logic.Utilities;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -265,6 +263,7 @@ public class Startup
     /// <param name="app"></param>
     /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
+    /// <param name="smsService"></param>
     public void Configure(IApplicationBuilder app, IConfigLogic configLogic, IApiEventService apiEventService, ISmsService smsService)
     {
         // Refresh global config

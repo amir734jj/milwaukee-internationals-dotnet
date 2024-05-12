@@ -25,7 +25,7 @@ public class DriverController : BasicCrudController<Driver>
     }
         
     [HttpGet]
-    [Route("login/{driverId}")]
+    [Route("login")]
     [SwaggerOperation("DriverLogin")]
     public async Task<IActionResult> DriverLogin([FromBody] DriverLoginViewModel driverLoginViewModel)
     {
