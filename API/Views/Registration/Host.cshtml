@@ -18,7 +18,7 @@
     
     @await Html.PartialAsync("SimpleAlertContent", ViewData)
     
-    @using (Html.BeginForm("RegisterHost", "Registration", FormMethod.Post, new { ng_controller = "hostRegistrationCtrl" }))
+    @using (Html.BeginForm("RegisterHost", "Registration", FormMethod.Post, new { ng_controller = "hostRegistrationCtrl", wait_on_submit = "" }))
     {
         @await Html.PartialAsync("HostContent", Model)
 

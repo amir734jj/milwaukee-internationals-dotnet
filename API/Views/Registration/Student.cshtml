@@ -25,7 +25,7 @@
     
     @await Html.PartialAsync("SimpleAlertContent", ViewData)
 
-    @using (Html.BeginForm("RegisterStudent", "Registration", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl" }))
+    @using (Html.BeginForm("RegisterStudent", "Registration", FormMethod.Post, new { ng_controller = "studentRegistrationCtrl", wait_on_submit = "" }))
     {
         @(await Html.PartialAsync("StudentContent", Model, new ViewDataDictionary(ViewData) {{ "Type", "Save"}}))
         

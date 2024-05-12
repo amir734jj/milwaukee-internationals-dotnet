@@ -143,6 +143,26 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             });
         }
     })])
+    .directive('waitOnSubmit', ['$window', $window => ({
+        restrict: 'A',
+        link: (scope, form) => {
+            form.on('submit', e => {
+                // prevent submit if form is not valid
+                if (form.valid()) {
+                    const submitButton = form.find('input[type="submit"]');
+
+                    submitButton.prop('disabled', true);
+
+                    // let the submit flow to happen
+                    $window.setTimeout(() => {
+                        submitButton.prop('disabled', false);
+                    }, 5000);
+                } else {
+                    e.preventDefault();
+                }
+            });
+        }
+    })])
     .controller('apiEventsCtrl', ['$scope', '$http', '$sce', '$async', async ($scope, $http, $sce, $async) => {
 
         $scope.count = 0;
