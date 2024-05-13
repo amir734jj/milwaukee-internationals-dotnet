@@ -42,9 +42,11 @@
             </div>
             <div class="form-group">
                 <label for="country">Country:</label>
-                <select id="country" name="country" ng-change="updateTable()" ng-model="country" class="form-control">
-                    <option value="{{ country }}" ng-repeat="(country, count) in countries()">{{country}} ({{ count }})</option>
-                </select>
+                <div ng-if="countries().length > 0">
+                    <select id="country" name="country" ng-change="updateTable()" ng-model="country" class="form-control">
+                        <option value="{{ kv.country }}" ng-repeat="kv in countries() track by kv.country">{{kv.country}} ({{ kv.count }})</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label>Filter by attendance:</label>

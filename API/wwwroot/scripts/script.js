@@ -727,14 +727,27 @@ angular.module('tourApp', ['ui.toggle', 'ngTagsInput', 'chart.js', 'ngSanitize',
             return $scope.generalFilterStudents({ignoreAttendance: true}).filter(x => !x.isPresent).length;
         };
 
+        // this was needed to fix infinite digest call
+        // basically angular.js doesn't respect track by and wants reference equality
+        $scope.countriesResult = [];
         $scope.countries = () => {
             const students = $scope.generalFilterStudents();
-            return students.reduce((acc, student) => ({
+            // have all countries at first
+            const result = [
+                {
+                    country: 'All Countries',
+                    count: $scope.generalFilterStudents({ignoreCountry: true}).length
+                }
+            ].concat(_.orderBy(_.map(students.reduce((acc, student) => ({
                 ...acc,
                 [student.country]: student.country in acc ? acc[student.country] + 1 : 1
-            }), {
-                ['All Countries']: $scope.generalFilterStudents({ignoreCountry: true}).length
-            });
+            }), {}), (value, key) => ({ country: key, count: value })), x => x.country));
+            
+            if (!_.isEqual(result, $scope.countriesResult)) {
+                $scope.countriesResult = result;
+            }
+            
+            return $scope.countriesResult;
         };
 
         $scope.resolvePassengers = driver => {
