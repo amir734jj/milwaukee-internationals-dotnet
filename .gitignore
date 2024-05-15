@@ -25,5 +25,4 @@ node_modules
 client-build
 *.sqlite-*
 
-launchSettings.json
 imageid.txt
