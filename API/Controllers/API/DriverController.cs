@@ -26,7 +26,7 @@ public class DriverController : BasicCrudController<Driver>
     }
 
     [AllowAnonymous]
-    [HttpGet]
+    [HttpPost]
     [Route("login")]
     [SwaggerOperation("DriverLogin")]
     public async Task<IActionResult> DriverLogin([FromBody] DriverLoginViewModel driverLoginViewModel)
