@@ -2,6 +2,7 @@
 using API.Abstracts;
 using API.Attributes;
 using Logic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
 using Models.ViewModels;
@@ -23,7 +24,8 @@ public class DriverController : BasicCrudController<Driver>
     {
         _driverLogic = driverLogic;
     }
-        
+
+    [AllowAnonymous]
     [HttpGet]
     [Route("login")]
     [SwaggerOperation("DriverLogin")]
