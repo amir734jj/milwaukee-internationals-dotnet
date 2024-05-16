@@ -19,8 +19,8 @@ public sealed class EntityDbContext: IdentityDbContext<User, IdentityRole<int>, 
     public DbSet<Event> Events { get; set; }
         
     public DbSet<Location> Locations { get; set; }
-        
-    public DbSet<PushToken> PushTokens { get; set; }
+    
+    public DbSet<GlobalConfigs> GlobalConfigs { get; set; }
 
     public EntityDbContext() { }
 

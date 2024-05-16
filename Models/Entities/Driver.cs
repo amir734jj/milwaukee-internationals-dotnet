@@ -18,7 +18,7 @@ public class Driver : ObjectHash<Driver>, IPerson, IYearlyEntity
         
     [Display(Name="Phone")]
     public string Phone { get; set; }
-        
+
     [Display(Name="Fullname")]
     public string Fullname { get; set; }
         
@@ -56,8 +56,6 @@ public class Driver : ObjectHash<Driver>, IPerson, IYearlyEntity
     /// Indicates the year in which driver attended the tour
     /// </summary>
     public int Year { get; set; }
-
-    public List<PushToken> PushTokens { get; set; }
 
     protected override void ConfigureObjectSha(IConfigureObjectHashConfig<Driver> config)
     {

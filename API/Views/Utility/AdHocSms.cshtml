@@ -1,12 +1,13 @@
+@using DAL.Interfaces
 @using Logic.Extensions
-@using Models.Constants
 @using Models.ViewModels
 @model SmsFormViewModel
-@inject GlobalConfigs GlobalConfigs
+@inject IConfigLogic ConfigLogic
 
 @{
     ViewBag.Title = "SMS AdHoc Utility";
     Layout = "_Layout";
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <div class="container">
@@ -18,10 +19,10 @@
         </div>
     }
     
-    @if (GlobalConfigs.YearValue != DateTime.Now.Year)
+    @if (globalConfig.YearValue != DateTime.Now.Year)
     {
         <div class="alert alert-danger">
-            <strong>Be careful!</strong> Year context is not set to current year. SMS will be send to students/drivers/hosts of @(GlobalConfigs.YearValue) year.
+            <strong>Be careful!</strong> Year context is not set to current year. SMS will be send to students/drivers/hosts of @(globalConfig.YearValue) year.
         </div>
     }
 
@@ -34,12 +35,12 @@
         </p>
         
         <p>
-            Current year context is <strong>@(GlobalConfigs.YearValue)</strong> so SMS WILL go to students/drivers/hosts of @(GlobalConfigs.YearValue) select year.
+            Current year context is <strong>@(globalConfig.YearValue)</strong> so SMS WILL go to students/drivers/hosts of @(globalConfig.YearValue) select year.
         </p>
         
         <p>
-            <strong> SMS test mode </strong> is currently <strong> @(GlobalConfigs.SMSTestMode ? "Active" : "Inactive") </strong>.
-            So the SMS <strong> @(GlobalConfigs.SMSTestMode ? "WILL NOT" : "WILL") </strong> be sent to the users.
+            <strong> SMS test mode </strong> is currently <strong> @(globalConfig.SmsTestMode ? "Active" : "Inactive") </strong>.
+            So the SMS <strong> @(globalConfig.SmsTestMode ? "WILL NOT" : "WILL") </strong> be sent to the users.
         </p>
 
     </div>

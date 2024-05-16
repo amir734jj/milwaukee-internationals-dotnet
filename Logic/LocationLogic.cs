@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AutoMapper.Internal;
 using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
-using Models.Constants;
 using Models.Entities;
 
 namespace Logic;

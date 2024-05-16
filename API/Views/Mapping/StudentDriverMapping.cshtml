@@ -1,8 +1,8 @@
 ﻿@using API.Interfaces
-@using Models.Constants
+@using DAL.Interfaces
 @using Models.Enums
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
-@inject GlobalConfigs GlobalConfig
+@inject IConfigLogic ConfigLogic
 @model List<Models.Entities.Student>
 
 @{
@@ -10,6 +10,7 @@
     Layout = "_Layout";
 
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <div class="container">
@@ -34,7 +35,7 @@
 
                     @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <a ng-click="sendMailToDrivers($event)" class="btn @(GlobalConfig.EmailTestMode ? "btn-primary" : "btn-danger") btn-space">Send Mapping</a>
+                        <a ng-click="sendMailToDrivers($event)" class="btn @(globalConfig.EmailTestMode ? "btn-primary" : "btn-danger") btn-space">Send Mapping</a>
                     }
                 </div>
             </div>

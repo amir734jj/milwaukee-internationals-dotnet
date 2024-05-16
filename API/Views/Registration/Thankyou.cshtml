@@ -1,10 +1,11 @@
 ﻿@model Models.Enums.EntitiesEnum
-@using Models.Constants
+@using DAL.Interfaces
 @using Models.Enums
-@inject GlobalConfigs GlobalConfigs;
+@inject IConfigLogic ConfigLogic
 @{
     ViewBag.Title = "Registration Complete";
     Layout = "_Layout";
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <h2>Thank you for the registration!</h2>
@@ -15,11 +16,11 @@
 @if (Model == EntitiesEnum.Student)
 {
     <br/>
-    <h4>@(GlobalConfigs.TourDate.Year) Tour of Milwaukee Registration</h4>
-    <h4>Date: @(GlobalConfigs.TourDate.ToString("dddd, MMMM d, yyyy"))</h4>
+    <h4>@(globalConfig.TourDate.Year) Tour of Milwaukee Registration</h4>
+    <h4>Date: @(globalConfig.TourDate.ToString("dddd, MMMM d, yyyy"))</h4>
     <h4>Time: 12:00 noon </h4>
-    <h4>Address: @(GlobalConfigs.TourAddress)</h4>
-    <h4>Location: @(GlobalConfigs.TourLocation)</h4>
+    <h4>Address: @(globalConfig.TourAddress)</h4>
+    <h4>Location: @(globalConfig.TourLocation)</h4>
     <h4>If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360) or reply to the registration email.</h4>
     <h4>
         Follow us on <a href="https://www.facebook.com/Milwaukeeinternationals/">our Facebook page</a> for more information.

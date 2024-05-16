@@ -1,6 +1,7 @@
+using System.Threading.Tasks;
 using API.Attributes;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Models.Constants;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers.API;
@@ -9,18 +10,18 @@ namespace API.Controllers.API;
 [Route("api/[controller]")]
 public class ConfigController : Controller
 {
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
 
-    public ConfigController(GlobalConfigs globalConfigs)
+    public ConfigController(IConfigLogic configLogic)
     {
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
     }
         
     [HttpGet]
     [Route("")]
     [SwaggerOperation("Status")]
-    public IActionResult Status()
+    public async Task<IActionResult> Status()
     {
-        return Ok(_globalConfigs);
+        return Ok(await _configLogic.ResolveGlobalConfig());
     }
 }

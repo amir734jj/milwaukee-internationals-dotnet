@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using API.Attributes;
-using Logic.Interfaces;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using Models.Enums;
-using Models.ViewModels.Config;
 
 namespace API.Controllers;
 
@@ -21,9 +21,9 @@ public class ConfigController : Controller
         
     [HttpGet]
     [Route("")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var result = _configLogic.ResolveGlobalConfig();
+        var result = await _configLogic.ResolveGlobalConfig();
             
         return View(result);
     }
@@ -31,9 +31,9 @@ public class ConfigController : Controller
     [HttpPost]
     [Route("")]
     [AuthorizeMiddleware(UserRoleEnum.Admin)]
-    public async Task<IActionResult> UpdateConfig(GlobalConfigViewModel globalConfigViewModel)
+    public async Task<IActionResult> UpdateConfig(GlobalConfigs globalConfigs)
     {
-        await _configLogic.SetGlobalConfig(globalConfigViewModel);
+        await _configLogic.SetGlobalConfig(globalConfigs);
 
         return RedirectToAction("Index");
     }

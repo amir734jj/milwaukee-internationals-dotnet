@@ -17,10 +17,5 @@ public class DriverEntity : IEntityTypeConfiguration<Driver>
             .WithMany(x => x.Drivers)
             .HasForeignKey(x => x.HostRefId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasMany(x => x.PushTokens)
-            .WithOne(x => x.Driver)
-            .HasForeignKey(x => x.DriverId)
-            .OnDelete(DeleteBehavior.SetNull);
     }
 }

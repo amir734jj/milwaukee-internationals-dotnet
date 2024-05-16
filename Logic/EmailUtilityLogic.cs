@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DAL.Interfaces;
 using EnumsNET;
 using Logic.Interfaces;
-using Models.Constants;
 using Models.Enums;
 using Models.ViewModels;
 
@@ -13,7 +12,7 @@ namespace Logic;
 
 public class EmailUtilityLogic :  IEmailUtilityLogic
 {
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IUserLogic _userLogic;
     private readonly IEmailServiceApi _emailServiceApiApi;
     private readonly IApiEventService _apiEventService;
@@ -25,7 +24,7 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
     /// <summary>
     /// Constructor dependency injection
     /// </summary>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="studentLogic"></param>
     /// <param name="driverLogic"></param>
     /// <param name="hostLogic"></param>
@@ -34,7 +33,7 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
     /// <param name="apiEventService"></param>
     /// <param name="registrationLogic"></param>
     public EmailUtilityLogic(
-        GlobalConfigs globalConfigs,
+        IConfigLogic configLogic,
         IStudentLogic studentLogic,
         IDriverLogic driverLogic,
         IHostLogic hostLogic,
@@ -43,7 +42,7 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
         IApiEventService apiEventService,
         IRegistrationLogic registrationLogic)
     {
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _studentLogic = studentLogic;
         _driverLogic = driverLogic;
         _hostLogic = hostLogic;
@@ -55,7 +54,9 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
 
     public async Task<EmailFormViewModel> GetEmailForm()
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
+        var year = globalConfigs.YearValue;
             
         return new EmailFormViewModel
         {
@@ -84,7 +85,9 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
     /// <returns></returns>
     public async Task<bool> HandleAdHocEmail(EmailFormViewModel emailFormViewModel)
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
             
         var emailAddresses = new List<string>();
 
@@ -180,7 +183,9 @@ public class EmailUtilityLogic :  IEmailUtilityLogic
 
     public async Task SendConfirmationEmail(EntitiesEnum rolesEnum)
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
 
         switch (rolesEnum)
         {

@@ -1,10 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Models.ViewModels.Config;
+namespace Models.Entities;
 
-public class GlobalConfigViewModel
+public class GlobalConfigs
 {
+    // we should only have single row of global id in database
+    [Key]
+    public int Id { get; set; }
+    
     [Display(Name = "Current Year Context for Viewing")]
     public int YearValue { get; set; }
         

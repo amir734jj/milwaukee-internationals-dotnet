@@ -2,31 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Data.Tables;
 using DAL.Interfaces;
 using DAL.Utilities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using Models.Constants;
 using Models.ViewModels.EventService;
 
 namespace DAL.ServiceApi;
 
 public class ApiEventService : IApiEventService
 {
-    private readonly TableServiceClient _tableServiceClient;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IHubContext<MessageHub> _hubContext;
     private readonly ILogger<ApiEventService> _logger;
-
-    private const string TableName = "event";
-
+    private LinkedList<ApiEvent> _events = new();
     private const int QueryLimit = 35;
 
-    public ApiEventService(TableServiceClient tableServiceClient, GlobalConfigs globalConfigs, IHubContext<MessageHub> hubContext, ILogger<ApiEventService> logger)
+    public ApiEventService(IConfigLogic configLogic, IHubContext<MessageHub> hubContext, ILogger<ApiEventService> logger)
     {
-        _tableServiceClient = tableServiceClient;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _hubContext = hubContext;
         _logger = logger;
     }
@@ -45,27 +39,23 @@ public class ApiEventService : IApiEventService
         };
 
         await _hubContext.Clients.All.SendAsync("events", entity);
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
 
-        if (_globalConfigs.RecordApiEvents)
+        if (globalConfigs.RecordApiEvents)
         {
-            await _tableServiceClient.GetTableClient(TableName).AddEntityAsync(entity);
+            _events.AddFirst(entity);
+
+            _events = new LinkedList<ApiEvent>(_events.Take(QueryLimit));
         }
     }
 
-    public async Task<IEnumerable<ApiEvent>> GetEvents()
+    public IEnumerable<ApiEvent> GetEvents()
     {
-        return await GetEvents(limit: QueryLimit);
+        return GetEvents(limit: QueryLimit);
     }
 
-    private async Task<IEnumerable<ApiEvent>> GetEvents(int limit)
+    private IEnumerable<ApiEvent> GetEvents(int limit)
     {
-        var pages = _tableServiceClient.GetTableClient(TableName).QueryAsync<ApiEvent>(x => x.Timestamp > DateTimeOffset.Now.Subtract(TimeSpan.FromDays(3)), maxPerPage: limit);
-        
-        await foreach (var page in pages.AsPages())
-        {
-            return page.Values.ToList();
-        }
-
-        return new List<ApiEvent>();
+        return _events.Take(limit).ToList();
     }
 }

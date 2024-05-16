@@ -14,18 +14,20 @@ public class SmsService : ISmsService
 {
     private readonly ILogger<SmsService> _logger;
     private readonly string _senderPhoneNumber;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
 
-    public SmsService(string telnyxApiKey, string senderPhoneNumber,  GlobalConfigs globalConfigs, ILogger<SmsService> logger)
+    public SmsService(string telnyxApiKey, string senderPhoneNumber, IConfigLogic configLogic, ILogger<SmsService> logger)
     {
         _senderPhoneNumber = senderPhoneNumber;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _logger = logger;
         TelnyxConfiguration.SetApiKey(telnyxApiKey);
     }
 
     public async Task SendMessage(string phoneNumber, string message)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
         if (!string.IsNullOrWhiteSpace(phoneNumber))
         { 
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
@@ -33,11 +35,10 @@ public class SmsService : ISmsService
 
             try
             {
-
                 var service = new MessagingSenderIdService();
                 var options = new NewMessagingSenderId
                 {
-                    From = NormalizePhoneNumberForSms(_globalConfigs.SMSTestMode
+                    From = NormalizePhoneNumberForSms(globalConfigs.SmsTestMode
                         ? ApiConstants.SitePhoneNumber
                         : _senderPhoneNumber),
                     To = NormalizePhoneNumberForSms(phoneNumber),

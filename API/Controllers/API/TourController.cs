@@ -1,6 +1,7 @@
+using System.Threading.Tasks;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Constants;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers.API;
@@ -9,23 +10,25 @@ namespace API.Controllers.API;
 [Route("api/[controller]")]
 public class TourController : Controller
 {
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
 
-    public TourController(GlobalConfigs globalConfigs)
+    public TourController(IConfigLogic configLogic)
     {
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
     }
         
     [HttpGet]
     [Route("info")]
     [SwaggerOperation("info")]
-    public IActionResult Status()
+    public async Task<IActionResult> Status()
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
         return Ok(new
         {
-            _globalConfigs.TourAddress,
-            _globalConfigs.TourDate,
-            _globalConfigs.TourLocation
+            globalConfigs.TourAddress,
+            globalConfigs.TourDate,
+            globalConfigs.TourLocation
         });
     }
 }

@@ -7,7 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.29" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.29" />

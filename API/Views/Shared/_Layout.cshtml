@@ -1,20 +1,22 @@
 ﻿@using API.Extensions
 @using API.Interfaces
 @using API.Utilities
+@using DAL.Interfaces
 @using Models.Constants
 @using Models.Enums
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
 @inject CacheBustingUtility CacheBustingUtility;
-@inject GlobalConfigs GlobalConfigs;
+@inject IConfigLogic ConfigLogic
 @using static Models.Constants.ApiConstants
 
 @{
     var utility = RequestUtilityBuilder.For(Context);
     var userInfo = await utility.GetUserInfo();
     var cacheBustingKey = CacheBustingUtility.CacheBustingKey();
-    var yearContext = GlobalConfigs.YearValue;
     var themes = ApplicationConstants.Themes;
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
+    var yearContext = globalConfig.YearValue;
 }
 
 <!DOCTYPE html>
@@ -50,9 +52,9 @@
     <link href="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.1.2/dist/angular-bootstrap-toggle.min.js"></script>
 
-    @if (!string.IsNullOrEmpty(GlobalConfigs.Theme) && !"default".Equals(GlobalConfigs.Theme, StringComparison.CurrentCultureIgnoreCase))
+    @if (!string.IsNullOrEmpty(globalConfig.Theme) && !"default".Equals(globalConfig.Theme, StringComparison.CurrentCultureIgnoreCase))
     {
-        <link rel="stylesheet" href="~/styles/themes/@(themes[GlobalConfigs.Theme])?@cacheBustingKey"/>
+        <link rel="stylesheet" href="~/styles/themes/@(themes[globalConfig.Theme])?@cacheBustingKey"/>
     }
 
     @* Input validator *@
@@ -158,7 +160,7 @@
                                 <a href="~/Host">Hosts</a>
                             </li>
 
-                            @if (GlobalConfigs.EventFeature)
+                            @if (globalConfig.EventFeature)
                             {
                                 <li>
                                     <a href="~/Event">Events</a>
@@ -215,7 +217,7 @@
                         <a href="~/Attendance/Student">Manage Tour</a>
                     </li>
 
-                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin && GlobalConfigs.LocationWizardFeature)
+                    @if (userInfo.UserRoleEnum == UserRoleEnum.Admin && globalConfig.LocationWizardFeature)
                     {
                         <li class="@(ViewContext.RouteData.Matches("LocationWizard") ? "active" : "")">
                             <a href="~/LocationWizard">Location Wizard</a>
@@ -279,7 +281,7 @@
 
 <div class="container" ng-app="tourApp" ng-cloak>
 
-    @if (utility.IsAuthenticated() && GlobalConfigs.EmailTestMode)
+    @if (utility.IsAuthenticated() && globalConfig.EmailTestMode)
     {
         <div class="alert alert-warning">
             Email test mode is on! no email is getting sent.

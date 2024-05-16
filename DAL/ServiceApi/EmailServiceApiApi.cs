@@ -12,7 +12,7 @@ namespace DAL.ServiceApi;
 public class EmailServiceApi : IEmailServiceApi
 {
     private readonly IMailjetClient _mailJetClient;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly ILogger<EmailServiceApi> _logger;
 
 
@@ -20,12 +20,12 @@ public class EmailServiceApi : IEmailServiceApi
     /// Constructor dependency injection
     /// </summary>
     /// <param name="mailJetClient"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="logger"></param>
-    public EmailServiceApi(IMailjetClient mailJetClient, GlobalConfigs globalConfigs, ILogger<EmailServiceApi> logger)
+    public EmailServiceApi(IMailjetClient mailJetClient, IConfigLogic configLogic, ILogger<EmailServiceApi> logger)
     {
         _mailJetClient = mailJetClient;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _logger = logger;
     }
 
@@ -38,6 +38,8 @@ public class EmailServiceApi : IEmailServiceApi
     /// <returns></returns>
     public async Task SendEmailAsync(string emailAddress, string emailSubject, string emailHtml)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
         if (!string.IsNullOrWhiteSpace(emailAddress))
         { 
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
@@ -45,11 +47,11 @@ public class EmailServiceApi : IEmailServiceApi
             
             // construct your email with builder
             var email = new TransactionalEmailBuilder()
-                .WithFrom(new SendContact(_globalConfigs.EmailSenderOnBehalf))
+                .WithFrom(new SendContact(globalConfigs.EmailSenderOnBehalf))
                 .WithSubject(emailSubject)
                 .WithHtmlPart(emailHtml)
                 .WithCc(new SendContact(ApiConstants.SiteEmail))
-                .WithTo(new SendContact(_globalConfigs.EmailTestMode ? ApiConstants.SiteEmail : emailAddress))
+                .WithTo(new SendContact(globalConfigs.EmailTestMode ? ApiConstants.SiteEmail : emailAddress))
                 .Build();
 
             // invoke API to send email

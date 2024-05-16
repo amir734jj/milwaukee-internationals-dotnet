@@ -1,8 +1,8 @@
 ﻿@using API.Interfaces
-@using Models.Constants
+@using DAL.Interfaces
 @using Models.Enums
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
-@inject GlobalConfigs GlobalConfig
+@inject IConfigLogic ConfigLogic
 @model List<Models.Entities.Driver>
 
 @{
@@ -10,6 +10,7 @@
     Layout = "_Layout";
 
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <div class="container">
@@ -29,11 +30,11 @@
 
                     @if (userInfo.UserRoleEnum == UserRoleEnum.Admin)
                     {
-                        <a ng-click="sendMailToHosts($event)" class="margin-right-sm btn @(GlobalConfig.EmailTestMode ? "btn-primary" : "btn-danger")">Send Mapping</a>
+                        <a ng-click="sendMailToHosts($event)" class="margin-right-sm btn @(globalConfig.EmailTestMode ? "btn-primary" : "btn-danger")">Send Mapping</a>
                                                                                                                                             
                         <a href="~/Mapping/HostHeadsUpSms" 
                            validate-before-going data-message="Are you sure to send heads up SMS to hosts?"
-                           class="btn @(GlobalConfig.SMSTestMode ? "btn-primary" : "btn-danger")">Send Heads up SMS to hosts</a>
+                           class="btn @(globalConfig.SmsTestMode ? "btn-primary" : "btn-danger")">Send Heads up SMS to hosts</a>
                     }
                 </div>
             </div>

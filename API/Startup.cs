@@ -6,17 +6,13 @@ using API.Extensions;
 using API.Middlewares;
 using API.Utilities;
 using Microsoft.AspNetCore.SignalR;
-using Azure.Data.Tables;
-using Azure.Storage.Blobs;
 using DAL.Interfaces;
 using DAL.ServiceApi;
 using DAL.Utilities;
 using EfCoreRepository.Extensions;
-using Logic.Interfaces;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -83,14 +79,6 @@ public class Startup
         // https://stackoverflow.com/a/70304966/1834787
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-        var coldStartConfig = new BlobContainerClient(new Uri(_configuration.GetRequiredValue<string>("AZURE_BLOB_CONFIG")!))
-            .GetBlobClient("cold-start-config");
-
-        services.AddDataProtection()
-            .SetApplicationName("milwaukee-internationals-website-cold-start")
-            .PersistKeysToAzureBlobStorage(coldStartConfig)
-            .SetDefaultKeyLifetime(TimeSpan.FromDays(14));
-            
         services.AddWebMarkupMin()
             .AddHtmlMinification()
             .AddXmlMinification()
@@ -166,7 +154,7 @@ public class Startup
 
         services.Scan(scan => scan
             .FromAssemblies(Assembly.Load("API"), Assembly.Load("Logic"), Assembly.Load("DAL"))
-            .AddClasses() //    to register
+            .AddClasses() // to register
             .UsingRegistrationStrategy(RegistrationStrategy.Skip) // 2. Define how to handle duplicates
             .AsImplementedInterfaces() // 2. Specify which services they are registered as
             .WithTransientLifetime()); // 3. Set the lifetime for the services
@@ -176,12 +164,8 @@ public class Startup
         services.AddSingleton<ISmsService>(ctx => new SmsService(
             _configuration.GetRequiredValue<string>("TELNYX_AUTH_TOKEN"),
             _configuration.GetRequiredValue<string>("TELNYX_SENDER_PHONE_NUMBER"),
-            ctx.GetRequiredService<GlobalConfigs>(),
+            ctx.GetRequiredService<IConfigLogic>(),
             ctx.GetRequiredService<ILogger<SmsService>>()));
-
-        services.AddSingleton(new BlobContainerClient(new Uri(_configuration.GetRequiredValue<string>("AZURE_BLOB_CONFIG")!)));
-
-        services.AddTransient<IStorageService, AzureBlobService>();
 
         services.AddSingleton<GlobalConfigs>();
 
@@ -249,12 +233,8 @@ public class Startup
         });
 
         services.AddEfRepository<EntityDbContext>(opt => opt.Profile(Assembly.Load("Dal")));
-            
-        services.AddSingleton(new TableServiceClient(new Uri(Environment.GetEnvironmentVariable("AZURE_TABLE_EVENTS")!)));
-            
-        services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
-        services.AddAutoMapper(Assembly.Load("Models"));
+        services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
     }
 
     /// <summary>
@@ -266,9 +246,6 @@ public class Startup
     /// <param name="smsService"></param>
     public void Configure(IApplicationBuilder app, IConfigLogic configLogic, IApiEventService apiEventService, ISmsService smsService)
     {
-        // Refresh global config
-        configLogic.Refresh();
-
         // Add SecureHeadersMiddleware to the pipeline
         app.UseSecureHeadersMiddleware(_configuration.Get<SecureHeadersMiddlewareConfiguration>());
 

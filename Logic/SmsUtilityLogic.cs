@@ -12,7 +12,7 @@ namespace Logic;
 
 public class SmsUtilityLogic : ISmsUtilityLogic
 {
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly ISmsService _smsService;
     private readonly IStudentLogic _studentLogic;
     private readonly IDriverLogic _driverLogic;
@@ -23,7 +23,7 @@ public class SmsUtilityLogic : ISmsUtilityLogic
     private readonly IRegistrationLogic _registrationLogic;
 
     public SmsUtilityLogic(
-        GlobalConfigs globalConfigs,
+        IConfigLogic configLogic,
         ISmsService smsService,
         IStudentLogic studentLogic,
         IDriverLogic driverLogic,
@@ -33,7 +33,7 @@ public class SmsUtilityLogic : ISmsUtilityLogic
         IApiEventService apiEventService,
         IRegistrationLogic registrationLogic)
     {
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _smsService = smsService;
         _studentLogic = studentLogic;
         _driverLogic = driverLogic;
@@ -46,7 +46,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
     
     public async Task<bool> HandleAdHocSms(SmsFormViewModel smsFormViewModel)
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
             
         var phoneNumbers = new List<string>();
 
@@ -111,7 +113,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
 
     public async Task<SmsFormViewModel> GetSmsForm()
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
             
         return new SmsFormViewModel
         {
@@ -125,7 +129,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
 
     public async Task HandleDriverSms()
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
 
         foreach (var driver in await _driverLogic.GetAll(year))
         {
@@ -135,7 +141,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
 
     public async Task HandleStudentSms()
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        var year = globalConfigs.YearValue;
 
         foreach (var student in await _studentLogic.GetAll(year))
         {
@@ -145,7 +153,9 @@ public class SmsUtilityLogic : ISmsUtilityLogic
 
     public async Task HandleHostSms()
     {
-        var year = _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
+        var year = globalConfigs.YearValue;
 
         foreach (var host in await _hostLogic.GetAll(year))
         {

@@ -7,7 +7,6 @@ using DAL.Interfaces;
 using EfCoreRepository.Interfaces;
 using Logic.Abstracts;
 using Logic.Interfaces;
-using Models.Constants;
 using Models.Entities;
 using static Logic.Utilities.RegistrationUtility;
 

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using API.Attributes;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +26,8 @@ public class ApiEventsController : Controller
     
     [HttpGet]
     [Route("latest")]
-    public async Task<IActionResult> GetLatestApiEvents()
+    public IActionResult GetLatestApiEvents()
     {
-        return Ok(await _apiEventService.GetEvents());
+        return Ok(_apiEventService.GetEvents());
     }
 }

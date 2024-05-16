@@ -1,13 +1,14 @@
 ﻿@using API.Interfaces
-@using Models.Constants
+@using DAL.Interfaces
 @using Models.Enums
 @inject IHttpRequestUtilityBuilder RequestUtilityBuilder;
-@inject GlobalConfigs GlobalConfig
+@inject IConfigLogic ConfigLogic
 
 @{
     ViewBag.Title = "Student Attendance";
     Layout = "_Layout";
     var userInfo = await RequestUtilityBuilder.For(Context).GetUserInfo();
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <div class="container" ng-controller="studentAttendanceCtrl">
@@ -22,9 +23,9 @@
             <div class="row">
                 <div class="col-sm-7 col-sm-offset-5 col-md-6 col-md-offset-6 col-lg-5 col-lg-offset-7">
                     <div class="pull-right">
-                        <button class="btn @(GlobalConfig.EmailTestMode ? "btn-primary" : "btn-danger")" ng-click="checkInViaEmail()">Send Check-In via email</button>
+                        <button class="btn @(globalConfig.EmailTestMode ? "btn-primary" : "btn-danger")" ng-click="checkInViaEmail()">Send Check-In via email</button>
         
-                        <a class="btn @(GlobalConfig.SMSTestMode ? "btn-primary" : "btn-danger")"
+                        <a class="btn @(globalConfig.SmsTestMode ? "btn-primary" : "btn-danger")"
                            href="~/Sms/Student"
                            validate-before-going data-message="Are you sure to send SMS confirmation email to students)?">Send SMS check-in</a>
                     </div>

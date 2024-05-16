@@ -1,10 +1,11 @@
-﻿@using Models.Constants
+﻿@using DAL.Interfaces
 @model Models.Entities.Student
-@inject GlobalConfigs GlobalConfigs;
+@inject IConfigLogic ConfigLogic
 
 @{
     ViewBag.Title = $"{DateTime.Now.Year} Free Tour of Milwaukee Registration";
     Layout = "_Layout";
+    var globalConfig = await ConfigLogic.ResolveGlobalConfig();
 }
 
 <div class="text-center">
@@ -13,9 +14,9 @@
 
 <div class="container">
     <div class="page-header">
-        <h2 class="text-center">@(GlobalConfigs.TourDate.Year) Free Tour of Milwaukee Registration</h2>
-        <h4 class="text-center">Date and Time: @(GlobalConfigs.TourDate.ToString("dddd, MMMM d")) at @(GlobalConfigs.TourDate.ToString("h:mm tt")) - 7:00 PM</h4>
-        <h4 class="text-center">Location: <a href="https://goo.gl/maps/gBJSQqkXAUT7GwAT6" target="_blank">@(GlobalConfigs.TourLocation)</a></h4>
+        <h2 class="text-center">@(globalConfig.TourDate.Year) Free Tour of Milwaukee Registration</h2>
+        <h4 class="text-center">Date and Time: @(globalConfig.TourDate.ToString("dddd, MMMM d")) at @(globalConfig.TourDate.ToString("h:mm tt")) - 7:00 PM</h4>
+        <h4 class="text-center">Location: <a href="https://goo.gl/maps/gBJSQqkXAUT7GwAT6" target="_blank">@(globalConfig.TourLocation)</a></h4>
         <p class="text-center">
             Note that this is not a bus tour; it's a personal tour with 2-4 people in each vehicle. The tour concludes with a dinner at an American home.
         </p>
