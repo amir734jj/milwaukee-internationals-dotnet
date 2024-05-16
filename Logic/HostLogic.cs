@@ -15,19 +15,19 @@ namespace Logic;
 public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
 {
     private readonly IBasicCrud<Host> _dal;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IApiEventService _apiEventService;
 
     /// <summary>
     /// Constructor dependency injection
     /// </summary>
     /// <param name="repository"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
-    public HostLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    public HostLogic(IEfRepository repository, IConfigLogic configLogic, IApiEventService apiEventService)
     {
         _dal = repository.For<Host>();
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _apiEventService = apiEventService;
     }
 
@@ -54,7 +54,9 @@ public class HostLogic : BasicCrudLogicAbstract<Host>, IHostLogic
 
     public override async Task<IEnumerable<Host>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Host, bool>>[] filters)
     {
-        Expression<Func<Host, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
+        Expression<Func<Host, bool>> yearFilterExpr = x => x.Year == globalConfigs.YearValue;
         
         return await base.GetAll(sortBy, descending, null, filters.Concat(new[] { yearFilterExpr }).ToArray());
     }

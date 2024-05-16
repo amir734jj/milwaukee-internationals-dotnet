@@ -25,7 +25,7 @@ public class RegistrationLogic : IRegistrationLogic
     private readonly IEmailServiceApi _emailServiceApiApi;
     private readonly IApiEventService _apiEventService;
     private readonly ISmsService _smsService;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
 
     /// <summary>
     /// Constructor dependency injection
@@ -38,7 +38,7 @@ public class RegistrationLogic : IRegistrationLogic
     /// <param name="emailServiceApiApi"></param>
     /// <param name="apiEventService"></param>
     /// <param name="smsService"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     public RegistrationLogic(
         IStudentLogic studentLogic,
         IDriverLogic driverLogic,
@@ -48,7 +48,7 @@ public class RegistrationLogic : IRegistrationLogic
         IEmailServiceApi emailServiceApiApi,
         IApiEventService apiEventService,
         ISmsService smsService,
-        GlobalConfigs globalConfigs)
+        IConfigLogic configLogic)
     {
         _studentLogic = studentLogic;
         _driverLogic = driverLogic;
@@ -58,11 +58,13 @@ public class RegistrationLogic : IRegistrationLogic
         _emailServiceApiApi = emailServiceApiApi;
         _apiEventService = apiEventService;
         _smsService = smsService;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
     }
 
     public async Task SendStudentEmail(Student student)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+        
         const string rootUrl = ApiConstants.SiteUrl;
         var checkInPath = Url.Combine(rootUrl, "App", "CheckIn", "Student", student.GenerateHash());
 
@@ -94,15 +96,15 @@ public class RegistrationLogic : IRegistrationLogic
                     <p>See you at the Tour of Milwaukee</p>
                     <p> Note that this is not a bus tour; it's a personal tour with 2-4 people in each vehicle. The tour concludes with a dinner at an American home. </p>
                     <br>
-                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> {globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
                     <p> Time: 12:00 noon</p>
-                    <p> Address: {_globalConfigs.TourAddress} </p>
-                    <p> Location: {_globalConfigs.TourLocation} </p>
+                    <p> Address: {globalConfigs.TourAddress} </p>
+                    <p> Location: {globalConfigs.TourLocation} </p>
                     <p> Thank you for registering for this event. Please share this with other new international friends.</p>
                     <p> If you need any sort of help (furniture, etc.), please contact Asher Imtiaz (414-499-5360).</p>
                     <br>
-                    {(_globalConfigs.QrInStudentEmail ? @$"<br>
+                    {(globalConfigs.QrInStudentEmail ? @$"<br>
                     <p>Please save your QR code after your online registration. You can use the QR code when you check-in on the day of the Tour of Milwaukee.</p>
                     <img src=""{qrUri}"" alt=""QR code"" />" : "")}
                 ");
@@ -110,6 +112,8 @@ public class RegistrationLogic : IRegistrationLogic
 
     public async Task SendDriverEmail(Driver driver)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
         switch (driver.Role)
         {
             case RolesEnum.Driver:
@@ -122,11 +126,11 @@ public class RegistrationLogic : IRegistrationLogic
                     <p> Display Id: {driver.DisplayId}</p>
                     <p> Require Navigator: {(driver.RequireNavigator ? "Yes, navigator will be assigned to you" : $"No, my navigator is: {driver.Navigator}")}</p>
                     <br>
-                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> {globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
                     <p> Time: 12:00 noon (Brief orientation only for drivers and navigators) </p>
-                    <p> Address: {_globalConfigs.TourAddress} </p>
-                    <p> Location: {_globalConfigs.TourLocation} </p>
+                    <p> Address: {globalConfigs.TourAddress} </p>
+                    <p> Location: {globalConfigs.TourLocation} </p>
                     <br>
                     <p> Thank you for helping with the tour this year.</p>
                     <p> For questions, comments and feedback, please contact Asher Imtiaz (414-499-5360) or Marie Wilke (414-852-5132).</p>
@@ -141,14 +145,16 @@ public class RegistrationLogic : IRegistrationLogic
 
     public async Task SendHostEmail(Host host)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
         await _emailServiceApiApi.SendEmailAsync(host.Email, "Tour of Milwaukee: Host registration", $@"
                     <p>Name: {host.Fullname}</p>
                     <p>Address: {host.Address}</p>
                     <hr>
                     <p>Thank you for helping with hosting and welcoming Internationals to Milwaukee.</p>
                     <br>
-                    <p> {_globalConfigs.TourDate.Year} Tour of Milwaukee</p>
-                    <p> Date: {_globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
+                    <p> {globalConfigs.TourDate.Year} Tour of Milwaukee</p>
+                    <p> Date: {globalConfigs.TourDate:dddd, MMMM d, yyyy}</p>
                     <p> Time: 5:30 pm</p>
                     <p> We will send you more details once we have them.</p>
                     <p> For questions, any change in plans, please contact Asher Imtiaz (414-499-5360).</p>
@@ -158,10 +164,12 @@ public class RegistrationLogic : IRegistrationLogic
 
     public async Task<bool> IsRegisterStudentOpen()
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
         var year = DateTime.Now.Year;
         var count = await _studentLogic.Count(x => x.Year == year);
 
-        return count < _globalConfigs.MaxLimitStudentSeats;
+        return count < globalConfigs.MaxLimitStudentSeats;
     }
     
     

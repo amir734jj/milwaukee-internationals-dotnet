@@ -14,13 +14,13 @@ namespace Logic;
 public class LocationLogic : BasicCrudLogicAbstract<Location>, ILocationLogic
 {
     private readonly IBasicCrud<Location> _dal;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IApiEventService _apiEventService;
 
-    public LocationLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    public LocationLogic(IEfRepository repository, IConfigLogic configLogic, IApiEventService apiEventService)
     {
         _dal = repository.For<Location>();
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _apiEventService = apiEventService;
     }
     
@@ -46,7 +46,9 @@ public class LocationLogic : BasicCrudLogicAbstract<Location>, ILocationLogic
 
     public override async Task<IEnumerable<Location>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Location, bool>>[] filters)
     {
-        Expression<Func<Location, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        Expression<Func<Location, bool>> yearFilterExpr = x => x.Year == globalConfigs.YearValue;
 
         return await base.GetAll(sortBy ?? "Rank", descending, null, new [] {yearFilterExpr}.Concat(filters).ToArray());
     }

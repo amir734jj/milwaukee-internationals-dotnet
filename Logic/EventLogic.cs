@@ -16,7 +16,7 @@ public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
 {
     private readonly IBasicCrud<Event> _dal;
     private readonly IStudentLogic _studentLogic;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IApiEventService _apiEventService;
 
     /// <summary>
@@ -24,13 +24,13 @@ public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
     /// </summary>
     /// <param name="repository"></param>
     /// <param name="studentLogic"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
-    public EventLogic(IEfRepository repository, IStudentLogic studentLogic, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    public EventLogic(IEfRepository repository, IStudentLogic studentLogic, IConfigLogic configLogic, IApiEventService apiEventService)
     {
         _dal = repository.For<Event>();
         _studentLogic = studentLogic;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _apiEventService = apiEventService;
     }
 
@@ -46,7 +46,9 @@ public class EventLogic : BasicCrudLogicAbstract<Event>, IEventLogic
 
     public override async Task<IEnumerable<Event>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Event, bool>>[] filters)
     {
-        Expression<Func<Event, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        Expression<Func<Event, bool>> yearFilterExpr = x => x.Year == globalConfigs.YearValue;
 
         return await base.GetAll(sortBy, descending, null, new[] {yearFilterExpr}.Concat(filters).ToArray());
     }

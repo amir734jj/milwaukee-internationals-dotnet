@@ -15,7 +15,7 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
 {
     private readonly IBasicCrud<LocationMapping> _dal;
     private readonly ILocationLogic _locationLogic;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IApiEventService _apiEventService;
 
     /// <summary>
@@ -23,13 +23,13 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
     /// </summary>
     /// <param name="repository"></param>
     /// <param name="locationLogic"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
-    public LocationMappingLogic(IEfRepository repository, ILocationLogic locationLogic ,GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    public LocationMappingLogic(IEfRepository repository, ILocationLogic locationLogic, IConfigLogic configLogic, IApiEventService apiEventService)
     {
         _dal = repository.For<LocationMapping>();
         _locationLogic = locationLogic;
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _apiEventService = apiEventService;
     }
 
@@ -157,7 +157,9 @@ public class LocationMappingLogic :  BasicCrudLogicAbstract<LocationMapping>, IL
     
     public override async Task<IEnumerable<LocationMapping>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<LocationMapping, bool>>[] filters)
     {
-        Expression<Func<LocationMapping, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        Expression<Func<LocationMapping, bool>> yearFilterExpr = x => x.Year == globalConfigs.YearValue;
 
         return await base.GetAll(sortBy, descending, null, new [] {yearFilterExpr}.Concat(filters).ToArray());
     }

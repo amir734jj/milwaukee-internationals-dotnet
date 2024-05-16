@@ -15,19 +15,19 @@ namespace Logic;
 public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
 {
     private readonly IBasicCrud<Student> _dal;
-    private readonly GlobalConfigs _globalConfigs;
+    private readonly IConfigLogic _configLogic;
     private readonly IApiEventService _apiEventService;
 
     /// <summary>
     /// Constructor dependency injection
     /// </summary>
     /// <param name="repository"></param>
-    /// <param name="globalConfigs"></param>
+    /// <param name="configLogic"></param>
     /// <param name="apiEventService"></param>
-    public StudentLogic(IEfRepository repository, GlobalConfigs globalConfigs, IApiEventService apiEventService)
+    public StudentLogic(IEfRepository repository, IConfigLogic configLogic, IApiEventService apiEventService)
     {
         _dal = repository.For<Student>();
-        _globalConfigs = globalConfigs;
+        _configLogic = configLogic;
         _apiEventService = apiEventService;
     }
         
@@ -40,9 +40,10 @@ public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
     /// <returns></returns>
     public override async Task<Student> Save(Student student)
     {
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
         var allStudents = (await GetAll(DateTime.UtcNow.Year)).ToList();
 
-        if (_globalConfigs.DisallowDuplicateStudents && allStudents.Any(x =>
+        if (globalConfigs.DisallowDuplicateStudents && allStudents.Any(x =>
                 x.Fullname.Equals(student.Fullname, StringComparison.OrdinalIgnoreCase) &&
                 x.Email.Equals(student.Email, StringComparison.OrdinalIgnoreCase)))
         {
@@ -116,7 +117,9 @@ public class StudentLogic : BasicCrudLogicAbstract<Student>, IStudentLogic
 
     public override async Task<IEnumerable<Student>> GetAll(string sortBy = null, bool? descending = null, Func<object, string, object> sortByModifier = null, params Expression<Func<Student, bool>>[] filters)
     {
-        Expression<Func<Student, bool>> yearFilterExpr = x => x.Year == _globalConfigs.YearValue;
+        var globalConfigs = await _configLogic.ResolveGlobalConfig();
+
+        Expression<Func<Student, bool>> yearFilterExpr = x => x.Year == globalConfigs.YearValue;
         
         return await base.GetAll(sortBy, descending, SortByModifierFunc, new[] { yearFilterExpr}.Concat(filters).ToArray());
         

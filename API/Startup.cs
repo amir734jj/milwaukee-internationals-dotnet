@@ -167,8 +167,6 @@ public class Startup
             ctx.GetRequiredService<IConfigLogic>(),
             ctx.GetRequiredService<ILogger<SmsService>>()));
 
-        services.AddSingleton<GlobalConfigs>();
-
         // Initialize the email jet client
         services.AddTransient<IMailjetClient>(ctx => new MailjetClient(
             Environment.GetEnvironmentVariable("MAIL_JET_KEY"),
