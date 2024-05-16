@@ -19,7 +19,7 @@ RUN cp -r client-build/* ./out/wwwroot/
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
 # QR generation
-RUN apk add bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ zlib && \
+RUN apk add bash icu-libs krb5-libs libgcc libintl libssl3 libstdc++ zlib && \
     apk add libgdiplus --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted 
 
 # Timezones
