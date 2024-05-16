@@ -5,4 +5,8 @@ namespace DAL.Profiles;
 
 public class GlobalConfigsProfile : EntityProfile<GlobalConfigs>
 {
+    public GlobalConfigsProfile()
+    {
+        MapAll();
+    }
 }
